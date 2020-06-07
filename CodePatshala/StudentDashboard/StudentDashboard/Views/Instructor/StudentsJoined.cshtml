@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Students Joined";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
+}
+<div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Students Joined</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page" id="breadcumbCurrentName">Students Joined</li>
+        </ol>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="customTableCodePathshala" class="table-responsive table-hover" style="display:none">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Student Name</th>
+                            <th scope="col">Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignmentsRows"></tbody>
+                </table>
+                <div id="spinner" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card text-center" id="footer" style="display:none">
+            <div class="card-body">
+                <h6 class="card-title"> No students have joined yet</h6>
+                @*<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>*@
+                <div id="assignmentContainer" class="assignmentContainer"></div>
+            </div>
+            <div class="card-footer text-muted">
+                Thank you!
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    (function () {
+        'use strict';
+        //window.addEventListener('load', function () {
+        //    getAssignmentDetails();
+        //}, false);
+        onpageshow = getAllAssignmentDetails();
+    })();
+    function searchToCustomTable() {
+        var input, filter, table, tr, td, i, txtValue, a;
+        input = document.getElementById("customTableCodePathshalaSearch");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("customTableCodePathshala");
+        tr = table.getElementsByTagName("tr");
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+            a = tr[i].getElementsByTagName("th")[0];
+            a = a.getElementsByTagName("button")[0];
+            if (a) {
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function getSubmissionDetails(id) {
+        $.ajax({
+            url: '/Student/TestResponse?id='.concat(id),
+            type: 'GET',
+            success: function (data) {
+                $("#body").html(data);
+
+            }
+        });
+    }
+    function getAllAssignmentDetails() {
+        var x = $('#assignmentsRows').empty();
+        debugger;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/Joinee?id=@Session["user_id"]",
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    var assignments = data.students;
+                    for (var i = 0; i < assignments.length; i++) {
+                        var rows = '<tr>'
+                        + '<td>' + assignments[i].student_name + '</td><td>' + assignments[i].date_of_joining + '</td>'
+                        + '</tr>';
+                        $('#assignmentsRows').append(rows);
+                        $("#spinner").remove();
+                        $("#customTableCodePathshala").show();
+                    }
+                    $('#customTableCodePathshala').DataTable();
+                }
+                else {
+                    $("#footer").show();
+                    $("#spinner").remove();
+                }
+                $("#spinner").remove();
+            }
+        });
+    }
+</script>
