@@ -73,7 +73,5 @@ namespace StudentDashboard.Controllers
             }
             return View("Index");
         }
-
-
     }
 }

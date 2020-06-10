@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.ServiceLayer
@@ -24,14 +25,14 @@ namespace StudentDashboard.ServiceLayer
             objHomeDTO = new HomeDTO();
             objActivityManager = new ActivityManager();
         }
-        public bool RegisterNewUser(StaeModel objRegisterModel )
+        public async Task<bool> RegisterNewUser(StaeModel objRegisterModel )
         {
             bool result = false;
             try
             {
                 string EncryptedPassword=SHA256Encryption.ComputeSha256Hash(objRegisterModel.strPassword);
                 objRegisterModel.strPassword = EncryptedPassword;
-                result =objHomeDTO.RegisterNewUser(objRegisterModel);
+                result =await objHomeDTO.RegisterNewUser(objRegisterModel);
             }
             catch(Exception Ex)
             {
@@ -43,13 +44,13 @@ namespace StudentDashboard.ServiceLayer
             return result;
             
         }
-        public bool ValidateLoginDetails(StaeModel objRegisterModel)
+        public async Task<bool> ValidateLoginDetails(StaeModel objRegisterModel)
         {
             bool result = false;
             try
             {
                 objRegisterModel.strPassword = SHA256Encryption.ComputeSha256Hash(objRegisterModel.strPassword);
-                result = objHomeDTO.ValidateLogineDetails(objRegisterModel);
+                result = await objHomeDTO.ValidateLogineDetails(objRegisterModel);
                 if(result==false)
                 {
                     m_strLogMessage.AppendFormat("Invalid login attemt userId={0}", objRegisterModel.strEmail);
@@ -67,7 +68,7 @@ namespace StudentDashboard.ServiceLayer
             return result;
 
         }
-        public List<CourseDetailsModel> GetAllCourseDetailsForInstructor(string InstructoruserName)
+        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(string InstructoruserName)
         {
             List<CourseDetailsModel> lsCouseModel = null;
             try
@@ -75,7 +76,7 @@ namespace StudentDashboard.ServiceLayer
                 long IstructorId = 0;
                 if(objHomeDTO.GetInstructorIdFromUserId(InstructoruserName, ref IstructorId))
                 {
-                    objHomeDTO.GetAllCourseDetailsForInstructor(IstructorId, ref lsCouseModel);
+                    lsCouseModel=await objHomeDTO.GetAllCourseDetailsForInstructor(IstructorId);
                 }
                 
             }
@@ -88,12 +89,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsCouseModel;
         }
-        public bool DeleteCourse(long CourseId)
+        public async Task<bool> DeleteCourse(long CourseId)
         {
             bool result = false;
             try
             {
-                result = objHomeDTO.DeleteCourse(CourseId);
+                result = await objHomeDTO.DeleteCourse(CourseId);
             }
             catch(Exception Ex)
             {
@@ -104,12 +105,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool DeleteMcqAssignmentQuestion(long QuestionId)
+        public async Task<bool> DeleteMcqAssignmentQuestion(long QuestionId)
         {
             bool result = false;
             try
             {
-                result = objHomeDTO.DeleteMcqAssignmentQuestion(QuestionId);
+                result = await objHomeDTO.DeleteMcqAssignmentQuestion(QuestionId);
             }
             catch (Exception Ex)
             {
@@ -120,12 +121,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool UpdateMcqAssignmentQuestion(McqQuestion objMcqQuestion)
+        public async Task< bool> UpdateMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objHomeDTO.UpdateMcqAssignmentQuestion(objMcqQuestion);
+                result = await objHomeDTO.UpdateMcqAssignmentQuestion(objMcqQuestion);
             }
             catch (Exception Ex)
             {
@@ -136,12 +137,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool ActivateCourse(long CourseId)
+        public  async Task<bool> ActivateCourse(long CourseId)
         {
             bool result = false;
             try
             {
-                result = objHomeDTO.ActivateCourse(CourseId);
+                result = await objHomeDTO.ActivateCourse(CourseId);
             }
             catch (Exception Ex)
             {
@@ -153,15 +154,15 @@ namespace StudentDashboard.ServiceLayer
             return result;
         }
 
-        public GetCourseDetailsApiResponse GetCourseDetails(long CourseId)
+        public async Task<GetCourseDetailsApiResponse> GetCourseDetails(long CourseId)
         {
             GetCourseDetailsApiResponse objGetCourseDetailsApiResponse = null;
             try
             {
-                objGetCourseDetailsApiResponse = objHomeDTO.GetCourseDetails(CourseId);
+                objGetCourseDetailsApiResponse = await objHomeDTO.GetCourseDetails(CourseId);
                 if(objGetCourseDetailsApiResponse!=null)
                 {
-                    objGetCourseDetailsApiResponse.m_lsIndexes = objHomeDTO.GetCourseIndexDetails(CourseId);
+                    objGetCourseDetailsApiResponse.m_lsIndexes = await objHomeDTO.GetCourseIndexDetails(CourseId);
                 }
             }
             catch (Exception Ex)
@@ -173,12 +174,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return objGetCourseDetailsApiResponse;
         }
-        public TestModel GetTestDetails(long TestId)
+        public async Task<TestModel> GetTestDetails(long TestId)
         {
             TestModel objTestModel = null;
             try
             {
-                objTestModel = objHomeDTO.GetTestDetails(TestId);
+                objTestModel = await objHomeDTO.GetTestDetails(TestId);
             }
             catch (Exception Ex)
             {
@@ -205,12 +206,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool InsertNewTopic(TopicModel objTopicModel)
+        public async Task<bool> InsertNewTopic(TopicModel objTopicModel)
         {
             bool result = false;
             try
             {
-                result = objHomeDTO.InsertNewTopic(objTopicModel);
+                result = await objHomeDTO.InsertNewTopic(objTopicModel);
             }
             catch (Exception Ex)
             {
@@ -221,7 +222,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool InsertTopics(IndexModel objIndexModel)
+        public async Task<bool> InsertTopics(IndexModel objIndexModel)
         {
             bool result = false;
             int SuccessFullyInsertedTopics = 0;
@@ -230,7 +231,7 @@ namespace StudentDashboard.ServiceLayer
                 foreach (var objTopicModel in objIndexModel.m_lsTopicModel)
                 {
                     objTopicModel.m_llIndexId = objIndexModel.m_llIndexId;
-                    if(objHomeDTO.InsertNewTopic(objTopicModel))
+                    if(await objHomeDTO.InsertNewTopic(objTopicModel))
                     {
                         SuccessFullyInsertedTopics++;
                     }
@@ -249,13 +250,13 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public AboutCourseResponse GetAboutCourse(int CourseId)
+        public async Task<AboutCourseResponse> GetAboutCourse(int CourseId)
         {
             AboutCourseResponse objAboutCourseResponse = new AboutCourseResponse();
             try
             {
-                GetCourseDetailsApiResponse objGetCourseDetailsApiResponse=objHomeDTO.GetCourseDetails(CourseId);
-                List<CourseIndexDetails> lsCourseIndexDetails= objHomeDTO.GetCourseIndexDetails(CourseId);
+                GetCourseDetailsApiResponse objGetCourseDetailsApiResponse=await objHomeDTO.GetCourseDetails(CourseId);
+                List<CourseIndexDetails> lsCourseIndexDetails= await objHomeDTO.GetCourseIndexDetails(CourseId);
                 if(lsCourseIndexDetails!=null&& objGetCourseDetailsApiResponse!=null)
                 {
                     objAboutCourseResponse = new AboutCourseResponse(objGetCourseDetailsApiResponse.m_strCourseName,objGetCourseDetailsApiResponse.m_strCourseDescription,
@@ -267,9 +268,9 @@ namespace StudentDashboard.ServiceLayer
                         if (indexes.m_llTestId != null) { objAboutCourseResponse.AddTest(indexes.m_strTestName, indexes.m_llTestId); }
                         objAboutCourseResponse.IncremetTopicCount(indexes.m_iTotalNoOfTopic);
                     }
-                    List<BasicAssignmentDetails> lsAssignmentDetails = GetAssignmentForCourse(CourseId);
+                    List<BasicAssignmentDetails> lsAssignmentDetails =await  GetAssignmentForCourse(CourseId);
                     if (lsAssignmentDetails != null && lsAssignmentDetails.Count > 0) { objAboutCourseResponse.m_lsAssignmentDetails.AddRange(lsAssignmentDetails); }
-                    List<BasicTestDetails> lsBasicTestDetails = GetTestOfCourse(CourseId);
+                    List<BasicTestDetails> lsBasicTestDetails = await GetTestOfCourse(CourseId);
                     if (lsBasicTestDetails != null && lsBasicTestDetails.Count > 0) { objAboutCourseResponse.m_lsTestDetails.AddRange(lsBasicTestDetails); }
                     objAboutCourseResponse.SetCounts();
                     objAboutCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -287,17 +288,17 @@ namespace StudentDashboard.ServiceLayer
             }
             return objAboutCourseResponse;
         }
-        public IndexModel GetIndexDetails(int id)
+        public async Task<IndexModel> GetIndexDetails(int id)
         {
             IndexModel objIndexModel = null;
             try
             {
-                objIndexModel = objHomeDTO.GetIndexDetails(id);
+                objIndexModel = await objHomeDTO.GetIndexDetails(id);
                 if(objIndexModel!=null)
                 {
                     objIndexModel.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objIndexModel.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                    objIndexModel.m_lsTopicModel = objHomeDTO.GetIndexTopicDetails(id);
+                    objIndexModel.m_lsTopicModel = await objHomeDTO.GetIndexTopicDetails(id);
                 }
                 else
                 {
@@ -314,24 +315,24 @@ namespace StudentDashboard.ServiceLayer
             }
             return objIndexModel;
         }
-        public AssignmentModel GetAssignmentDetails(long AssignmentId)
+        public async Task<AssignmentModel> GetAssignmentDetails(long AssignmentId)
         {
             AssignmentModel objAssignmentModel = null;
             try
             {
-                objAssignmentModel = objHomeDTO.GetAssignmentDetails(AssignmentId);
+                objAssignmentModel = await objHomeDTO.GetAssignmentDetails(AssignmentId);
                 if (objAssignmentModel != null)
                 {
                    switch(objAssignmentModel.m_iAssignmentType)
                     {
                         case (int)Constants.AssignmentQuestionType.MCQ:
                             {
-                                objAssignmentModel.m_lsMcqQuestion = objHomeDTO.GetMcqQuestionDetails(AssignmentId);
+                                objAssignmentModel.m_lsMcqQuestion =await  objHomeDTO.GetMcqQuestionDetails(AssignmentId);
                                 break;
                             }
                         case (int)Constants.AssignmentQuestionType.SUBJECTIVE:
                             {
-                                objAssignmentModel.m_lsSubjectiveQuestion = objHomeDTO.GetAllQuestionsOfSubjectiveAssignment(AssignmentId);
+                                objAssignmentModel.m_lsSubjectiveQuestion = await objHomeDTO.GetAllQuestionsOfSubjectiveAssignment(AssignmentId);
                                 break;
                             }
                     }
@@ -351,15 +352,15 @@ namespace StudentDashboard.ServiceLayer
             }
             return objAssignmentModel;
         }
-        public TestModel GetFullMcqTestDetails(long TestId)
+        public async Task<TestModel> GetFullMcqTestDetails(long TestId)
         {
             TestModel objTestModel = null;
             try
             {
-                objTestModel = objHomeDTO.GetTestDetails(TestId);
+                objTestModel = await objHomeDTO.GetTestDetails(TestId);
                 if (objTestModel != null)
                 {
-                    objTestModel.m_lsMcqQuestion = objHomeDTO.GetMcqTestQuestions(TestId);  
+                    objTestModel.m_lsMcqQuestion = await objHomeDTO.GetMcqTestQuestions(TestId);  
                 }
                 else
                 {
@@ -376,15 +377,15 @@ namespace StudentDashboard.ServiceLayer
             return objTestModel;
         }
 
-        public bool InsertNewMcqQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> InsertNewMcqQuestion(McqQuestion objMcqQuestion)
         {
-            return objHomeDTO.InsertNewMcqTestQuestion(objMcqQuestion);
+            return await objHomeDTO.InsertNewMcqTestQuestion(objMcqQuestion);
         }
-        public bool InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
-            return objHomeDTO.InsertNewMcqAssignmentQuestion(objMcqQuestion);
+            return await objHomeDTO.InsertNewMcqAssignmentQuestion(objMcqQuestion);
         }
-        public bool InsertAssignment(AssignmentModel objAssignmentmodel)
+        public async Task<bool> InsertAssignment(AssignmentModel objAssignmentmodel)
         {
             bool result = false;
             try {
@@ -398,14 +399,14 @@ namespace StudentDashboard.ServiceLayer
                 }
                 if (objHomeDTO.InsertNewAssignment(objAssignmentmodel))
                 {
-                    if (objHomeDTO.InsertAssignmentIdToIndex(objAssignmentmodel.m_llAssignemntId, objAssignmentmodel.m_llIndexId))
+                    if (await objHomeDTO.InsertAssignmentIdToIndex(objAssignmentmodel.m_llAssignemntId, objAssignmentmodel.m_llIndexId))
                     {
                         if (objAssignmentmodel.m_iAssignmentType == (short)Constants.AssignmentQuestionType.MCQ)
                         {
                             foreach (var Questions in objAssignmentmodel.m_lsMcqQuestion)
                             {
                                 Questions.m_llAssignmentId = objAssignmentmodel.m_llAssignemntId;
-                                result = objHomeDTO.InsertNewMcqAssignmentQuestion(Questions);
+                                result =await objHomeDTO.InsertNewMcqAssignmentQuestion(Questions);
                             }
                         }
                         else if (objAssignmentmodel.m_iAssignmentType == (short)Constants.AssignmentQuestionType.SUBJECTIVE)
@@ -413,7 +414,7 @@ namespace StudentDashboard.ServiceLayer
                             foreach (var Questions in objAssignmentmodel.m_lsSubjectiveQuestion)
                             {
                                 Questions.m_llAsssignmentId = objAssignmentmodel.m_llAssignemntId;
-                                result = objHomeDTO.InsertSubjectiveAssignmentQuestion(Questions);
+                                result = await objHomeDTO.InsertSubjectiveAssignmentQuestion(Questions);
                             }
                         }
                     }
@@ -428,7 +429,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool InsertNewIndependentAssignment(AssignmentModel objAssignmentmodel)
+        public async Task<bool> InsertNewIndependentAssignment(AssignmentModel objAssignmentmodel)
         {
             bool result = false;
             try
@@ -448,7 +449,7 @@ namespace StudentDashboard.ServiceLayer
                         foreach (var Questions in objAssignmentmodel.m_lsMcqQuestion)
                         {
                             Questions.m_llAssignmentId = objAssignmentmodel.m_llAssignemntId;
-                            result = objHomeDTO.InsertNewMcqAssignmentQuestion(Questions);
+                            result =await objHomeDTO.InsertNewMcqAssignmentQuestion(Questions);
                         }
                     }
                     else if (objAssignmentmodel.m_iAssignmentType == (short)Constants.AssignmentQuestionType.SUBJECTIVE)
@@ -456,7 +457,7 @@ namespace StudentDashboard.ServiceLayer
                         foreach (var Questions in objAssignmentmodel.m_lsSubjectiveQuestion)
                         {
                             Questions.m_llAsssignmentId = objAssignmentmodel.m_llAssignemntId;
-                            result = objHomeDTO.InsertSubjectiveAssignmentQuestion(Questions);
+                            result = await objHomeDTO.InsertSubjectiveAssignmentQuestion(Questions);
                         }
                     }
                 }
@@ -474,7 +475,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool InsertTest(TestModel objTestmodel)
+        public async Task<bool> InsertTest(TestModel objTestmodel)
         {
             bool result = false;
             try
@@ -489,14 +490,14 @@ namespace StudentDashboard.ServiceLayer
                 }
                 if (objHomeDTO.InsertNewTest(objTestmodel))
                 {
-                    if (objHomeDTO.InsertTestIdToIndex(objTestmodel.m_llTestId, objTestmodel.m_llIndexId))
+                    if (await objHomeDTO.InsertTestIdToIndex(objTestmodel.m_llTestId, objTestmodel.m_llIndexId))
                     {
                         if (objTestmodel.m_iTestType == (short)Constants.TestQuestionType.MCQ)
                         {
                             foreach (var Questions in objTestmodel.m_lsMcqQuestion)
                             {
                                 Questions.m_llTestId = objTestmodel.m_llTestId;
-                                result = objHomeDTO.InsertNewMcqTestQuestion(Questions);
+                                result = await objHomeDTO.InsertNewMcqTestQuestion(Questions);
                             }
                         }
                         else if (objTestmodel.m_iTestType == (short)Constants.TestQuestionType.SUBJECTIVE)
@@ -523,7 +524,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public bool InsertNewIndependentTest(TestModel objTestmodel)
+        public async Task< bool> InsertNewIndependentTest(TestModel objTestmodel)
         {
             bool result = false;
             try
@@ -544,7 +545,7 @@ namespace StudentDashboard.ServiceLayer
                             foreach (var Questions in objTestmodel.m_lsMcqQuestion)
                             {
                                 Questions.m_llTestId = objTestmodel.m_llTestId;
-                                result = objHomeDTO.InsertNewMcqTestQuestion(Questions);
+                                result = await objHomeDTO.InsertNewMcqTestQuestion(Questions);
                             }
                         }
                         else if (objTestmodel.m_iTestType == (short)Constants.TestQuestionType.SUBJECTIVE)
@@ -572,19 +573,19 @@ namespace StudentDashboard.ServiceLayer
             return result;
         }
 
-        public List<AssignmentDetailsModel> GetAssignmentForInstructor(int InstructorId)
+        public async Task<List<AssignmentDetailsModel>> GetAssignmentForInstructor(int InstructorId)
         {
-            return objHomeDTO.GetAssignmentForInstructor(InstructorId);
+            return await objHomeDTO.GetAssignmentForInstructor(InstructorId);
         }
-        public List<TestDetailsModel> GetInstructorTestDetails(int InstructorId)
+        public async Task<List<TestDetailsModel>> GetInstructorTestDetails(int InstructorId)
         {
-            return objHomeDTO.GetInstructorTestDetails(InstructorId);
+            return await objHomeDTO.GetInstructorTestDetails(InstructorId);
         }
-        public bool InsertActivityForInstructor(int InstructorId, string ActivityMessage)
+        public async Task<bool> InsertActivityForInstructor(int InstructorId, string ActivityMessage)
         {
-            return objHomeDTO.InsertActivityForInstructor(InstructorId, ActivityMessage);
+            return await objHomeDTO.InsertActivityForInstructor(InstructorId, ActivityMessage);
         }
-        public bool InsertNewCourse(CourseModel objCourseModel)
+        public async Task<bool> InsertNewCourse(CourseModel objCourseModel)
         {
             bool result = objHomeDTO.InsertNewCourse(objCourseModel);
             if(result)
@@ -593,188 +594,194 @@ namespace StudentDashboard.ServiceLayer
                 objHomeDTO.GetInstructorIdFromUserId(objCourseModel.m_strInstructorUserName,ref InstructorId);
                 if (InstructorId != -1)
                 {
-                    InsertActivityForInstructor((int)InstructorId, objActivityManager.CreateActivityMessageForinstructor(objCourseModel.m_llCourseId, objCourseModel.m_strCourseName, (int)Constants.ActivityType.COURSE_CREATED));
+                    await InsertActivityForInstructor((int)InstructorId, objActivityManager.CreateActivityMessageForinstructor(objCourseModel.m_llCourseId, objCourseModel.m_strCourseName, (int)Constants.ActivityType.COURSE_CREATED));
                 }
             }
             return result;
         }
-        public List<ActivityModal> GetInstructorActivityDetails(int InstructorId)
+        public async Task<List<ActivityModal>> GetInstructorActivityDetails(int InstructorId)
         {
-            return objHomeDTO.GetInstructorActivityDetails(InstructorId).OrderByDescending((x)=>x.m_dtDateTime).ToList();
+            List<ActivityModal> lsActivityModal;
+            lsActivityModal= await objHomeDTO.GetInstructorActivityDetails(InstructorId);
+            if (lsActivityModal != null&& lsActivityModal.Count>0)
+            {
+                lsActivityModal = lsActivityModal.OrderByDescending((x) => x.m_dtDateTime).ToList();
+            }
+            return lsActivityModal;
         }
-        public bool ActivateTest(long TestId)
+        public async Task<bool> ActivateTest(long TestId)
         {
-            return objHomeDTO.ActivateTest(TestId);
+            return await objHomeDTO.ActivateTest(TestId);
         }
-        public bool DeleteTest(long TestId)
+        public async Task<bool> DeleteTest(long TestId)
         {
-            return objHomeDTO.DeleteTest(TestId);
+            return await objHomeDTO.DeleteTest(TestId);
         }
-        public bool DeleteTestOfCourse(long TestId)
+        public async Task<bool> DeleteTestOfCourse(long TestId)
         {
-            return objHomeDTO.DeleteTestOfCourse(TestId);
+            return await objHomeDTO.DeleteTestOfCourse(TestId);
         }
-        public bool ActivateAssignment(long AssignmentId)
+        public async Task<bool> ActivateAssignment(long AssignmentId)
         {
-            return objHomeDTO.ActivateAssignment(AssignmentId);
+            return await objHomeDTO.ActivateAssignment(AssignmentId);
         }
-        public bool DeleteAssignment(long AssignmentId)
+        public async Task<bool> DeleteAssignment(long AssignmentId)
         {
-            return objHomeDTO.DeleteAssignment(AssignmentId);
+            return await objHomeDTO.DeleteAssignment(AssignmentId);
         }
-        public bool DeleteIndependentAssignment(long AssignmentId)
+        public async Task< bool> DeleteIndependentAssignment(long AssignmentId)
         {
-            return objHomeDTO.DeleteIndependentAssignment(AssignmentId);
+            return await objHomeDTO.DeleteIndependentAssignment(AssignmentId);
         }
-        public bool DeleteIndependentTest(long TestId)
+        public async Task<bool> DeleteIndependentTest(long TestId)
         {
-            return objHomeDTO.DeleteIndependentTest(TestId);
+            return await objHomeDTO.DeleteIndependentTest(TestId);
         }
-        public bool InserContatUsRequest(ContactUsApiRequest objContactUsApiRequest)
+        public async Task<bool> InserContatUsRequest(ContactUsApiRequest objContactUsApiRequest)
         {
-            return objHomeDTO.InserContatUsRequest(objContactUsApiRequest);
+            return await objHomeDTO.InserContatUsRequest(objContactUsApiRequest);
         }
-        public bool DeleteIndexTopic(long TopicId)
+        public async Task<bool> DeleteIndexTopic(long TopicId)
         {
-            return objHomeDTO.DeleteIndexTopic(TopicId);
+            return await objHomeDTO.DeleteIndexTopic(TopicId);
         }
-        public bool UpdateIndexTopic(TopicModel objTopicModel)
+        public async Task<bool> UpdateIndexTopic(TopicModel objTopicModel)
         {
-            return objHomeDTO.UpdateIndexTopic(objTopicModel);
+            return await objHomeDTO.UpdateIndexTopic(objTopicModel);
         }
-        public bool DeleteIndex(long IndexId)
+        public async Task<bool> DeleteIndex(long IndexId)
         {
-            return objHomeDTO.DeleteCourseIndex(IndexId);
+            return await objHomeDTO.DeleteCourseIndex(IndexId);
         }
-        public bool UpdateAssignmentDetails(AssignmentModel objAssignmentDetailsModel)
+        public async Task<bool> UpdateAssignmentDetails(AssignmentModel objAssignmentDetailsModel)
         {
-            return objHomeDTO.UpdateAssignmentDetails(objAssignmentDetailsModel);
+            return await objHomeDTO.UpdateAssignmentDetails(objAssignmentDetailsModel);
         }
-        public bool UpdateCourseIndex(IndexModel objIndexModel)
+        public async Task<bool> UpdateCourseIndex(IndexModel objIndexModel)
         {
-            return objHomeDTO.UpdateCourseIndex(objIndexModel);
+            return await objHomeDTO.UpdateCourseIndex(objIndexModel);
         }
-        public bool UpdateFullCourseDetails(CourseDetailsModel objCourse)
+        public async Task<bool> UpdateFullCourseDetails(CourseDetailsModel objCourse)
         {
-            return objHomeDTO.UpdateFullCourseDetails(objCourse);
+            return await objHomeDTO.UpdateFullCourseDetails(objCourse);
         }
-        public bool UpdateTestDetails(TestDetailsModel objTestDetails)
+        public async Task<bool> UpdateTestDetails(TestDetailsModel objTestDetails)
         {
-            return objHomeDTO.UpdateTestDetails(objTestDetails);
+            return await objHomeDTO.UpdateTestDetails(objTestDetails);
         }
-        public bool AddMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> AddMcqTestQuestion(McqQuestion objMcqQuestion)
         {
-            return objHomeDTO.AddMcqTestQuestion(objMcqQuestion);
+            return await objHomeDTO.AddMcqTestQuestion(objMcqQuestion);
         }
-        public bool UpdateMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> UpdateMcqTestQuestion(McqQuestion objMcqQuestion)
         {
-            return objHomeDTO.UpdateMcqTestQuestion(objMcqQuestion);
+            return await objHomeDTO.UpdateMcqTestQuestion(objMcqQuestion);
         }
-        public bool InsertNewSeperateAssignmentToCourse(AssignmentModel objAssignmentModel)
+        public async Task<bool> InsertNewSeperateAssignmentToCourse(AssignmentModel objAssignmentModel)
         {
-            return objHomeDTO.InsertNewAssignmentToCourse(objAssignmentModel);
+            return await objHomeDTO.InsertNewAssignmentToCourse(objAssignmentModel);
         }
-        public bool DeleteMcqTestQuestion(long QuestionId)
+        public async Task<bool> DeleteMcqTestQuestion(long QuestionId)
         {
-            return objHomeDTO.DeleteMcqTestQuestion(QuestionId);
+            return await objHomeDTO.DeleteMcqTestQuestion(QuestionId);
         }
-        public bool InsertNewTestToCourse(TestModel objTestModel)
+        public async Task<bool> InsertNewTestToCourse(TestModel objTestModel)
         {
-            return objHomeDTO.InsertNewTestToCourse(objTestModel);
+            return await objHomeDTO.InsertNewTestToCourse(objTestModel);
         }
-        public bool InsertNewAssignmentToCourse(AssignmentModel objAssignmentModel)
+        public async Task<bool> InsertNewAssignmentToCourse(AssignmentModel objAssignmentModel)
         {
-            return objHomeDTO.InsertNewAssignmentToCourse(objAssignmentModel);
+            return await objHomeDTO.InsertNewAssignmentToCourse(objAssignmentModel);
         }
-        public List<BasicAssignmentDetails> GetAssignmentForCourse(long CourseId)
+        public async Task<List<BasicAssignmentDetails>> GetAssignmentForCourse(long CourseId)
         {
-            return objHomeDTO.GetAssignmentForCourse(CourseId);
+            return await objHomeDTO.GetAssignmentForCourse(CourseId);
         }
-        public List<BasicTestDetails> GetTestOfCourse(long CourseId)
+        public async Task<List<BasicTestDetails>> GetTestOfCourse(long CourseId)
         {
-            return objHomeDTO.GetTestOfCourse(CourseId);
+            return await objHomeDTO.GetTestOfCourse(CourseId);
         }
-        public bool InsertSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<bool> InsertSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
-            return objHomeDTO.InsertSubjectiveAssignmentQuestion(objSubjectiveQuestion);
+            return await objHomeDTO.InsertSubjectiveAssignmentQuestion(objSubjectiveQuestion);
         }
-        public bool UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<bool> UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
-            return objHomeDTO.UpdateSubjectiveAssignmentQuestion(objSubjectiveQuestion);
+            return await objHomeDTO.UpdateSubjectiveAssignmentQuestion(objSubjectiveQuestion);
         }
-        public bool DeleteSubjectiveAssignmentQuestion(long QuestionId)
+        public async Task<bool> DeleteSubjectiveAssignmentQuestion(long QuestionId)
         {
-            return objHomeDTO.DeleteSubjectiveAssignmentQuestion(QuestionId);
+            return await objHomeDTO.DeleteSubjectiveAssignmentQuestion(QuestionId);
         }
-        public bool DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
+        public async Task<bool> DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
         {
-            return objHomeDTO.DeleteSubjectiveAssignmentOfCourse(AssignmentId);
+            return await objHomeDTO.DeleteSubjectiveAssignmentOfCourse(AssignmentId);
         }
-        public List<SubjectiveQuestion> GetAllQuestionsOfSubjectiveAssignment(long AssignmentId)
+        public async Task<List<SubjectiveQuestion>> GetAllQuestionsOfSubjectiveAssignment(long AssignmentId)
         {
-            return objHomeDTO.GetAllQuestionsOfSubjectiveAssignment(AssignmentId);
+            return await objHomeDTO.GetAllQuestionsOfSubjectiveAssignment(AssignmentId);
         }
-        public List<AssignmentSubmissionResponseModal> GetAllSubmissionsOfAnAssignment(long AssignmentId)
+        public async Task<List<AssignmentSubmissionResponseModal>> GetAllSubmissionsOfAnAssignment(long AssignmentId)
         {
-            return objHomeDTO.GetAllSubmissionsOfAnAssignment(AssignmentId);
+            return await objHomeDTO.GetAllSubmissionsOfAnAssignment(AssignmentId);
         }
-        public List<AssignmentSubmissionResponseModal> GetAllTestSubmissions(long TestId)
+        public async Task<List<AssignmentSubmissionResponseModal>> GetAllTestSubmissions(long TestId)
         {
-            return objHomeDTO.GetAllTestSubmissions(TestId);
+            return await objHomeDTO.GetAllTestSubmissions(TestId);
         }
-        public List<CoursesJoinedResponseModal> GetAllStudentsJoinedToCourse(long CourseId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToCourse(long CourseId)
         {
-            return objHomeDTO.GetAllStudentsJoinedToCourse(CourseId);
+            return await objHomeDTO.GetAllStudentsJoinedToCourse(CourseId);
         }
-        public List<CoursesJoinedResponseModal> GetAllStudentsJoinedToInstructor(int InstructorId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId)
         {
-            return objHomeDTO.GetAllStudentsJoinedToInstructor(InstructorId);
+            return await objHomeDTO.GetAllStudentsJoinedToInstructor(InstructorId);
         }
-        public bool InsertNewCourseV2(InsertCourseV2Request objInsertCourseV2Request)
+        public  bool InsertNewCourseV2(InsertCourseV2Request objInsertCourseV2Request)
         {
-            return objHomeDTO.InsertNewCourseV2(objInsertCourseV2Request);
+            return  objHomeDTO.InsertNewCourseV2(objInsertCourseV2Request);
         }
-        public bool InsertNewAlertForInstructor(int InstructorId, string AlertMessage, int AlertTypeId, long StudentId, long? EffectiveId)
+        public async Task<bool> InsertNewAlertForInstructor(int InstructorId, string AlertMessage, int AlertTypeId, long StudentId, long? EffectiveId)
         {
-            return objHomeDTO.InsertNewAlertForInstructor(InstructorId, AlertMessage, AlertTypeId, StudentId, EffectiveId);
+            return await objHomeDTO.InsertNewAlertForInstructor(InstructorId, AlertMessage, AlertTypeId, StudentId, EffectiveId);
         }
-        public List<AlertDetailsModal> GetAllAlertOfInstructor(int InstructorId)
+        public async Task<List<AlertDetailsModal>> GetAllAlertOfInstructor(int InstructorId)
         {
-            return objHomeDTO.GetAllAlertOfInstructor(InstructorId);
+            return await objHomeDTO.GetAllAlertOfInstructor(InstructorId);
         }
         public bool GetInstructorIdByCourseId(ref int InstructorId, long CourseId)
         {
-            return objHomeDTO.GetInstructorIdByCourseId(ref InstructorId, CourseId);
+            return  objHomeDTO.GetInstructorIdByCourseId(ref InstructorId, CourseId);
         }
-        public bool GetInstructorIdByAssignmentId(ref int InstructorId, long AssignmentId)
+        public  bool GetInstructorIdByAssignmentId(ref int InstructorId, long AssignmentId)
         {
-            return objHomeDTO.GetInstructorIdByAssignmentId(ref InstructorId, AssignmentId);
+            return  objHomeDTO.GetInstructorIdByAssignmentId(ref InstructorId, AssignmentId);
         }
         public bool GetInstructorIdByTestId(ref int InstructorId, long TestId)
         {
-            return objHomeDTO.GetInstructorIdByTestId(ref InstructorId, TestId);
+            return  objHomeDTO.GetInstructorIdByTestId(ref InstructorId, TestId);
         }
-        public List<AssignmentDetailsModel> SearchForAssignmentOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignmentOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
         {
-            return objHomeDTO.SearchForAssignmentOfInstructor( SearchString,  MaxRowToReturn,  InstructorId);
+            return await objHomeDTO.SearchForAssignmentOfInstructor( SearchString,  MaxRowToReturn,  InstructorId);
         }
-        public List<TestDetailsModel> SearchForTestOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
+        public async Task<List<TestDetailsModel>> SearchForTestOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
         {
-            return objHomeDTO.SearchForTestOfInstructor(SearchString, MaxRowToReturn, InstructorId);
+            return await objHomeDTO.SearchForTestOfInstructor(SearchString, MaxRowToReturn, InstructorId);
         }
-        public List<CourseDetailsModel> SearchForCourseOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
+        public async Task<List<CourseDetailsModel>> SearchForCourseOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
         {
-            return objHomeDTO.SearchForCourseOfInstructor(SearchString, MaxRowToReturn, InstructorId);
+            return await objHomeDTO.SearchForCourseOfInstructor(SearchString, MaxRowToReturn, InstructorId);
         }
-        public InstructorSearchResponse GetInstructorSearchDetails(InstructorSearchRequest objInstructorSearchRequest)
+        public async Task<InstructorSearchResponse> GetInstructorSearchDetails(InstructorSearchRequest objInstructorSearchRequest)
         {
             InstructorSearchResponse objInstructorSearchResponse = null;
             try
             {
                 objInstructorSearchResponse = new InstructorSearchResponse();
-                objInstructorSearchResponse.m_lsAssignments = SearchForAssignmentOfInstructor(objInstructorSearchRequest.m_strSerachStraing,4,objInstructorSearchRequest.m_iInstructorId);
-                objInstructorSearchResponse.m_lsCourses = SearchForCourseOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
-                objInstructorSearchResponse.m_lsTestDetails = SearchForTestOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
+                objInstructorSearchResponse.m_lsAssignments = await SearchForAssignmentOfInstructor(objInstructorSearchRequest.m_strSerachStraing,4,objInstructorSearchRequest.m_iInstructorId);
+                objInstructorSearchResponse.m_lsCourses = await SearchForCourseOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
+                objInstructorSearchResponse.m_lsTestDetails = await SearchForTestOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
             }
             catch (Exception Ex)
             {

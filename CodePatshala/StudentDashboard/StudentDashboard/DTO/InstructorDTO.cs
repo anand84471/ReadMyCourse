@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.DTO
@@ -18,12 +19,12 @@ namespace StudentDashboard.DTO
         {
             objCPDataService = new CPDataService.CpDataServiceClient();
         }
-        public bool RegisterNewInstructor(InstructorRegisterModel objInstructorRegisterModal)
+        public async Task<bool> RegisterNewInstructor(InstructorRegisterModel objInstructorRegisterModal)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.RegisterNewInstructor(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName, objInstructorRegisterModal.m_strPhoneNo, objInstructorRegisterModal.m_strEmail, objInstructorRegisterModal.m_strPassword);
+                result = await objCPDataService.RegisterNewInstructorAsync(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName, objInstructorRegisterModal.m_strPhoneNo, objInstructorRegisterModal.m_strEmail, objInstructorRegisterModal.m_strPassword);
 
             }
             catch (Exception Ex)
@@ -32,13 +33,13 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool ValidateInstructorLoginDetails(InstructorRegisterModel objInstructorRegisterModel)
+        public async Task<bool> ValidateInstructorLoginDetails(InstructorRegisterModel objInstructorRegisterModel)
         {
             bool result = false;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.ValidateInstructorLoginDetails(objInstructorRegisterModel.m_strEmail, objInstructorRegisterModel.m_strPassword);
+                ds = await objCPDataService.ValidateInstructorLoginDetailsAsync(objInstructorRegisterModel.m_strEmail, objInstructorRegisterModel.m_strPassword);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     List<InstructorRegisterModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
@@ -63,13 +64,13 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public InstructorRegisterModel GetInstructorPostLoginDetails(int Id)
+        public async Task<InstructorRegisterModel> GetInstructorPostLoginDetails(int Id)
         {
             InstructorRegisterModel objResult = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetInstructorPostLoginDetails(Id);
+                ds = await objCPDataService.GetInstructorPostLoginDetailsAsync(Id);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     List<InstructorRegisterModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
@@ -96,14 +97,13 @@ namespace StudentDashboard.DTO
             }
             return objResult;
         }
-        public InstructorRegisterModel GetInstructorDetails(int Id)
+        public async Task<InstructorRegisterModel> GetInstructorDetails(int Id)
         {
-            bool result = false;
             InstructorRegisterModel objInstructorRegisterModel = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetInstructorDetails( Id);
+                ds = await objCPDataService.GetInstructorDetailsAsync( Id);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     List<InstructorRegisterModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
@@ -125,7 +125,7 @@ namespace StudentDashboard.DTO
                     if (lsRegisterModel.Count == 1)
                     {
                         objInstructorRegisterModel = lsRegisterModel[0];
-                        result = true;
+                        
                     }
                 }
             }
@@ -138,12 +138,12 @@ namespace StudentDashboard.DTO
             }
             return objInstructorRegisterModel;
         }
-        public bool UpdateInstructorDetails(InstructorRegisterModel objInstructorRegisterModal)
+        public async Task<bool> UpdateInstructorDetails(InstructorRegisterModel objInstructorRegisterModal)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateInstructorDetails(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName,
+                result =await objCPDataService.UpdateInstructorDetailsAsync(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName,
                                                       objInstructorRegisterModal.m_strPhoneNo,objInstructorRegisterModal.m_strGender,objInstructorRegisterModal.m_strAddressLine1,
                                                       objInstructorRegisterModal.m_strAddressLine2,objInstructorRegisterModal.m_iCityid,
                                                       objInstructorRegisterModal.m_iStateId,objInstructorRegisterModal.m_strPinCode
@@ -158,12 +158,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdatePassword(InstructorRegisterModel objInstructorRegisterModel)
+        public async Task<bool> UpdatePassword(InstructorRegisterModel objInstructorRegisterModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateInstructorPassword(objInstructorRegisterModel.m_strPassword, objInstructorRegisterModel.m_iInstructorId);
+                result = await objCPDataService.UpdateInstructorPasswordAsync(objInstructorRegisterModel.m_strPassword, objInstructorRegisterModel.m_iInstructorId);
             }
             catch(Exception Ex)
             {
@@ -174,12 +174,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool AddMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> AddMcqTestQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewMcqTestQuestion(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
+                result = await objCPDataService.InsertNewMcqTestQuestionAsync(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
                     objMcqQuestion.m_strOption3, objMcqQuestion.m_strOption4, objMcqQuestion.m_iCorrectOption, objMcqQuestion.m_iTimeInSeconds, objMcqQuestion.m_iMarks);
             }
             catch (Exception Ex)

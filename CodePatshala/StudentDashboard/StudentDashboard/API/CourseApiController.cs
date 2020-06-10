@@ -1,6 +1,7 @@
 ﻿using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Security;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
@@ -9,11 +10,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace StudentDashboard.API
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/v1/Course")]
     public class CourseApiController : ApiController
     {
@@ -22,12 +24,12 @@ namespace StudentDashboard.API
         StringBuilder m_strLogMessage = new StringBuilder();
         [Route("FetchAboutCourse")]
         [HttpPost]
-        public AboutCourseResponse AboutCourse(int id)
+        public async Task<AboutCourseResponse> AboutCourse(int id)
         {
             AboutCourseResponse objResonse = new AboutCourseResponse();
             try
             {
-                objResonse=objHomeService.GetAboutCourse(id);
+                objResonse=await objHomeService.GetAboutCourse(id);
             }
             catch(Exception Ex)
             {
@@ -40,12 +42,12 @@ namespace StudentDashboard.API
         }
         [Route("FetchCourseIndexDetails")]
         [HttpPost]
-        public IndexModel GetCourseIndexDetails(int Id)
+        public async Task<IndexModel> GetCourseIndexDetails(int Id)
         {
             IndexModel objResponse = new IndexModel();
             try
             {
-                objResponse = objHomeService.GetIndexDetails(Id);
+                objResponse = await objHomeService.GetIndexDetails(Id);
                 if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -69,12 +71,12 @@ namespace StudentDashboard.API
         }
         [Route("FetchAssignmentDetails")]
         [HttpPost]
-        public AssignmentModel GetAssignmentDetails(long AssignmentId)
+        public async Task<AssignmentModel> GetAssignmentDetails(long AssignmentId)
         {
             AssignmentModel objResponse=null;
             try
             {
-                objResponse = objHomeService.GetAssignmentDetails(AssignmentId);
+                objResponse = await objHomeService.GetAssignmentDetails(AssignmentId);
                 if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -98,12 +100,12 @@ namespace StudentDashboard.API
         }
         [Route("FetchTestDetails")]
         [HttpPost]
-        public TestModel GetTestDetails(long id)
+        public async Task<TestModel> GetTestDetails(long id)
         {
             TestModel objResponse = null;
             try
             {
-                objResponse = objHomeService.GetFullMcqTestDetails(id);
+                objResponse = await objHomeService.GetFullMcqTestDetails(id);
                 if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -183,6 +185,7 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [JwtAuthentication]
         [Route("JoinCourse")]
         [HttpPost]
         public APIDefaultResponse JoinCourse(long CourseId, long StudentId)

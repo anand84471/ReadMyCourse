@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Security.Instrcutor;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
@@ -7,34 +8,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
 namespace StudentDashboard.Controllers
 {
-    //[Authorize]
+    //[RequireHttps]
+    [InstructorAuthenticationFilter]
     public class InstructorController : Controller
     {
         StringBuilder m_strLogMessage=new StringBuilder();
         InstructorService objInstructorService = new InstructorService();
+      
         // GET: Instructor
         [AllowAnonymous]
         public ActionResult Index()
         {
            return View();
         }
+        
         [HttpGet]
         public ActionResult EditAccount()
         {
             return View();
         }
-        public PartialViewResult Home()
+        [AsyncTimeout(150)]
+        public async Task<PartialViewResult> Home()
         {
             try
             {
                 int Id = (int)Session["instructor_id"];
-                InstructorRegisterModel objInstructorRegisterModel = objInstructorService.GetInstructorPostLoginDetails(Id);
+                InstructorRegisterModel objInstructorRegisterModel = await objInstructorService.GetInstructorPostLoginDetails(Id);
                 if(objInstructorRegisterModel!=null)
                 {
                     return PartialView(objInstructorRegisterModel);
@@ -65,13 +71,13 @@ namespace StudentDashboard.Controllers
         {
             return PartialView();
         }
-
+        [AsyncTimeout(150)]
         [HttpGet]
-        public PartialViewResult Account()
+        public async Task<PartialViewResult> Account()
         {
 
             int Id = (int)Session["instructor_id"];
-            InstructorRegisterModel objModel = objInstructorService.GetInstructorDetails(Id);
+            InstructorRegisterModel objModel = await objInstructorService.GetInstructorDetails(Id);
             if(objModel==null)
             {
                 return PartialView("Error");
@@ -79,7 +85,8 @@ namespace StudentDashboard.Controllers
             
             return PartialView(objModel);
         }
-       
+        [AsyncTimeout(150)]
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult RegistrationSuccessful(string UserId)
         {
@@ -87,9 +94,10 @@ namespace StudentDashboard.Controllers
             ViewBag.IsRegistered = true;
             return View();
         }
+        [AsyncTimeout(150)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateDetails(FormCollection collection)
+        public async Task<ActionResult> UpdateDetails(FormCollection collection)
         {
             string strCurrentMethodName = "Register";
             try
@@ -105,7 +113,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strGender = collection["gender"];
                 objRegiserModel.m_strPinCode = collection["pinCode"];
                 objRegiserModel.m_iInstructorId = (int)Session["instructor_id"];
-                if (objInstructorService.UpdateInstructorDetails(objRegiserModel))
+                if (await objInstructorService.UpdateInstructorDetails(objRegiserModel))
                 {
                     ViewBag.IsUpdated = true;
                     return RedirectToAction("Account");
@@ -125,9 +133,10 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
         }
+        [AsyncTimeout(150)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChnagePassword(FormCollection collection)
+        public async Task<ActionResult> ChnagePassword(FormCollection collection)
         {
             string strCurrentMethodName = "ChnagePassword";
             try
@@ -143,7 +152,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strGender = collection["gender"];
                 objRegiserModel.m_strPinCode = collection["pinCode"];
                 objRegiserModel.m_iInstructorId = (int)Session["instructor_id"];
-                if (objInstructorService.UpdateInstructorDetails(objRegiserModel))
+                if (await objInstructorService.UpdateInstructorDetails(objRegiserModel))
                 {
                     ViewBag.IsUpdated = true;
                     return RedirectToAction("Account");
@@ -163,9 +172,8 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(FormCollection collection)
+        [AsyncTimeout(150)][AllowAnonymous][HttpPost][ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(FormCollection collection)
         {
             string strCurrentMethodName = "Register";
             try
@@ -176,7 +184,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strPassword = collection["password"];
                 objRegiserModel.m_strEmail = collection["email"];
                 objRegiserModel.m_strPhoneNo = collection["phoneNo"];
-                if (objInstructorService.RegisterNewUser(objRegiserModel))
+                if (await objInstructorService.RegisterNewUser(objRegiserModel))
                 {
                     ViewBag.IsRegistered = true;
                     Response.Redirect("./RegistrationSuccessful?UserId="+ objRegiserModel.m_strEmail);
@@ -196,10 +204,11 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
         }
+        [AsyncTimeout(150)]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult ValidateLogin(FormCollection collection)
+        public async Task<ActionResult> ValidateLogin(FormCollection collection)
         {
             string strCurrentMethodName = "Register";
             string ViewName = "";
@@ -213,8 +222,9 @@ namespace StudentDashboard.Controllers
                     objInstructorRegiserModel.m_bIsRememberMe = collection["remeberMe"].Equals("true") ? true : false;
                 }
 
-                if (objInstructorService.ValidateLoginDetails(objInstructorRegiserModel))
+                if (await objInstructorService.ValidateLoginDetails(objInstructorRegiserModel))
                 {
+                    //objJWTTokenIssuer.GenerateToken(objInstructorRegiserModel.m_iInstructorId.ToString());
                     ViewName = "Home";
                     ViewBag.InstructorUserName = objInstructorRegiserModel.m_strEmail;
                     ViewBag.IsLoggedIn = true;
@@ -237,6 +247,7 @@ namespace StudentDashboard.Controllers
             }
             return View(ViewName);
         }
+       
         [HttpGet]
         public PartialViewResult CreateNewCourse()
         {
@@ -318,87 +329,276 @@ namespace StudentDashboard.Controllers
         [HttpGet]
         public PartialViewResult Courses()
         {
-            return PartialView();
+            string strCurrentMethodName = "Courses";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult Assignments()
         {
-            return PartialView();
+            string strCurrentMethodName = "Assignments";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult Tests()
         {
-            return PartialView();
+            string strCurrentMethodName = "Tests";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult Activity()
         {
-            return PartialView();
+            string strCurrentMethodName = "Activity";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+            
         }
         [HttpGet]
         public PartialViewResult ViewCourse(int id)
         {
-            Session["course_id"] = id;
-            return PartialView();
+            string strCurrentMethodName = "ViewCourse";
+            try
+            {
+                Session["course_id"] = id;
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult PreviewCourse(int id)
         {
-            return PartialView();
+            string strCurrentMethodName = "PreviewCourse";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult ViewAssignment(long id)
         {
-            ViewBag.AssignmnetId = id;
-            return PartialView();
+            string strCurrentMethodName = "ViewAssignment";
+            try
+            {
+                ViewBag.AssignmnetId = id;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult ViewTest(long id)
         {
-            ViewBag.TestId = id;
-            return PartialView();
+            string strCurrentMethodName = "ViewTest";
+            try
+            {
+                ViewBag.TestId = id;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult AssignmentSubmissions(long id)
         {
-            ViewBag.TestId = id;
-            return PartialView();
+            string strCurrentMethodName = "AssignmentSubmissions";
+            try
+            {
+                ViewBag.TestId = id;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult TestSubmissions(long id)
         {
-            ViewBag.id = id;
-            return PartialView();
+            string strCurrentMethodName = "TestSubmissions";
+            try
+            {
+                ViewBag.id = id;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+          
         }
         [HttpGet]
         public PartialViewResult StudentsJoined()
         {
-            return PartialView();
+            string strCurrentMethodName = "StudentsJoined";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult AssignmentResponse(long id,long AssId)
         {
-            ViewBag.AssignmentId = AssId;
-            ViewBag.id = id;
-            return PartialView();
+            string strCurrentMethodName = "StudentsJoined";
+            try
+            {
+                ViewBag.AssignmentId = AssId;
+                ViewBag.id = id;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult TestResponse(long id,long TestId)
         {
-            ViewBag.id = id;
-            ViewBag.TestId = TestId;
-            return PartialView();
+            string strCurrentMethodName = "StudentsJoined";
+            try
+            {
+                ViewBag.id = id;
+                ViewBag.TestId = TestId;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult CreateInterativeCourse()
         {
-            return PartialView();
+            string strCurrentMethodName = "CreateInterativeCourse";
+            try
+            {
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+           
         }
         [HttpGet]
         public PartialViewResult Search(string q)
         {
-            ViewBag.q = q;
-            return PartialView();
+            string strCurrentMethodName = "Search";
+            try
+            {
+                ViewBag.q = q;
+                return PartialView();
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
     }
 }

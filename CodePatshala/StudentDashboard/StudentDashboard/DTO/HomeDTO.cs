@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.DTO
@@ -21,12 +22,12 @@ namespace StudentDashboard.DTO
         {
             objCPDataService = new CPDataService.CpDataServiceClient();
         }
-        public bool RegisterNewUser(StaeModel objRegisterModel)
+        public async Task<bool> RegisterNewUser(StaeModel objRegisterModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.RegisterNewUser(objRegisterModel.strFisrtName, objRegisterModel.strLastName, objRegisterModel.strPhoneNo, objRegisterModel.strEmail, objRegisterModel.strPassword);
+                result =await objCPDataService.RegisterNewUserAsync(objRegisterModel.strFisrtName, objRegisterModel.strLastName, objRegisterModel.strPhoneNo, objRegisterModel.strEmail, objRegisterModel.strPassword);
 
             }
             catch(Exception Ex)
@@ -38,14 +39,14 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool ValidateLogineDetails(StaeModel objRegisterModel)
+        public async Task<bool> ValidateLogineDetails(StaeModel objRegisterModel)
         {
             bool result = false;
             try
             {
                 DataSet ds = new DataSet();
                
-                ds = objCPDataService.ValidateLoginDetails(objRegisterModel.strEmail, objRegisterModel.strPassword);
+                ds = await objCPDataService.ValidateLoginDetailsAsync(objRegisterModel.strEmail, objRegisterModel.strPassword);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     List<StaeModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
@@ -71,23 +72,23 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool GetStudentDetails(int StudentId)
-        {
-            bool result = false;
-            try
-            {
-                //    result = objCPDataService.RegisterNewUser(objRegisterModel.strFisrtName, objRegisterModel.strLastName, objRegisterModel.strPhoneNo, objRegisterModel.strEmail, objRegisterModel.strPassword);
-                //}
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return result;
-        }
+        //public async Task<bool> GetStudentDetails(int StudentId)
+        //{
+        //    bool result = false;
+        //    try
+        //    {
+        //        //    result = objCPDataService.RegisterNewUser(objRegisterModel.strFisrtName, objRegisterModel.strLastName, objRegisterModel.strPhoneNo, objRegisterModel.strEmail, objRegisterModel.strPassword);
+        //        //}
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return result;
+        //}
         public bool InsertNewAssignment(AssignmentModel objAssignmentModel)
         {
             bool result = false;
@@ -148,12 +149,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewTopic(TopicModel objTopicModel )
+        public async Task<bool> InsertNewTopic(TopicModel objTopicModel )
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewTopic(objTopicModel.m_strTopicName, objTopicModel.m_strTopicDescription, 
+                result = await objCPDataService.InsertNewTopicAsync(objTopicModel.m_strTopicName, objTopicModel.m_strTopicDescription, 
                                      objTopicModel.m_strFilePath, objTopicModel.m_iFileUploadTypeId,objTopicModel.m_llIndexId);
             }
             catch (Exception Ex)
@@ -187,12 +188,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewMcqAssignment(objMcqQuestion.m_llAssignmentId, objMcqQuestion.m_strQuestionStatement,
+                result =await objCPDataService.InsertNewMcqAssignmentAsync(objMcqQuestion.m_llAssignmentId, objMcqQuestion.m_strQuestionStatement,
                                           objMcqQuestion.m_strOption1,objMcqQuestion.m_strOption2,objMcqQuestion.m_strOption3,objMcqQuestion.m_strOption4,
                                           objMcqQuestion.m_iCorrectOption);
             }
@@ -205,12 +206,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> InsertNewMcqTestQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewMcqTestQuestion(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement,
+                result = await objCPDataService.InsertNewMcqTestQuestionAsync(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement,
                                           objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2, objMcqQuestion.m_strOption3, objMcqQuestion.m_strOption4,
                                           objMcqQuestion.m_iCorrectOption,objMcqQuestion.m_iTimeInSeconds,objMcqQuestion.m_iMarks);
             }
@@ -223,12 +224,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertAssignmentIdToIndex(long AssignmentId,long IndexId)
+        public async Task<bool> InsertAssignmentIdToIndex(long AssignmentId,long IndexId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertAssignmentIdToIndex(AssignmentId,IndexId);
+                result =await objCPDataService.InsertAssignmentIdToIndexAsync(AssignmentId,IndexId);
             }
             catch (Exception Ex)
             {
@@ -239,12 +240,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertTestIdToIndex(long Test, long IndexId)
+        public async Task<bool> InsertTestIdToIndex(long Test, long IndexId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertTestIdToIndex(Test, IndexId);
+                result = await objCPDataService.InsertTestIdToIndexAsync(Test, IndexId);
             }
             catch (Exception Ex)
             {
@@ -256,16 +257,16 @@ namespace StudentDashboard.DTO
             return result;
         }
 
-        public bool GetAllCourseDetailsForInstructor(long InstructorId, ref List<CourseDetailsModel> lsCourseModel)
+        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(long InstructorId)
         {
-            bool result = false;
+            List<CourseDetailsModel> result =null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllCourse(InstructorId);
+                ds = await objCPDataService.GetAllCourseAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
-                    lsCourseModel = ds.Tables[0].AsEnumerable().Select(
+                    result = ds.Tables[0].AsEnumerable().Select(
                      dataRow => new CourseDetailsModel(
                          dataRow.Field<long>("COURSE_ID"),
                          dataRow.Field<string>("COURSE_NAME"),
@@ -285,13 +286,13 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<SubjectiveQuestion> GetAllQuestionsOfSubjectiveAssignment(long AssignmentId)
+        public async Task<List<SubjectiveQuestion>> GetAllQuestionsOfSubjectiveAssignment(long AssignmentId)
         {
             List<SubjectiveQuestion> lsSubjectiveQuestion = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllQuestionsOfSubjectiveAssignment(AssignmentId);
+                ds = await objCPDataService.GetAllQuestionsOfSubjectiveAssignmentAsync(AssignmentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsSubjectiveQuestion = ds.Tables[0].AsEnumerable().Select(
@@ -330,12 +331,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public TestModel GetTestDetails(long TestId)
+        public async Task<TestModel> GetTestDetails(long TestId)
         {
             TestModel objTestModel = null;
             try
             {
-                DataSet ds = objCPDataService.GetMcqTestDetails(TestId);
+                DataSet ds = await objCPDataService.GetMcqTestDetailsAsync(TestId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     objTestModel = ds.Tables[0].AsEnumerable().Select(
@@ -361,12 +362,12 @@ namespace StudentDashboard.DTO
             }
             return objTestModel;
         }
-        public List<McqQuestion> GetMcqTestQuestions(long TestId)
+        public async Task<List<McqQuestion>> GetMcqTestQuestions(long TestId)
         {
             List<McqQuestion> lsMcqQuestion = null;
             try
             {
-                DataSet ds = objCPDataService.GetMcqtestQuestionDetails(TestId);
+                DataSet ds = await objCPDataService.GetMcqtestQuestionDetailsAsync(TestId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsMcqQuestion = ds.Tables[0].AsEnumerable().Select(
@@ -396,13 +397,13 @@ namespace StudentDashboard.DTO
             return lsMcqQuestion;
         }
 
-        public List<CourseIndexDetails> GetCourseIndexDetails(long CourseId)
+        public async Task<List<CourseIndexDetails>> GetCourseIndexDetails(long CourseId)
         {
             List<CourseIndexDetails> lsIndexDetails = new List<CourseIndexDetails>();
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetIndexDetailsOfCourse(CourseId);
+                ds =await objCPDataService.GetIndexDetailsOfCourseAsync(CourseId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsIndexDetails = ds.Tables[0].AsEnumerable().Select(
@@ -431,14 +432,13 @@ namespace StudentDashboard.DTO
             }
             return lsIndexDetails;
         }
-        public GetCourseDetailsApiResponse GetCourseDetails(long CourseId)
+        public async Task<GetCourseDetailsApiResponse> GetCourseDetails(long CourseId)
         {
             List<GetCourseDetailsApiResponse> lsGetCourseDetailsApiResponse = null;
             GetCourseDetailsApiResponse objGetCourseDetailsApiResponse = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetCourseDetails(CourseId);
+                DataSet ds = await objCPDataService.GetCourseDetailsAsync(CourseId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsGetCourseDetailsApiResponse = ds.Tables[0].AsEnumerable().Select(
@@ -466,12 +466,12 @@ namespace StudentDashboard.DTO
 
 
        
-        public bool UpdateTestDetails(TestModel objTestModel)
+        public async Task<bool> UpdateTestDetails(TestModel objTestModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateTestDetails(objTestModel.m_llTestId,objTestModel.m_strTestName,objTestModel.m_strTestDescription,
+                result =await objCPDataService.UpdateTestDetailsAsync(objTestModel.m_llTestId,objTestModel.m_strTestName,objTestModel.m_strTestDescription,
                                                            objTestModel.m_strFilePath,(byte)objTestModel.m_iFileTypeId);
             }
             catch (Exception Ex)
@@ -483,12 +483,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateAssignmentDetails(AssignmentModel objAssignmentModel)
+        public async Task<bool> UpdateAssignmentDetails(AssignmentModel objAssignmentModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateAssignmentDetails(objAssignmentModel.m_llAssignemntId,objAssignmentModel.m_strAssignmentName,
+                result = await objCPDataService.UpdateAssignmentDetailsAsync(objAssignmentModel.m_llAssignemntId,objAssignmentModel.m_strAssignmentName,
                                           objAssignmentModel.m_strAssignmentDescription,objAssignmentModel.m_strFileUploadPath,(byte)objAssignmentModel.m_iFileUploadTypeId);
             }
             catch (Exception Ex)
@@ -500,12 +500,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateIndexTopicDetails(TopicModel objTopicModel)
+        public async Task<bool> UpdateIndexTopicDetails(TopicModel objTopicModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateIndexTopicDetails(objTopicModel.m_llTopicId,objTopicModel.m_strTopicName,objTopicModel.m_strTopicDescription,
+                result = await objCPDataService.UpdateIndexTopicDetailsAsync(objTopicModel.m_llTopicId,objTopicModel.m_strTopicName,objTopicModel.m_strTopicDescription,
                                                                   objTopicModel.m_strFilePath,(byte)objTopicModel.m_iFileUploadTypeId);
             }
             catch (Exception Ex)
@@ -517,12 +517,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateCourseIndexDetails(IndexModel objIndexModel)
+        public async Task<bool> UpdateCourseIndexDetails(IndexModel objIndexModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateCourseIndexDetails(objIndexModel.m_llIndexId,objIndexModel.m_strIndexName,objIndexModel.m_strIndexDescription);
+                result = await objCPDataService.UpdateCourseIndexDetailsAsync(objIndexModel.m_llIndexId,objIndexModel.m_strIndexName,objIndexModel.m_strIndexDescription);
             }
             catch (Exception Ex)
             {
@@ -533,12 +533,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateCourseDetails(CourseModel objCourseModel)
+        public async Task<bool> UpdateCourseDetails(CourseModel objCourseModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateCourseDetails(objCourseModel.m_llCourseId,objCourseModel.m_strCourseDescription);
+                result = await objCPDataService.UpdateCourseDetailsAsync(objCourseModel.m_llCourseId,objCourseModel.m_strCourseDescription);
             }
             catch (Exception Ex)
             {
@@ -549,12 +549,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool ActivateCourse(long CourseId)
+        public async Task<bool> ActivateCourse(long CourseId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.ActivateCourse(CourseId);
+                result = await objCPDataService.ActivateCourseAsync(CourseId);
             }
             catch (Exception Ex)
             {
@@ -565,12 +565,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteCourse(long CourseId)
+        public async Task<bool> DeleteCourse(long CourseId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteCourse(CourseId);
+                result =await objCPDataService.DeleteCourseAsync(CourseId);
             }
             catch (Exception Ex)
             {
@@ -581,12 +581,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertActivityForInstructor(int InstructorId, string ActivityMessage)
+        public async Task<bool> InsertActivityForInstructor(int InstructorId, string ActivityMessage)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertActivityForInstructor(InstructorId, ActivityMessage);
+                result = await objCPDataService.InsertActivityForInstructorAsync(InstructorId, ActivityMessage);
             }
             catch (Exception Ex)
             {
@@ -641,13 +641,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<AssignmentDetailsModel> GetAssignmentForInstructor(int InstructorId)
+        public async Task<List<AssignmentDetailsModel>> GetAssignmentForInstructor(int InstructorId)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetInstructorAssignmentDetails(InstructorId);
+                DataSet ds = await objCPDataService.GetInstructorAssignmentDetailsAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -672,13 +671,13 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentDetailsModel;
         }
-        public List<TestDetailsModel> GetInstructorTestDetails(int InstructorId)
+        public async Task<List<TestDetailsModel>> GetInstructorTestDetails(int InstructorId)
         {
             List<TestDetailsModel> lsTestDetailsModel = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetInstructorTestDetails(InstructorId);
+                ds =await objCPDataService.GetInstructorTestDetailsAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTestDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -702,13 +701,13 @@ namespace StudentDashboard.DTO
             }
             return lsTestDetailsModel;
         }
-        public List<TopicModel> GetIndexTopicDetails(long TopicId)
+        public async Task<List<TopicModel>> GetIndexTopicDetails(long TopicId)
         {
             List<TopicModel> lsTopicModel = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetIndexTopicDetails(TopicId);
+                ds = await objCPDataService.GetIndexTopicDetailsAsync(TopicId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTopicModel = ds.Tables[0].AsEnumerable().Select(
@@ -731,14 +730,13 @@ namespace StudentDashboard.DTO
             }
             return lsTopicModel;
         }
-        public IndexModel  GetIndexDetails(long TopicId)
+        public async Task<IndexModel>  GetIndexDetails(long TopicId)
         {
             IndexModel objIndexModel = null;
             try
             {
                 List<IndexModel> lsIndexModel=null;
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetIndexDetails(TopicId);
+                DataSet ds = await objCPDataService.GetIndexDetailsAsync(TopicId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsIndexModel = ds.Tables[0].AsEnumerable().Select(
@@ -764,14 +762,14 @@ namespace StudentDashboard.DTO
             }
             return objIndexModel;
         }
-        public AssignmentModel GetAssignmentDetails(long AssignmentId)
+        public async Task<AssignmentModel> GetAssignmentDetails(long AssignmentId)
         {
             AssignmentModel objAssignmentModel = null;
             try
             {
                 List<AssignmentModel> lsAssignmentModel = null;
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetAssignmentDetails(AssignmentId);
+                ds =await objCPDataService.GetAssignmentDetailsAsync(AssignmentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentModel = ds.Tables[0].AsEnumerable().Select(
@@ -799,13 +797,12 @@ namespace StudentDashboard.DTO
         }
 
 
-        public List<ActivityModal> GetInstructorActivityDetails(int InstructorId)
+        public async Task< List<ActivityModal>> GetInstructorActivityDetails(int InstructorId)
         {
             List<ActivityModal> lsActivityModal = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetInstructorActivityDetails(InstructorId);
+                DataSet ds = await objCPDataService.GetInstructorActivityDetailsAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsActivityModal = ds.Tables[0].AsEnumerable().Select(
@@ -826,12 +823,12 @@ namespace StudentDashboard.DTO
             }
             return lsActivityModal;
         }
-        public List<McqQuestion> GetMcqQuestionDetails(long AssignmentId)
+        public async Task<List<McqQuestion>> GetMcqQuestionDetails(long AssignmentId)
         {
             List<McqQuestion> lsMcqQuestions = null;
             try
             {
-                DataSet ds = objCPDataService.GetMcqAssignmentDetails(AssignmentId);
+                DataSet ds = await objCPDataService.GetMcqAssignmentDetailsAsync(AssignmentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsMcqQuestions = ds.Tables[0].AsEnumerable().Select(
@@ -857,12 +854,12 @@ namespace StudentDashboard.DTO
             }
             return lsMcqQuestions;
         }
-        public bool DeleteTest(long TestId)
+        public async Task<bool> DeleteTest(long TestId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteTest(TestId);
+                result = await objCPDataService.DeleteTestAsync(TestId);
             }
             catch (Exception Ex)
             {
@@ -873,12 +870,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteTestOfCourse(long TestId)
+        public async Task<bool> DeleteTestOfCourse(long TestId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteTestOfCourse(TestId);
+                result = await objCPDataService.DeleteTestOfCourseAsync(TestId);
             }
             catch (Exception Ex)
             {
@@ -889,12 +886,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool ActivateAssignment(long Assignmentid)
+        public async Task<bool> ActivateAssignment(long Assignmentid)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.ActivateAssignment(Assignmentid);
+                result =await objCPDataService.ActivateAssignmentAsync(Assignmentid);
             }
             catch (Exception Ex)
             {
@@ -905,12 +902,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteAssignment(long AssignmentId)
+        public async Task<bool> DeleteAssignment(long AssignmentId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteAssignmentOfCourse(AssignmentId);
+                result = await objCPDataService.DeleteAssignmentOfCourseAsync(AssignmentId);
             }
             catch (Exception Ex)
             {
@@ -921,12 +918,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteIndependentAssignment(long AssignmentId)
+        public async Task<bool> DeleteIndependentAssignment(long AssignmentId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteInpependentAssignment(AssignmentId);
+                result = await objCPDataService.DeleteInpependentAssignmentAsync(AssignmentId);
             }
             catch (Exception Ex)
             {
@@ -937,12 +934,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteIndependentTest(long TestId)
+        public async Task<bool> DeleteIndependentTest(long TestId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteIndepenetTest(TestId);
+                result = await objCPDataService.DeleteIndepenetTestAsync(TestId);
             }
             catch (Exception Ex)
             {
@@ -954,12 +951,12 @@ namespace StudentDashboard.DTO
             return result;
         }
 
-        public bool ActivateTest(long TestId)
+        public async Task<bool> ActivateTest(long TestId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.ActivateTest(TestId);
+                result = await objCPDataService.ActivateTestAsync(TestId);
             }
             catch (Exception Ex)
             {
@@ -970,12 +967,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InserContatUsRequest(ContactUsApiRequest objContactUsApiRequest)
+        public async Task<bool> InserContatUsRequest(ContactUsApiRequest objContactUsApiRequest)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertContactFormDetails(objContactUsApiRequest.m_strName,objContactUsApiRequest.m_strEmail,
+                result = await objCPDataService.InsertContactFormDetailsAsync(objContactUsApiRequest.m_strName,objContactUsApiRequest.m_strEmail,
                                         objContactUsApiRequest.m_strPhoneNo,objContactUsApiRequest.m_strSubject,objContactUsApiRequest.m_strMessage);
             }
             catch (Exception Ex)
@@ -987,12 +984,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteMcqAssignmentQuestion(long QuestionId)
+        public async Task<bool> DeleteMcqAssignmentQuestion(long QuestionId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteMcqQuestionOfAssignment(QuestionId);
+                result = await objCPDataService.DeleteMcqQuestionOfAssignmentAsync(QuestionId);
             }
             catch (Exception Ex)
             {
@@ -1003,12 +1000,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateMcqAssignmentQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> UpdateMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateMcqQuestionOfAssignment(objMcqQuestion.m_llQuestionId,objMcqQuestion.m_strQuestionStatement,
+                result = await objCPDataService.UpdateMcqQuestionOfAssignmentAsync(objMcqQuestion.m_llQuestionId,objMcqQuestion.m_strQuestionStatement,
                                    objMcqQuestion.m_strOption1,objMcqQuestion.m_strOption2,objMcqQuestion.m_strOption3,objMcqQuestion.m_strOption4,(byte)objMcqQuestion.m_iCorrectOption);
             }
             catch (Exception Ex)
@@ -1020,12 +1017,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteIndexTopic(long TopicId)
+        public async Task<bool> DeleteIndexTopic(long TopicId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteIndexTopic(TopicId);
+                result =await objCPDataService.DeleteIndexTopicAsync(TopicId);
             }
             catch (Exception Ex)
             {
@@ -1036,12 +1033,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateIndexTopic(TopicModel objTopicModel)
+        public async Task<bool> UpdateIndexTopic(TopicModel objTopicModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateIndexTopic(objTopicModel.m_llTopicId,objTopicModel.m_strTopicName,objTopicModel.m_strTopicDescription,
+                result =await objCPDataService.UpdateIndexTopicAsync(objTopicModel.m_llTopicId,objTopicModel.m_strTopicName,objTopicModel.m_strTopicDescription,
                                 objTopicModel.m_strFilePath,objTopicModel.m_iFileUploadTypeIdNew);
             }
             catch (Exception Ex)
@@ -1053,12 +1050,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteCourseIndex(long IndexId)
+        public async Task<bool> DeleteCourseIndex(long IndexId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteIndex(IndexId);
+                result = await objCPDataService.DeleteIndexAsync(IndexId);
             }
             catch (Exception Ex)
             {
@@ -1069,12 +1066,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateCourseIndex(IndexModel objIndexModel)
+        public async Task<bool> UpdateCourseIndex(IndexModel objIndexModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateCourseIndexDetails(objIndexModel.m_llIndexId,objIndexModel.m_strIndexName,objIndexModel.m_strIndexDescription);
+                result = await objCPDataService.UpdateCourseIndexDetailsAsync(objIndexModel.m_llIndexId,objIndexModel.m_strIndexName,objIndexModel.m_strIndexDescription);
             }
             catch (Exception Ex)
             {
@@ -1085,12 +1082,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateFullCourseDetails(CourseDetailsModel objCourse)
+        public async Task<bool> UpdateFullCourseDetails(CourseDetailsModel objCourse)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateFullCourseDetails(objCourse.m_llCourseid,objCourse.m_strCourseName,objCourse.m_strCourseDescription);
+                result = await objCPDataService.UpdateFullCourseDetailsAsync(objCourse.m_llCourseid,objCourse.m_strCourseName,objCourse.m_strCourseDescription);
             }
             catch (Exception Ex)
             {
@@ -1101,12 +1098,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateTestDetails(TestDetailsModel objTestDetails)
+        public async Task<bool> UpdateTestDetails(TestDetailsModel objTestDetails)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateTestDetails(objTestDetails.m_llTestId,objTestDetails.m_strTestName,objTestDetails.m_strTestDescription,"",0);
+                result = await objCPDataService.UpdateTestDetailsAsync(objTestDetails.m_llTestId,objTestDetails.m_strTestName,objTestDetails.m_strTestDescription,"",0);
             }
             catch (Exception Ex)
             {
@@ -1117,12 +1114,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool AddMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> AddMcqTestQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewMcqTestQuestion(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
+                result =await  objCPDataService.InsertNewMcqTestQuestionAsync(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
                     objMcqQuestion.m_strOption3, objMcqQuestion.m_strOption4, objMcqQuestion.m_iCorrectOption, objMcqQuestion.m_iTimeInSeconds, objMcqQuestion.m_iMarks);
             }
             catch (Exception Ex)
@@ -1134,12 +1131,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateMcqTestQuestion(McqQuestion objMcqQuestion)
+        public async Task<bool> UpdateMcqTestQuestion(McqQuestion objMcqQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateMcqQuestionDetails(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
+                result = await objCPDataService.UpdateMcqQuestionDetailsAsync(objMcqQuestion.m_llTestId, objMcqQuestion.m_strQuestionStatement, objMcqQuestion.m_strOption1, objMcqQuestion.m_strOption2,
                     objMcqQuestion.m_strOption3, objMcqQuestion.m_strOption4, (byte)objMcqQuestion.m_iCorrectOption, objMcqQuestion.m_iTimeInSeconds, objMcqQuestion.m_iMarks);
             }
             catch (Exception Ex)
@@ -1151,12 +1148,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteMcqTestQuestion(long QuestionId)
+        public async Task<bool> DeleteMcqTestQuestion(long QuestionId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteMcqTestQuestion(QuestionId);
+                result =await objCPDataService.DeleteMcqTestQuestionAsync(QuestionId);
             }
             catch (Exception Ex)
             {
@@ -1167,12 +1164,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewTestToCourse(TestModel objTestModel)
+        public async Task<bool> InsertNewTestToCourse(TestModel objTestModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewTestToCourse(objTestModel.m_strTestName, objTestModel.m_strTestDescription, (byte)Constants.TestQuestionType.MCQ, null,null,
+                result = await objCPDataService.InsertNewTestToCourseAsync(objTestModel.m_strTestName, objTestModel.m_strTestDescription, (byte)Constants.TestQuestionType.MCQ, null,null,
                     objTestModel.m_llCourseId);
             }
             catch (Exception Ex)
@@ -1184,12 +1181,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewAssignmentToCourse(AssignmentModel objAssignmentModel)
+        public async Task<bool> InsertNewAssignmentToCourse(AssignmentModel objAssignmentModel)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewAssignmentToCourse(objAssignmentModel.m_strAssignmentName,objAssignmentModel.m_strAssignmentDescription,(byte)objAssignmentModel.m_iAssignmentType,
+                result = await objCPDataService.InsertNewAssignmentToCourseAsync(objAssignmentModel.m_strAssignmentName,objAssignmentModel.m_strAssignmentDescription,(byte)objAssignmentModel.m_iAssignmentType,
                                               null,null,objAssignmentModel.m_llCourseId);
                 
             }
@@ -1202,13 +1199,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<BasicAssignmentDetails> GetAssignmentForCourse(long CourseId)
+        public async Task<List<BasicAssignmentDetails>> GetAssignmentForCourse(long CourseId)
         {
             List<BasicAssignmentDetails> lsAssignmentDetailsModel = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllAssignmentsForCourse(CourseId);
+                DataSet ds = await objCPDataService.GetAllAssignmentsForCourseAsync(CourseId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -1227,13 +1223,13 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentDetailsModel;
         }
-        public List<BasicTestDetails> GetTestOfCourse(long CourseId)
+        public async Task<List<BasicTestDetails>> GetTestOfCourse(long CourseId)
         {
             List<BasicTestDetails> lsBasicTestDetails = null;
             try
             {
                 DataSet ds = new DataSet();
-                ds = objCPDataService.GetTestsOfCourse(CourseId);
+                ds = await objCPDataService.GetTestsOfCourseAsync(CourseId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsBasicTestDetails = ds.Tables[0].AsEnumerable().Select(
@@ -1252,12 +1248,12 @@ namespace StudentDashboard.DTO
             }
             return lsBasicTestDetails;
         }
-        public bool InsertSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<bool> InsertSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertSubjectiveAssignmentQuestion(objSubjectiveQuestion.m_llAsssignmentId,
+                result =await objCPDataService.InsertSubjectiveAssignmentQuestionAsync(objSubjectiveQuestion.m_llAsssignmentId,
                     objSubjectiveQuestion.m_strQuestionStatement, objSubjectiveQuestion.m_strHint);
             }
             catch (Exception Ex)
@@ -1269,12 +1265,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<bool> UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateSubjectiveAssignmentQuestion(objSubjectiveQuestion.m_llQuestionId,
+                result =await objCPDataService.UpdateSubjectiveAssignmentQuestionAsync(objSubjectiveQuestion.m_llQuestionId,
                                  objSubjectiveQuestion.m_strQuestionStatement, objSubjectiveQuestion.m_strHint);
             }
             catch (Exception Ex)
@@ -1286,12 +1282,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteSubjectiveAssignmentQuestion(long QuestionId)
+        public async Task< bool> DeleteSubjectiveAssignmentQuestion(long QuestionId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteSubjectiveAssignmentQuestion(QuestionId);
+                result = await objCPDataService.DeleteSubjectiveAssignmentQuestionAsync(QuestionId);
             }
             catch (Exception Ex)
             {
@@ -1302,12 +1298,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
+        public async Task<bool> DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.DeleteSubjectiveAssignmentOfCourse(AssignmentId);
+                result = await objCPDataService.DeleteSubjectiveAssignmentOfCourseAsync(AssignmentId);
             }
             catch (Exception Ex)
             {
@@ -1318,13 +1314,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<AssignmentSubmissionResponseModal> GetAllSubmissionsOfAnAssignment(long AssignmentId)
+        public async Task<List<AssignmentSubmissionResponseModal>> GetAllSubmissionsOfAnAssignment(long AssignmentId)
         {
             List<AssignmentSubmissionResponseModal> lsAssignmentSubmissionResponseModal = new List<AssignmentSubmissionResponseModal>();
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllAssignmentsSubmissions(AssignmentId);
+                DataSet ds = await objCPDataService.GetAllAssignmentsSubmissionsAsync(AssignmentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1347,13 +1342,12 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentSubmissionResponseModal;
         }
-        public List<AssignmentSubmissionResponseModal> GetAllTestSubmissions(long TestId)
+        public async Task<List<AssignmentSubmissionResponseModal>> GetAllTestSubmissions(long TestId)
         {
             List<AssignmentSubmissionResponseModal> lsAssignmentSubmissionResponseModal = new List<AssignmentSubmissionResponseModal>();
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllTestSubmissions(TestId);
+                DataSet ds = await objCPDataService.GetAllTestSubmissionsAsync(TestId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1376,13 +1370,12 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentSubmissionResponseModal;
         }
-        public List<CoursesJoinedResponseModal> GetAllStudentsJoinedToCourse(long CourseId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToCourse(long CourseId)
         {
             List<CoursesJoinedResponseModal> lsCoursesJoinedResponseModal = new List<CoursesJoinedResponseModal>();
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetStudentJoinedToCourse(CourseId);
+                DataSet ds = await objCPDataService.GetStudentJoinedToCourseAsync(CourseId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1403,13 +1396,12 @@ namespace StudentDashboard.DTO
             }
             return lsCoursesJoinedResponseModal;
         }
-        public List<CoursesJoinedResponseModal> GetAllStudentsJoinedToInstructor(int InstructorId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId)
         {
             List<CoursesJoinedResponseModal> lsCoursesJoinedResponseModal = new List<CoursesJoinedResponseModal>();
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllStudentsJoinedToInstructor(InstructorId);
+                DataSet ds = await objCPDataService.GetAllStudentsJoinedToInstructorAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1448,12 +1440,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertNewAlertForInstructor(int InstructorId, string AlertMessage,int AlertTypeId,long StudentId,long? EffectiveId)
+        public async Task<bool> InsertNewAlertForInstructor(int InstructorId, string AlertMessage,int AlertTypeId,long StudentId,long? EffectiveId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertNewAlertForInstructor(InstructorId, AlertMessage, AlertTypeId, EffectiveId, StudentId);
+                result = await objCPDataService.InsertNewAlertForInstructorAsync(InstructorId, AlertMessage, AlertTypeId, EffectiveId, StudentId);
             }
             catch (Exception Ex)
             {
@@ -1464,13 +1456,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<AlertDetailsModal> GetAllAlertOfInstructor(int InstructorId)
+        public async Task<List<AlertDetailsModal>> GetAllAlertOfInstructor(int InstructorId)
         {
             List<AlertDetailsModal> lsAlertDetailsModal = new List<AlertDetailsModal>();
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetAllAlertForInstructor(InstructorId);
+                DataSet ds = await objCPDataService.GetAllAlertForInstructorAsync(InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1540,12 +1531,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<AssignmentDetailsModel> SearchForAssignmentOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignmentOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                DataSet ds = objCPDataService.SearchForAssignmentOfInstructor(SearchString, MaxRowToReturn, InstructorId);
+                DataSet ds = await objCPDataService.SearchForAssignmentOfInstructorAsync(SearchString, MaxRowToReturn, InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -1569,12 +1560,12 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentDetailsModel;
         }
-        public List<TestDetailsModel> SearchForTestOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
+        public async Task<List<TestDetailsModel>> SearchForTestOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
         {
             List<TestDetailsModel> lsTestDetailsModel = null;
             try
             {
-                DataSet ds = objCPDataService.SearchForTestOfInstructor(SearchString, MaxRowToReturn, InstructorId);
+                DataSet ds = await objCPDataService.SearchForTestOfInstructorAsync(SearchString, MaxRowToReturn, InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTestDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -1597,13 +1588,12 @@ namespace StudentDashboard.DTO
             }
             return lsTestDetailsModel;
         }
-        public List<CourseDetailsModel> SearchForCourseOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
+        public async Task<List<CourseDetailsModel>> SearchForCourseOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.SearchForCourseOfInstructor(SearchString, MaxRowToReturn, InstructorId);
+                DataSet ds = await objCPDataService.SearchForCourseOfInstructorAsync(SearchString, MaxRowToReturn, InstructorId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsCourseDetailsModel = ds.Tables[0].AsEnumerable().Select(

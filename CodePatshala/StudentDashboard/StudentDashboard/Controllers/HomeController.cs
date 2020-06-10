@@ -3,6 +3,7 @@ using StudentDashboard.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -39,7 +40,7 @@ namespace StudentDashboard.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult RegisterNow(FormCollection collection)
+        public async Task<ActionResult> RegisterNow(FormCollection collection)
         {
             try
             {
@@ -50,7 +51,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.strPassword = collection["password"];
                 objRegiserModel.strEmail = collection["email"];
                 objRegiserModel.strPhoneNo = collection["phoneNo"];
-                if(objHomeService.RegisterNewUser(objRegiserModel))
+                if(await objHomeService.RegisterNewUser(objRegiserModel))
                 {
                     ViewBag.IsRegistered = true;
                 }
@@ -67,7 +68,7 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpPost]
-        public ActionResult LoginNow(FormCollection collection)
+        public async Task<ActionResult> LoginNow(FormCollection collection)
         {
             string ViewName = "";
             try
@@ -75,7 +76,7 @@ namespace StudentDashboard.Controllers
                 StaeModel objRegiserModel = new StaeModel();
                 objRegiserModel.strEmail = collection["userEmail"];
                 objRegiserModel.strPassword = collection["userPassword"];
-                if (objHomeService.ValidateLoginDetails(objRegiserModel))
+                if (await objHomeService.ValidateLoginDetails(objRegiserModel))
                 {
                     ViewName = "Home";
                     ViewBag.IsLoggedIn = true;

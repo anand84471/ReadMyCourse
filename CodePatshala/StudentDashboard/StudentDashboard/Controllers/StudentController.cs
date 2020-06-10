@@ -1,19 +1,16 @@
-﻿using StudentDashboard.HttpRequest;
-using StudentDashboard.Models;
-using StudentDashboard.Models.Student;
+﻿using StudentDashboard.Models.Student;
+using StudentDashboard.Security;
+using StudentDashboard.Security.Student;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace StudentDashboard.Controllers
 {
     [RoutePrefix("Student")]
+    [StudentAuthenticationFilter]
     public class StudentController : Controller
     {
         // GET: Student
@@ -82,8 +79,8 @@ namespace StudentDashboard.Controllers
 
                 if (objStudentService.ValidateLogin(objStudentRegisterModal))
                 {
-
                     ViewName = "Home";
+                    ViewBag.Token = JwtManager.GenerateToken(objStudentRegisterModal.m_strUserId);
                     ViewBag.InstructorUserName = objStudentRegisterModal.m_strUserId;
                     ViewBag.IsLoggedIn = true;
                     Session["id"] = objStudentRegisterModal.m_strUserId;
@@ -119,9 +116,11 @@ namespace StudentDashboard.Controllers
             try
             {
                 long StudentId = (long)Session["user_id"];
+
                 StudentHomeModal objStudentHomeModal = objStudentService.GetStudentHomeDetails(StudentId);
                 if (objStudentHomeModal != null)
                 {
+                    ViewBag.Token = JwtManager.GenerateToken(StudentId.ToString());
                     return PartialView(objStudentHomeModal);
                 }
             }

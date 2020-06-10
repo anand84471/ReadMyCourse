@@ -316,7 +316,9 @@
     }
     function joinCourse() {
         debugger;
+      
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

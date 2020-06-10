@@ -2,10 +2,12 @@
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Security;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace StudentDashboard.API
@@ -19,7 +21,8 @@ namespace StudentDashboard.API
         HomeService objHomeService = new HomeService(); 
         [Route("addcourse")]
         [HttpPost]
-        public InsertNewCourseResponse InsertNewCourse([FromBody]CourseModel objCourseModel)
+        [JwtAuthentication]
+        public async Task<InsertNewCourseResponse> InsertNewCourse([FromBody]CourseModel objCourseModel)
         {
             InsertNewCourseResponse objInsertNewCourseResponse = new InsertNewCourseResponse();
             if(objCourseModel==null)
@@ -29,7 +32,7 @@ namespace StudentDashboard.API
             }
             else
             {
-                if(objHomeService.InsertNewCourse(objCourseModel))
+                if(await objHomeService.InsertNewCourse(objCourseModel))
                 {
                     objInsertNewCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objInsertNewCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -71,7 +74,7 @@ namespace StudentDashboard.API
         }
         
         [Route("addtopic")]
-        public InsertNewIndexResponse InsertTopics([FromBody] IndexModel objIndexModel)
+        public async Task<InsertNewIndexResponse> InsertTopics([FromBody] IndexModel objIndexModel)
         {
             InsertNewIndexResponse objInsertNewIndexResponse = new InsertNewIndexResponse();
             try
@@ -83,7 +86,7 @@ namespace StudentDashboard.API
                 }
                 else
                 {
-                    if (objHomeService.InsertTopics(objIndexModel))
+                    if (await objHomeService.InsertTopics(objIndexModel))
                     {
                         objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
                         objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -101,12 +104,12 @@ namespace StudentDashboard.API
             return objInsertNewIndexResponse;
         }
         [Route("addassignment")]
-        public AddAssgnmentResponse InsertNewAssignment(AssignmentModel objAssignmentModel)
+        public async Task<AddAssgnmentResponse> InsertNewAssignment(AssignmentModel objAssignmentModel)
         {
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
-                if(objHomeService.InsertAssignment(objAssignmentModel))
+                if(await objHomeService.InsertAssignment(objAssignmentModel))
                 {
                     objAddAssgnmentResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objAddAssgnmentResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -128,14 +131,14 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("addnewassignment")]
-        public AddAssgnmentResponse InsertNewIndependentAssignment(AssignmentModel objAssignmentModel)
+        public async Task<AddAssgnmentResponse> InsertNewIndependentAssignment(AssignmentModel objAssignmentModel)
         {
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
                 if (objAssignmentModel != null)
                 {
-                    if (objHomeService.InsertNewIndependentAssignment(objAssignmentModel))
+                    if (await objHomeService.InsertNewIndependentAssignment(objAssignmentModel))
                     {
                         objAddAssgnmentResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objAddAssgnmentResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -157,13 +160,13 @@ namespace StudentDashboard.API
             return objAddAssgnmentResponse;
         }
         [Route("addtest")]
-        public AddTestResponse InsertNewTest(TestModel objTestModel)
+        public async Task<AddTestResponse> InsertNewTest(TestModel objTestModel)
         {
 
             AddTestResponse objAddTestResponse = new AddTestResponse();
             try
             {
-                if(objHomeService.InsertTest(objTestModel))
+                if(await objHomeService.InsertTest(objTestModel))
                 {
                     objAddTestResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objAddTestResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -183,14 +186,14 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("addnewtest")]
-        public AddAssgnmentResponse InsertNewIndependentTest(TestModel objTestModel)
+        public async Task<AddAssgnmentResponse> InsertNewIndependentTest(TestModel objTestModel)
         {
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
                 if (objTestModel != null)
                 {
-                    if (objHomeService.InsertNewIndependentTest(objTestModel))
+                    if (await objHomeService.InsertNewIndependentTest(objTestModel))
                     {
                         objAddAssgnmentResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objAddAssgnmentResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -213,13 +216,13 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("courses")]
-        public GetAllCourseDetailsForInstructorResponseModel GetAllCoursesOfInstructor(string InstructorUserName)
+        public async Task< GetAllCourseDetailsForInstructorResponseModel> GetAllCoursesOfInstructor(string InstructorUserName)
         {
             GetAllCourseDetailsForInstructorResponseModel objResponse = new GetAllCourseDetailsForInstructorResponseModel();
             try
             {
                
-                objResponse.m_lsCourseModel = objHomeService.GetAllCourseDetailsForInstructor(InstructorUserName);
+                objResponse.m_lsCourseModel = await objHomeService.GetAllCourseDetailsForInstructor(InstructorUserName);
                 if (objResponse.m_lsCourseModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -242,12 +245,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("getcoursedetails")]
-        public GetCourseDetailsApiResponse GetCourseDetails(long CourseId)
+        public async Task<GetCourseDetailsApiResponse> GetCourseDetails(long CourseId)
         {
             GetCourseDetailsApiResponse objResponse = new GetCourseDetailsApiResponse();
             try
             {
-                objResponse = objHomeService.GetCourseDetails(CourseId);
+                objResponse = await objHomeService.GetCourseDetails(CourseId);
                 if (objResponse!=null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -270,12 +273,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("deletecourse")]
-        public APIDefaultResponse DeleteCourse(long id)
+        public async Task<APIDefaultResponse> DeleteCourse(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteCourse(id))
+                if (await objHomeService.DeleteCourse(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -297,12 +300,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activatecourse")]
-        public APIDefaultResponse ActivateCourse(long CourseId)
+        public async Task<APIDefaultResponse> ActivateCourse(long CourseId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.ActivateCourse(CourseId))
+                if (await objHomeService.ActivateCourse(CourseId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -325,13 +328,13 @@ namespace StudentDashboard.API
 
         [HttpPost]
         [Route("assignments")]
-        public AllInstructorAssignmentsApiResponse GetAllAssignmentsForInstructoe(int id)
+        public async Task<AllInstructorAssignmentsApiResponse> GetAllAssignmentsForInstructoe(int id)
         {
             AllInstructorAssignmentsApiResponse objResponse = new AllInstructorAssignmentsApiResponse();
             try
             {
 
-                objResponse.m_lsAssignments = objHomeService.GetAssignmentForInstructor(id);
+                objResponse.m_lsAssignments = await objHomeService.GetAssignmentForInstructor(id);
                 if (objResponse.m_lsAssignments != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -354,13 +357,13 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("tests")]
-        public AllInstructorTestsApiResponse GetAllTestsForInstructor(int id)
+        public async Task<AllInstructorTestsApiResponse> GetAllTestsForInstructor(int id)
         {
             AllInstructorTestsApiResponse objResponse = new AllInstructorTestsApiResponse();
             try
             {
 
-                objResponse.m_lsTestDetailsModel = objHomeService.GetInstructorTestDetails(id);
+                objResponse.m_lsTestDetailsModel =await objHomeService.GetInstructorTestDetails(id);
                 if (objResponse.m_lsTestDetailsModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -383,12 +386,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("getactivity")]
-        public GetInstructorActivityResponse GetInstructorActivityDetails(int id)
+        public async Task<GetInstructorActivityResponse> GetInstructorActivityDetails(int id)
         {
             GetInstructorActivityResponse objResponse = new GetInstructorActivityResponse();
             try
             {
-                objResponse.m_lsActivityDetails = objHomeService.GetInstructorActivityDetails(id);
+                objResponse.m_lsActivityDetails = await objHomeService.GetInstructorActivityDetails(id);
                 if (objResponse.m_lsActivityDetails!=null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -412,12 +415,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activatecourse")]
-        public APIDefaultResponse ActivateAssignment(long AssignmentId)
+        public async Task<APIDefaultResponse> ActivateAssignment(long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.ActivateAssignment(AssignmentId))
+                if (await objHomeService.ActivateAssignment(AssignmentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -439,12 +442,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("deleteassignment")]
-        public APIDefaultResponse DeleteAssignment(long AssignmentId)
+        public async Task<APIDefaultResponse> DeleteAssignment(long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteAssignment(AssignmentId))
+                if (await objHomeService.DeleteAssignment(AssignmentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -466,12 +469,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteIndependentAssignment")]
-        public APIDefaultResponse DeleteIndependentAssignment(long AssignmentId)
+        public async Task<APIDefaultResponse> DeleteIndependentAssignment(long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteIndependentAssignment(AssignmentId))
+                if (await objHomeService.DeleteIndependentAssignment(AssignmentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -493,12 +496,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteIndependentTest")]
-        public APIDefaultResponse DeleteIndependentTest(long TestId)
+        public async Task<APIDefaultResponse> DeleteIndependentTest(long TestId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteIndependentTest(TestId))
+                if (await objHomeService.DeleteIndependentTest(TestId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -520,12 +523,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activatetest")]
-        public APIDefaultResponse ActivateTest(long testid)
+        public async Task<APIDefaultResponse> ActivateTest(long testid)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.ActivateTest(testid))
+                if (await objHomeService.ActivateTest(testid))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -547,12 +550,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("deletetest")]
-        public APIDefaultResponse DeleteTest(long TestId)
+        public async Task<APIDefaultResponse> DeleteTest(long TestId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteTest(TestId))
+                if (await objHomeService.DeleteTest(TestId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -575,12 +578,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteTestOfCourse")]
-        public APIDefaultResponse DeleteTestOfCourse(long id)
+        public async Task<APIDefaultResponse> DeleteTestOfCourse(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteTestOfCourse(id))
+                if (await objHomeService.DeleteTestOfCourse(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -603,12 +606,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteMcqQuestion")]
-        public APIDefaultResponse DeleteMcqAssignmentQuestion(long id)
+        public async Task<APIDefaultResponse> DeleteMcqAssignmentQuestion(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteMcqAssignmentQuestion(id))
+                if (await objHomeService.DeleteMcqAssignmentQuestion(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -630,12 +633,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateMcqQuestion")]
-        public APIDefaultResponse UpdateMcqAssignmentQuestion([FromBody]McqQuestion McqQuestion)
+        public async Task<APIDefaultResponse> UpdateMcqAssignmentQuestion([FromBody]McqQuestion McqQuestion)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.UpdateMcqAssignmentQuestion(McqQuestion))
+                if (await objHomeService.UpdateMcqAssignmentQuestion(McqQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -658,12 +661,12 @@ namespace StudentDashboard.API
 
         [HttpPost]
         [Route("AddMcqQuestion")]
-        public APIDefaultResponse AddMcqQuestion([FromBody]McqQuestion McqQuestion)
+        public async Task<APIDefaultResponse> AddMcqQuestion([FromBody]McqQuestion McqQuestion)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.InsertNewMcqQuestion(McqQuestion))
+                if (await objHomeService.InsertNewMcqQuestion(McqQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -685,12 +688,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("AddMcqQuestionToAssignment")]
-        public APIDefaultResponse AddMcqQuestionToAssignment([FromBody]McqQuestion McqQuestion)
+        public async Task<APIDefaultResponse> AddMcqQuestionToAssignment([FromBody]McqQuestion McqQuestion)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
+                if (await objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -712,12 +715,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("contact")]
-        public APIDefaultResponse ContactUs([FromBody] ContactUsApiRequest objContactUsApiRequest)
+        public async Task<APIDefaultResponse> ContactUs([FromBody] ContactUsApiRequest objContactUsApiRequest)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objContactUsApiRequest!=null&&objHomeService.InserContatUsRequest(objContactUsApiRequest))
+                if (objContactUsApiRequest != null&& await objHomeService.InserContatUsRequest(objContactUsApiRequest))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -739,12 +742,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteTopic")]
-        public APIDefaultResponse DeleteIndexTopic(long id)
+        public async Task<APIDefaultResponse> DeleteIndexTopic(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if ( objHomeService.DeleteIndexTopic(id))
+                if (await objHomeService.DeleteIndexTopic(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -766,7 +769,7 @@ namespace StudentDashboard.API
         }
         //[HttpPost]
         //[Route("DeleteIndex")]
-        //public APIDefaultResponse DeleteCourseIndex(long id)
+        //public async Task<APIDefaultResponse> DeleteCourseIndex(long id)
         //{
         //    APIDefaultResponse objResponse = new APIDefaultResponse();
         //    try
@@ -793,12 +796,12 @@ namespace StudentDashboard.API
         //}
         [HttpPost]
         [Route("UpdateTopic")]
-        public APIDefaultResponse UpdateIndexTopic([FromBody] TopicModel objTopicModel)
+        public async Task<APIDefaultResponse> UpdateIndexTopic([FromBody] TopicModel objTopicModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTopicModel != null && objHomeService.UpdateIndexTopic(objTopicModel))
+                if (objTopicModel != null && await objHomeService.UpdateIndexTopic(objTopicModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -820,12 +823,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateIndex")]
-        public APIDefaultResponse UpdateIndex([FromBody] IndexModel objIndexModel)
+        public async Task<APIDefaultResponse> UpdateIndex([FromBody] IndexModel objIndexModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objIndexModel != null && objHomeService.UpdateCourseIndex(objIndexModel))
+                if (objIndexModel != null && await objHomeService.UpdateCourseIndex(objIndexModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -847,12 +850,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteIndex")]
-        public APIDefaultResponse DeleteIndex(long id)
+        public async Task<APIDefaultResponse> DeleteIndex(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteIndex(id))
+                if (await objHomeService.DeleteIndex(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -874,12 +877,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateCourse")]
-        public APIDefaultResponse UpdateCourse(CourseDetailsModel objCourse)
+        public async Task<APIDefaultResponse> UpdateCourse(CourseDetailsModel objCourse)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objCourse!=null&&objHomeService.UpdateFullCourseDetails(objCourse))
+                if (objCourse!=null&& await objHomeService.UpdateFullCourseDetails(objCourse))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -901,12 +904,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("AddNewTopic")]
-        public APIDefaultResponse AddTopicToIndex(TopicModel objTopic)
+        public async Task<APIDefaultResponse> AddTopicToIndex(TopicModel objTopic)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTopic != null && objHomeService.InsertNewTopic(objTopic))
+                if (objTopic != null && await objHomeService.InsertNewTopic(objTopic))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -928,12 +931,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateTestDetails")]
-        public APIDefaultResponse UpdateTestDetails(TestDetailsModel objTestDetails)
+        public async Task<APIDefaultResponse> UpdateTestDetails(TestDetailsModel objTestDetails)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestDetails != null && objHomeService.UpdateTestDetails(objTestDetails))
+                if (objTestDetails != null && await objHomeService.UpdateTestDetails(objTestDetails))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -955,12 +958,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("AddNewMcqTestQuestion")]
-        public APIDefaultResponse AddNewMcqTestQuestion(McqQuestion objTestModel)
+        public async Task<APIDefaultResponse> AddNewMcqTestQuestion(McqQuestion objTestModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestModel != null && objHomeService.InsertNewMcqQuestion(objTestModel))
+                if (objTestModel != null && await objHomeService.InsertNewMcqQuestion(objTestModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -982,12 +985,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateMcqQuestionTestDetails")]
-        public APIDefaultResponse UpdateMcqQuestionTestDetails(McqQuestion objTestModel)
+        public async Task<APIDefaultResponse> UpdateMcqQuestionTestDetails(McqQuestion objTestModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestModel != null && objHomeService.UpdateMcqTestQuestion(objTestModel))
+                if (objTestModel != null && await objHomeService.UpdateMcqTestQuestion(objTestModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1009,12 +1012,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("AddNewAssignmentToCourse")]
-        public APIDefaultResponse AddNewAssignment(AssignmentModel objAssignmentModel)
+        public async Task<APIDefaultResponse> AddNewAssignment(AssignmentModel objAssignmentModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objAssignmentModel != null && objHomeService.InsertNewSeperateAssignmentToCourse(objAssignmentModel))
+                if (objAssignmentModel != null && await objHomeService.InsertNewSeperateAssignmentToCourse(objAssignmentModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1036,12 +1039,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteMcqTestQuestion")]
-        public APIDefaultResponse DeleteMcqTestQuestion(long id)
+        public async Task<APIDefaultResponse> DeleteMcqTestQuestion(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteMcqTestQuestion(id))
+                if (await objHomeService.DeleteMcqTestQuestion(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1063,12 +1066,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("InsertNewTestToCourse")]
-        public APIDefaultResponse InsertNewTestToCourse(TestModel objTestModel)
+        public async Task<APIDefaultResponse> InsertNewTestToCourse(TestModel objTestModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.InsertNewTestToCourse(objTestModel))
+                if (await objHomeService.InsertNewTestToCourse(objTestModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1090,12 +1093,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateAssignmentDetails")]
-        public APIDefaultResponse UpdateAssignmentDetails(AssignmentModel objAssignmentModel)
+        public async Task<APIDefaultResponse> UpdateAssignmentDetails(AssignmentModel objAssignmentModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.UpdateAssignmentDetails(objAssignmentModel))
+                if (await objHomeService.UpdateAssignmentDetails(objAssignmentModel))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1117,12 +1120,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("AddSubjectiveAssignmentQuestion")]
-        public APIDefaultResponse AddSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<APIDefaultResponse> AddSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.InsertSubjectiveAssignmentQuestion(objSubjectiveQuestion))
+                if (await objHomeService.InsertSubjectiveAssignmentQuestion(objSubjectiveQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1144,12 +1147,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateSubjectiveAssignmentQuestion")]
-        public APIDefaultResponse UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
+        public async Task<APIDefaultResponse> UpdateSubjectiveAssignmentQuestion(SubjectiveQuestion objSubjectiveQuestion)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.UpdateSubjectiveAssignmentQuestion(objSubjectiveQuestion))
+                if (await objHomeService.UpdateSubjectiveAssignmentQuestion(objSubjectiveQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1171,12 +1174,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteSubjectiveAssignmentOfCourse")]
-        public APIDefaultResponse DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
+        public async Task<APIDefaultResponse> DeleteSubjectiveAssignmentOfCourse(long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteSubjectiveAssignmentOfCourse(AssignmentId))
+                if (await objHomeService.DeleteSubjectiveAssignmentOfCourse(AssignmentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1198,12 +1201,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteSubjectiveAssignmentQuestion")]
-        public APIDefaultResponse DeleteSubjectiveAssignmentQuestion(long QuestionId)
+        public async Task<APIDefaultResponse> DeleteSubjectiveAssignmentQuestion(long QuestionId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objHomeService.DeleteSubjectiveAssignmentQuestion(QuestionId))
+                if (await objHomeService.DeleteSubjectiveAssignmentQuestion(QuestionId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1225,12 +1228,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllAssignmentsSubmission")]
-        public AssignmentSubmissionResponse GetAllAssignmentsSubmission(long AssignmentId)
+        public async Task<AssignmentSubmissionResponse> GetAllAssignmentsSubmission(long AssignmentId)
         {
             AssignmentSubmissionResponse objResponse = new AssignmentSubmissionResponse();
             try
             {
-                objResponse.m_lsAssignmentSubmissionResponseModal = objHomeService.GetAllSubmissionsOfAnAssignment(AssignmentId);
+                objResponse.m_lsAssignmentSubmissionResponseModal = await objHomeService.GetAllSubmissionsOfAnAssignment(AssignmentId);
                 if (objResponse.m_lsAssignmentSubmissionResponseModal!=null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1253,12 +1256,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllTestSubmissions")]
-        public AssignmentSubmissionResponse GetAllTestSubmissions(long id)
+        public async Task<AssignmentSubmissionResponse> GetAllTestSubmissions(long id)
         {
             AssignmentSubmissionResponse objResponse = new AssignmentSubmissionResponse();
             try
             {
-                objResponse.m_lsAssignmentSubmissionResponseModal = objHomeService.GetAllTestSubmissions(id);
+                objResponse.m_lsAssignmentSubmissionResponseModal = await objHomeService.GetAllTestSubmissions(id);
                 if (objResponse.m_lsAssignmentSubmissionResponseModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1281,12 +1284,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("Joinee")]
-        public CourseJoinedResponse GetAllStudentsJoinedToInstructs(int id)
+        public async Task<CourseJoinedResponse> GetAllStudentsJoinedToInstructs(int id)
         {
             CourseJoinedResponse objResponse = new CourseJoinedResponse();
             try
             {
-                objResponse.m_lsStudentsJoined = objHomeService.GetAllStudentsJoinedToInstructor(id);
+                objResponse.m_lsStudentsJoined = await objHomeService.GetAllStudentsJoinedToInstructor(id);
                 if (objResponse.m_lsStudentsJoined != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1336,12 +1339,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllAlert")]
-        public GetAllAlertForInstructorResponse GetAllAlertForInstructor(int id)
+        public async Task<GetAllAlertForInstructorResponse> GetAllAlertForInstructor(int id)
         {
             GetAllAlertForInstructorResponse objResponse = new GetAllAlertForInstructorResponse();
             try
             {
-                objResponse.m_lsInstructorAlertModal = objHomeService.GetAllAlertOfInstructor(id);
+                objResponse.m_lsInstructorAlertModal = await objHomeService.GetAllAlertOfInstructor(id);
                 if (objResponse.m_lsInstructorAlertModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1364,7 +1367,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("search")]
-        public InstructorSearchResponse GetInstructorSerachResponse(InstructorSearchRequest objInstructorSearchRequest)
+        public async Task<InstructorSearchResponse> GetInstructorSerachResponse(InstructorSearchRequest objInstructorSearchRequest)
         {
             InstructorSearchResponse objResponse = new InstructorSearchResponse();
             try
@@ -1372,7 +1375,7 @@ namespace StudentDashboard.API
                
                 if (objInstructorSearchRequest != null)
                 {
-                    objResponse = objHomeService.GetInstructorSearchDetails(objInstructorSearchRequest);
+                    objResponse = await objHomeService.GetInstructorSearchDetails(objInstructorSearchRequest);
                     if (objResponse != null)
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;

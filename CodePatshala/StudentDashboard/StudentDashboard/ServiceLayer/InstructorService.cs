@@ -5,6 +5,7 @@ using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.ServiceLayer
@@ -16,14 +17,14 @@ namespace StudentDashboard.ServiceLayer
         {
             objInstructorDTO = new InstructorDTO();
         }
-        public bool RegisterNewUser(InstructorRegisterModel objInstructorRegisterModel)
+        public async Task<bool> RegisterNewUser(InstructorRegisterModel objInstructorRegisterModel)
         {
             bool result = false;
             try
             {
                 string EncryptedPassword = SHA256Encryption.ComputeSha256Hash(objInstructorRegisterModel.m_strPassword);
                 objInstructorRegisterModel.m_strPassword = EncryptedPassword;
-                result = objInstructorDTO.RegisterNewInstructor(objInstructorRegisterModel);
+                result = await objInstructorDTO.RegisterNewInstructor(objInstructorRegisterModel);
             }
             catch (Exception Ex)
             {
@@ -32,13 +33,13 @@ namespace StudentDashboard.ServiceLayer
             return result;
 
         }
-        public bool ValidateLoginDetails(InstructorRegisterModel objInstructorRegisterModel)
+        public async Task<bool> ValidateLoginDetails(InstructorRegisterModel objInstructorRegisterModel)
         {
             bool result = false;
             try
             {
                 objInstructorRegisterModel.m_strPassword = SHA256Encryption.ComputeSha256Hash(objInstructorRegisterModel.m_strPassword);
-                result = objInstructorDTO.ValidateInstructorLoginDetails(objInstructorRegisterModel);
+                result = await objInstructorDTO.ValidateInstructorLoginDetails(objInstructorRegisterModel);
 
             }
             catch (Exception Ex)
@@ -48,17 +49,17 @@ namespace StudentDashboard.ServiceLayer
             return result;
 
         }
-        public InstructorRegisterModel GetInstructorPostLoginDetails(int Id)
+        public async Task<InstructorRegisterModel> GetInstructorPostLoginDetails(int Id)
         {
-           return objInstructorDTO.GetInstructorPostLoginDetails(Id);
+           return await objInstructorDTO.GetInstructorPostLoginDetails(Id);
         }
-        public InstructorRegisterModel GetInstructorDetails(int InstructorId)
+        public async Task<InstructorRegisterModel> GetInstructorDetails(int InstructorId)
         {
-            return objInstructorDTO.GetInstructorDetails(InstructorId);
+            return await objInstructorDTO.GetInstructorDetails(InstructorId);
         }
-        public bool UpdateInstructorDetails(InstructorRegisterModel objInstructorRegisterModel)
+        public async Task<bool> UpdateInstructorDetails(InstructorRegisterModel objInstructorRegisterModel)
         {
-            return objInstructorDTO.UpdateInstructorDetails(objInstructorRegisterModel);
+            return await objInstructorDTO.UpdateInstructorDetails(objInstructorRegisterModel);
         }
 
     }
