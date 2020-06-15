@@ -3,6 +3,16 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Join Instructors</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Join Instructor</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <div class="form-inline">
         <div class="form-group mb-2">
             <input type="text" class="form-control ml-2 mr-2" id="courseSearchBox" placeholder="serach for instructor...">
@@ -111,6 +121,7 @@
                 "key": $("#courseSearchBox").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -132,7 +143,7 @@
                                    +' <p class="text mr-3"><i class="fas fa-fw fa-users mr-2"></i><b>Students Joined:</b> '+instructors[i].no_of_students_joined+'</p>'
                                    +' <p class="text mr-3"><i class="fas fa-fw fa-book mr-2"></i><b>Courses Created:</b> '+instructors[i].no_of_course+'</p>'
                                     +'<ul class="list-unstyled list-inline rating mb-0">'
-                                       +' <li class="list-inline-item mr-2"><button  class="btn btn-outline-primary">Profile</button></li>'
+                                       + ' <li class="list-inline-item mr-2"><button  class="btn btn-outline-primary" onclick=callJoinInstructor(' + instructors[i].id + ')>Profile</button></li>'
                                         + '<li class="list-inline-item mr-0"><button  class="btn btn-dark" onclick=joinInstructor(' + instructors[i] .id+ ')>Join Now</button></li>'
                                     +'</ul>'
                                 +'</div>'
@@ -151,6 +162,7 @@
     function getInstructorDetails(Id) {
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -209,18 +221,20 @@
         });
     }
     function callJoinInstructor(id) {
+        debugger
         $.ajax({
-           url: "JoinCourse?id=".concat(id),
+            url: "TeacherProfile?id=".concat(id),
             type: 'GET',
             success: function (data) {
                 $("#body").html(data);
-                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "JoinCourse?id=".concat(id));
+                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "TeacherProfile?id=".concat(id));
             }
         });
     }
     function joinInstructor(InstructorId) {
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

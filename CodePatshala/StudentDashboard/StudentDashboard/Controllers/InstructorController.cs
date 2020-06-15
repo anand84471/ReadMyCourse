@@ -3,11 +3,13 @@ using StudentDashboard.Models.Course;
 using StudentDashboard.Security.Instrcutor;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
+using StudentDashboard.ValidationHandler;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -184,15 +186,36 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strPassword = collection["password"];
                 objRegiserModel.m_strEmail = collection["email"];
                 objRegiserModel.m_strPhoneNo = collection["phoneNo"];
-                if (await objInstructorService.RegisterNewUser(objRegiserModel))
+               
+                var objInstructorAccountRegisterValidator = new InstructorAccountRegisterValidator();
                 {
-                    ViewBag.IsRegistered = true;
-                    Response.Redirect("./RegistrationSuccessful?UserId="+ objRegiserModel.m_strEmail);
+                    var ValidationResult = await objInstructorAccountRegisterValidator.ValidateAsync(objRegiserModel);
+                    if (ValidationResult.IsValid)
+                    {
+                        Regex.Replace(objRegiserModel.m_strPassword, @"\s+", "");
+                        Regex.Replace(objRegiserModel.m_strEmail, @"\s+", "");
+                        Regex.Replace(objRegiserModel.m_strPhoneNo, @"\s+", "");
+                        if (await objInstructorService.RegisterNewUser(objRegiserModel))
+                        {
+                            ViewBag.IsRegistered = true;
+                            Response.Redirect("./RegistrationSuccessful?UserId=" + objRegiserModel.m_strEmail);
+                        }
+                        else
+                        {
+                            ViewBag.IsRegistered = false;
+                        }
+                    }
+                    else
+                    {
+                        StringBuilder m_strStringBuilder = new StringBuilder();
+                        foreach (var failure in ValidationResult.Errors)
+                        {
+                            m_strStringBuilder.Append("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                        }
+                        ViewBag.ErrorMessage = m_strStringBuilder.ToString();
+                    }
                 }
-                else
-                {
-                    ViewBag.IsRegistered = false;
-                }
+               
                 return View();
             }
             catch (Exception Ex)
@@ -204,10 +227,7 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
         }
-        [AsyncTimeout(150)]
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        [HttpPost]
+        [AsyncTimeout(150)][ValidateAntiForgeryToken][AllowAnonymous][HttpPost]
         public async Task<ActionResult> ValidateLogin(FormCollection collection)
         {
             string strCurrentMethodName = "Register";
@@ -217,24 +237,39 @@ namespace StudentDashboard.Controllers
                 InstructorRegisterModel objInstructorRegiserModel = new InstructorRegisterModel();
                 objInstructorRegiserModel.m_strEmail = collection["userEmail"];
                 objInstructorRegiserModel.m_strPassword = collection["userPassword"];
-                if(collection["remeberMe"]!=null)
+                if (collection["remeberMe"] != null)
                 {
                     objInstructorRegiserModel.m_bIsRememberMe = collection["remeberMe"].Equals("true") ? true : false;
                 }
-
-                if (await objInstructorService.ValidateLoginDetails(objInstructorRegiserModel))
+                var objInstructorLoginValidator = new InstructorLoginValidator();
                 {
-                    //objJWTTokenIssuer.GenerateToken(objInstructorRegiserModel.m_iInstructorId.ToString());
-                    ViewName = "Home";
-                    ViewBag.InstructorUserName = objInstructorRegiserModel.m_strEmail;
-                    ViewBag.IsLoggedIn = true;
-                    Session["instructor_id"] = objInstructorRegiserModel.m_iInstructorId;
-                    return RedirectToAction("Home");
-                }
-                else
-                {
-                    ViewName = "Index";
-                    ViewBag.IsLoggedIn = false;
+                    var ValidationResult = await objInstructorLoginValidator.ValidateAsync(objInstructorRegiserModel);
+                    if (ValidationResult.IsValid)
+                    {
+                        if (await objInstructorService.ValidateLoginDetails(objInstructorRegiserModel))
+                        {
+                            //objJWTTokenIssuer.GenerateToken(objInstructorRegiserModel.m_iInstructorId.ToString());
+                            ViewName = "Home";
+                            ViewBag.InstructorUserName = objInstructorRegiserModel.m_strEmail;
+                            ViewBag.IsLoggedIn = true;
+                            Session["instructor_id"] = objInstructorRegiserModel.m_iInstructorId;
+                            return RedirectToAction("Home");
+                        }
+                        else
+                        {
+                            ViewName = "Index";
+                            ViewBag.IsLoggedIn = false;
+                        }
+                    }
+                    else
+                    {
+                        StringBuilder m_strStringBuilder = new StringBuilder();
+                        foreach (var failure in ValidationResult.Errors)
+                        {
+                            m_strStringBuilder.Append("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                        }
+                        ViewBag.ErrorMessage = m_strStringBuilder.ToString();
+                    }
                 }
             }
             catch (Exception Ex)
@@ -251,17 +286,50 @@ namespace StudentDashboard.Controllers
         [HttpGet]
         public PartialViewResult CreateNewCourse()
         {
-            return PartialView("NewCourse");
+            try
+            {
+                return PartialView("NewCourse");
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateNewCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
         }
         [HttpGet]
         public PartialViewResult CreateTest()
         {
-            return PartialView();
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
         }
         [HttpGet]
         public PartialViewResult CreateAssignment()
         {
-            return PartialView();
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateAssignment", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
         }
         [HttpPost]
         public String FileUpload(FormCollection collection, HttpPostedFileBase[] fileUploads)
@@ -311,6 +379,7 @@ namespace StudentDashboard.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
+
             string strCurrentMethodName = "Logout";
             try
             {

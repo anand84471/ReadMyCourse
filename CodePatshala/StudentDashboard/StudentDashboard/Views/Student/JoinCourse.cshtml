@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Join course";
-    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/__BackLayout.cshtml";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <style>
     .course-accordion {
@@ -89,8 +89,19 @@
 
 
 <div class="course-demo-card container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Join new course</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="callJoinNewCourse()">Join new course</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Enroll now</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <!-- Course section -->
-    <nav class="navbar  bg-dark ">
+    @*<nav class="navbar  bg-dark ">
         <a href="./JoinNewCourse" class="btn navbar-item text-white nav-item active">
             <i class="fa fa-arrow-left"></i>
         </a>
@@ -98,7 +109,7 @@
             <img src="~/Images/site-logo.png" width="160" height="40" class="align-top bg-white" alt="">
 
         </a>
-    </nav>
+    </nav>*@
     <div class="card  mb-0 p-1">
         <div class="custom-blue jumbotron mb-0">
             <div class="ml-lg-5">
@@ -242,12 +253,12 @@
     //-----------------------Course section start----------------------
     function init() {
         debugger
-        courseId = parseInt(@Session["course_id"].ToString());
+        
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchAboutCourse?id=@Session["course_id"].ToString()",
+            url: "/api/v1/Course/FetchAboutCourse?id=".concat("@ViewBag.Id"),
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {
@@ -322,7 +333,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/JoinCourse?CourseId=@Session["course_id"].ToString()".concat("&StudentId=@Session["user_id"].ToString()"),
+            url: "/api/v1/Course/JoinCourse?CourseId=".concat("@ViewBag.id"),
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {

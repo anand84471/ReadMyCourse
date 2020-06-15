@@ -14,53 +14,70 @@ namespace StudentDashboard.Security
     {
         public string Realm { get; set; }
         public bool AllowMultiple => false;
-
+        public long UserId;
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            var request = context.Request;
-            var authorization = request.Headers.Authorization;
-
-            if (authorization == null || authorization.Scheme != "Bearer")
-                return;
-
-            if (string.IsNullOrEmpty(authorization.Parameter))
+            try
             {
-                context.ErrorResult = new AuthenticationFailureResult("Missing Jwt Token", request);
-                return;
+                var request = context.Request;
+                var authorization = request.Headers.Authorization;
+
+                if (authorization == null || authorization.Scheme != "Bearer")
+                    return;
+
+                if (string.IsNullOrEmpty(authorization.Parameter))
+                {
+                    context.ErrorResult = new AuthenticationFailureResult("Missing Jwt Token", request);
+                    return;
+                }
+
+                var token = authorization.Parameter;
+                var principal = await AuthenticateJwtToken(token);
+
+                if (principal == null)
+                    context.ErrorResult = new AuthenticationFailureResult("Invalid token", request);
+
+                else
+                    context.Principal = principal;
             }
+            catch(Exception Ex)
+            {
 
-            var token = authorization.Parameter;
-            var principal = await AuthenticateJwtToken(token);
-
-            if (principal == null)
-                context.ErrorResult = new AuthenticationFailureResult("Invalid token", request);
-
-            else
-                context.Principal = principal;
+            }
         }
 
-        private static bool ValidateToken(string token, out string username)
+        private  bool ValidateToken(string token, out string username)
         {
-            username = null;
+            try
+            {
+                username = null;
 
-            var simplePrinciple = JwtManager.GetPrincipal(token);
-            var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                var simplePrinciple = JwtManager.GetPrincipal(token);
+                var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                if (identity == null)
+                    return false;
 
-            if (identity == null)
-                return false;
+                if (!identity.IsAuthenticated)
+                    return false;
 
-            if (!identity.IsAuthenticated)
-                return false;
+                var usernameClaim = identity.FindFirst(ClaimTypes.Name);
+                username = usernameClaim?.Value;
+                UserId = long.Parse(username);
+                
+                if (string.IsNullOrEmpty(username))
+                    return false;
 
-            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
-            username = usernameClaim?.Value;
+                // More validate to check whether username exists in system
 
-            if (string.IsNullOrEmpty(username))
-                return false;
-
-            // More validate to check whether username exists in system
-
-            return true;
+                return true;
+            }
+            catch(Exception Ex)
+            {
+                
+                
+            }
+            username = string.Empty;
+            return false;
         }
 
         protected Task<IPrincipal> AuthenticateJwtToken(string token)
@@ -71,7 +88,8 @@ namespace StudentDashboard.Security
                 // based on username to get more information from database in order to build local identity
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.PrimarySid,username)
                     // Add more claims if needed: Roles, ...
                 };
 

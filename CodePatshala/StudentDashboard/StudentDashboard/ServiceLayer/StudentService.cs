@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -33,14 +34,14 @@ namespace StudentDashboard.ServiceLayer
         {
             return new StudentDetailsModel();
         }
-        public bool RegisterNewStudent(StudentRegisterModal objStudentRegisterModal)
+        public async Task<bool> RegisterNewStudent(StudentRegisterModal objStudentRegisterModal)
         {
             bool result = false;
             try
             {
                 string EncryptedPassword = SHA256Encryption.ComputeSha256Hash(objStudentRegisterModal.m_strPassword);
                 objStudentRegisterModal.m_strHashedPassword = EncryptedPassword;
-                result = objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
+                result = await objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
             }
             catch (Exception Ex)
             {
@@ -69,51 +70,51 @@ namespace StudentDashboard.ServiceLayer
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewUser", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ValidateLogin", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
 
         }
-        public List<CourseDetailsModel> SearchForCourse(string SearchString, int MaxRowToReturn,int NoOfRowseFetched,int SortingId)
+        public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn,int NoOfRowseFetched,int SortingId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
             try
             {
-                lsCourseDetailsModel = objStudentDTO.SearchForCourse(SearchString, MaxRowToReturn, NoOfRowseFetched, SortingId);
+                lsCourseDetailsModel = await objStudentDTO.SearchForCourse(SearchString, MaxRowToReturn, NoOfRowseFetched, SortingId);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewUser", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return lsCourseDetailsModel;
         }
-        public List<CourseDetailsModel> SearchForCourseForStudent(string SearchString, int MaxRowToReturn, int NoOfRowseFetched, int SortingId,long Studentid)
+        public async Task<List<CourseDetailsModel>> SearchForCourseForStudent(string SearchString, int MaxRowToReturn, int NoOfRowseFetched, int SortingId,long Studentid)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
             try
             {
-                lsCourseDetailsModel = objStudentDTO.SearchForCourse(SearchString, MaxRowToReturn, NoOfRowseFetched, SortingId, Studentid);
+                lsCourseDetailsModel =await objStudentDTO.SearchForCourse(SearchString, MaxRowToReturn, NoOfRowseFetched, SortingId, Studentid);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewUser", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourseForStudent", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return lsCourseDetailsModel;
         }
-        public StudentRegisterModal GetStudentDetails(long StudentId)
+        public async Task<StudentRegisterModal> GetStudentDetails(long StudentId)
         {
             StudentRegisterModal objStudentRegisterModal = null;
             try
             {
-                objStudentRegisterModal = objStudentDTO.GetStudentDetails(StudentId);
+                objStudentRegisterModal =await objStudentDTO.GetStudentDetails(StudentId);
             }
             catch (Exception Ex)
             {
@@ -124,28 +125,28 @@ namespace StudentDashboard.ServiceLayer
             }
             return objStudentRegisterModal;
         }
-        public bool UpdateStudentDetails(StudentRegisterModal objStudentRegisterModal)
+        public async Task<bool> UpdateStudentDetails(StudentRegisterModal objStudentRegisterModal)
         {
             bool result = false;
             try
             {
-                result = objStudentDTO.UpdateStudentDetails(objStudentRegisterModal);
+                result = await objStudentDTO.UpdateStudentDetails(objStudentRegisterModal);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateStudentDetails", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
         }
-        public bool JoinStudentToCourse(long CourseId, long StudentId)
+        public async Task<bool> JoinStudentToCourse(long CourseId, long StudentId)
         {
             bool result = false;
             try
             {
-                result = objStudentDTO.JoinStudentToCourse(CourseId, StudentId);
+                result =await objStudentDTO.JoinStudentToCourse(CourseId, StudentId);
                 if(result)
                 {
                     objInstructorAlertManager.AddCourseJoinAlert(StudentId, CourseId);
@@ -154,18 +155,18 @@ namespace StudentDashboard.ServiceLayer
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinStudentToCourse", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
         }
-        public bool JoinStudentToInstructor(long StudentId, int InstructorId)
+        public async Task<bool> JoinStudentToInstructor(long StudentId, int InstructorId)
         {
             bool result = false;
             try
             {
-                result = objStudentDTO.JoinStudentToInstructor(StudentId, InstructorId);
+                result = await objStudentDTO.JoinStudentToInstructor(StudentId, InstructorId);
                 if(result)
                 {
                     objInstructorAlertManager.AddStudentJoinAlert(StudentId, InstructorId);
@@ -174,67 +175,67 @@ namespace StudentDashboard.ServiceLayer
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinStudentToInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
         }
 
-        public List<StudentJoinedCoursesResponseModal> SerachForJoinedCourses(long StudentId, string SearchString, int MaxRowToReturn)
+        public async Task<List<StudentJoinedCoursesResponseModal>> SerachForJoinedCourses(long StudentId, string SearchString, int MaxRowToReturn)
         {
             List<StudentJoinedCoursesResponseModal> lsStudentJoinedCoursesResponseModal = null;
             try
             {
-                lsStudentJoinedCoursesResponseModal = objStudentDTO.SerachForJoinedCourses(StudentId, SearchString, MaxRowToReturn);
+                lsStudentJoinedCoursesResponseModal =await objStudentDTO.SerachForJoinedCourses(StudentId, SearchString, MaxRowToReturn);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SerachForJoinedCourses", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return lsStudentJoinedCoursesResponseModal;
         }
-        public List<SearchInstructorResponseModal> SearchForInstructor(string SearchString, int MaxRowToReturn)
+        public async Task<List<SearchInstructorResponseModal>> SearchForInstructor(string SearchString, int MaxRowToReturn)
         {
             List<SearchInstructorResponseModal> lsSearchInstructorResponseModal = null;
             try
             {
-                lsSearchInstructorResponseModal = objStudentDTO.SearchForInstructor(SearchString, MaxRowToReturn);
+                lsSearchInstructorResponseModal = await objStudentDTO.SearchForInstructor(SearchString, MaxRowToReturn);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return lsSearchInstructorResponseModal;
         }
-        public List<SearchInstructorResponseModal> SearchForJoinedInstructor(long StudentId,string SearchString, int MaxRowToReturn)
+        public async Task<List<SearchInstructorResponseModal>> SearchForJoinedInstructor(long StudentId,string SearchString, int MaxRowToReturn)
         {
             List<SearchInstructorResponseModal> lsSearchInstructorResponseModal = null;
             try
             {
-                lsSearchInstructorResponseModal = objStudentDTO.GetAllInstructorJoinedForStudent(StudentId,SearchString, MaxRowToReturn);
+                lsSearchInstructorResponseModal =await objStudentDTO.GetAllInstructorJoinedForStudent(StudentId,SearchString, MaxRowToReturn);
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForJoinedInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
             return lsSearchInstructorResponseModal;
         }
-        public List<AssignmentDetailsModel> SearchForAssignment(string SearchString, int MaxRowToReturn)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                lsAssignmentDetailsModel = objStudentDTO.SearchForAssignment(SearchString, MaxRowToReturn);
+                lsAssignmentDetailsModel = await objStudentDTO.SearchForAssignment(SearchString, MaxRowToReturn);
             }
             catch (Exception Ex)
             {
@@ -245,12 +246,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsAssignmentDetailsModel;
         }
-        public List<TestDetailsModel> SearchForTest(string SearchString, int MaxRowToReturn)
+        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn)
         {
             List<TestDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                lsAssignmentDetailsModel = objStudentDTO.SearchForTest(SearchString, MaxRowToReturn);
+                lsAssignmentDetailsModel = await objStudentDTO.SearchForTest(SearchString, MaxRowToReturn);
             }
             catch (Exception Ex)
             {
@@ -303,12 +304,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public List<AssignmentsSubmissionModal> GetAllAssignmentSubmissions(long StudentId)
+        public async Task<List<AssignmentsSubmissionModal>> GetAllAssignmentSubmissions(long StudentId)
         {
             List<AssignmentsSubmissionModal> lsAssignmentsSubmissionOfStudentResponse = null;
             try
             {
-                lsAssignmentsSubmissionOfStudentResponse = objStudentDTO.GetAllAssignmentSubmissions(StudentId);
+                lsAssignmentsSubmissionOfStudentResponse = await objStudentDTO.GetAllAssignmentSubmissions(StudentId);
             }
             catch (Exception Ex)
             {
@@ -319,12 +320,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsAssignmentsSubmissionOfStudentResponse;
         }
-        public List<TestSubmissionModal> GetAllTestSubmissions(long StudentId)
+        public async Task<List<TestSubmissionModal>> GetAllTestSubmissions(long StudentId)
         {
             List<TestSubmissionModal> lsTestSubmissionModal = null;
             try
             {
-                lsTestSubmissionModal = objStudentDTO.GetAllTestSubmissions(StudentId);
+                lsTestSubmissionModal = await objStudentDTO.GetAllTestSubmissions(StudentId);
             }
             catch (Exception Ex)
             {
@@ -375,12 +376,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsTestQuestionResponse;
         }
-        public GetAssignmentSubssionDetials GetAssignmentResponse(long SubmissionId)
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentResponse(long SubmissionId,long StudentId)
         {
             GetAssignmentSubssionDetials objGetAssignmentSubssionDetials = null;
             try
             {
-                objGetAssignmentSubssionDetials=objStudentDTO.GetAssignmentResponse(SubmissionId);
+                objGetAssignmentSubssionDetials=await objStudentDTO.GetAssignmentResponse(SubmissionId, StudentId);
                 if(objGetAssignmentSubssionDetials!=null)
                 {
                     List<AssignmentSubmissionResponseJsonSerializable> lsAssignmentSubmissionResponseJsonSerializable= JsonConvert.DeserializeObject<List<AssignmentSubmissionResponseJsonSerializable>>(objGetAssignmentSubssionDetials.m_strResponse);
@@ -398,12 +399,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return objGetAssignmentSubssionDetials;
         }
-        public GetTestSubmissionDetailsResponse GetTestResponse(long SubmissionId)
+        public async Task<GetTestSubmissionDetailsResponse> GetTestResponse(long SubmissionId,long StudentId)
         {
             GetTestSubmissionDetailsResponse objGetTestSubmissionDetailsResponse = null;
             try
             {
-                objGetTestSubmissionDetailsResponse = objStudentDTO.GetTestResponse(SubmissionId);
+                objGetTestSubmissionDetailsResponse =await  objStudentDTO.GetTestResponse(SubmissionId,StudentId);
                 if (objGetTestSubmissionDetailsResponse != null)
                 {
                     List<TestSubmissionResponseJsonSerializable> lsTestSubmissionResponseJsonSerializable = JsonConvert.DeserializeObject<List<TestSubmissionResponseJsonSerializable>>(objGetTestSubmissionDetailsResponse.m_strResponse);
@@ -421,12 +422,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return objGetTestSubmissionDetailsResponse;
         }
-        public StudentHomeModal GetStudentHomeDetails(long StudentId)
+        public async Task<StudentHomeModal> GetStudentHomeDetails(long StudentId)
         {
             StudentHomeModal objStudentHomeModal = null;
             try
             {
-                objStudentHomeModal = objStudentDTO.GetStudentHomeDetails(StudentId);
+                objStudentHomeModal = await objStudentDTO.GetStudentHomeDetails(StudentId);
             }
             catch (Exception Ex)
             {
@@ -436,6 +437,34 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return objStudentHomeModal;
+        }
+        public async Task<bool> CheckIsStudentHasJoinedTheCourse(long StudentId, long CourseId)
+        {
+            return await objStudentDTO.CheckIsStudentHasJoinedTheCourse(StudentId, CourseId);
+        }
+        public async Task<bool> CheckIsStudentHasSubmittedTheTest(long StudentId, long TestId)
+        {
+            return await objStudentDTO.CheckIsStudentHasSubmittedTheTest(StudentId,TestId);
+        }
+        public async Task<bool> CheckIsStudentHasSubmittedTheAssignment(long StudentId, long AssignmentId)
+        {
+            return await objStudentDTO.CheckIsStudentHasSubmittedTheAssignment(StudentId, AssignmentId);
+        }
+        public async Task<bool> CheckIsTestSubmissionIdExsitsForStudent(long StudentId, long SubmissionId)
+        {
+            return await objStudentDTO.CheckIsTestSubmissionIdExsitsForStudent(StudentId, SubmissionId);
+        }
+        public async Task<bool> CheckIsAssignmentSubmissionIdExsitsForStudent(long StudentId, long SubmissionId)
+        {
+            return await objStudentDTO.CheckIsAssignmentSubmissionIdExsitsForStudent(StudentId, SubmissionId);
+        }
+        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId)
+        {
+            return await objStudentDTO.GetInstructorProfileDetails(InstructorId);
+        }
+        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(int InstructorId)
+        {
+            return await objStudentDTO.GetAllCourseDetailsForInstructor(InstructorId);
         }
     }
 }

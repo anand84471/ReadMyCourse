@@ -21,8 +21,6 @@ namespace StudentDashboard.Controllers
             response.m_stgrResponseMessage = "success";
             response.m_objStudentDetails = new StudentDetailsModel();
             return response;
-        }
-       
-        
+        } 
     }
 }

@@ -274,3 +274,5 @@ D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\bin\Microsoft.Owi
 D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.dll
 D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.pdb
+D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\bin\FluentValidation.dll
+D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\bin\FluentValidation.xml

@@ -364,7 +364,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/assignments?id=@Session["user_id"].ToString()",
+            url: "/api/v1/instructor/assignments",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {

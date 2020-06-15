@@ -8,8 +8,9 @@ namespace StudentDashboard.Models.Course
 {
     public class CourseModel
     {
+        [JsonIgnore]
         [JsonProperty("instructor_id")]
-        public string m_strInstructorUserName { get; set; }
+        public int m_iInstructorId { get; set; }
         public long m_llCourseId { get; set; }
         [JsonProperty("name")]
         public string m_strCourseName { get; set; }

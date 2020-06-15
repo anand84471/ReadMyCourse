@@ -18,12 +18,13 @@ namespace StudentDashboard.HttpResponse
         public int m_iAssignmentScore;
         [JsonProperty("assignment_name")]
         public string m_strAssignmentName;
-        public AssignmentsSubmissionModal(long SubmissionId,int TotalNoOfQuestions,string SubmissionDate,int PercentageScore)
+        public AssignmentsSubmissionModal(long SubmissionId,int TotalNoOfQuestions,string SubmissionDate,int PercentageScore,string AssignmentName)
         {
             this.m_lsSubmissionId = SubmissionId;
             this.m_iNoOfQuestions = TotalNoOfQuestions;
             this.m_strSubmissionDate = SubmissionDate;
             this.m_iAssignmentScore = PercentageScore;
+            this.m_strAssignmentName = AssignmentName;
         }
     }
 }

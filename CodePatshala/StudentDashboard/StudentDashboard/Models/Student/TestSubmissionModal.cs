@@ -19,12 +19,13 @@ namespace StudentDashboard.Views.Student
         public int m_iAssignmentScore;
         [JsonProperty("assignment_name")]
         public string m_strTestName;
-        public TestSubmissionModal(long SubmissionId, int TotalNoOfQuestions, string SubmissionDate, int PercentageScore)
+        public TestSubmissionModal(long SubmissionId, int TotalNoOfQuestions, string SubmissionDate, int PercentageScore,string TestName)
         {
             this.m_lsSubmissionId = SubmissionId;
             this.m_iNoOfQuestions = TotalNoOfQuestions;
             this.m_strSubmissionDate = SubmissionDate;
             this.m_iAssignmentScore = PercentageScore;
+            this.m_strTestName = TestName;
         }
     }
 }

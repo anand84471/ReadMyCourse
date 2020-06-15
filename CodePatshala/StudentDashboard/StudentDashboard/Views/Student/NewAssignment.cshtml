@@ -3,13 +3,30 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <div class="container-fluid" id="addNewCourseContainer">
-    <div class="form-inline">
-        <div class="form-group mb-2">
-            <input type="text" class="form-control ml-2 mr-2" id="courseSearchBox" placeholder="serach for assignments...">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Give new assignment</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Give new assignment</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
+    <div class="input-group pl-lg-5 pr-lg-5">
+        <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for assignments..." aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn btn-primary" onclick="searchForAssignments()" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
         </div>
-        <button class="btn btn-primary mb-2" onclick="searchForAssignments()">search</button>
     </div>
     <hr class="ml-5 mr-5" />
+    <div id="spinner" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <div class="row" id="coursesContainer">
     </div>
 
@@ -111,6 +128,7 @@
                 "key": $("#courseSearchBox").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -140,9 +158,10 @@
                          +'</div>';
                     }
                     coursesContainer.html(rows);
+                    $("#spinner").remove();
                 }
                 else {
-
+                    $("#spinner").remove();
                 }
             }
         });
@@ -150,6 +169,7 @@
     function joinAssignment(id) {
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             url: "GiveAssignment?id=".concat(id),
             type: 'GET',
             success: function (data) {

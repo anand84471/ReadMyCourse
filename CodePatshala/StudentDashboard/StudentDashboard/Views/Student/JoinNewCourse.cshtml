@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "View all assignments";
-    Layout = "~/Views/Shared/__BackLayout.cshtml";
+    ViewBag.Title = "Join new course";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <style type="text/css">
      .custom-blue
@@ -40,33 +40,40 @@
 background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
 }
 </style>
-<nav class="navbar nav-item active navbar-expand-lg nav-divider  navbar-light bg-gradient-dark shadow-lg">
-    <a href="./Home" class="btn navbar-item text-white">
-        <i class="fa fa-arrow-left"></i>
-    </a>
-    <select class="input-group-prepend col-sm-3 mr-3" id="inlineFormCustomSelect">
-        <option selected value="1">Filter...</option>
-        <option value="1">Date of creation ascending</option>
-        <option value="2">Date of creation descending</option>
-        <option value="3">Popularity</option>
-        <option value="4">Rating</option>
-        @*<option value="php">Price high to low</option>
-            <option value="plh">Price low to high</option>*@
-    </select>
-    <div class="input-group ">
 
-        <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for course..." aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn btn-primary" onclick="showCourses()" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
-
+<div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Join new course</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Join new course</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
     </div>
-
-</nav>
-<div class="container-fluid   " id="addNewCourseContainer">
-    
+    <nav class="container-fluid">
+        @*<a href="./Home" class="btn navbar-item text-white">
+                <i class="fa fa-arrow-left"></i>
+            </a>*@
+        <div class="input-group ">
+            <select class="input-group-prepend " style="width:70px" id="inlineFormCustomSelect">
+                <option selected value="1">Filter...</option>
+                <option value="1">Date of creation ascending</option>
+                <option value="2">Date of creation descending</option>
+                <option value="3">Popularity</option>
+                <option value="4">Rating</option>
+                @*<option value="php">Price high to low</option>
+                    <option value="plh">Price low to high</option>*@
+            </select>
+            <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for course..." aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="showCourses()" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
     <div class="row">
         <div class="text-center ml-3">
             
@@ -138,20 +145,21 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
                 searchForCourse();
             }
         });
-        //onpageshow = showCourses();
+        onpageshow = showCourses();
     })();
-    function showCourses()
+    function showCourses(id)
     {
+      
         noOfCourseFetched = 0;
         $("#noCoursesFound").hide();
         var _data =
             {
-                "student_id":parseInt(@Session["user_id"].ToString()),
                 "key": $("#courseSearchBox").val(),
                 "no_of_rows_fetched": 0,
                 "sorting_id": $("#inlineFormCustomSelect").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -192,7 +200,7 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
                          + ' <p class="text mr-3"><i class="fas fa-fw fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Taught by:</b> ' + courses[i].instructor_name + '</p>'
                         +'<ul class="list-unstyled list-inline rating mb-0">'
-                            + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id+ ')">Details</button></p></li>'
+                            + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id + ',this)"> Details</button></p></li>'
                             + '<li class="list-inline-item mr-0"><button  class="btn lg btn-primary custom-join-button"  onclick="callJoinCourse(' + courses[i].course_id + ')">Join Now</button></li>'
                         +'</ul>'
                     +'</div>'
@@ -211,12 +219,13 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
         debugger
         var _data =
             {
-                "student_id":parseInt(@Session["user_id"].ToString()),
+                
                 "key": $("#courseSearchBox").val(),
                 "no_of_rows_fetched": noOfCourseFetched,
                 "sorting_id": $("#inlineFormCustomSelect").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -255,7 +264,7 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
                          + ' <p class="text mr-3"><i class="fas fa-fw fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Taught by:</b> ' + courses[i].instructor_name + '</p>'
                          + '<ul class="list-unstyled list-inline rating mb-0">'
-                             + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id + ')">Details</button></p></li>'
+                             + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id + ',this)">Details</button></p></li>'
                              + '<li class="list-inline-item mr-0"><button  class="btn lg btn-primary custom-join-button"  onclick="callJoinCourse(' + courses[i].course_id + ')">Join Now</button></li>'
                          + '</ul>'
                      + '</div>'
@@ -270,15 +279,20 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
         });
     }
 
-    function getCourseDetails(Id) {
+    function getCourseDetails(Id,buttonid) {
+        $(buttonid).append('<i class="fa fa-spinner fa-spin" id="tempspinner"></i>');
+        $(buttonid).disabled = true;
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: "/api/v1/instructor/getcoursedetails?CourseId=".concat(Id),
             success: function (data) {
                 debugger;
+                
+                $(buttonid).find(":first-child").remove();
                 if (data != null && data.response_code == 1) {
                     $("#courseDescription").text(data.course_description);
                     $("#courseName").text(data.course_name);
@@ -341,7 +355,5 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
             }
         });
     }
-    
-
 </script>
         

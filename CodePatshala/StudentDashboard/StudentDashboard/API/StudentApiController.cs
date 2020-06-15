@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace StudentDashboard.API
@@ -46,12 +47,12 @@ namespace StudentDashboard.API
         }
         [Route("JoinCourse")]
         [HttpPost]
-        public APIDefaultResponse JoinCourse(long CourseId,long StudentId)
+        public async Task<APIDefaultResponse> JoinCourse(long CourseId,long StudentId)
         {
             SearchCourseHttpResponse objResponse = null;
             try
             {
-                if (objStudentService.JoinStudentToCourse(CourseId, StudentId))
+                if (await objStudentService.JoinStudentToCourse(CourseId, StudentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;

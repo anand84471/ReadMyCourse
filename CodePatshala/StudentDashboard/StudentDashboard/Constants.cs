@@ -13,6 +13,7 @@ namespace StudentDashboard
         public static readonly int COUNTRY_CODE_FOR_INDIA = 101;
         public static readonly int API_RESPONSE_CODE_SUCCESS = 1;
         public static readonly int API_RESPONSE_CODE_FAIL = -1;
+        public static readonly int MAX_ITEMS_TO_BE_RETURNED = 10;
         public static readonly string ASSIGNMENT_TYPE_MCQ = "mcq";
         public static readonly string ASSIGNMENT_TYPE_SUBJECTIVE = "sub";
         public static readonly string TEST_TYPE_MCQ = "mcq";
@@ -29,6 +30,23 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_COURSE_JOIN = "new course join";
         public static readonly string ALERT_INSTRUCTOR_NEW_ASSIGNMENT_SUBMISSION = "new assignment submission";
         public static readonly string ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION = "new test submission";
+        #region fluent validation constants for Studnet Registration
+        public static readonly int STUDENT_FIRST_NAME_MAX_LENGTH = 250;
+        public static readonly int STUDENT_LAST_NAME_MAX_LENGTH = 250;
+        public static readonly int STUDENT_EMAIL_MAX_LENGTH = 250;
+        public static readonly int STUDENT_PASSWORD_MAX_LENGTH = 250;
+        public static readonly int STUDENT_PHONE_NO_MAX_LENGTH = 20;
+        public static readonly int STUDENT_PASSWORD_MINIMIUM_LENGTH = 8;
+        #endregion
+        #region fluent validation constants for Instructor Registration
+        public static readonly int INSTRUCTOR_FIRST_NAME_MAX_LENGTH = 250;
+        public static readonly int INSTRUCTOR_LAST_NAME_MAX_LENGTH = 250;
+        public static readonly int INSTRUCTOR_EMAIL_MAX_LENGTH = 250;
+        public static readonly int INSTRUCTOR_PASSWORD_MAX_LENGTH = 250;
+        public static readonly int INSTRUCTOR_PHONE_NO_MAX_LENGTH = 20;
+        public static readonly int INSTRUCTOR_PASSWORD_MINIMIUM_LENGTH = 8;
+        #endregion
+        
         public enum AssignmentQuestionType
         {
             MCQ=1,

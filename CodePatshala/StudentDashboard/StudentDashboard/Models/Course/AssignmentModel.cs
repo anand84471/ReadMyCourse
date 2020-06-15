@@ -35,6 +35,7 @@ namespace StudentDashboard.Models.Course
         public List<McqQuestion> m_lsMcqQuestion { get; set; }
         [JsonProperty("subjective_questions")]
         public List<SubjectiveQuestion > m_lsSubjectiveQuestion { get; set; } 
+        [JsonIgnore]
         [JsonProperty("instructor_id")]
         public int m_iInstructorId { get; set; }
         [JsonProperty("course_id")]

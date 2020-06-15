@@ -3,6 +3,17 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">View Test Response</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="callTestSubmissions()">Test submissions</a></li>
+                <li class="breadcrumb-item active" aria-current="page">View response</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <div class="card shadow mb-4 border-left-primary">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -73,6 +84,7 @@
     function getSubmissionDetails() {
         debugger
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

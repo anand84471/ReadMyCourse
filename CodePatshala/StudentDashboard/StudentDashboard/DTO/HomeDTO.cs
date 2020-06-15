@@ -172,8 +172,8 @@ namespace StudentDashboard.DTO
             try
             {
                 long CourseId = 0;
-                result = objCPDataService.InsertNewCourse(objCourseModel.m_strCourseName,objCourseModel.m_strCourseDescription,
-                                                       objCourseModel.m_strInstructorUserName, ref CourseId);
+                //result = objCPDataService.InsertNewCourse(objCourseModel.m_strCourseName,objCourseModel.m_strCourseDescription,
+                 //                                      objCourseModel.m_iInstructorId, ref CourseId);
                 if(CourseId!=-1)
                 {
                     objCourseModel.m_llCourseId = CourseId;

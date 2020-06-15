@@ -562,6 +562,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="SubmissionId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -610,6 +611,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="SubmissionId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1073,6 +1075,167 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="SearchForCourseForStudentResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasJoinedTheCourse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+        <xs:element minOccurs="0" name="CourseId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasJoinedTheCourseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckStudentHasJoinedTheCourseResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasSubmittedTheAssignment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+        <xs:element minOccurs="0" name="AssignmentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasSubmittedTheAssignmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckStudentHasSubmittedTheAssignmentResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasSubmittedTheTest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+        <xs:element minOccurs="0" name="TestId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckStudentHasSubmittedTheTestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckStudentHasSubmittedTheTestResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckAssignmentResponseIdExistsForStudent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+        <xs:element minOccurs="0" name="SubmissionId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckAssignmentResponseIdExistsForStudentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckAssignmentResponseIdExistsForStudentResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckTestResponseIdExistsForStudent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+        <xs:element minOccurs="0" name="SubmissionId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckTestResponseIdExistsForStudentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckTestResponseIdExistsForStudentResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstructorProfileDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstructorProfileDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetInstructorProfileDetailsResult" nillable="true">
           <xs:complexType>
             <xs:annotation>
               <xs:appinfo>

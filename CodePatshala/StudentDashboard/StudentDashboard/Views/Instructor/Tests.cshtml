@@ -263,7 +263,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/tests?id="+"@Session["user_id"].ToString()",
+            url: "/api/v1/instructor/tests",
             success: function (data) {
                 var x = $('#testQuestionsBody').empty();
                 debugger;

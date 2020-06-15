@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.2\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -226,10 +230,8 @@
     <Compile Include="AlertManager\InstructorAlertManager.cs" />
     <Compile Include="AlertManager\StudentAlertManager.cs" />
     <Compile Include="API\CourseApiController.cs" />
-    <Compile Include="API\HomeApiController.cs" />
     <Compile Include="API\InstructorApiController.cs" />
     <Compile Include="API\SchoolApiController.cs" />
-    <Compile Include="API\StudentApiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -240,7 +242,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountManagerController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
-    <Compile Include="Controllers\CourseApiController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="HttpResponse\InsertCourseV2Response.cs" />
     <Compile Include="HttpResponse\InsertNewCourseResponse.cs" />
     <Compile Include="HttpResponse\InsertNewIndexResponse.cs" />
+    <Compile Include="HttpResponse\InstructorProfileDetailsModal.cs" />
     <Compile Include="HttpResponse\InstructorSearchResponse.cs" />
     <Compile Include="HttpResponse\ObjectInfoDetailsResponse.cs" />
     <Compile Include="HttpResponse\SearchAssignmentResponse.cs" />
@@ -356,6 +358,7 @@
     <Compile Include="Security\JwtAuthenticationAttribute.cs" />
     <Compile Include="Security\JwtManager.cs" />
     <Compile Include="Security\Student\StudentAuthenticationFilter.cs" />
+    <Compile Include="Security\UserProvider.cs" />
     <Compile Include="Service References\CPDataService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -370,6 +373,10 @@
     <Compile Include="Utilities\MainLogger.cs" />
     <Compile Include="Utilities\SHA256Encryption.cs" />
     <Compile Include="Models\Student\TestSubmissionModal.cs" />
+    <Compile Include="ValidationHandler\InstructorAccountRegisterValidator.cs" />
+    <Compile Include="ValidationHandler\InstructorLoginValidator.cs" />
+    <Compile Include="ValidationHandler\StudentAccountRegisterValidator.cs" />
+    <Compile Include="ValidationHandler\StudentLoginValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -409,25 +416,9 @@
     <Content Include="Images\image_5.jpg" />
     <Content Include="Images\image_6.jpg" />
     <Content Include="Images\loc.png" />
-    <Content Include="Images\person_1.jpg" />
-    <Content Include="Images\person_2.jpg" />
-    <Content Include="Images\person_3.jpg" />
-    <Content Include="Images\person_4.jpg" />
     <Content Include="Images\register_bg.jpg" />
     <Content Include="Images\site-logo-pro.png" />
     <Content Include="Images\site-logo.png" />
-    <Content Include="Images\staff-1.jpg" />
-    <Content Include="Images\staff-2.jpg" />
-    <Content Include="Images\staff-3.jpg" />
-    <Content Include="Images\staff-4.jpg" />
-    <Content Include="Images\teacher-1.jpg" />
-    <Content Include="Images\teacher-2.jpg" />
-    <Content Include="Images\teacher-3.jpg" />
-    <Content Include="Images\teacher-4.jpg" />
-    <Content Include="Images\teacher-5.jpg" />
-    <Content Include="Images\teacher-6.jpg" />
-    <Content Include="Images\teacher-7.jpg" />
-    <Content Include="Images\teacher-8.jpg" />
     <Content Include="Scripts\AboutScripts\aos.js" />
     <Content Include="Scripts\AboutScripts\bootstrap.min.js" />
     <Content Include="Scripts\AboutScripts\google-map.js" />
@@ -784,8 +775,9 @@
     <Folder Include="Uploads\Images\" />
     <Folder Include="Uploads\Pdfs\" />
     <Folder Include="Uploads\Videos\" />
-    <Folder Include="ValidationHandler\" />
+    <Folder Include="Views\InstructorAccountManage\" />
     <Folder Include="Views\InstructorAuthorization\" />
+    <Folder Include="Views\StudentAccountManage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,4 +1,5 @@
-﻿using StudentDashboard.HttpRequest;
+﻿using Microsoft.AspNet.Identity;
+using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Security;
@@ -11,17 +12,21 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Filters;
 
 namespace StudentDashboard.API
 {
-    //[Authorize]
+    [JwtAuthentication]
     [RoutePrefix("api/v1/Course")]
     public class CourseApiController : ApiController
     {
         HomeService objHomeService = new HomeService();
         StudentService objStudentService = new StudentService();
         StringBuilder m_strLogMessage = new StringBuilder();
+        StudentUserProvider objStudentUserProvider = new StudentUserProvider();
+        [AllowAnonymous]
         [Route("FetchAboutCourse")]
         [HttpPost]
         public async Task<AboutCourseResponse> AboutCourse(int id)
@@ -44,9 +49,11 @@ namespace StudentDashboard.API
         [HttpPost]
         public async Task<IndexModel> GetCourseIndexDetails(int Id)
         {
+
             IndexModel objResponse = new IndexModel();
             try
             {
+
                 objResponse = await objHomeService.GetIndexDetails(Id);
                 if (objResponse != null)
                 {
@@ -129,14 +136,14 @@ namespace StudentDashboard.API
         }
         [Route("SearchCourse")]
         [HttpPost]
-        public SearchCourseHttpResponse SearchCourse([FromBody]SerchCourseRequest objSerchCourseRequest)
+        public async Task<SearchCourseHttpResponse> SearchCourse([FromBody]SerchCourseRequest objSerchCourseRequest)
         {
             SearchCourseHttpResponse objResponse = new SearchCourseHttpResponse();
             try
             {
                 if (objSerchCourseRequest != null)
                 {
-                    objResponse.lsCourseDetailsModel = objStudentService.SearchForCourse(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
+                    objResponse.lsCourseDetailsModel = await objStudentService.SearchForCourse(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
                                       objSerchCourseRequest.m_iSortingId);
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -158,14 +165,23 @@ namespace StudentDashboard.API
         }
         [Route("SearchCourseForStudent")]
         [HttpPost]
-        public SearchCourseHttpResponse SearchCourseForStudent([FromBody]SerchCourseRequest objSerchCourseRequest)
+        public async Task< SearchCourseHttpResponse> SearchCourseForStudent([FromBody]SerchCourseRequest objSerchCourseRequest)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
+
             SearchCourseHttpResponse objResponse = new SearchCourseHttpResponse();
             try
             {
+
                 if (objSerchCourseRequest != null)
                 {
-                    objResponse.lsCourseDetailsModel = objStudentService.SearchForCourseForStudent(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
+                    objSerchCourseRequest.m_llStudentId = StudentId;
+                    objResponse.lsCourseDetailsModel =await objStudentService.SearchForCourseForStudent(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
                                       objSerchCourseRequest.m_iSortingId, objSerchCourseRequest.m_llStudentId);
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -188,12 +204,18 @@ namespace StudentDashboard.API
         [JwtAuthentication]
         [Route("JoinCourse")]
         [HttpPost]
-        public APIDefaultResponse JoinCourse(long CourseId, long StudentId)
+        public async Task<APIDefaultResponse> JoinCourse(long CourseId)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId=-1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name,out StudentId);
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objStudentService.JoinStudentToCourse(CourseId, StudentId))
+                if (await objStudentService.JoinStudentToCourse(CourseId, StudentId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -215,12 +237,18 @@ namespace StudentDashboard.API
         }
         [Route("JoinStudentToInstructor")]
         [HttpPost]
-        public APIDefaultResponse JoinInstructor(long StudentId,int InstructorId)
+        public async Task<APIDefaultResponse> JoinInstructor(int InstructorId)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objStudentService.JoinStudentToInstructor(StudentId, InstructorId))
+                if (await objStudentService.JoinStudentToInstructor(StudentId, InstructorId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -242,15 +270,23 @@ namespace StudentDashboard.API
         }
         [Route("GetJoinedCourses")]
         [HttpPost]
-        public StudentJoinedCoursesResponse GetJoinedCourses([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
+        public async Task<StudentJoinedCoursesResponse> GetJoinedCourses([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated|| objGetJoinedCourseRequest==null)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             StudentJoinedCoursesResponse objResponse = new StudentJoinedCoursesResponse();
             try
             {
-                objResponse.lsStudentJoinedCoursesResponseModal = objStudentService.SerachForJoinedCourses(
-                    objGetJoinedCourseRequest.m_llStudentGid, objGetJoinedCourseRequest.m_strSearchString, 10);
+                objGetJoinedCourseRequest.m_llStudentGid = StudentId;
+                objResponse.lsStudentJoinedCoursesResponseModal =await objStudentService.SerachForJoinedCourses(
+                    objGetJoinedCourseRequest.m_llStudentGid, objGetJoinedCourseRequest.m_strSearchString,Constants.MAX_ITEMS_TO_BE_RETURNED );
                 if (objResponse.lsStudentJoinedCoursesResponseModal!=null)
                 {
+                    
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                 }
@@ -271,13 +307,21 @@ namespace StudentDashboard.API
         }
         [Route("InstructorSearch")]
         [HttpPost]
-        public SearchInstructorResponse InstructorSearch([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
+        public async Task<SearchInstructorResponse> InstructorSearch([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
+
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objGetJoinedCourseRequest == null)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             SearchInstructorResponse objResponse = new SearchInstructorResponse();
             try
             {
-                objResponse.lsSearchInstructorResponseModal = objStudentService.SearchForInstructor(
-                   objGetJoinedCourseRequest.m_strSearchString, 10);
+                objGetJoinedCourseRequest.m_llStudentGid = StudentId;
+                objResponse.lsSearchInstructorResponseModal =await objStudentService.SearchForInstructor(
+                   objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
                 if (objResponse.lsSearchInstructorResponseModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -300,13 +344,21 @@ namespace StudentDashboard.API
         }
         [Route("GetJoinedInstructors")]
         [HttpPost]
-        public SearchInstructorResponse GetJoinedInstructors([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
+        public async Task<SearchInstructorResponse> GetJoinedInstructors([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
+
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objGetJoinedCourseRequest == null)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             SearchInstructorResponse objResponse = new SearchInstructorResponse();
             try
             {
-                objResponse.lsSearchInstructorResponseModal = objStudentService.SearchForJoinedInstructor(objGetJoinedCourseRequest.m_llStudentGid,
-                   objGetJoinedCourseRequest.m_strSearchString, 10);
+                objGetJoinedCourseRequest.m_llStudentGid = StudentId;
+                objResponse.lsSearchInstructorResponseModal = await objStudentService.SearchForJoinedInstructor(objGetJoinedCourseRequest.m_llStudentGid,
+                   objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
                 if (objResponse.lsSearchInstructorResponseModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -329,12 +381,16 @@ namespace StudentDashboard.API
         }
         [Route("SearchAssignments")]
         [HttpPost]
-        public SearchForAssignmentsApiResponse SearchForAssignments([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
+        public async Task<SearchForAssignmentsApiResponse> SearchForAssignments([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objGetJoinedCourseRequest == null)
+            {
+                return null;
+            }
             SearchForAssignmentsApiResponse objResponse = new SearchForAssignmentsApiResponse();
             try
             {
-                objResponse.m_lsAssignments = objStudentService.SearchForAssignment(objGetJoinedCourseRequest.m_strSearchString, 10);
+                objResponse.m_lsAssignments =await objStudentService.SearchForAssignment(objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
                 if (objResponse.m_lsAssignments != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -357,12 +413,16 @@ namespace StudentDashboard.API
         }
         [Route("SearchTest")]
         [HttpPost]
-        public SearchForTestResponse SearchTest([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
+        public async Task<SearchForTestResponse> SearchTest([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objGetJoinedCourseRequest == null)
+            {
+                return null;
+            }
             SearchForTestResponse objResponse = new SearchForTestResponse();
             try
             {
-                objResponse.m_lsTestDetailsModel = objStudentService.SearchForTest(objGetJoinedCourseRequest.m_strSearchString, 10);
+                objResponse.m_lsTestDetailsModel = await objStudentService.SearchForTest(objGetJoinedCourseRequest.m_strSearchString, 10);
                 if (objResponse.m_lsTestDetailsModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -385,12 +445,18 @@ namespace StudentDashboard.API
         }
         [Route("GetAllAssignmentSubmissionsForStudent")]
         [HttpPost]
-        public AssignmentSubmissionOfStudnetResponse GetAllAssignmentSubmissionForStudent(long StudentId)
+        public async Task<AssignmentSubmissionOfStudnetResponse> GetAllAssignmentSubmissionForStudent()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated )
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             AssignmentSubmissionOfStudnetResponse objResponse = new AssignmentSubmissionOfStudnetResponse();
             try
             {
-                objResponse.m_lsOfStudentResponse = objStudentService.GetAllAssignmentSubmissions(StudentId);
+                objResponse.m_lsOfStudentResponse = await objStudentService.GetAllAssignmentSubmissions(StudentId);
                 if (objResponse.m_lsOfStudentResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -413,12 +479,18 @@ namespace StudentDashboard.API
         }
         [Route("GetAllTestSubmissionsForStudent")]
         [HttpPost]
-        public TestSubmissionOfStudentResponse GetAllTestSubmissionForStudent(long StudentId)
+        public async Task<TestSubmissionOfStudentResponse> GetAllTestSubmissionForStudent()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             TestSubmissionOfStudentResponse objResponse = new TestSubmissionOfStudentResponse();
             try
             {
-                objResponse.m_lsTestSubmissionModal = objStudentService.GetAllTestSubmissions(StudentId);
+                objResponse.m_lsTestSubmissionModal = await objStudentService.GetAllTestSubmissions(StudentId);
                 if (objResponse.m_lsTestSubmissionModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -441,14 +513,21 @@ namespace StudentDashboard.API
         }
         [Route("InsertAssignmentResponse")]
         [HttpPost]
-        public SubmitAssignmentResponse InsertAssignmentResponse([FromBody] AssignmentSubmissionRequest objGetJoinedCourseRequest)
+        public SubmitAssignmentResponse InsertAssignmentResponse([FromBody] AssignmentSubmissionRequest objAssignmentSubmissionRequest)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated|| objAssignmentSubmissionRequest == null)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             SubmitAssignmentResponse objResponse = new SubmitAssignmentResponse();
             try
             {
-                if (objStudentService.InserAssignmentResponse(objGetJoinedCourseRequest))
+                objAssignmentSubmissionRequest.m_llStudentId = StudentId;
+                if (objStudentService.InserAssignmentResponse(objAssignmentSubmissionRequest))
                 {
-                    objResponse.m_llSubmissionId = objGetJoinedCourseRequest.m_llSubmissionId;
+                    objResponse.m_llSubmissionId = objAssignmentSubmissionRequest.m_llSubmissionId;
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                 }
@@ -471,9 +550,17 @@ namespace StudentDashboard.API
         [HttpPost]
         public SubmitAssignmentResponse InsertTestResponse([FromBody] TestSubmissionRequest objInsertTestResponse)
         {
+
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objInsertTestResponse == null)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             SubmitAssignmentResponse objResponse = new SubmitAssignmentResponse();
             try
             {
+                objInsertTestResponse.m_llStudentId = StudentId;
                 if (objStudentService.InsertTestResponse(objInsertTestResponse))
                 {
                     objResponse.m_llSubmissionId = objInsertTestResponse.m_llSubmissionId;
@@ -497,12 +584,18 @@ namespace StudentDashboard.API
         }
         [Route("AssignmentSubmissionDetails")]
         [HttpPost]
-        public GetAssignmentSubssionDetials GetAssignmentSubmissionDetails(long id)
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentSubmissionDetails(long id)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             GetAssignmentSubssionDetials objResponse =null;
             try
             {
-                objResponse = objStudentService.GetAssignmentResponse(id);
+                objResponse = await objStudentService.GetAssignmentResponse(id,StudentId);
                 if (objResponse!=null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -526,12 +619,18 @@ namespace StudentDashboard.API
         }
         [Route("TestSubmissionDetails")]
         [HttpPost]
-        public GetTestSubmissionDetailsResponse GetTestSubmissionDetails(long id)
+        public async Task<GetTestSubmissionDetailsResponse> GetTestSubmissionDetails(long id)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             GetTestSubmissionDetailsResponse objResponse = null;
             try
             {
-                objResponse = objStudentService.GetTestResponse(id);
+                objResponse = await objStudentService.GetTestResponse(id, StudentId);
                 if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;

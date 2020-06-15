@@ -14,7 +14,7 @@
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card border-left-primary shadow h-100 py-2 ">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -100,7 +100,9 @@
                     <h6 class="m-0 font-weight-bold text-primary">About Us</h6>
                 </div>
                 <div class="card-body">
-
+                    <div class="text-center">
+                        <img class="img-fluid mt-1 mb-1" style="width: 25rem;" src="~/Images/site-logo.png" alt="">
+                    </div>
                     <p class="card-text font-weight-bold">Our Mission</p>
                     <p class="mb-0">
                         Covid-19 pandemic made students restricted  at their homes, We are providing an online classroom for  students and teachers to complete their syllabus, assignments, class test and examinations.
@@ -111,7 +113,35 @@
                     <a target="_blank" rel="nofollow" href="https://www.facebook.com/codepathshalacenter/">Know more about codepathshala &rarr;</a>
                 </div>
             </div>
-        </div>
+
+
+        @*</div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4 text-center border-bottom-success">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Welcome to Read My Course</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="~/Images/teaching-logo.svg" alt="">
+                    </div>
+                    <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
+                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
+                </div>
+            </div>
+
+
+        </div>*@
+        
     </div>
+   
 </div>
+<script type="text/javascript">
+    
+    (function () {
+        'use strict';
+        window.localStorage.setItem('jwttoken', "@ViewBag.Token");
+    })();
+    onpageshow = stopSpinner();
+</script>
 <!-- /.container-fluid -->

@@ -54,7 +54,7 @@
         function getSearchDetails() {
             debugger;
             var _data = {
-                "instructor_id": parseInt(@Session["user_id"].ToString()),
+               
                 "search_string": "@ViewBag.q"
             }
             $.ajax({
@@ -204,7 +204,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/courses?InstructorUserName="+"@Session["id"].ToString()",
+            url: "/api/v1/instructor/courses",
             success: function (data) {
                 debugger;
 

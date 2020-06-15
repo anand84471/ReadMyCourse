@@ -2,9 +2,35 @@
     ViewBag.Title = "Account Details";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
-@*@using StudentDashboard.Models.Student;
-    @model StudentRegisterModal*@
-<div class="container-fluid">
+<style type="text/css">
+    .assignment-body
+    {
+        padding-left:0.2rem;
+        padding-right:0.2rem;
+    }
+</style>
+@*<nav class="navbar bg-dark ">
+
+    <a href="./MyCourses" class="btn navbar-item text-white nav-item active">
+        <i class="fa fa-arrow-left"></i>
+    </a>
+    <a class="navbar-brand " href="#">
+        <img src="~/Images/site-logo.png" width="160" height="40" class="align-top bg-white" alt="">
+
+    </a>
+</nav>*@
+<div class="assignment-body container-fluid pt-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Assignment Attempt</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="callNewAssignment()">New Assignment</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Assignment Attempt</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <div class="card shadow mb-4 border-left-primary">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -23,6 +49,7 @@
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                     <button class="dropdown-item beforesubmit" id="submitResponseButton" onclick="requestSubmitAssignment()">Submit</button>
                     <button class="dropdown-item beforesubmit" id="viewResponseButton" onclick="createAssignmentResponse()">View final response</button>
+                    <button class="dropdown-item afterSubmit" id="giveFeedBack" onclick="requestAssignmentFeedback()" style="display:none">Download Response</button>
                     <button class="dropdown-item afterSubmit" id="giveFeedBack" onclick="requestAssignmentFeedback()" style="display:none">Give Feedback</button>
                     <div class="dropdown-divider"></div>
                 </div>
@@ -69,37 +96,37 @@
             </div>
             <!-- Default unchecked -->
             <div class="question_sections mt-0" id="assignmentQuestionSection" style="display:none">
-                <h4 class="m-0 font-weight-bold text-primary" id="mcq_question_statement"><span class="mr-2">1.</span>Question Statement</h4>
+                <h4 class="m-0 font-weight-bold text-primary" id="mcq_question_statement"></h4>
                 <div class="custom-control custom-radio">
                     <input type="radio" class="custom-control-input" id="option1" name="options" value="1">
-                    <label class="custom-control-label" for="option1" id="optionlabel1">Optsdsdion 1</label>
+                    <label class="custom-control-label" for="option1" id="optionlabel1"></label>
                 </div>
 
                 <!-- Group of default radios - option 2 -->
                 <div class="custom-control custom-radio">
                     <input type="radio" class="custom-control-input" id="option2" name="options" value="2">
-                    <label class="custom-control-label" for="option2" id="optionlabel2">Optsdsdion 2</label>
+                    <label class="custom-control-label" for="option2" id="optionlabel2"></label>
                 </div>
 
                 <!-- Group of default radios - option 3 -->
                 <div class="custom-control custom-radio">
                     <input type="radio" class="custom-control-input" id="option3" name="options" value="3">
-                    <label class="custom-control-label" for="option3" id="optionlabel3">sdsdsd 3</label>
+                    <label class="custom-control-label" for="option3" id="optionlabel3"></label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" class="custom-control-input" id="option4" name="options" value="4">
-                    <label class="custom-control-label" for="option4" id="optionlabel4">sdsdsd 4</label>
+                    <label class="custom-control-label" for="option4" id="optionlabel4"></label>
                 </div>
                 <nav aria-label="Page navigation example" class="mt-2">
                     <ul class="pagination justify-content-start">
                         <li class="page-item">
-                            <button class="page-link" onclick="showPreviousQuestion()" id="previousButton">Previous</button>
+                            <button class="page-link" onclick="showPreviousQuestion()" id="previousButton"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
                         </li>
                         <li class="page-item">
                             <button class="page-link" tabindex="-1" onclick="markQuestionToReview()">Review</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" onclick="showNextQuestion()" id="nextButton">Next</button>
+                            <button class="page-link" onclick="showNextQuestion()" id="nextButton"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                         </li>
                     </ul>
                 </nav>
@@ -129,7 +156,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+<div class="modal fade " id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -212,6 +239,7 @@
         initialize();
         debugger
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -306,7 +334,7 @@
     {
         changeStatusOfButton();
         currentQuestionNo--;
-        if(currentQuestionNo<0)
+        if(currentQuestionNo<=0)
         {
             previousButton.prop('disabled', true);
         }
@@ -320,14 +348,25 @@
         preChangeStatusOfButton();
         currentQuestion = mcq_questions[currentQuestionNo];
         var qNo = currentQuestionNo + 1;
-        
         questionStatement.html('<h4 class="mb-2 font-weight-bold text-primary" id="mcq_question_statement"><span class="mr-2">' + qNo + '. </span>' + currentQuestion.question_statement + '</h4>');
         //questionStatement.text(currentQuestion.question_statement);
         option1.text(currentQuestion.option1);
         option2.text(currentQuestion.option2);
         option3.text(currentQuestion.option3);
         option4.text(currentQuestion.option4);
+        if (currentQuestion.answer!= null) {
+            document.getElementsByName("options")[currentQuestion.answer-1].checked = true;
+        }
+        else {
+            var optionRadioButtons = document.getElementsByName("options");
+            for(var i=0;i<optionRadioButtons.length;i++)
+            {
+                optionRadioButtons[i].checked = false;
+            }
+        }
+
     }
+    var optionRadioButtons="";
     function showNextQuestion()
     {
         debugger
@@ -369,10 +408,6 @@
         else {
             changesQuestionStatus(1, listQuestionButtons[currentQuestionNo]);
         }
-    }
-    function countAnsweredQuestions()
-    {
-
     }
     function preChangeStatusOfButton()
     {
@@ -599,6 +634,7 @@
         debugger
         var _data = extractresponseData();
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -625,7 +661,6 @@
         var finishTime = date.toLocaleDateString();
         var _data = {
             "assignment_id": parseInt(@ViewBag.id),
-            "student_id": parseInt(@Session["user_id"].ToString()),
             "time_taken": timeTakenToSolveAssignment,
             "response":answerResponse
         }

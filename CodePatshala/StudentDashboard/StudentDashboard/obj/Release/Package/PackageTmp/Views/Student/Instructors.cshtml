@@ -3,6 +3,16 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Joined Instructors</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Joined Instructors</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <div class="form-inline">
         <div class="form-group mb-2">
             <input type="text" class="form-control ml-2 mr-2" id="courseSearchBox" placeholder="serach for instructor...">
@@ -12,7 +22,15 @@
     <hr class="ml-5 mr-5" />
     <div class="row" id="coursesContainer">
     </div>
+    <div class="text-center" id="footer" style="display:none" >
+        <h5 class="card-title p-2 font-weight-bold"> You have not joined to any instructor</h5>
+        <a id="addAssignmentButton" class="card-title h4" href="./JoinInstructor">Join new instructor</a>
+        @*<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>*@
+        <div id="assignmentContainer" class="assignmentContainer"></div>
 
+        <img src="~/Images/add-friend.svg" class="img-fluid px-sm-4" style="width:300px;height:300px;" />
+
+    </div>
 </div>
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -108,10 +126,11 @@
         debugger
         var _data =
             {
-                "key": $("#courseSearchBox").val(),
-                "id":parseInt(@Session["user_id"].ToString())
+                "key": $("#courseSearchBox").val()
+                
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -120,6 +139,7 @@
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {
+                    $("#footer").hide();
                     var instructors = data.instructors;
                     var coursesContainer = $("#coursesContainer");
                     var rows='';
@@ -140,10 +160,11 @@
                             +'</div>'
                          +'</div>';
                     }
+                   
                     coursesContainer.html(rows);
                 }
                 else {
-
+                    $("#footer").show();
                 }
             }
         });
@@ -152,6 +173,7 @@
     function getInstructorDetails(Id) {
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -222,10 +244,11 @@
     function joinInstructor(InstructorId) {
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/JoinStudentToInstructor?InstructorId=".concat(InstructorId).concat("&StudentId=@Session["user_id"].ToString()"),
+            url: "/api/v1/Course/JoinStudentToInstructor?InstructorId=".concat(InstructorId),
             success: function (data) {
             debugger;
             if (data != null && data.response_code == 1) {

@@ -32,7 +32,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/getactivity?id=@Session["user_id"].ToString()",
+            url: "/api/v1/instructor/getactivity",
             success: function (data) {
                 debugger;
                 var container = document.getElementById("activityContainer");

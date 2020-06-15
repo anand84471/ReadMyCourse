@@ -1,4 +1,5 @@
 ﻿using StudentDashboard.HttpResponse;
+using StudentDashboard.Security;
 using StudentDashboard.ServiceLayer;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Http;
 
 namespace StudentDashboard.API
 {
+    [JwtAuthentication]
     [RoutePrefix("school/api/v1")]
     public class SchoolApiController : ApiController
     {

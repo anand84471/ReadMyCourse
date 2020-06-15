@@ -206,12 +206,12 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllAssignmentSubmissionsForStudent(long StudentId);
         [OperationContract]
-        DataSet GetAssignmentResponse(long SubmissionId);
+        DataSet GetAssignmentResponse(long SubmissionId, long StudentId);
         [OperationContract]
         bool InsertTestResponse(long StudentId, long TestId, DateTime TestStartTime, DateTime TestFinishTime, string Response,
                     int PercentageScore, int TotalNoOfQuestions, ref long SubmissionId);
         [OperationContract]
-        DataSet GetTestResponse(long SubmissionId);
+        DataSet GetTestResponse(long SubmissionId, long StudentId);
         [OperationContract]
         DataSet GetAllTestSubmissionsForStudent(long StudentId);
         [OperationContract]
@@ -252,6 +252,18 @@ namespace CPDataService
         DataSet SearchForTestOfInstructor(string SerachString, int MaxRowToReturn, int InstructorId);
         [OperationContract]
         DataSet SearchForCourseForStudent(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
+        [OperationContract]
+        DataSet CheckStudentHasJoinedTheCourse(long StudentId, long CourseId);
+        [OperationContract]
+        DataSet CheckStudentHasSubmittedTheAssignment(long StudentId, long AssignmentId);
+        [OperationContract]
+        DataSet CheckStudentHasSubmittedTheTest(long StudentId, long TestId);
+        [OperationContract]
+        DataSet CheckAssignmentResponseIdExistsForStudent(long StudentId, long SubmissionId);
+        [OperationContract]
+        DataSet CheckTestResponseIdExistsForStudent(long StudentId, long SubmissionId);
+        [OperationContract]
+        DataSet GetInstructorProfileDetails(int InstructorId);
 
         // TODO: Add your service operations here
     }

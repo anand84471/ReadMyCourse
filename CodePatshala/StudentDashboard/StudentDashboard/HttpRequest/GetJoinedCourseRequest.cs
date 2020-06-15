@@ -10,6 +10,7 @@ namespace StudentDashboard.HttpRequest
     {
         [JsonProperty("key")]
         public string m_strSearchString;
+        [JsonIgnore]
         [JsonProperty("id")]
         public long m_llStudentGid;
     }

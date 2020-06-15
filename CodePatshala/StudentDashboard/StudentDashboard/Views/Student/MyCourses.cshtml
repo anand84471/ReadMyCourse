@@ -2,9 +2,24 @@
     ViewBag.Title = "My Courses";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
-<div class="container-fluid   center" id="addNewCourseContainer">
-    <div class="center p-4" style="max-width:200rem">
-        <div class="input-group ">
+<style type="text/css">
+    .my-icon {
+    
+}
+</style>
+<div class="container-fluid " id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">My Courses</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">My Courses</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
+    <div class="m-lg-5"> 
+        <div class="input-group" id="search-help-section">
             <input type="text" class="form-control" id="courseSearchBox" placeholder="serach for course...">
             <div class="input-group-append">
                 <button class="btn btn-primary input-group-append" onclick="searchForCourse()" type="button">
@@ -12,35 +27,21 @@
                 </button>
             </div>
         </div>
+      
     </div>
-    <div class="container-fluid">
-        <div class="text-center container-fluid">
-            <h1 class="text-center center">Search for courses</h1>
-            <img src="~/Images/search-gen.svg" class="img-fluid" style="width:300px;height:300px;"/>
+    <div class="container-fluid" id="extra-course-search" style="display:none;">
+        <div class="text-center container-fluid" id="search-help-section" >
+          
+            <h1 class="text-center center">Search for courses result</h1>
+            <div class="alert alert-danger" role="alert">
+                No courses found
+            </div>
+            <img class="" src="https://img.icons8.com/cute-clipart/64/000000/nothing-found.png" />
         </div>
     </div>
     <hr class="ml-5 mr-5" />
     <div class="row" id="coursesContainer">
-        @*<div class="col-xl-3 col-md-6 mb-4">
-            <div class="card shadow border-left-success  ml-2 mr-2 mb-2">
-                <div class="card-body text-center">
-                    <h4 class="card-title font-weight-bold"><a>Course Name</a></h4>
-                    <p class="card-text">Some quick example text to build on</p>
-                    <ul class="list-unstyled list-inline rating mb-0">
-                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"> </i></li>
-                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                        <li class="list-inline-item mr-0"><i class="fas fa-star amber-text"></i></li>
-                        <li class="list-inline-item"><i class="fas fa-star-half-alt amber-text"></i></li>
-                        <li class="list-inline-item"><p class="text-muted">4.5 (413)</p></li>
-                    </ul>
-                    <ul class="list-unstyled list-inline rating mb-0">
-                        <li class="list-inline-item mr-2"><button  class="btn btn-outline-primary">Details</button></li>
-                        <li class="list-inline-item mr-0"><button  class="btn btn-primary">Join Now</button></li>
-                    </ul>
-
-                </div>
-            </div>*@
+        
     </div>
 
 </div>
@@ -98,13 +99,15 @@
     })();
    
     function searchForCourse() {
+        var coursesContainer = $("#coursesContainer");
         debugger
         var _data =
             {
-                "key": $("#courseSearchBox").val(),
-                "id":parseInt(@Session["user_id"].ToString())
+                "key": $("#courseSearchBox").val()
+               
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -112,9 +115,10 @@
             url: "/api/v1/Course/GetJoinedCourses",
             success: function (data) {
                 debugger;
-                if (data != null && data.response_code == 1) {
+                if (data != null && data.response_code == 1 && data.course_details!=null&&data.course_details.length>0) {
                     var courses = data.course_details;
-                    var coursesContainer = $("#coursesContainer");
+                    
+                    $("#extra-course-search").hide();
                     var rows='';
                     for (var i = 0; i < courses.length; i++) {
                         if (courses[i].course_name.length > 18) {
@@ -150,7 +154,8 @@
                     coursesContainer.html(rows);
                 }
                 else {
-
+                    coursesContainer.html("");
+                    $("#extra-course-search").show();
                 }
             }
         });
@@ -159,6 +164,7 @@
     function getCourseDetails(Id) {
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

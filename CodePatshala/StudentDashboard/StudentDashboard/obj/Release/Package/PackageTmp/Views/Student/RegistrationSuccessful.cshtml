@@ -16,7 +16,7 @@
     <!-- Custom styles for this template-->
     <link href="../../fonts/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-primary">
+<body style="background-image: url('../Images/bg_4.jpg');">
     <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -25,20 +25,30 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                           
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
+                                        <a href="./"><img src="../Images/site-logo.png" class="img-fluid " alt="..."></a>
                                         <h1 class="h4 text-gray-900 mb-4">CodePathshala Student Login</h1>
                                     </div>
                                     <form method="post" class="needs-validation" action="./ValidateLogin" autocomplete="off" novalidate>
                                         @Html.AntiForgeryToken()
                                         <div class="form-group">
-                                            <input type="email" class="form-control" value="@ViewBag.UserMail" name="userEmail" id="userEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                                </div>
+                                                <input type="email" class="form-control" value="@ViewBag.UserMail" name="userEmail" id="userEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" required>
-
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                                </div>
+                                                <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" required>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -64,6 +74,7 @@
                                    
                                 </div>
                             </div>
+                            <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
                         </div>
                     </div>
                 </div>

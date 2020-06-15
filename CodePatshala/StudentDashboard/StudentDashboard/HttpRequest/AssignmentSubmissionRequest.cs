@@ -10,6 +10,7 @@ namespace StudentDashboard.HttpRequest
 {
     public class AssignmentSubmissionRequest
     {
+        [JsonIgnore]
         [JsonProperty("student_id")]
         public long m_llStudentId { get; set; }
         [JsonProperty("assignment_id")]

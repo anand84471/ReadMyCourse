@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.DTO
@@ -22,12 +23,12 @@ namespace StudentDashboard.DTO
         {
             objCPDataService = new CPDataService.CpDataServiceClient();
         }
-        public bool RegisterNewStudent(StudentRegisterModal objStudentDetailsModal)
+        public async Task<bool> RegisterNewStudent(StudentRegisterModal objStudentDetailsModal)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.RegisterNewStudent(objStudentDetailsModal.m_strFirstName,objStudentDetailsModal.m_strLastName,
+                result = await objCPDataService.RegisterNewInstructorAsync(objStudentDetailsModal.m_strFirstName,objStudentDetailsModal.m_strLastName,
                                objStudentDetailsModal.m_strEmail,objStudentDetailsModal.m_strHashedPassword,objStudentDetailsModal.m_strPhoneNo);
 
             }
@@ -40,12 +41,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool InsertActivityForInstructor(long StudentId, string ActivityMessage)
+        public async Task<bool> InsertActivityForInstructor(long StudentId, string ActivityMessage)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.InsertActivityForStudent( ActivityMessage,StudentId);
+                result =await  objCPDataService.InsertActivityForStudentAsync( ActivityMessage,StudentId);
             }
             catch (Exception Ex)
             {
@@ -73,13 +74,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<CourseDetailsModel> SearchForCourse(string SearchString,int MaxRowToReturn,int NoOfRowsFetched,int SortingTypeId)
+        public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString,int MaxRowToReturn,int NoOfRowsFetched,int SortingTypeId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.SearchForCourse(SearchString,MaxRowToReturn, NoOfRowsFetched, SortingTypeId);
+                DataSet ds  =await  objCPDataService.SearchForCourseAsync(SearchString,MaxRowToReturn, NoOfRowsFetched, SortingTypeId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsCourseDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -102,13 +102,12 @@ namespace StudentDashboard.DTO
             }
             return lsCourseDetailsModel;
         }
-        public List<CourseDetailsModel> SearchForCourse(string SearchString, int MaxRowToReturn, int NoOfRowsFetched, int SortingTypeId,long StudentId)
+        public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn, int NoOfRowsFetched, int SortingTypeId,long StudentId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.SearchForCourseForStudent(SearchString, MaxRowToReturn, NoOfRowsFetched, SortingTypeId, StudentId);
+                DataSet ds = await objCPDataService.SearchForCourseForStudentAsync(SearchString, MaxRowToReturn, NoOfRowsFetched, SortingTypeId, StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsCourseDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -131,13 +130,12 @@ namespace StudentDashboard.DTO
             }
             return lsCourseDetailsModel;
         }
-        public StudentRegisterModal GetStudentDetails(long StudentId)
+        public async Task<StudentRegisterModal> GetStudentDetails(long StudentId)
         {
             StudentRegisterModal objStudentRegisterModal = null;
             try
             {
-                DataSet ds = new DataSet();
-                ds = objCPDataService.GetStudentDetails(StudentId);
+                DataSet ds =await objCPDataService.GetStudentDetailsAsync(StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     objStudentRegisterModal = ds.Tables[0].AsEnumerable().Select(
@@ -166,12 +164,12 @@ namespace StudentDashboard.DTO
             }
             return objStudentRegisterModal;
         }
-        public bool UpdateStudentDetails(StudentRegisterModal objStudentRegisterModal)
+        public async Task<bool> UpdateStudentDetails(StudentRegisterModal objStudentRegisterModal)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.UpdateStudentDetails(objStudentRegisterModal.m_strFirstName, objStudentRegisterModal.m_strLastName,
+                result = await objCPDataService.UpdateStudentDetailsAsync(objStudentRegisterModal.m_strFirstName, objStudentRegisterModal.m_strLastName,
                             objStudentRegisterModal.m_strAddressLine1,objStudentRegisterModal.m_strAddressLine2,objStudentRegisterModal.m_strPinCode,
                             objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_strGender);
 
@@ -185,12 +183,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public bool JoinStudentToCourse(long CourseId,long StudentId)
+        public async Task<bool> JoinStudentToCourse(long CourseId,long StudentId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.JoinStudentToCourse(CourseId,StudentId);
+                result = await objCPDataService.JoinStudentToCourseAsync(CourseId,StudentId);
             }
             catch (Exception Ex)
             {
@@ -201,12 +199,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<SearchInstructorResponseModal> SearchForInstructor(string SearchString,int MaxRowToReturn )
+        public async Task<List<SearchInstructorResponseModal>> SearchForInstructor(string SearchString,int MaxRowToReturn )
         {
             List<SearchInstructorResponseModal> lsSearchInstructorResponseModal = null;
             try
             {
-                DataSet ds = objCPDataService.SearchForInstructor(SearchString, MaxRowToReturn);
+                DataSet ds =await objCPDataService.SearchForInstructorAsync(SearchString, MaxRowToReturn);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsSearchInstructorResponseModal = ds.Tables[0].AsEnumerable().Select(
@@ -229,12 +227,12 @@ namespace StudentDashboard.DTO
             }
             return lsSearchInstructorResponseModal;
         }
-        public List<StudentJoinedCoursesResponseModal> SerachForJoinedCourses(long StudentId,string SearchString, int MaxRowToReturn)
+        public async Task<List<StudentJoinedCoursesResponseModal>> SerachForJoinedCourses(long StudentId,string SearchString, int MaxRowToReturn)
         {
             List<StudentJoinedCoursesResponseModal> lsStudentJoinedCoursesResponseModal = null;
             try
             {
-                DataSet ds = objCPDataService.GetJoinedCoursesForStudent(StudentId,SearchString, MaxRowToReturn);
+                DataSet ds =await objCPDataService.GetJoinedCoursesForStudentAsync(StudentId,SearchString, MaxRowToReturn);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsStudentJoinedCoursesResponseModal = ds.Tables[0].AsEnumerable().Select(
@@ -256,12 +254,12 @@ namespace StudentDashboard.DTO
             }
             return lsStudentJoinedCoursesResponseModal;
         }
-        public bool JoinStudentToInstructor(long StudentId,int InstructorId)
+        public async Task<bool> JoinStudentToInstructor(long StudentId,int InstructorId)
         {
             bool result = false;
             try
             {
-                result = objCPDataService.JoinStudentToInstructor(StudentId, InstructorId);
+                result = await objCPDataService.JoinStudentToInstructorAsync(StudentId, InstructorId);
             }
             catch (Exception Ex)
             {
@@ -272,12 +270,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<SearchInstructorResponseModal> GetAllInstructorJoinedForStudent(long StudentId,string SearchString, int MaxRowToReturn)
+        public async Task<List<SearchInstructorResponseModal>> GetAllInstructorJoinedForStudent(long StudentId,string SearchString, int MaxRowToReturn)
         {
             List<SearchInstructorResponseModal> lsSearchInstructorResponseModal = null;
             try
             {
-                DataSet ds = objCPDataService.GetAllJoinedInstructorForStudent(StudentId,SearchString, MaxRowToReturn);
+                DataSet ds =await objCPDataService.GetAllJoinedInstructorForStudentAsync(StudentId,SearchString, MaxRowToReturn);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsSearchInstructorResponseModal = ds.Tables[0].AsEnumerable().Select(
@@ -300,12 +298,12 @@ namespace StudentDashboard.DTO
             }
             return lsSearchInstructorResponseModal;
         }
-        public List<AssignmentDetailsModel> SearchForAssignment(string SearchString, int MaxRowToReturn)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                DataSet ds = objCPDataService.SearchForAssignment(SearchString, MaxRowToReturn);
+                DataSet ds = await objCPDataService.SearchForAssignmentAsync(SearchString, MaxRowToReturn);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -329,7 +327,7 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentDetailsModel;
         }
-        public bool InserAssignmentResponse(AssignmentSubmissionRequest objAssignmentSubmissionRequest)
+        public  bool InserAssignmentResponse(AssignmentSubmissionRequest objAssignmentSubmissionRequest)
         {
             bool result = false;
             try
@@ -347,12 +345,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<TestDetailsModel> SearchForTest(string SearchString, int MaxRowToReturn)
+        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn)
         {
             List<TestDetailsModel> lsTestDetailsModel = null;
             try
             {
-                DataSet ds = objCPDataService.SearchForTest(SearchString, MaxRowToReturn);
+                DataSet ds = await objCPDataService.SearchForTestAsync(SearchString, MaxRowToReturn);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTestDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -375,12 +373,12 @@ namespace StudentDashboard.DTO
             }
             return lsTestDetailsModel;
         }
-        public List<AssignmentsSubmissionModal> GetAllAssignmentSubmissions(long StudentId)
+        public async Task<List<AssignmentsSubmissionModal>> GetAllAssignmentSubmissions(long StudentId)
         {
             List<AssignmentsSubmissionModal> lsAssignmentsSubmissionOfStudentResponse = null;
             try
             {
-                DataSet ds = objCPDataService.GetAllAssignmentSubmissionsForStudent(StudentId);
+                DataSet ds = await objCPDataService.GetAllAssignmentSubmissionsForStudentAsync(StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentsSubmissionOfStudentResponse = ds.Tables[0].AsEnumerable().Select(
@@ -388,7 +386,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("SUBMISSION_ID"),
                          dataRow.Field<int>("TOTAL_NO_OF_QUESTIONS"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<int>("ASSIGNMANT_PERCENTAGE_SCORE")
+                         dataRow.Field<int>("ASSIGNMANT_PERCENTAGE_SCORE"),
+                         dataRow.Field<string>("ASSIGNMENT_NAME")
                          )).ToList();
                 }
             }
@@ -401,13 +400,13 @@ namespace StudentDashboard.DTO
             }
             return lsAssignmentsSubmissionOfStudentResponse;
         }
-        public GetAssignmentSubssionDetials GetAssignmentResponse(long Submissionid)
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentResponse(long Submissionid,long StudentId)
         {
             GetAssignmentSubssionDetials objGetAssignmentSubssionDetials=null;
             try
             {
 
-                DataSet ds = objCPDataService.GetAssignmentResponse(Submissionid);
+                DataSet ds = await objCPDataService.GetAssignmentResponseAsync(Submissionid, StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     objGetAssignmentSubssionDetials = ds.Tables[0].AsEnumerable().Select(
@@ -448,12 +447,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public List<TestSubmissionModal> GetAllTestSubmissions(long StudentId)
+        public async Task<List<TestSubmissionModal>> GetAllTestSubmissions(long StudentId)
         {
             List<TestSubmissionModal> lsTestSubmissionModal = null;
             try
             {
-                DataSet ds = objCPDataService.GetAllTestSubmissionsForStudent(StudentId);
+                DataSet ds = await objCPDataService.GetAllTestSubmissionsForStudentAsync(StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTestSubmissionModal = ds.Tables[0].AsEnumerable().Select(
@@ -461,7 +460,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("SUBMISSION_ID"),
                          dataRow.Field<int>("TOTAL_NO_OF_QUESTIONS"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<int>("TEST_SCORE")
+                         dataRow.Field<int>("TEST_SCORE"),
+                         dataRow.Field<string>("TEST_NAME")
                          )).ToList();
                 }
             }
@@ -474,12 +474,12 @@ namespace StudentDashboard.DTO
             }
             return lsTestSubmissionModal;
         }
-        public GetTestSubmissionDetailsResponse GetTestResponse(long Submissionid)
+        public async Task< GetTestSubmissionDetailsResponse> GetTestResponse(long Submissionid,long StudentId)
         {
             GetTestSubmissionDetailsResponse objGetTestSubmissionDetailsResponse = null;
             try
             {
-                DataSet ds = objCPDataService.GetTestResponse(Submissionid);
+                DataSet ds =await objCPDataService.GetTestResponseAsync(Submissionid,StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     objGetTestSubmissionDetailsResponse = ds.Tables[0].AsEnumerable().Select(
@@ -502,13 +502,13 @@ namespace StudentDashboard.DTO
             }
             return objGetTestSubmissionDetailsResponse;
         }
-        public StudentHomeModal GetStudentHomeDetails(long StudentId)
+        public async Task<StudentHomeModal> GetStudentHomeDetails(long StudentId)
         {
             StudentHomeModal objStudentHomeModal = null;
             try
             {
 
-                DataSet ds = objCPDataService.GetStudentHomeDetails(StudentId);
+                DataSet ds = await objCPDataService.GetStudentHomeDetailsAsync(StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     objStudentHomeModal = ds.Tables[0].AsEnumerable().Select(
@@ -529,6 +529,172 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return objStudentHomeModal;
+        }
+        public async Task<bool> CheckIsStudentHasJoinedTheCourse(long StudentId,long CourseId)
+        {
+            bool result=false;   
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckStudentHasJoinedTheCourseAsync(StudentId, CourseId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIsStudentHasSubmittedTheTest(long StudentId, long TestId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckStudentHasSubmittedTheTestAsync(StudentId, TestId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasSubmittedTheTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIsStudentHasSubmittedTheAssignment(long StudentId, long AssignmentId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckStudentHasSubmittedTheAssignmentAsync(StudentId, AssignmentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasSubmittedTheTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIsTestSubmissionIdExsitsForStudent(long StudentId, long SubmissionId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckTestResponseIdExistsForStudentAsync(StudentId, SubmissionId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsTestSubmissionIdExsitsForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIsAssignmentSubmissionIdExsitsForStudent(long StudentId, long ResponseId)
+        {
+            bool result = false;
+            try
+            {
+         
+                DataSet ds = await objCPDataService.CheckAssignmentResponseIdExistsForStudentAsync(StudentId, ResponseId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasSubmittedTheTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId)
+        {
+            InstructorProfileDetailsModal result = null;
+            try
+            {
+
+                DataSet ds = await objCPDataService.GetInstructorProfileDetailsAsync(InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new InstructorProfileDetailsModal(
+                         dataRow.Field<string>("INSTRUCTOR_FULL_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_COURSES_CREATED"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_CREATED"),
+                         dataRow.Field<int>("NO_OF_TESTS_CREATED"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED_THE_COURSE")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasSubmittedTheTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(int InstructorId)
+        {
+            List<CourseDetailsModel> result = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetAllCourseAsync(InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new CourseDetailsModel(
+                         dataRow.Field<long>("COURSE_ID"),
+                         dataRow.Field<string>("COURSE_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("TOTAL_INDEXES"),
+                          dataRow.Field<string>("COURSE_STATUS_NAME"),
+                           dataRow.Field<int>("NO_OF_STUDENTS_JOINED")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllCourseDetailsForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

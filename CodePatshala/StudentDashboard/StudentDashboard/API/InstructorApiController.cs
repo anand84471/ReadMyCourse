@@ -12,7 +12,7 @@ using System.Web.Http;
 
 namespace StudentDashboard.API
 {
-    [Authorize]
+    [JwtAuthentication]
     [RoutePrefix("api/v1/instructor")]
     public class InstructorApiController : ApiController
     {
@@ -21,9 +21,14 @@ namespace StudentDashboard.API
         HomeService objHomeService = new HomeService(); 
         [Route("addcourse")]
         [HttpPost]
-        [JwtAuthentication]
         public async Task<InsertNewCourseResponse> InsertNewCourse([FromBody]CourseModel objCourseModel)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             InsertNewCourseResponse objInsertNewCourseResponse = new InsertNewCourseResponse();
             if(objCourseModel==null)
             {
@@ -32,7 +37,8 @@ namespace StudentDashboard.API
             }
             else
             {
-                if(await objHomeService.InsertNewCourse(objCourseModel))
+                objCourseModel.m_iInstructorId = InstructorId;
+                if (await objHomeService.InsertNewCourse(objCourseModel))
                 {
                     objInsertNewCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objInsertNewCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -44,6 +50,10 @@ namespace StudentDashboard.API
         [Route("addindex")]
         public InsertNewIndexResponse InsertNewIndex([FromBody] IndexModel objIndexModel)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
             string strCurrentMethodName = "InsertNewIndex";
             InsertNewIndexResponse objInsertNewIndexResponse = new InsertNewIndexResponse();
             try
@@ -76,6 +86,10 @@ namespace StudentDashboard.API
         [Route("addtopic")]
         public async Task<InsertNewIndexResponse> InsertTopics([FromBody] IndexModel objIndexModel)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
             InsertNewIndexResponse objInsertNewIndexResponse = new InsertNewIndexResponse();
             try
             {

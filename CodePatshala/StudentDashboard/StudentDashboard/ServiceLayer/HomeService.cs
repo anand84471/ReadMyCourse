@@ -591,7 +591,7 @@ namespace StudentDashboard.ServiceLayer
             if(result)
             {
                 long InstructorId=-1;
-                objHomeDTO.GetInstructorIdFromUserId(objCourseModel.m_strInstructorUserName,ref InstructorId);
+                //objHomeDTO.GetInstructorIdFromUserId(objCourseModel.m_iInstructorId,ref InstructorId);
                 if (InstructorId != -1)
                 {
                     await InsertActivityForInstructor((int)InstructorId, objActivityManager.CreateActivityMessageForinstructor(objCourseModel.m_llCourseId, objCourseModel.m_strCourseName, (int)Constants.ActivityType.COURSE_CREATED));

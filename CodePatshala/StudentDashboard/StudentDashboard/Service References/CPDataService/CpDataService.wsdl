@@ -314,6 +314,42 @@
   <wsdl:message name="ICpDataService_SearchForCourseForStudent_OutputMessage">
     <wsdl:part name="parameters" element="tns:SearchForCourseForStudentResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasJoinedTheCourse_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasJoinedTheCourse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasJoinedTheCourse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasJoinedTheCourseResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasSubmittedTheAssignment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasSubmittedTheAssignment" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasSubmittedTheAssignment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasSubmittedTheAssignmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasSubmittedTheTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasSubmittedTheTest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentHasSubmittedTheTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentHasSubmittedTheTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentResponseIdExistsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentResponseIdExistsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentResponseIdExistsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentResponseIdExistsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestResponseIdExistsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestResponseIdExistsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestResponseIdExistsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestResponseIdExistsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorProfileDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorProfileDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorProfileDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorProfileDetailsResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetData_InputMessage">
     <wsdl:part name="parameters" element="tns:GetData" />
   </wsdl:message>
@@ -902,6 +938,30 @@
     <wsdl:operation name="SearchForCourseForStudent">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/SearchForCourseForStudent" message="tns:ICpDataService_SearchForCourseForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/SearchForCourseForStudentResponse" message="tns:ICpDataService_SearchForCourseForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasJoinedTheCourse">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourse" message="tns:ICpDataService_CheckStudentHasJoinedTheCourse_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourseResponse" message="tns:ICpDataService_CheckStudentHasJoinedTheCourse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasSubmittedTheAssignment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignment" message="tns:ICpDataService_CheckStudentHasSubmittedTheAssignment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignmentResponse" message="tns:ICpDataService_CheckStudentHasSubmittedTheAssignment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasSubmittedTheTest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTest" message="tns:ICpDataService_CheckStudentHasSubmittedTheTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTestResponse" message="tns:ICpDataService_CheckStudentHasSubmittedTheTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentResponseIdExistsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudent" message="tns:ICpDataService_CheckAssignmentResponseIdExistsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudentResponse" message="tns:ICpDataService_CheckAssignmentResponseIdExistsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestResponseIdExistsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudent" message="tns:ICpDataService_CheckTestResponseIdExistsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudentResponse" message="tns:ICpDataService_CheckTestResponseIdExistsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorProfileDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetails" message="tns:ICpDataService_GetInstructorProfileDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsResponse" message="tns:ICpDataService_GetInstructorProfileDetails_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetData" message="tns:ICpDataService_GetData_InputMessage" />
@@ -1614,6 +1674,60 @@
     </wsdl:operation>
     <wsdl:operation name="SearchForCourseForStudent">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/SearchForCourseForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasJoinedTheCourse">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasSubmittedTheAssignment">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentHasSubmittedTheTest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentResponseIdExistsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestResponseIdExistsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorProfileDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorProfileDetails" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

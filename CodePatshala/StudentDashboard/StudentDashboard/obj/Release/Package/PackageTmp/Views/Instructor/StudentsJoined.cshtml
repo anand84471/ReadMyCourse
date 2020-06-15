@@ -97,7 +97,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/Joinee?id=@Session["user_id"]",
+            url: "/api/v1/instructor/Joinee",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {

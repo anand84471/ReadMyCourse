@@ -36,7 +36,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Courses for you</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callMyCourses()">My Courses</a>
-                        <a class="collapse-item font-weight-bold" href="./JoinNewCourse" >Join new course</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewCourse()" >Join New Course</a>
                     </div>
                 </div>
             </li>
@@ -183,7 +183,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small font-weight-bold">@Session["id"].ToString()</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small font-weight-bold">@Session["student_email"].ToString()</span>
                                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -220,9 +220,34 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>*@
-                <div id="body">
-                    @RenderBody()
-                </div>
+                <section >
+                    <!-- Start -->
+                   
+
+                    <div id="body" >@RenderBody()</div>
+                    <!-- Loading Spinner Wrapper-->
+                    <div class="loader text-center text-primary bg-primary" id="body-loader" style="display:none;">
+                        <div class="loader-inner">
+
+                            <!-- Animated Spinner -->
+                            <div class="lds-roller mb-3">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+
+                            <!-- Spinner Description Text [For Demo Purpose]-->
+                            <h4 class="text-uppercase font-weight-bold">Loading</h4>
+                            <p class="font-italic text-muted">Coffee at your place, tommorow at 10A.M. - don't be late!</p>
+                        </div>
+                    </div>
+                   
+                </section>
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
@@ -282,9 +307,6 @@
 
     (function () {
         'use strict';
-        onpageshow = stopSpinner();
-     
-
 
     })();
     //Ajax calls
@@ -541,21 +563,25 @@
         });
     }
     function stopSpinner() {
-        $("#spinner").css("visibility", "hidden")
-        $("#spinner1").css("visibility", "hidden")
-        $("#spinner2").css("visibility", "hidden")
-        $("#spinner3").css("visibility", "hidden")
+        //$("#spinner").css("visibility", "hidden")
+        //$("#spinner1").css("visibility", "hidden")
+        //$("#spinner2").css("visibility", "hidden")
+        //$("#spinner3").css("visibility", "hidden")
+        $("#body-loader").hide();
        
     }
     function startSpinner() {
-        $("#spinner").show();
-        $("#spinner1").show();
-        $("#spinner2").show();
-        $("#spinner3").show();  
-        $("#spinner").css("visibility", "visible")
-        $("#spinner1").css("visibility", "visible")
-        $("#spinner2").css("visibility", "visible")
-        $("#spinner3").css("visibility", "visible")
+        //$("#spinner").show();
+        //$("#spinner1").show();
+        //$("#spinner2").show();
+        //$("#spinner3").show();  
+        //$("#spinner").css("visibility", "visible")
+        //$("#spinner1").css("visibility", "visible")
+        //$("#spinner2").css("visibility", "visible")
+        //$("#spinner3").css("visibility", "visible")
+        $("#body").empty();
+        $("#body").html("");
+        $("#body-loader").show();
     }
 </script>
 </html>

@@ -474,7 +474,7 @@
         $("#editTopicModalHeader").text('Add Index Details');
         $("#ab-topicNameLabel").text('Enter Index Name');
         $("#ab-topicDescriptionLabel").text('Enter Index Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "AddNewIndex(" + @Session["course_id"].ToString() + ")");
+        $("#editTopicModalSubmitButton").attr("onclick", "AddNewIndex()");
         $("#editTopicModal").modal('show');
     }
     function AddNewIndex(CourseId)
@@ -509,7 +509,7 @@
         $("#editTopicModalHeader").text('Add Assignment Details');
         $("#ab-topicNameLabel").text('Enter Assignment Name');
         $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "AddnewAssignment(" + @Session["course_id"].ToString() + ")");
+        $("#editTopicModalSubmitButton").attr("onclick", "AddnewAssignment()");
         $("#editTopicModal").modal('show');
     }
     function AddnewAssignment(Courseid)
@@ -1160,7 +1160,7 @@
         $("#editTopicModalHeader").text('Add Test Details');
         $("#ab-topicNameLabel").text('Enter Test Name');
         $("#ab-topicDescriptionLabel").text('Enter Test Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "addNewTest(" + @Session["course_id"].ToString() + ")");
+        $("#editTopicModalSubmitButton").attr("onclick", "addNewTest()");
         $("#editTopicModal").modal('show');
     }
     function addNewTest(Courseid) {
@@ -1211,7 +1211,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/deletecourse?id=@Session["course_id"].ToString()",
+            url: "/api/v1/instructor/deletecourse",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("course deleted successfully");
@@ -1231,7 +1231,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/activatecourse?CourseId=@Session["course_id"].ToString()",
+            url: "/api/v1/instructor/activatecourse",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("course activate successfully");
@@ -1249,7 +1249,7 @@
         $("#editTopicModalHeader").text('Edit Course Details');
         $("#ab-topicNameLabel").text('Enter Course Name');
         $("#ab-topicDescriptionLabel").text('Enter Course Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "UpdateCourseDetails(" + @Session["course_id"].ToString() + ")");
+        $("#editTopicModalSubmitButton").attr("onclick", "UpdateCourseDetails()");
         $("#editTopicModal").modal('show');
     }
     function UpdateCourseDetails(CourseId)
@@ -1285,7 +1285,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchAboutCourse?id=@Session["course_id"].ToString()",
+            url: "/api/v1/Course/FetchAboutCourse",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {

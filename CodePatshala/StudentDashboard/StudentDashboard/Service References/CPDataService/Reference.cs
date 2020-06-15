@@ -250,10 +250,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllAssignmentSubmissionsForStudentAsync(long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAssignmentResponse", ReplyAction="http://tempuri.org/ICpDataService/GetAssignmentResponseResponse")]
-        System.Data.DataSet GetAssignmentResponse(long SubmissionId);
+        System.Data.DataSet GetAssignmentResponse(long SubmissionId, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAssignmentResponse", ReplyAction="http://tempuri.org/ICpDataService/GetAssignmentResponseResponse")]
-        System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentResponseAsync(long SubmissionId);
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentResponseAsync(long SubmissionId, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertTestResponse", ReplyAction="http://tempuri.org/ICpDataService/InsertTestResponseResponse")]
         StudentDashboard.CPDataService.InsertTestResponseResponse InsertTestResponse(StudentDashboard.CPDataService.InsertTestResponseRequest request);
@@ -263,10 +263,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<StudentDashboard.CPDataService.InsertTestResponseResponse> InsertTestResponseAsync(StudentDashboard.CPDataService.InsertTestResponseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestResponse", ReplyAction="http://tempuri.org/ICpDataService/GetTestResponseResponse")]
-        System.Data.DataSet GetTestResponse(long SubmissionId);
+        System.Data.DataSet GetTestResponse(long SubmissionId, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestResponse", ReplyAction="http://tempuri.org/ICpDataService/GetTestResponseResponse")]
-        System.Threading.Tasks.Task<System.Data.DataSet> GetTestResponseAsync(long SubmissionId);
+        System.Threading.Tasks.Task<System.Data.DataSet> GetTestResponseAsync(long SubmissionId, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllTestSubmissionsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllTestSubmissionsForStudentResponse")]
         System.Data.DataSet GetAllTestSubmissionsForStudent(long StudentId);
@@ -392,6 +392,44 @@ namespace StudentDashboard.CPDataService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/SearchForCourseForStudent", ReplyAction="http://tempuri.org/ICpDataService/SearchForCourseForStudentResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> SearchForCourseForStudentAsync(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourse", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourseResponse")]
+        System.Data.DataSet CheckStudentHasJoinedTheCourse(long StudentId, long CourseId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourse", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasJoinedTheCourseResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasJoinedTheCourseAsync(long StudentId, long CourseId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignment", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignmentResponse")]
+        System.Data.DataSet CheckStudentHasSubmittedTheAssignment(long StudentId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignment", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheAssignmentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasSubmittedTheAssignmentAsync(long StudentId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTest", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTestResponse")]
+        System.Data.DataSet CheckStudentHasSubmittedTheTest(long StudentId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTest", ReplyAction="http://tempuri.org/ICpDataService/CheckStudentHasSubmittedTheTestResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasSubmittedTheTestAsync(long StudentId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudent", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudentRespon" +
+            "se")]
+        System.Data.DataSet CheckAssignmentResponseIdExistsForStudent(long StudentId, long SubmissionId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudent", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentResponseIdExistsForStudentRespon" +
+            "se")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentResponseIdExistsForStudentAsync(long StudentId, long SubmissionId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudent", ReplyAction="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudentResponse")]
+        System.Data.DataSet CheckTestResponseIdExistsForStudent(long StudentId, long SubmissionId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudent", ReplyAction="http://tempuri.org/ICpDataService/CheckTestResponseIdExistsForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckTestResponseIdExistsForStudentAsync(long StudentId, long SubmissionId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetails", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsResponse")]
+        System.Data.DataSet GetInstructorProfileDetails(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetails", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorProfileDetailsAsync(int InstructorId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetData", ReplyAction="http://tempuri.org/ICpDataService/GetDataResponse")]
         string GetData(int value);
@@ -1877,12 +1915,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllAssignmentSubmissionsForStudentAsync(StudentId);
         }
         
-        public System.Data.DataSet GetAssignmentResponse(long SubmissionId) {
-            return base.Channel.GetAssignmentResponse(SubmissionId);
+        public System.Data.DataSet GetAssignmentResponse(long SubmissionId, long StudentId) {
+            return base.Channel.GetAssignmentResponse(SubmissionId, StudentId);
         }
         
-        public System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentResponseAsync(long SubmissionId) {
-            return base.Channel.GetAssignmentResponseAsync(SubmissionId);
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentResponseAsync(long SubmissionId, long StudentId) {
+            return base.Channel.GetAssignmentResponseAsync(SubmissionId, StudentId);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1909,12 +1947,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.InsertTestResponseAsync(request);
         }
         
-        public System.Data.DataSet GetTestResponse(long SubmissionId) {
-            return base.Channel.GetTestResponse(SubmissionId);
+        public System.Data.DataSet GetTestResponse(long SubmissionId, long StudentId) {
+            return base.Channel.GetTestResponse(SubmissionId, StudentId);
         }
         
-        public System.Threading.Tasks.Task<System.Data.DataSet> GetTestResponseAsync(long SubmissionId) {
-            return base.Channel.GetTestResponseAsync(SubmissionId);
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetTestResponseAsync(long SubmissionId, long StudentId) {
+            return base.Channel.GetTestResponseAsync(SubmissionId, StudentId);
         }
         
         public System.Data.DataSet GetAllTestSubmissionsForStudent(long StudentId) {
@@ -2131,6 +2169,54 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> SearchForCourseForStudentAsync(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId) {
             return base.Channel.SearchForCourseForStudentAsync(SerachString, MaxRowToReturn, NoOfRowsFetch, SortType, StudentId);
+        }
+        
+        public System.Data.DataSet CheckStudentHasJoinedTheCourse(long StudentId, long CourseId) {
+            return base.Channel.CheckStudentHasJoinedTheCourse(StudentId, CourseId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasJoinedTheCourseAsync(long StudentId, long CourseId) {
+            return base.Channel.CheckStudentHasJoinedTheCourseAsync(StudentId, CourseId);
+        }
+        
+        public System.Data.DataSet CheckStudentHasSubmittedTheAssignment(long StudentId, long AssignmentId) {
+            return base.Channel.CheckStudentHasSubmittedTheAssignment(StudentId, AssignmentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasSubmittedTheAssignmentAsync(long StudentId, long AssignmentId) {
+            return base.Channel.CheckStudentHasSubmittedTheAssignmentAsync(StudentId, AssignmentId);
+        }
+        
+        public System.Data.DataSet CheckStudentHasSubmittedTheTest(long StudentId, long TestId) {
+            return base.Channel.CheckStudentHasSubmittedTheTest(StudentId, TestId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckStudentHasSubmittedTheTestAsync(long StudentId, long TestId) {
+            return base.Channel.CheckStudentHasSubmittedTheTestAsync(StudentId, TestId);
+        }
+        
+        public System.Data.DataSet CheckAssignmentResponseIdExistsForStudent(long StudentId, long SubmissionId) {
+            return base.Channel.CheckAssignmentResponseIdExistsForStudent(StudentId, SubmissionId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentResponseIdExistsForStudentAsync(long StudentId, long SubmissionId) {
+            return base.Channel.CheckAssignmentResponseIdExistsForStudentAsync(StudentId, SubmissionId);
+        }
+        
+        public System.Data.DataSet CheckTestResponseIdExistsForStudent(long StudentId, long SubmissionId) {
+            return base.Channel.CheckTestResponseIdExistsForStudent(StudentId, SubmissionId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckTestResponseIdExistsForStudentAsync(long StudentId, long SubmissionId) {
+            return base.Channel.CheckTestResponseIdExistsForStudentAsync(StudentId, SubmissionId);
+        }
+        
+        public System.Data.DataSet GetInstructorProfileDetails(int InstructorId) {
+            return base.Channel.GetInstructorProfileDetails(InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorProfileDetailsAsync(int InstructorId) {
+            return base.Channel.GetInstructorProfileDetailsAsync(InstructorId);
         }
         
         public string GetData(int value) {

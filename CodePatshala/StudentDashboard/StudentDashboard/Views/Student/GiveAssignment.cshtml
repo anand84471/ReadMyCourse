@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Account Details";
-    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/__BackLayout.cshtml";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <style type="text/css">
     .assignment-body
@@ -9,7 +9,7 @@
         padding-right:0.2rem;
     }
 </style>
-<nav class="navbar bg-dark ">
+@*<nav class="navbar bg-dark ">
 
     <a href="./MyCourses" class="btn navbar-item text-white nav-item active">
         <i class="fa fa-arrow-left"></i>
@@ -18,8 +18,19 @@
         <img src="~/Images/site-logo.png" width="160" height="40" class="align-top bg-white" alt="">
 
     </a>
-</nav>
+</nav>*@
 <div class="assignment-body container-fluid pt-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Assignment Attempt</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="callNewAssignment()">New Assignment</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Assignment Attempt</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
     <div class="card shadow mb-4 border-left-primary">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -228,6 +239,7 @@
         initialize();
         debugger
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -622,6 +634,7 @@
         debugger
         var _data = extractresponseData();
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -648,7 +661,6 @@
         var finishTime = date.toLocaleDateString();
         var _data = {
             "assignment_id": parseInt(@ViewBag.id),
-            "student_id": parseInt(@Session["user_id"].ToString()),
             "time_taken": timeTakenToSolveAssignment,
             "response":answerResponse
         }
