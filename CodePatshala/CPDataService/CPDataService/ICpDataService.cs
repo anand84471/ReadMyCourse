@@ -105,11 +105,11 @@ namespace CPDataService
         [OperationContract]
         DataSet GetInstructorActivityDetails(int Id);
         [OperationContract]
-        bool ActivateTest(long TestId);
+        bool ActivateTest(long TestId, string ShareCode, string TinyUrl);
         [OperationContract]
         bool DeleteAssignmentOfCourse(long AssignmentId);
         [OperationContract]
-        bool ActivateAssignment(long AssignmentId);
+        bool ActivateAssignment(long AssignmentId, string ShareCode, string TinyUrl);
         [OperationContract]
         bool DeleteTest(long TestId);
         [OperationContract]

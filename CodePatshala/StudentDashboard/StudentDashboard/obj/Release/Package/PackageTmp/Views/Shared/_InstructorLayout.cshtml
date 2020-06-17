@@ -298,9 +298,34 @@
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                
-                <div id="body">
-                    @RenderBody()
-                </div>
+                <section>
+                    <!-- Start -->
+
+
+                    <div id="body">@RenderBody()</div>
+                    <!-- Loading Spinner Wrapper-->
+                    <div class="loader text-center text-primary bg-primary" id="body-loader" style="display:none;">
+                        <div class="loader-inner">
+
+                            <!-- Animated Spinner -->
+                            <div class="lds-roller mb-3">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+
+                            <!-- Spinner Description Text [For Demo Purpose]-->
+                            <h4 class="text-uppercase font-weight-bold">Loading</h4>
+                            <p class="font-italic text-muted">Coffee at your place, tommorow at 10A.M. - don't be late!</p>
+                        </div>
+                    </div>
+
+                </section>
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
@@ -359,12 +384,14 @@
     //Ajax calls
     //Create new course
     function callContact() {
+        startSpinner();
         //accordionSidebar
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Contact", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Contact Us" }, "", "Contact");
             }
@@ -372,11 +399,13 @@
     }
     function callActivity()
     {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Activity", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Activity" }, "", "Activity");
             }
@@ -384,88 +413,104 @@
     }
     function callAccount()
     {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Account", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Account" }, "", "Account");
             }
         });
     }
     function callEditAccount() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("EditAccount", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "EditAccount");
             }
         });
     }
     function callCreateNewCourse() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("CreateNewCourse", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateNewCourse");
             }
         });
     }
     function callCreateNewTest() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("CreateTest", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateTest");
             }
         });
     }
     function callCreateNewAssignment() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("CreateAssignment", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateAssignment");
             }
         });
     }
     function callViewAllCourse() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Courses", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Courses");
             }
         });
     }
     function callViewAllTest() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Tests", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Tests");
             }
         });
     }
     function callViewAllAssignment() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Assignments", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Assignments");
             }
@@ -473,11 +518,13 @@
     }
     function callGetAllStudentsJoined()
     {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("StudentsJoined", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "StudentsJoined");
             }
@@ -485,11 +532,13 @@
     }
     function callHome()
     {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("Home", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Home");
             }
@@ -497,17 +546,20 @@
     }
     function callCreateInterativeCourse()
     {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("CreateInterativeCourse", "Instructor")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateInterativeCourse");
             }
         });
     }
     function callSearch() {
+        startSpinner();
         $('#accordionSidebar').addClass("toggled");
         var inputSearch = $("#serachInput1").val();
 
@@ -519,6 +571,7 @@
             type: 'GET',
             data:_data,
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Search?q=".concat($("#serachInput").val()));
             }
@@ -526,6 +579,7 @@
     }
     function getAllAlerts() {
         debugger;
+       
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -558,6 +612,17 @@
               
             }
     });
+    }
+    function stopSpinner() {
+
+        $("#body-loader").hide();
+
+    }
+    function startSpinner() {
+
+        $("#body").empty();
+        $("#body").html("");
+        $("#body-loader").show();
     }
 </script>
 </html>

@@ -100,7 +100,7 @@ namespace StudentDashboard.API
                 }
                 else
                 {
-                    if (await objHomeService.InsertTopics(objIndexModel))
+                    if ( await objHomeService.InsertTopics(objIndexModel))
                     {
                         objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
                         objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -147,6 +147,13 @@ namespace StudentDashboard.API
         [Route("addnewassignment")]
         public async Task<AddAssgnmentResponse> InsertNewIndependentAssignment(AssignmentModel objAssignmentModel)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+            objAssignmentModel.m_iInstructorId = InstructorId;
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
@@ -176,11 +183,17 @@ namespace StudentDashboard.API
         [Route("addtest")]
         public async Task<AddTestResponse> InsertNewTest(TestModel objTestModel)
         {
-
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             AddTestResponse objAddTestResponse = new AddTestResponse();
             try
             {
-                if(await objHomeService.InsertTest(objTestModel))
+                objTestModel.m_iInstructorId = InstructorId;
+                if (await objHomeService.InsertTest(objTestModel))
                 {
                     objAddTestResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objAddTestResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -202,9 +215,16 @@ namespace StudentDashboard.API
         [Route("addnewtest")]
         public async Task<AddAssgnmentResponse> InsertNewIndependentTest(TestModel objTestModel)
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
+                objTestModel.m_iInstructorId = InstructorId;
                 if (objTestModel != null)
                 {
                     if (await objHomeService.InsertNewIndependentTest(objTestModel))
@@ -230,13 +250,18 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("courses")]
-        public async Task< GetAllCourseDetailsForInstructorResponseModel> GetAllCoursesOfInstructor(string InstructorUserName)
+        public async Task< GetAllCourseDetailsForInstructorResponseModel> GetAllCoursesOfInstructor()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             GetAllCourseDetailsForInstructorResponseModel objResponse = new GetAllCourseDetailsForInstructorResponseModel();
             try
             {
-               
-                objResponse.m_lsCourseModel = await objHomeService.GetAllCourseDetailsForInstructor(InstructorUserName);
+                objResponse.m_lsCourseModel = await objHomeService.GetAllCourseDetailsForInstructor(InstructorId);
                 if (objResponse.m_lsCourseModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -314,12 +339,12 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activatecourse")]
-        public async Task<APIDefaultResponse> ActivateCourse(long CourseId)
+        public async Task<APIDefaultResponse> ActivateCourse(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.ActivateCourse(CourseId))
+                if (await objHomeService.ActivateCourse(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -342,13 +367,19 @@ namespace StudentDashboard.API
 
         [HttpPost]
         [Route("assignments")]
-        public async Task<AllInstructorAssignmentsApiResponse> GetAllAssignmentsForInstructoe(int id)
+        public async Task<AllInstructorAssignmentsApiResponse> GetAllAssignmentsForInstructoe()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             AllInstructorAssignmentsApiResponse objResponse = new AllInstructorAssignmentsApiResponse();
             try
             {
 
-                objResponse.m_lsAssignments = await objHomeService.GetAssignmentForInstructor(id);
+                objResponse.m_lsAssignments = await objHomeService.GetAssignmentForInstructor(InstructorId);
                 if (objResponse.m_lsAssignments != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -371,13 +402,19 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("tests")]
-        public async Task<AllInstructorTestsApiResponse> GetAllTestsForInstructor(int id)
+        public async Task<AllInstructorTestsApiResponse> GetAllTestsForInstructor()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             AllInstructorTestsApiResponse objResponse = new AllInstructorTestsApiResponse();
             try
             {
 
-                objResponse.m_lsTestDetailsModel =await objHomeService.GetInstructorTestDetails(id);
+                objResponse.m_lsTestDetailsModel =await objHomeService.GetInstructorTestDetails(InstructorId);
                 if (objResponse.m_lsTestDetailsModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -398,14 +435,49 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("AssignmentSubmissionDetails")]
+        [HttpPost]
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentSubmissionDetails(long id,long StudentId)
+        {
+            GetAssignmentSubssionDetials objResponse = null;
+            try
+            {
+                objResponse = await objHomeService.GetAssignmentResponse(id, StudentId);
+                if (objResponse != null)
+                {
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                }
+                else
+                {
+                    objResponse = new GetAssignmentSubssionDetials();
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
         [HttpPost]
         [Route("getactivity")]
-        public async Task<GetInstructorActivityResponse> GetInstructorActivityDetails(int id)
+        public async Task<GetInstructorActivityResponse> GetInstructorActivityDetails()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             GetInstructorActivityResponse objResponse = new GetInstructorActivityResponse();
             try
             {
-                objResponse.m_lsActivityDetails = await objHomeService.GetInstructorActivityDetails(id);
+                objResponse.m_lsActivityDetails = await objHomeService.GetInstructorActivityDetails(InstructorId);
                 if (objResponse.m_lsActivityDetails!=null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -428,13 +500,13 @@ namespace StudentDashboard.API
 
         }
         [HttpPost]
-        [Route("activatecourse")]
-        public async Task<APIDefaultResponse> ActivateAssignment(long AssignmentId)
+        [Route("activateassignment")]
+        public async Task<APIDefaultResponse> ActivateAssignment(long id)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.ActivateAssignment(AssignmentId))
+                if (await objHomeService.ActivateAssignment(id))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1298,12 +1370,19 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("Joinee")]
-        public async Task<CourseJoinedResponse> GetAllStudentsJoinedToInstructs(int id)
+        public async Task<CourseJoinedResponse> GetAllStudentsJoinedToInstructs()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+            
             CourseJoinedResponse objResponse = new CourseJoinedResponse();
             try
             {
-                objResponse.m_lsStudentsJoined = await objHomeService.GetAllStudentsJoinedToInstructor(id);
+                objResponse.m_lsStudentsJoined = await objHomeService.GetAllStudentsJoinedToInstructor(InstructorId);
                 if (objResponse.m_lsStudentsJoined != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1353,12 +1432,18 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllAlert")]
-        public async Task<GetAllAlertForInstructorResponse> GetAllAlertForInstructor(int id)
+        public async Task<GetAllAlertForInstructorResponse> GetAllAlertForInstructor()
         {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            int InstructorId = -1;
+            int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             GetAllAlertForInstructorResponse objResponse = new GetAllAlertForInstructorResponse();
             try
             {
-                objResponse.m_lsInstructorAlertModal = await objHomeService.GetAllAlertOfInstructor(id);
+                objResponse.m_lsInstructorAlertModal = await objHomeService.GetAllAlertOfInstructor(InstructorId);
                 if (objResponse.m_lsInstructorAlertModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -1406,6 +1491,40 @@ namespace StudentDashboard.API
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorSerachResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("TestSubmissionDetails")]
+        [HttpPost]
+        public async Task<GetTestSubmissionDetailsResponse> GetTestSubmissionDetails(long id,long StudentId)
+        {
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            //long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
+            GetTestSubmissionDetailsResponse objResponse = null;
+            try
+            {
+                objResponse = await objHomeService.GetTestResponse(id, StudentId);
+                if (objResponse != null)
+                {
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                }
+                else
+                {
+                    objResponse = new GetTestSubmissionDetailsResponse();
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

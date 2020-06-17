@@ -796,7 +796,35 @@ namespace StudentDashboard.DTO
             return objAssignmentModel;
         }
 
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentResponse(long Submissionid, long StudentId)
+        {
+            GetAssignmentSubssionDetials objGetAssignmentSubssionDetials = null;
+            try
+            {
 
+                DataSet ds = await objCPDataService.GetAssignmentResponseAsync(Submissionid, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objGetAssignmentSubssionDetials = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetAssignmentSubssionDetials(
+                         dataRow.Field<string>("ASSIGNMENT_NAME"),
+                         dataRow.Field<string>("ASSIGNMENT_RESPONSE_FOR_MCQ"),
+                         dataRow.Field<DateTime>("ASSIGNMENT_START_TIME").ToString("d MMM yyyy"),
+                         dataRow.Field<DateTime>("ASSIGNMENT_START_TIME"),
+                          dataRow.Field<DateTime>("ASSIGNMENT_FINISH_TIME")
+                         )).ToList()[0];
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objGetAssignmentSubssionDetials;
+        }
         public async Task< List<ActivityModal>> GetInstructorActivityDetails(int InstructorId)
         {
             List<ActivityModal> lsActivityModal = null;
@@ -886,12 +914,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateAssignment(long Assignmentid)
+        public async Task<bool> ActivateAssignment(long Assignmentid,string ShareCode, string TinyUrl)
         {
             bool result = false;
             try
             {
-                result =await objCPDataService.ActivateAssignmentAsync(Assignmentid);
+                result =await objCPDataService.ActivateAssignmentAsync(Assignmentid, ShareCode,TinyUrl);
             }
             catch (Exception Ex)
             {
@@ -951,12 +979,12 @@ namespace StudentDashboard.DTO
             return result;
         }
 
-        public async Task<bool> ActivateTest(long TestId)
+        public async Task<bool> ActivateTest(long TestId,string TinyUrl,string AccesssCode)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateTestAsync(TestId);
+                result = await objCPDataService.ActivateTestAsync(TestId, AccesssCode,TinyUrl);
             }
             catch (Exception Ex)
             {
@@ -1613,6 +1641,34 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsCourseDetailsModel;
+        }
+        public async Task<GetTestSubmissionDetailsResponse> GetTestResponse(long Submissionid, long StudentId)
+        {
+            GetTestSubmissionDetailsResponse objGetTestSubmissionDetailsResponse = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetTestResponseAsync(Submissionid, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objGetTestSubmissionDetailsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetTestSubmissionDetailsResponse(
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<string>("TEST_RESPONSE"),
+                         dataRow.Field<DateTime>("TEST_START_TIME").ToString("d MMM yyyy"),
+                         dataRow.Field<DateTime>("TEST_START_TIME"),
+                          dataRow.Field<DateTime>("TEST_FINISH_TIME")
+                         )).ToList()[0];
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objGetTestSubmissionDetailsResponse;
         }
     }
 }

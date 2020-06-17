@@ -80,6 +80,7 @@
     function getAssignmentSubmissions() {
         debugger;
         $.ajax({
+
             url: '@Url.Action("AssignmentSubmissions", "Instructor")',
             data: { "id": @ViewBag.AssignmentId },
             type: 'GET',
@@ -97,10 +98,11 @@
     function getSubmissionDetails() {
         debugger
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/AssignmentSubmissionDetails?id=".concat(@ViewBag.id),
+            url: "/api/v1/instructor/AssignmentSubmissionDetails?id=".concat(@ViewBag.id)+"&&StudentId=@ViewBag.StudentId",
             success: function (data) {
                 debugger
                 if (data != null && data.response_code == 1) {

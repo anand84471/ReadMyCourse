@@ -171,6 +171,7 @@
     }
     function getTestDetails(id) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -189,6 +190,7 @@
                                          + '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">'
                                              + '<a class="dropdown-item" href="#" onclick=requestEditTestDeails(' + id + ')>Edit Test</a>'
                                              + '<a class="dropdown-item" href="#" onclick=requestDeleteTest(' + id + ')>Delete Test</a>'
+                                             + '<a class="dropdown-item" href="#" onclick=activateTest(' + id + ')>Activate Test</a>'
                                              + '<a class="dropdown-item" href="#" onclick=requestAddMcqTestQuestion(' + id + ')>Add Question</a>'
                                          + '</div>'
                                      + '</div>'
@@ -259,6 +261,7 @@
             "test_description": $("#ab_topicDescription").val(),
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -284,6 +287,7 @@
     }
     function DeleteTest(TestId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -325,6 +329,7 @@
         var _data = extractDataFromAddMcqTestQuestionModel();
         _data["test_id"] = TestId;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -351,6 +356,7 @@
     }
     function deleteMcqTestQuestion(QuestionId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -367,10 +373,24 @@
             }
         });
     }
-    function requestUpdateTestMcqQuestion(QuestionId) {
-
-    }
-    function UpdateMcqTestQuestion(QuestionId) {
-
+    function activateTest(id)
+    {
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/activatetest?testid=".concat(id),
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    $("#successResponseMessage").text("test activated successfully");
+                    $("#successDelete").modal('show');
+                }
+                else {
+                    $("#errorAlertMessageBody").text("test could not be activated");
+                    $("#errorAlertHeader").modal('show');
+                }
+            }
+        });
     }
 </script>

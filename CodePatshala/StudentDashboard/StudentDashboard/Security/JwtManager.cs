@@ -19,7 +19,7 @@ namespace StudentDashboard.Security
         /// </summary>
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string username, int expireMinutes = 20)
+        public static string GenerateToken(string username, int expireInYears = 1)
         {
             string token=null;
             try
@@ -35,7 +35,7 @@ namespace StudentDashboard.Security
                             new Claim(ClaimTypes.Name, username)
                         }),
 
-                    Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                    Expires = now.AddYears(Convert.ToInt32(expireInYears)),
 
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
                 };

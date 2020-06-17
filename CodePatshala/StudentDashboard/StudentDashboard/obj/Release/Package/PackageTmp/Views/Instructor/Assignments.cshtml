@@ -238,6 +238,7 @@
         })();
         function getAssignmentDetails(id) {
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -361,6 +362,7 @@
         var x = $('#assignmentsRows').empty();
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -429,6 +431,7 @@
     }
     function deleteAssignment(AssignmentId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

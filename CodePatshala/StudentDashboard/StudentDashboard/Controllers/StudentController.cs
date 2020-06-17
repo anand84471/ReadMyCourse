@@ -550,5 +550,21 @@ namespace StudentDashboard.Controllers
                 return PartialView("Error");
             }
         }
+        [HttpGet]
+        public  ActionResult ViewAssignment(int id)
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
     }
 }

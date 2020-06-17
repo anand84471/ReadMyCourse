@@ -246,6 +246,7 @@
                 "subjective_questions":questions
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -354,6 +355,7 @@
                 "subjective_questions": questions
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -413,6 +415,7 @@
             }
         if (noOfTopics > 0) {
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                 type: "POST",
                 data: JSON.stringify(_data),
                 contentType: "application/json; charset=utf-8",
@@ -457,6 +460,7 @@
                 "course_id": $("#courseId").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -495,6 +499,7 @@
                 "course_id": $("#courseId").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -531,6 +536,7 @@
                 "instructor_id":$("#instructorId").val()
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify( _data ),
             contentType: "application/json; charset=utf-8",

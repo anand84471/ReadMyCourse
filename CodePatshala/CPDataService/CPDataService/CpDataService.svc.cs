@@ -1884,7 +1884,7 @@ namespace CPDataService
             }
             return result;
         }
-        public bool ActivateAssignment(long AssignmentId)
+        public bool ActivateAssignment(long AssignmentId,string ShareCode,string TinyUrl)
         {
             bool result = false;
             string strCurrentMethodName = "ActivateAssignment";
@@ -1894,6 +1894,8 @@ namespace CPDataService
                 m_command = new SqlCommand("Cp_spActivateAssignment", m_con);
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
                 m_command.Parameters.Add("@llAssignmentId", SqlDbType.BigInt).Value = AssignmentId;
+                m_command.Parameters.Add("@strShareCode", SqlDbType.VarChar,10).Value = ShareCode;
+                m_command.Parameters.Add("@strTinyUrl", SqlDbType.VarChar, 100).Value = TinyUrl;
                 m_con.Open();
                 if (m_command.ExecuteNonQuery() > 0)
                 {
@@ -2125,7 +2127,7 @@ namespace CPDataService
             }
             return result;
         }
-        public bool ActivateTest(long TestId)
+        public bool ActivateTest(long TestId,string ShareCode,string TinyUrl)
         {
             bool result = false;
             string strCurrentMethodName = "ActivateTest";
@@ -2135,6 +2137,8 @@ namespace CPDataService
                 m_command = new SqlCommand("Cp_spActivateTest", m_con);
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
                 m_command.Parameters.Add("@llTestId", SqlDbType.BigInt).Value = TestId;
+                m_command.Parameters.Add("@strShareCode", SqlDbType.VarChar,10).Value = ShareCode;
+                m_command.Parameters.Add("@strTinyUrl", SqlDbType.VarChar,100).Value = TinyUrl;
                 m_con.Open();
                 if (m_command.ExecuteNonQuery() > 0)
                 {

@@ -110,13 +110,13 @@
             }
         }
     }
-    function getSubmissionDetails(id) {
+    function getSubmissionDetails(id, student_id) {
         $.ajax({
-            url: '/Instructor/AssignmentResponse?id='.concat(id).concat("&&AssId=".concat(@ViewBag.TestId)),
+            url: '/Instructor/AssignmentResponse?id='.concat(id).concat("&&AssId=".concat(@ViewBag.TestId)).concat("&&viewer=".concat(student_id)),
             type: 'GET',
             success: function (data) {
                 $("#body").html(data);
-                window.history.pushState({ "html": data, "pageTitle": "Instructor" }, "Assignments", "AssignmentResponse?id=".concat(id).concat("&&AssId=".concat(@ViewBag.TestId)));
+                window.history.pushState({ "html": data, "pageTitle": "Instructor" }, "Assignments", "AssignmentResponse?id=".concat(id).concat("&&AssId=".concat(@ViewBag.TestId)).concat("&&viewer=".concat(student_id)));
             }
         });
     }
@@ -125,6 +125,7 @@
         var x = $('#assignmentsRows').empty();
         debugger;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -137,7 +138,7 @@
                         var rows = '<tr>'
                         + '<td>' + assignments[i].student_name + '</td><td>' + assignments[i].submission_date + '</td><td>' + assignments[i].percentage_score + '</td>'
                         + '<td>'
-                            + '<button type="button" class="btn btn-link" class="list-group-horizontal" onclick="getSubmissionDetails(' + assignments[i].submission_id + ')">'
+                            + '<button type="button" class="btn btn-link" class="list-group-horizontal" onclick="getSubmissionDetails(' + assignments[i].submission_id + ',' + assignments[i].student_id + ')">'
                                 + '<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                             + '</button>'
                         + '</td>'

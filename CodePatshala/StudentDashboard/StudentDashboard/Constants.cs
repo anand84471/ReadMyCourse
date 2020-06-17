@@ -30,6 +30,13 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_COURSE_JOIN = "new course join";
         public static readonly string ALERT_INSTRUCTOR_NEW_ASSIGNMENT_SUBMISSION = "new assignment submission";
         public static readonly string ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION = "new test submission";
+
+        #region Tiny url service
+        public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
+        public static string BASE_URL_PATH_FOR_TEST = "https://readmycourse.com/Test/Details?id=";
+        public static string BASE_URL_PATH_FOR_COURSE = "https://readmycourse.com/Course/Details?id=";
+        #endregion
+
         #region fluent validation constants for Studnet Registration
         public static readonly int STUDENT_FIRST_NAME_MAX_LENGTH = 250;
         public static readonly int STUDENT_LAST_NAME_MAX_LENGTH = 250;

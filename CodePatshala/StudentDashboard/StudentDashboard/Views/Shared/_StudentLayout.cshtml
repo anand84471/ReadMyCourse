@@ -136,20 +136,6 @@
                                 </form>
                             </div>
                         </li>
-                 
-                       
-                        @*<div id="spinner" class="justify-content-center ml-auto p-4">
-                            <div id="spinner1" class="spinner-grow text-success" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div id="spinner2" class="spinner-grow text-danger" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div id="spinner3" class="spinner-grow text-warning" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </div>*@
-                        <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
@@ -165,7 +151,7 @@
                             </div>
                         </li>
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        @*<li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
                                 <!-- Counter - Messages -->
@@ -178,13 +164,13 @@
                                 </h6>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
-                        </li>
+                        </li>*@
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small font-weight-bold">@Session["student_email"].ToString()</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <img class="img-profile rounded-circle" src="~/Images/avatar-user.png">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -213,17 +199,7 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
-                @*<div id="spinner" class="d-flex justify-content-center">
-                    <div class="spinner-border text-danger" role="status" id="spinnerBody">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>*@
                 <section >
-                    <!-- Start -->
-                   
-
                     <div id="body" >@RenderBody()</div>
                     <!-- Loading Spinner Wrapper-->
                     <div class="loader text-center text-primary bg-primary" id="body-loader" style="display:none;">
@@ -240,8 +216,6 @@
                                 <div></div>
                                 <div></div>
                             </div>
-
-                            <!-- Spinner Description Text [For Demo Purpose]-->
                             <h4 class="text-uppercase font-weight-bold">Loading</h4>
                             <p class="font-italic text-muted">Coffee at your place, tommorow at 10A.M. - don't be late!</p>
                         </div>
@@ -253,19 +227,9 @@
             <!-- End of Main Content -->
             <!-- Footer -->
             @RenderPage("_Footer.cshtml")
-            @*<footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; academy.codepathshala.com</span>
-                        </div>
-                    </div>
-                </footer>*@
-            <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Page Wrapper -->
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -309,8 +273,7 @@
         'use strict';
 
     })();
-    //Ajax calls
-    //Create new course
+    
     function callContact() {
         //accordionSidebar
         $('#accordionSidebar').addClass("toggled");
@@ -557,28 +520,19 @@
             url: '@Url.Action("Home", "Student")',
             type: 'GET',
             success: function (data) {
+                stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Home");
             }
         });
     }
     function stopSpinner() {
-        //$("#spinner").css("visibility", "hidden")
-        //$("#spinner1").css("visibility", "hidden")
-        //$("#spinner2").css("visibility", "hidden")
-        //$("#spinner3").css("visibility", "hidden")
+       
         $("#body-loader").hide();
        
     }
     function startSpinner() {
-        //$("#spinner").show();
-        //$("#spinner1").show();
-        //$("#spinner2").show();
-        //$("#spinner3").show();  
-        //$("#spinner").css("visibility", "visible")
-        //$("#spinner1").css("visibility", "visible")
-        //$("#spinner2").css("visibility", "visible")
-        //$("#spinner3").css("visibility", "visible")
+      
         $("#body").empty();
         $("#body").html("");
         $("#body-loader").show();

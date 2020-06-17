@@ -238,6 +238,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessLayer\InstructorBusinessLayer.cs" />
+    <Compile Include="BusinessLayer\StudentBusinessLayer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountManagerController.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\StudentApiController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DTO\HomeDTO.cs" />
     <Compile Include="DTO\InstructorDTO.cs" />
     <Compile Include="DTO\SchoolDTO.cs" />
@@ -373,6 +376,7 @@
     <Compile Include="Utilities\MainLogger.cs" />
     <Compile Include="Utilities\SHA256Encryption.cs" />
     <Compile Include="Models\Student\TestSubmissionModal.cs" />
+    <Compile Include="Utilities\TinyUrlService.cs" />
     <Compile Include="ValidationHandler\InstructorAccountRegisterValidator.cs" />
     <Compile Include="ValidationHandler\InstructorLoginValidator.cs" />
     <Compile Include="ValidationHandler\StudentAccountRegisterValidator.cs" />
@@ -556,9 +560,6 @@
     <Content Include="Style\owl.carousel.min.css" />
     <Content Include="Style\owl.theme.default.min.css" />
     <Content Include="Style\style.css" />
-    <Content Include="Views\Account\AccountDetails.cshtml" />
-    <Content Include="Views\Account\View.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -573,12 +574,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
@@ -586,8 +581,6 @@
     <Content Include="Views\Shared\_Test.cshtml" />
     <Content Include="Views\Shared\_Assignment.cshtml" />
     <Content Include="Views\Shared\_TestQuestion.cshtml" />
-    <Content Include="Views\AccountManager\Index.cshtml" />
-    <Content Include="Views\AccountManager\EditAccountDetails.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
@@ -752,21 +745,16 @@
     </Content>
     <Content Include="Views\Instructor\Search.cshtml" />
     <Content Include="Views\Shared\__BackLayout.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Student\ViewAssignment.cshtml" />
+    <Content Include="Views\Assignment\Details.cshtml" />
+    <Content Include="Views\Assignment\ViewResponse.cshtml" />
+    <Content Include="Views\Assignment\Start.cshtml" />
+    <Content Include="Views\Assignment\Submissions.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="BusinessLayer\" />
     <Folder Include="Message\" />
     <Folder Include="Scripts\vendor\bootstrap\" />
     <Folder Include="Scripts\vendor\fontawesome-free\" />
@@ -775,9 +763,6 @@
     <Folder Include="Uploads\Images\" />
     <Folder Include="Uploads\Pdfs\" />
     <Folder Include="Uploads\Videos\" />
-    <Folder Include="Views\InstructorAccountManage\" />
-    <Folder Include="Views\InstructorAuthorization\" />
-    <Folder Include="Views\StudentAccountManage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

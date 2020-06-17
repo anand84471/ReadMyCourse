@@ -49,9 +49,7 @@
             <button id="addAssignmentButton"  type="button" class="btn btn-primary  btn-block" onclick="addNewAssignment()">Add new Assignment</button>
             <button id="submitAssignmentButton" style="display:none" type="button" class="btn btn-outline-primary  btn-block" onclick="document.getElementById('courseForm').submit()">Submit</button>
         </div>
-        <div class="card-footer text-muted">
-            All the best!
-        </div>
+       
     </div>
 </div>
 <div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -351,6 +349,7 @@
                 "subjective_questions": questions
             }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",

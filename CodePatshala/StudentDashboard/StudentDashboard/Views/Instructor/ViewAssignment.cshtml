@@ -207,6 +207,7 @@
         _data["assignment_id"] = AssignmentId;
         
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -228,6 +229,7 @@
     function addMcqQuestion(AssignmentId) {
         var _data = extractDataFormAddMcqQuestionModel(AssignmentId);
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -266,6 +268,7 @@
         debugger
         var _data = extractDataFromSubjectiveQuestionModel(QuestionId);
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -307,6 +310,7 @@
             "assignment_description": $("#ab_topicDescription").val(),
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -353,6 +357,7 @@
         debugger
         var _data = extractDataFormMcqQuestionModel(QuestionId);
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -373,6 +378,7 @@
     }
     function deleteMcqQuestion(QuestionId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -393,6 +399,7 @@
     var AssignmentType;
     function getAssignmentDetails(id) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -415,8 +422,9 @@
                                             + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
                                          + '</a>'
                                          + '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">'
-                                             + '<button class="dropdown-item"  onclick=resetEditMcqAssignmentModel(' + id + ')>Edit Assignment</a>'
+                                             + '<button class="dropdown-item"  onclick=resetEditMcqAssignmentModel(' + id + ')>Edit Assignment Details</a>'
                                              + '<button class="dropdown-item"  onclick=requestDeletAssignment(' + id + ')>Delete Assignment</a>'
+                                             + '<button class="dropdown-item"  onclick=activateAssignment(' + id + ')>Activate</a>'
                                              + '<button class="dropdown-item"  onclick=requestAddMcqQuestion(' + id + ')>Add Question</a>'
                                          + '</div>'
                                      + '</div>'
@@ -426,7 +434,7 @@
                           + '<dt class="col-sm-3">Assignment name:</dt><dd class="col-sm-9">' + data.assignment_name + '</dd>'
                           + '<dt class="col-sm-3">Assignment description:</dt><dd class="col-sm-9">' + data.assignment_description + '</dd>'
                           + '<dt class="col-sm-3">Assignment Creation Date:</dt><dd class="col-sm-9">' + data.creation_date + '</dd>'
-                          + '<dt class="col-sm-3">Assignment Updat Date:</dt><dd class="col-sm-9">' + data.updatione_date + '</dd>'
+                          + '<dt class="col-sm-3">Last Updation Date:</dt><dd class="col-sm-9">' + data.updatione_date + '</dd>'
                           + '<dt class="col-sm-3">Assignment Type:</dt><dd class="col-sm-9">' + data.assignment_type + '</dd>'
                           + '</dl></div><h2 class="ml-3">Questions</h2>';
                     if (data.assignment_type == "mcq") {
@@ -513,6 +521,7 @@
     }
     function getAssignmentDetailsOld(id) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -564,6 +573,7 @@
     }
     function deleteAssignment(AssignmentId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -597,6 +607,7 @@
     }
     function deleteSubjectiveQuestion(QuestionId) {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -622,5 +633,25 @@
     function refreshAssignmentDetails()
     {
         getAssignmentDetails(@ViewBag.AssignmnetId);
+    }
+    function activateAssignment(id)
+    {
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/activateassignment?id=".concat(id),
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    $("#successResponseMessage").text("assignment activated successfully");
+                    $("#successDelete").modal('show');
+                }
+                else {
+                    $("#errorAlertMessageBody").text("assignment could not be activated");
+                    $("#errorAlertHeader").modal('show');
+                }
+            }
+        });
     }
 </script>

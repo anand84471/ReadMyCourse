@@ -1,6 +1,9 @@
-﻿using StudentDashboard.DTO;
+﻿using Newtonsoft.Json;
+using StudentDashboard.BusinessLayer;
+using StudentDashboard.DTO;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
 using StudentDashboard.Models.Course;
@@ -18,12 +21,15 @@ namespace StudentDashboard.ServiceLayer
     public class HomeService
     {
         HomeDTO objHomeDTO;
-        StringBuilder m_strLogMessage = new StringBuilder();
+        StringBuilder m_strLogMessage;
         ActivityManager objActivityManager;
+        InstructorBusinessLayer objInstructorBusinessLayer;
         public HomeService()
         {
             objHomeDTO = new HomeDTO();
             objActivityManager = new ActivityManager();
+            objInstructorBusinessLayer = new InstructorBusinessLayer();
+            m_strLogMessage = new StringBuilder();
         }
         public async Task<bool> RegisterNewUser(StaeModel objRegisterModel )
         {
@@ -68,17 +74,12 @@ namespace StudentDashboard.ServiceLayer
             return result;
 
         }
-        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(string InstructoruserName)
+        public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(int InstructorId)
         {
             List<CourseDetailsModel> lsCouseModel = null;
             try
             {
-                long IstructorId = 0;
-                if(objHomeDTO.GetInstructorIdFromUserId(InstructoruserName, ref IstructorId))
-                {
-                    lsCouseModel=await objHomeDTO.GetAllCourseDetailsForInstructor(IstructorId);
-                }
-                
+               lsCouseModel=await objHomeDTO.GetAllCourseDetailsForInstructor(InstructorId);
             }
             catch (Exception Ex)
             {
@@ -463,7 +464,7 @@ namespace StudentDashboard.ServiceLayer
                 }
                 if(result)
                 {
-                    InsertActivityForInstructor(objAssignmentmodel.m_iInstructorId, objActivityManager.CreateActivityMessageForinstructor(objAssignmentmodel.m_llAssignemntId,objAssignmentmodel.m_strAssignmentName, (int)Constants.ActivityType.ASSIGNMENT_CREATED));
+                    await InsertActivityForInstructor(objAssignmentmodel.m_iInstructorId, objActivityManager.CreateActivityMessageForinstructor(objAssignmentmodel.m_llAssignemntId,objAssignmentmodel.m_strAssignmentName, (int)Constants.ActivityType.ASSIGNMENT_CREATED));
                 }
             }
             catch (Exception Ex)
@@ -609,9 +610,98 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsActivityModal;
         }
+        private List<AssignmentQuestionResponse> ConvertFromJsonObjectToAssignmentResponse(List<AssignmentSubmissionResponseJsonSerializable> lsAssignmentSubmissionResponseJsonSerializable)
+        {
+            List<AssignmentQuestionResponse> lsAssignmentQuestionResponse = new List<AssignmentQuestionResponse>();
+            AssignmentQuestionResponse objAssignmentQuestionResponse;
+            foreach (var obj in lsAssignmentSubmissionResponseJsonSerializable)
+            {
+                objAssignmentQuestionResponse = new AssignmentQuestionResponse();
+                objAssignmentQuestionResponse.m_CorrectOption = obj.m_CorrectOption;
+                objAssignmentQuestionResponse.m_iOptionSelected = obj.m_iOptionSelected;
+                objAssignmentQuestionResponse.m_strOption1 = obj.m_strOption1;
+                objAssignmentQuestionResponse.m_strOption2 = obj.m_strOption2;
+                objAssignmentQuestionResponse.m_strOption3 = obj.m_strOption3;
+                objAssignmentQuestionResponse.m_strOption4 = obj.m_strOption4;
+                objAssignmentQuestionResponse.m_strQuestionStatement = obj.m_strQuestionStatement;
+                objAssignmentQuestionResponse.m_llQuestionId = obj.m_llQuestionId;
+                lsAssignmentQuestionResponse.Add(objAssignmentQuestionResponse);
+            }
+            return lsAssignmentQuestionResponse;
+        }
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentResponse(long SubmissionId, long StudentId)
+        {
+            GetAssignmentSubssionDetials objGetAssignmentSubssionDetials = null;
+            try
+            {
+                objGetAssignmentSubssionDetials = await objHomeDTO.GetAssignmentResponse(SubmissionId, StudentId);
+                if (objGetAssignmentSubssionDetials != null)
+                {
+                    List<AssignmentSubmissionResponseJsonSerializable> lsAssignmentSubmissionResponseJsonSerializable = JsonConvert.DeserializeObject<List<AssignmentSubmissionResponseJsonSerializable>>(objGetAssignmentSubssionDetials.m_strResponse);
+
+                    objGetAssignmentSubssionDetials.m_lsAssignmentQuestionResponse = ConvertFromJsonObjectToAssignmentResponse(lsAssignmentSubmissionResponseJsonSerializable);
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objGetAssignmentSubssionDetials;
+        }
+        private List<TestQuestionResponse> ConvertFromJsonObjectToTestResponse(List<TestSubmissionResponseJsonSerializable> lsAssignmentSubmissionResponseJsonSerializable)
+        {
+            List<TestQuestionResponse> lsTestQuestionResponse = new List<TestQuestionResponse>();
+            TestQuestionResponse objTestQuestionResponse;
+            foreach (var obj in lsAssignmentSubmissionResponseJsonSerializable)
+            {
+                objTestQuestionResponse = new TestQuestionResponse();
+                objTestQuestionResponse.m_CorrectOption = obj.m_CorrectOption;
+                objTestQuestionResponse.m_iOptionSelected = obj.m_iOptionSelected;
+                objTestQuestionResponse.m_strOption1 = obj.m_strOption1;
+                objTestQuestionResponse.m_strOption2 = obj.m_strOption2;
+                objTestQuestionResponse.m_strOption3 = obj.m_strOption3;
+                objTestQuestionResponse.m_strOption4 = obj.m_strOption4;
+                objTestQuestionResponse.m_strQuestionStatement = obj.m_strQuestionStatement;
+                objTestQuestionResponse.m_llQuestionId = obj.m_llQuestionId;
+                objTestQuestionResponse.m_iMarks = obj.m_iMarks;
+                objTestQuestionResponse.m_iTimeInSeconds = obj.m_iTimeInSeconds;
+                lsTestQuestionResponse.Add(objTestQuestionResponse);
+            }
+            return lsTestQuestionResponse;
+        }
+        public async Task<GetTestSubmissionDetailsResponse> GetTestResponse(long SubmissionId, long StudentId)
+        {
+            GetTestSubmissionDetailsResponse objGetTestSubmissionDetailsResponse = null;
+            try
+            {
+                objGetTestSubmissionDetailsResponse = await objHomeDTO.GetTestResponse(SubmissionId, StudentId);
+                if (objGetTestSubmissionDetailsResponse != null)
+                {
+                    List<TestSubmissionResponseJsonSerializable> lsTestSubmissionResponseJsonSerializable = JsonConvert.DeserializeObject<List<TestSubmissionResponseJsonSerializable>>(objGetTestSubmissionDetailsResponse.m_strResponse);
+
+                    objGetTestSubmissionDetailsResponse.m_lsTestQuestionResponse = ConvertFromJsonObjectToTestResponse(lsTestSubmissionResponseJsonSerializable);
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objGetTestSubmissionDetailsResponse;
+        }
         public async Task<bool> ActivateTest(long TestId)
         {
-            return await objHomeDTO.ActivateTest(TestId);
+            string AccessCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
+            string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForTest(TestId, AccessCode);
+           
+            return await objHomeDTO.ActivateTest(TestId, TinyUrl, AccessCode);
         }
         public async Task<bool> DeleteTest(long TestId)
         {
@@ -623,7 +713,9 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<bool> ActivateAssignment(long AssignmentId)
         {
-            return await objHomeDTO.ActivateAssignment(AssignmentId);
+            string AccessCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
+            string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForAssignment(AssignmentId,AccessCode);
+            return await objHomeDTO.ActivateAssignment(AssignmentId, AccessCode, TinyUrl);
         }
         public async Task<bool> DeleteAssignment(long AssignmentId)
         {

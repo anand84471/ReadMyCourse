@@ -234,13 +234,12 @@ textarea {
          background-image: linear-gradient(to right, rgba(8, 254, 58, 0.84), rgba(27, 164, 26, 0.63));
      }
 </style>
-<nav class="navbar fixed-top bg-dark ">
-    
+<nav class="navbar fixed-top bg-dark " style="padding:0px;">
     <a href="./MyCourses" class="btn navbar-item text-white nav-item active">
         <i class="fa fa-arrow-left"></i>
     </a>
     <a class="navbar-brand " href="#">
-        <img src="~/Images/site-logo.png" width="160" height="40" class="align-top bg-white" alt="">
+        <img src="~/Images/site-logo.png" width="140" height="35" class="align-top bg-white" alt="">
        
     </a>
 </nav>
@@ -417,6 +416,7 @@ textarea {
             return;
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -480,6 +480,7 @@ textarea {
         $("#extraContainer").html("");
         currentTestId = Id;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -516,6 +517,7 @@ textarea {
         $("#extraContainer").show();
         $("#testProgress").show();
         $.ajax({
+
             url: "StartTest?id=".concat(currentTestId),
             type: 'GET',
             success: function (data) {
@@ -560,6 +562,7 @@ textarea {
         //startSpinner();
         currentAssignmentId = Id;
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -641,6 +644,7 @@ textarea {
     var testResponses = {};
     function init() {
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

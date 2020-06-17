@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Security;
 using StudentDashboard.Security.Instrcutor;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -45,6 +46,7 @@ namespace StudentDashboard.Controllers
                 InstructorRegisterModel objInstructorRegisterModel = await objInstructorService.GetInstructorPostLoginDetails(Id);
                 if(objInstructorRegisterModel!=null)
                 {
+                    ViewBag.Token = JwtManager.GenerateToken(Id.ToString());
                     return PartialView(objInstructorRegisterModel);
                 }
             }
@@ -253,6 +255,8 @@ namespace StudentDashboard.Controllers
                             ViewBag.InstructorUserName = objInstructorRegiserModel.m_strEmail;
                             ViewBag.IsLoggedIn = true;
                             Session["instructor_id"] = objInstructorRegiserModel.m_iInstructorId;
+                            Session["instructor_user_name"] = objInstructorRegiserModel.m_strEmail;
+                           
                             return RedirectToAction("Home");
                         }
                         else
@@ -470,7 +474,7 @@ namespace StudentDashboard.Controllers
             string strCurrentMethodName = "ViewCourse";
             try
             {
-                Session["course_id"] = id;
+                ViewBag.CourseId = id;
                 return PartialView();
             }
             catch (Exception Ex)
@@ -595,13 +599,14 @@ namespace StudentDashboard.Controllers
            
         }
         [HttpGet]
-        public PartialViewResult AssignmentResponse(long id,long AssId)
+        public PartialViewResult AssignmentResponse(long id,long AssId,long viewer)
         {
             string strCurrentMethodName = "StudentsJoined";
             try
             {
                 ViewBag.AssignmentId = AssId;
                 ViewBag.id = id;
+                ViewBag.StudentId = viewer;
                 return PartialView();
             }
             catch(Exception Ex)
@@ -615,13 +620,14 @@ namespace StudentDashboard.Controllers
            
         }
         [HttpGet]
-        public PartialViewResult TestResponse(long id,long TestId)
+        public PartialViewResult TestResponse(long id,long TestId,long viewer)
         {
             string strCurrentMethodName = "StudentsJoined";
             try
             {
                 ViewBag.id = id;
                 ViewBag.TestId = TestId;
+                ViewBag.StudentId = viewer;
                 return PartialView();
             }
             catch(Exception Ex)

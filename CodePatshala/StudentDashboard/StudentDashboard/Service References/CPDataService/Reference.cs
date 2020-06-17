@@ -703,10 +703,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorActivityDetailsAsync(int Id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateTest", ReplyAction="http://tempuri.org/ICpDataService/ActivateTestResponse")]
-        bool ActivateTest(long TestId);
+        bool ActivateTest(long TestId, string ShareCode, string TinyUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateTest", ReplyAction="http://tempuri.org/ICpDataService/ActivateTestResponse")]
-        System.Threading.Tasks.Task<bool> ActivateTestAsync(long TestId);
+        System.Threading.Tasks.Task<bool> ActivateTestAsync(long TestId, string ShareCode, string TinyUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteAssignmentOfCourse", ReplyAction="http://tempuri.org/ICpDataService/DeleteAssignmentOfCourseResponse")]
         bool DeleteAssignmentOfCourse(long AssignmentId);
@@ -715,10 +715,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<bool> DeleteAssignmentOfCourseAsync(long AssignmentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateAssignment", ReplyAction="http://tempuri.org/ICpDataService/ActivateAssignmentResponse")]
-        bool ActivateAssignment(long AssignmentId);
+        bool ActivateAssignment(long AssignmentId, string ShareCode, string TinyUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateAssignment", ReplyAction="http://tempuri.org/ICpDataService/ActivateAssignmentResponse")]
-        System.Threading.Tasks.Task<bool> ActivateAssignmentAsync(long AssignmentId);
+        System.Threading.Tasks.Task<bool> ActivateAssignmentAsync(long AssignmentId, string ShareCode, string TinyUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteTest", ReplyAction="http://tempuri.org/ICpDataService/DeleteTestResponse")]
         bool DeleteTest(long TestId);
@@ -2663,12 +2663,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetInstructorActivityDetailsAsync(Id);
         }
         
-        public bool ActivateTest(long TestId) {
-            return base.Channel.ActivateTest(TestId);
+        public bool ActivateTest(long TestId, string ShareCode, string TinyUrl) {
+            return base.Channel.ActivateTest(TestId, ShareCode, TinyUrl);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateTestAsync(long TestId) {
-            return base.Channel.ActivateTestAsync(TestId);
+        public System.Threading.Tasks.Task<bool> ActivateTestAsync(long TestId, string ShareCode, string TinyUrl) {
+            return base.Channel.ActivateTestAsync(TestId, ShareCode, TinyUrl);
         }
         
         public bool DeleteAssignmentOfCourse(long AssignmentId) {
@@ -2679,12 +2679,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.DeleteAssignmentOfCourseAsync(AssignmentId);
         }
         
-        public bool ActivateAssignment(long AssignmentId) {
-            return base.Channel.ActivateAssignment(AssignmentId);
+        public bool ActivateAssignment(long AssignmentId, string ShareCode, string TinyUrl) {
+            return base.Channel.ActivateAssignment(AssignmentId, ShareCode, TinyUrl);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateAssignmentAsync(long AssignmentId) {
-            return base.Channel.ActivateAssignmentAsync(AssignmentId);
+        public System.Threading.Tasks.Task<bool> ActivateAssignmentAsync(long AssignmentId, string ShareCode, string TinyUrl) {
+            return base.Channel.ActivateAssignmentAsync(AssignmentId, ShareCode, TinyUrl);
         }
         
         public bool DeleteTest(long TestId) {

@@ -111,10 +111,11 @@ We aim to provide a simple and easy accessibility for students and teachers to i
     (function () {
         debugger
         'use strict';
+        window.localStorage.setItem('access_token', "@ViewBag.Token");
         window.onpageshow=setCourseProgress();
-
+        onpageshow = stopSpinner();
         //activeCoursesProgress
-    })();
+    })();   
     function setCourseProgress()
     {
         var activeCourses=@Model.m_iActiveCourses;

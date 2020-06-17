@@ -2174,6 +2174,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="TestId" type="xs:long" />
+        <xs:element minOccurs="0" name="ShareCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="TinyUrl" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -2202,6 +2204,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="AssignmentId" type="xs:long" />
+        <xs:element minOccurs="0" name="ShareCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="TinyUrl" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
