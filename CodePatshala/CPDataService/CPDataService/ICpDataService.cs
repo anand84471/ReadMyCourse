@@ -264,6 +264,14 @@ namespace CPDataService
         DataSet CheckTestResponseIdExistsForStudent(long StudentId, long SubmissionId);
         [OperationContract]
         DataSet GetInstructorProfileDetails(int InstructorId);
+        [OperationContract]
+        DataSet CheckTestAccess(long TestId, string AccessCode);
+        [OperationContract]
+        DataSet CheckAssignmentAccess(long AssignmentId, string AccessCode);
+        [OperationContract]
+        DataSet GetIndependentAssignmentDetails(long AssignmentId);
+        [OperationContract]
+        DataSet GetIndependentTestDetails(long TestId);
 
         // TODO: Add your service operations here
     }
