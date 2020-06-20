@@ -374,6 +374,18 @@
   <wsdl:message name="ICpDataService_GetIndependentTestDetails_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetIndependentTestDetailsResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetTestDetailsWithAccessCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestDetailsWithAccessCode" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetTestDetailsWithAccessCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestDetailsWithAccessCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAssignmentDetailsWithAC_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAssignmentDetailsWithAC" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAssignmentDetailsWithAC_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAssignmentDetailsWithACResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetData_InputMessage">
     <wsdl:part name="parameters" element="tns:GetData" />
   </wsdl:message>
@@ -1002,6 +1014,14 @@
     <wsdl:operation name="GetIndependentTestDetails">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetIndependentTestDetails" message="tns:ICpDataService_GetIndependentTestDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetIndependentTestDetailsResponse" message="tns:ICpDataService_GetIndependentTestDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTestDetailsWithAccessCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCode" message="tns:ICpDataService_GetTestDetailsWithAccessCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCodeResponse" message="tns:ICpDataService_GetTestDetailsWithAccessCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignmentDetailsWithAC">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC" message="tns:ICpDataService_GetAssignmentDetailsWithAC_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithACResponse" message="tns:ICpDataService_GetAssignmentDetailsWithAC_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetData" message="tns:ICpDataService_GetData_InputMessage" />
@@ -1804,6 +1824,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetIndependentTestDetails">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetIndependentTestDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTestDetailsWithAccessCode">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignmentDetailsWithAC">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

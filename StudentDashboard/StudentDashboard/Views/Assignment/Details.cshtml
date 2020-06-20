@@ -54,7 +54,7 @@
                         </dl>
                         <hr class="border border-info" />
                         <div id="assignmentResponseObject"></div>
-                        <button id="startAssignmentButton" onclick="startAssignment()" type="button" class="btn btn-outline-success btn-sm btn-block text-white" style="width:50%">Start</button>
+                        <a id="startAssignmentButton" onclick="startAssignment()" class="btn btn-outline-success btn-sm btn-block text-white" href="./StartAssignment/?id=@ViewBag.Id&ShareCode=@ViewBag.AccessCode" style="width:50%">Start</a>
                     </div>
                 </div>
             </div>
@@ -81,16 +81,16 @@
 <script type="text/javascript">
     (function () {
         'use strict';
-        onpageshow = getAssignmentDetails1(20133);
+        onpageshow = getAssignmentDetails1();
     })();
-    function getAssignmentDetails1(Id) {
+    function getAssignmentDetails1() {
         debugger;
 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(Id),
+            url: "/api/v1/document/FetchAssignmentDetails?AssignmentId=".concat("@ViewBag.Id").concat("&&AccessCode=").concat("@ViewBag.AccessCode"),
             success: function (data) {
                 //stopSpinner();
                 debugger;

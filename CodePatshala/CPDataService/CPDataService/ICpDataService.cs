@@ -272,8 +272,14 @@ namespace CPDataService
         DataSet GetIndependentAssignmentDetails(long AssignmentId);
         [OperationContract]
         DataSet GetIndependentTestDetails(long TestId);
+        [OperationContract]
+        DataSet GetTestDetailsWithAccessCode(long TestId, string AccessCode);
+        [OperationContract]
+        DataSet GetAssignmentDetailsWithAC(long AssignmentId, string AccessCode);
 
-        // TODO: Add your service operations here
+
+
+
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

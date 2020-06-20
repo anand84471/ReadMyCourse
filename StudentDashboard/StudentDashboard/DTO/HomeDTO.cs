@@ -850,7 +850,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<byte>("ASSIGNMENT_TYPE"),
                          dataRow.Field<string>("TINY_URL"),
                          dataRow.Field<string>("SHARE_CODE"),
-                         dataRow.Field<bool>("IS_ACTIVE")
+                         dataRow.Field<bool>("IS_ACTIVE"),
+                         dataRow.Field<int>("NO_OF_QUESTIONS")
                          )).ToList();
                 }
                 if (lsAssignmentModel != null && lsAssignmentModel.Count > 0)
@@ -1743,6 +1744,7 @@ namespace StudentDashboard.DTO
             }
             return objGetTestSubmissionDetailsResponse;
         }
+
     }
 }
  

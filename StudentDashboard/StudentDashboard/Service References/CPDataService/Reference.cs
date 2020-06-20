@@ -455,6 +455,18 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetIndependentTestDetails", ReplyAction="http://tempuri.org/ICpDataService/GetIndependentTestDetailsResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetIndependentTestDetailsAsync(long TestId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCode", ReplyAction="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCodeResponse")]
+        System.Data.DataSet GetTestDetailsWithAccessCode(long TestId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCode", ReplyAction="http://tempuri.org/ICpDataService/GetTestDetailsWithAccessCodeResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetTestDetailsWithAccessCodeAsync(long TestId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC", ReplyAction="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithACResponse")]
+        System.Data.DataSet GetAssignmentDetailsWithAC(long AssignmentId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC", ReplyAction="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithACResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentDetailsWithACAsync(long AssignmentId, string AccessCode);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetData", ReplyAction="http://tempuri.org/ICpDataService/GetDataResponse")]
         string GetData(int value);
         
@@ -2273,6 +2285,22 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetIndependentTestDetailsAsync(long TestId) {
             return base.Channel.GetIndependentTestDetailsAsync(TestId);
+        }
+        
+        public System.Data.DataSet GetTestDetailsWithAccessCode(long TestId, string AccessCode) {
+            return base.Channel.GetTestDetailsWithAccessCode(TestId, AccessCode);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetTestDetailsWithAccessCodeAsync(long TestId, string AccessCode) {
+            return base.Channel.GetTestDetailsWithAccessCodeAsync(TestId, AccessCode);
+        }
+        
+        public System.Data.DataSet GetAssignmentDetailsWithAC(long AssignmentId, string AccessCode) {
+            return base.Channel.GetAssignmentDetailsWithAC(AssignmentId, AccessCode);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentDetailsWithACAsync(long AssignmentId, string AccessCode) {
+            return base.Channel.GetAssignmentDetailsWithACAsync(AssignmentId, AccessCode);
         }
         
         public string GetData(int value) {

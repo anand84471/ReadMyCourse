@@ -110,7 +110,7 @@
                     date.setSeconds(data.time_for_test_in_seconds);
                     $("#timeForTest").text(date.toISOString().substr(11, 8));
                     $("#marksForTest").text(data.max_marks);
-                    $("#testType").text("test_type");
+                    $("#testType").text(data.test_type);
                     $("#totalSubmissions").text(data.total_no_of_submissions);
                     $("#aboutTestContainer").show();
                 }

@@ -293,12 +293,14 @@
     <Compile Include="HttpResponse\FileUploadResponse.cs" />
     <Compile Include="HttpResponse\GetAllAlertForInstructorResponse.cs" />
     <Compile Include="HttpResponse\GetAllCourseDetailsForInstructorResponseModel.cs" />
+    <Compile Include="HttpResponse\GetAssignmentDetailsResponse.cs" />
     <Compile Include="HttpResponse\GetAssignmentSubssionDetials.cs" />
     <Compile Include="HttpResponse\GetCityResponse.cs" />
     <Compile Include="HttpResponse\GetCourseDetailsApiResponse.cs" />
     <Compile Include="HttpResponse\GetInstructorActivityResponse.cs" />
     <Compile Include="HttpResponse\GetStateResponse.cs" />
     <Compile Include="HttpResponse\GetStudentResponseModel.cs" />
+    <Compile Include="HttpResponse\GetTestDetailsResponseWithAccessCode.cs" />
     <Compile Include="HttpResponse\GetTestSubmissionDetailsResponse.cs" />
     <Compile Include="HttpResponse\InsertCourseV2Response.cs" />
     <Compile Include="HttpResponse\InsertNewCourseResponse.cs" />
@@ -687,7 +689,7 @@
     <Content Include="Views\Student\ViewAssignment.cshtml" />
     <Content Include="Views\Assignment\Details.cshtml" />
     <Content Include="Views\Assignment\ViewResponse.cshtml" />
-    <Content Include="Views\Assignment\Start.cshtml" />
+    <Content Include="Views\Assignment\StartAssignment.cshtml" />
     <Content Include="Views\Assignment\Submissions.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\Details.cshtml" />

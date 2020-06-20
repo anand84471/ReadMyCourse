@@ -1,4 +1,5 @@
-﻿using StudentDashboard.Models.Course;
+﻿using StudentDashboard.HttpResponse;
+using StudentDashboard.Models.Course;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
@@ -50,36 +51,7 @@ namespace StudentDashboard.DTO
         //    }
         //    return objTestModel;
         //}
-        //public async Task<AssignmentModalForAnonymousAccess> GetAssignmentDetails(long AssignmentId,string AccessCode)
-        //{
-        //    AssignmentModalForAnonymousAccess objAssignmentModel = null;
-        //    try
-        //    {
-        //        DataSet ds = await objCPDataService.GetAssignmentDetailsWithAccessCodeAsync(AssignmentId,AccessCode);
-        //        if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
-        //        {
-        //            objAssignmentModel = ds.Tables[0].AsEnumerable().Select(
-        //             dataRow => new AssignmentModalForAnonymousAccess(
-        //                 dataRow.Field<long>("ASSIGNMENT_ID"),
-        //                 dataRow.Field<string>("ASSIGNMENT_NAME"),
-        //                 dataRow.Field<string>("ASSIGNMENT_DESCRIPTION"),
-        //                 dataRow.Field<DateTime>("ASSIGNMENT_ACTIVATION_DATETIME").ToString("d MMM yyyy"),
-        //                 dataRow.Field<byte>("ASSIGNMENT_TYPE"),
-        //                 dataRow.Field<>("INSTRUCTOR_NAME"),
-        //                 dataRow.Field<int>("NO_OF_QUESTIONS"),
-        //                 dataRow.Field<int>("NO_OF_SUBMISSIONS")
-        //                 )).ToList()[0];
-        //        }
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentDetails", Ex.ToString());
-        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-        //        MainLogger.Error(m_strLogMessage);
-        //    }
-        //    return objAssignmentModel;
-        //}
+       
         public async Task<bool> CheckTestAccess(long TestId, string AccessCode)
         {
             bool result = false;
@@ -121,6 +93,39 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<GetTestDetailsResponseWithAccessCode> GetTestDetails(long TestId, string AccessCode)
+        {
+            GetTestDetailsResponseWithAccessCode objTestModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetTestDetailsWithAccessCodeAsync(TestId, AccessCode);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objTestModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetTestDetailsResponseWithAccessCode(
+                         dataRow.Field<long>("TEST_ID"),
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<string>("TEST_DESCRIPTION"),
+                         dataRow.Field<DateTime>("TEST_ACTIVATION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<byte>("TEST_TYPE"),
+                         dataRow.Field<string>("INSTRUCTOR_NAME"),
+                         dataRow.Field<int>("TOTAL_ALLOWED_TIME"),
+                         dataRow.Field<int>("TOTAL_MARKS"),
+                         dataRow.Field<int>("TOTAL_NO_OF_QUESTIONS"),
+                         dataRow.Field<int>("NO_OF_SUBMISSIONS"),
+                         dataRow.Field<DateTime?>("TEST_START_TIME")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objTestModel;
         }
     }
 }

@@ -390,6 +390,23 @@ namespace StudentDashboard.ServiceLayer
             }
             return objAssignmentModel;
         }
+        public async Task<AssignmentModel> GetIndependentAssignmentDetailsWithoutQuestion(long AssignmentId)
+        {
+            AssignmentModel objAssignmentModel = null;
+            try
+            {
+                objAssignmentModel = await objHomeDTO.GetIndependentAssignmentDetails(AssignmentId);
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertAssignment", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objAssignmentModel;
+        }
         public async Task<TestModel> GetIndependentTestDetails(long TestId)
         {
             TestModel objTestModel = null;

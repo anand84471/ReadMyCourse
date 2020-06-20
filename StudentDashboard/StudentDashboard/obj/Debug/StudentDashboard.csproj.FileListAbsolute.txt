@@ -177,7 +177,6 @@ D:\git\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard
 D:\git\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.pdb
 D:\git\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\CodePatshala\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
-D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\ApplicationInsights.config
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\roslyn\csc.exe
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -275,5 +274,6 @@ D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Microsoft.Owin.Security.OA
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Microsoft.Owin.Security.Google.xml
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Microsoft.Owin.Security.Twitter.xml
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.dll
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.pdb

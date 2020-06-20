@@ -84,7 +84,7 @@ namespace StudentDashboard.Models.Course
             }
         }
         public AssignmentModel(string AssignmentName, string AssignmentDescription, string CreationDate, string UpdationDate, byte AssignmentType,
-            string TinyUrl,string AccessCode,bool IsActive)
+            string TinyUrl,string AccessCode,bool IsActive,int NoOfQuestions)
         {
             this.m_strAssignmentName = AssignmentName;
             this.m_strAssignmentDescription = AssignmentDescription;
@@ -102,6 +102,7 @@ namespace StudentDashboard.Models.Course
             this.m_strStatus = IsActive ? Constants.CONTENT_STATUS_ACTIVE : Constants.CONTENT_STATUS_INACTIVE;
             this.m_strTinyUrl = TinyUrl;
             this.m_strAccessCode = AccessCode;
+            this.m_iTotalNoOfQuestions = NoOfQuestions;
         }
     }
 }
