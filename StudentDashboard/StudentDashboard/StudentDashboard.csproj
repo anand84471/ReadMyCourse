@@ -511,13 +511,26 @@
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.js" />
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Service References\CPDataService\CpDataService.disco" />
     <None Include="Service References\CPDataService\configuration91.svcinfo" />
     <None Include="Service References\CPDataService\configuration.svcinfo" />
+    <None Include="Service References\CPDataService\CpDataService1.wsdl" />
+    <None Include="Service References\CPDataService\CpDataService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\CPDataService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\CPDataService\CpDataService1.disco" />
     <Content Include="site-logo.ico" />
     <Content Include="Style\ajax-loader.gif" />
     <Content Include="Style\animate.css" />
@@ -694,19 +707,6 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\Details.cshtml" />
     <Content Include="Views\Test\StartTest.cshtml" />
-    <None Include="Service References\CPDataService\CpDataService.wsdl" />
-    <None Include="Service References\CPDataService\CpDataService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.CompositeType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>

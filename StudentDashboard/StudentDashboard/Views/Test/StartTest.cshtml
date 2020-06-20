@@ -225,7 +225,14 @@
                 success: function (data) {
                     debugger
                     if (data != null && data.response_code == 1) {
-                        $("#AssignmentName").text(data.test_name);
+                        if (data.test_name.length > 15)
+                        {
+                            $("#AssignmentName").text(data.test_name.substring(0,15)+'...');
+                        }
+                        else {
+                            $("#AssignmentName").text(data.test_name);
+                        }
+                       
                         var date = new Date();
                         StartTime = date.toLocaleDateString();
                         var questions = data.mcq_questions;
@@ -455,6 +462,7 @@
                         correctOptionCount++;
                         obtainedMarks += mcq_questions[i].marks;
                     }
+                    row += '<p>Option selected: ' + mcq_questions[i]["answer"] + '</p>'
                 }
 
                 response += row;

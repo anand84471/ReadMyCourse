@@ -19,15 +19,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:51177/CpDataService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:51735/CpDataService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="CpDataService.disco" MetadataType="Disco" ID="2cc9b05a-f540-4959-8751-931e65c0e6d2" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?disco" />
-    <MetadataFile FileName="CpDataService.xsd" MetadataType="Schema" ID="5944ae1b-e5a7-4fc5-9e35-d82159a261b8" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?xsd=xsd2" />
-    <MetadataFile FileName="CpDataService1.xsd" MetadataType="Schema" ID="386f6670-d861-468d-8471-062f3fe755e1" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?xsd=xsd3" />
-    <MetadataFile FileName="CpDataService2.xsd" MetadataType="Schema" ID="95335187-4f0e-4ed2-86aa-38d8b84e586a" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?xsd=xsd0" />
-    <MetadataFile FileName="CpDataService3.xsd" MetadataType="Schema" ID="8efeaefb-502d-439d-9e3e-b00a5b675d40" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?xsd=xsd1" />
-    <MetadataFile FileName="CpDataService.wsdl" MetadataType="Wsdl" ID="351f1ec9-6588-4370-9c68-8bc2ac44fd35" SourceId="1" SourceUrl="http://localhost:51177/CpDataService.svc?wsdl" />
+    <MetadataFile FileName="CpDataService1.disco" MetadataType="Disco" ID="42038ff2-c566-4069-8c6f-d3e258ad275e" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?disco" />
+    <MetadataFile FileName="CpDataService1.wsdl" MetadataType="Wsdl" ID="862c7a5f-801b-4b03-9b7f-c416fef450a0" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?wsdl" />
+    <MetadataFile FileName="CpDataService4.xsd" MetadataType="Schema" ID="4b09375f-93ca-44ad-be14-2e4e3dbea1d1" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CpDataService41.xsd" MetadataType="Schema" ID="9c5044dc-2656-4975-800f-5c3cd4524fb0" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CpDataService42.xsd" MetadataType="Schema" ID="173409d1-a8c5-4372-9aae-5ede6c3722c8" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CpDataService43.xsd" MetadataType="Schema" ID="223496f6-09dd-45fd-a1a3-f2a385b77518" SourceId="1" SourceUrl="http://localhost:51735/CpDataService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:51177/CpDataService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CPDataService" />
+  <xs:import schemaLocation="http://localhost:51735/CpDataService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CPDataService" />
   <xs:element name="DeleteMcqTestQuestion">
     <xs:complexType>
       <xs:sequence>

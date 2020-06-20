@@ -83,23 +83,27 @@ namespace StudentDashboard.API
         }
         [Route("FetchFullAssignmentDetails")]
         [HttpPost]
-        public async Task<AssignmentModel> GetFullAssignmentDetails(long AssignmentId)
+        public async Task<AssignmentModel> GetFullAssignmentDetails(long AssignmentId,string AccessCode)
         {
             AssignmentModel objResponse = null;
             try
             {
-                objResponse = await objHomeService.GetAssignmentDetails(AssignmentId);
-                if (objResponse != null)
+                if(await objDocumentService.CheckAssignmentAccess(AssignmentId,AccessCode))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    objResponse = await objHomeService.GetAssignmentDetails(AssignmentId);
+                    if (objResponse != null)
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse = new AssignmentModel();
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse = new AssignmentModel();
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
