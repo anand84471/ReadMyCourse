@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Utils;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace StudentDashboard.DTO
         //    }
         //    return objTestModel;
         //}
-       
+
         public async Task<bool> CheckTestAccess(long TestId, string AccessCode)
         {
             bool result = false;
@@ -126,6 +127,91 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return objTestModel;
+        }
+        public async Task<GetWebsiteHomeDetailsResponse> GetHomeDetails()
+        {
+            GetWebsiteHomeDetailsResponse objTestModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetWebsiteAboutDetailsAsync();
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objTestModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetWebsiteHomeDetailsResponse(
+                         dataRow.Field<int>("NO_OF_INSTRUCTORS"),
+                         dataRow.Field<int>("NO_OF_COURSES"),
+                         dataRow.Field<int>("NO_OF_TESTS_CREATED"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_CREATED"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objTestModel;
+        }
+        public  List<SmsNotificationModal> GetAllSmsNotification(int RetryCount)
+        {
+            List<SmsNotificationModal> lsSmsNotificationModal = null;
+            try
+            {
+                DataSet ds =  objCPDataService.GetAllNotificationToPrecess(RetryCount);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsSmsNotificationModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new SmsNotificationModal(
+                         dataRow.Field<string>("SMS_BODY"),
+                         dataRow.Field<string>("RECEIVER_PHONE_NO"),
+                         dataRow.Field<long>("ID")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsSmsNotificationModal;
+        }
+        public bool ChangeSmsNotificationStatus(long NotificationId, bool Status)
+        {
+            bool result = false;
+            try
+            {
+                result =  objCPDataService.UpdateNotificationStatus(Status, NotificationId);
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangeSmsNotificationStatus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertSMSNotification(string Message, string SmsReceiver,int SmsNotificationTypeId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertSmsNotificationAsync(SmsNotificationTypeId,Message,SmsReceiver);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangeSmsNotificationStatus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

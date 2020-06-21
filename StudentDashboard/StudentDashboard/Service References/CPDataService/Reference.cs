@@ -78,6 +78,48 @@ namespace StudentDashboard.CPDataService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CPDataService.ICpDataService")]
     public interface ICpDataService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
+        bool UpdateNotificationStatus(bool Status, long NotificationId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
+        System.Threading.Tasks.Task<bool> UpdateNotificationStatusAsync(bool Status, long NotificationId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllNotificationToPrecess", ReplyAction="http://tempuri.org/ICpDataService/GetAllNotificationToPrecessResponse")]
+        System.Data.DataSet GetAllNotificationToPrecess(int MaxRetryCount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllNotificationToPrecess", ReplyAction="http://tempuri.org/ICpDataService/GetAllNotificationToPrecessResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllNotificationToPrecessAsync(int MaxRetryCount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertSmsNotification", ReplyAction="http://tempuri.org/ICpDataService/InsertSmsNotificationResponse")]
+        bool InsertSmsNotification(int NotificationTypeId, string SmsBody, string ReceiverPhoneNo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertSmsNotification", ReplyAction="http://tempuri.org/ICpDataService/InsertSmsNotificationResponse")]
+        System.Threading.Tasks.Task<bool> InsertSmsNotificationAsync(int NotificationTypeId, string SmsBody, string ReceiverPhoneNo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequestResponse")]
+        bool InsertStudentPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequestResponse")]
+        System.Threading.Tasks.Task<bool> InsertStudentPasswordRecoveryRequestAsync(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequestResponse")]
+        System.Data.DataSet ValidateStudentPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequestResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> ValidateStudentPasswordRecoveryRequestAsync(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthentication", ReplyAction="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthenticationResponse")]
+        bool ChanegPasswordAfterAuthentication(string UserId, string Token, string HashedPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthentication", ReplyAction="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthenticationResponse")]
+        System.Threading.Tasks.Task<bool> ChanegPasswordAfterAuthenticationAsync(string UserId, string Token, string HashedPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkOtpVarified", ReplyAction="http://tempuri.org/ICpDataService/MarkOtpVarifiedResponse")]
+        bool MarkOtpVarified(string UserId, string Token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkOtpVarified", ReplyAction="http://tempuri.org/ICpDataService/MarkOtpVarifiedResponse")]
+        System.Threading.Tasks.Task<bool> MarkOtpVarifiedAsync(string UserId, string Token);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion", ReplyAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse")]
         bool DeleteMcqTestQuestion(long QuestionId);
         
@@ -139,10 +181,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllQuestionsOfSubjectiveAssignmentAsync(long AssignmentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/RegisterNewStudent", ReplyAction="http://tempuri.org/ICpDataService/RegisterNewStudentResponse")]
-        bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo);
+        bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo, string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/RegisterNewStudent", ReplyAction="http://tempuri.org/ICpDataService/RegisterNewStudentResponse")]
-        System.Threading.Tasks.Task<bool> RegisterNewStudentAsync(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo);
+        System.Threading.Tasks.Task<bool> RegisterNewStudentAsync(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo, string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateStudentLogin", ReplyAction="http://tempuri.org/ICpDataService/ValidateStudentLoginResponse")]
         StudentDashboard.CPDataService.ValidateStudentLoginResponse ValidateStudentLogin(StudentDashboard.CPDataService.ValidateStudentLoginRequest request);
@@ -467,6 +509,12 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC", ReplyAction="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithACResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetAssignmentDetailsWithACAsync(long AssignmentId, string AccessCode);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetWebsiteAboutDetails", ReplyAction="http://tempuri.org/ICpDataService/GetWebsiteAboutDetailsResponse")]
+        System.Data.DataSet GetWebsiteAboutDetails();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetWebsiteAboutDetails", ReplyAction="http://tempuri.org/ICpDataService/GetWebsiteAboutDetailsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetWebsiteAboutDetailsAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetData", ReplyAction="http://tempuri.org/ICpDataService/GetDataResponse")]
         string GetData(int value);
         
@@ -492,10 +540,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> ValidateLoginDetailsAsync(string Email, string Password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/RegisterNewInstructor", ReplyAction="http://tempuri.org/ICpDataService/RegisterNewInstructorResponse")]
-        bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password);
+        bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password, string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/RegisterNewInstructor", ReplyAction="http://tempuri.org/ICpDataService/RegisterNewInstructorResponse")]
-        System.Threading.Tasks.Task<bool> RegisterNewInstructorAsync(string FirstName, string LastName, string PhoneNo, string Email, string Password);
+        System.Threading.Tasks.Task<bool> RegisterNewInstructorAsync(string FirstName, string LastName, string PhoneNo, string Email, string Password, string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateInstructorLoginDetails", ReplyAction="http://tempuri.org/ICpDataService/ValidateInstructorLoginDetailsResponse")]
         System.Data.DataSet ValidateInstructorLoginDetails(string Email, string Password);
@@ -1690,6 +1738,62 @@ namespace StudentDashboard.CPDataService {
                 base(binding, remoteAddress) {
         }
         
+        public bool UpdateNotificationStatus(bool Status, long NotificationId) {
+            return base.Channel.UpdateNotificationStatus(Status, NotificationId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateNotificationStatusAsync(bool Status, long NotificationId) {
+            return base.Channel.UpdateNotificationStatusAsync(Status, NotificationId);
+        }
+        
+        public System.Data.DataSet GetAllNotificationToPrecess(int MaxRetryCount) {
+            return base.Channel.GetAllNotificationToPrecess(MaxRetryCount);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllNotificationToPrecessAsync(int MaxRetryCount) {
+            return base.Channel.GetAllNotificationToPrecessAsync(MaxRetryCount);
+        }
+        
+        public bool InsertSmsNotification(int NotificationTypeId, string SmsBody, string ReceiverPhoneNo) {
+            return base.Channel.InsertSmsNotification(NotificationTypeId, SmsBody, ReceiverPhoneNo);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertSmsNotificationAsync(int NotificationTypeId, string SmsBody, string ReceiverPhoneNo) {
+            return base.Channel.InsertSmsNotificationAsync(NotificationTypeId, SmsBody, ReceiverPhoneNo);
+        }
+        
+        public bool InsertStudentPasswordRecoveryRequest(string UserId, string Token, string OTP) {
+            return base.Channel.InsertStudentPasswordRecoveryRequest(UserId, Token, OTP);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertStudentPasswordRecoveryRequestAsync(string UserId, string Token, string OTP) {
+            return base.Channel.InsertStudentPasswordRecoveryRequestAsync(UserId, Token, OTP);
+        }
+        
+        public System.Data.DataSet ValidateStudentPasswordRecoveryRequest(string UserId, string Token, string OTP) {
+            return base.Channel.ValidateStudentPasswordRecoveryRequest(UserId, Token, OTP);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> ValidateStudentPasswordRecoveryRequestAsync(string UserId, string Token, string OTP) {
+            return base.Channel.ValidateStudentPasswordRecoveryRequestAsync(UserId, Token, OTP);
+        }
+        
+        public bool ChanegPasswordAfterAuthentication(string UserId, string Token, string HashedPassword) {
+            return base.Channel.ChanegPasswordAfterAuthentication(UserId, Token, HashedPassword);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChanegPasswordAfterAuthenticationAsync(string UserId, string Token, string HashedPassword) {
+            return base.Channel.ChanegPasswordAfterAuthenticationAsync(UserId, Token, HashedPassword);
+        }
+        
+        public bool MarkOtpVarified(string UserId, string Token) {
+            return base.Channel.MarkOtpVarified(UserId, Token);
+        }
+        
+        public System.Threading.Tasks.Task<bool> MarkOtpVarifiedAsync(string UserId, string Token) {
+            return base.Channel.MarkOtpVarifiedAsync(UserId, Token);
+        }
+        
         public bool DeleteMcqTestQuestion(long QuestionId) {
             return base.Channel.DeleteMcqTestQuestion(QuestionId);
         }
@@ -1770,12 +1874,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllQuestionsOfSubjectiveAssignmentAsync(AssignmentId);
         }
         
-        public bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo) {
-            return base.Channel.RegisterNewStudent(FirstName, LastName, UserId, HashedPassword, PhoneNo);
+        public bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo, string PhoneNoVerificationGuid, string EmailIdVerificationGuid) {
+            return base.Channel.RegisterNewStudent(FirstName, LastName, UserId, HashedPassword, PhoneNo, PhoneNoVerificationGuid, EmailIdVerificationGuid);
         }
         
-        public System.Threading.Tasks.Task<bool> RegisterNewStudentAsync(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo) {
-            return base.Channel.RegisterNewStudentAsync(FirstName, LastName, UserId, HashedPassword, PhoneNo);
+        public System.Threading.Tasks.Task<bool> RegisterNewStudentAsync(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo, string PhoneNoVerificationGuid, string EmailIdVerificationGuid) {
+            return base.Channel.RegisterNewStudentAsync(FirstName, LastName, UserId, HashedPassword, PhoneNo, PhoneNoVerificationGuid, EmailIdVerificationGuid);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2303,6 +2407,14 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAssignmentDetailsWithACAsync(AssignmentId, AccessCode);
         }
         
+        public System.Data.DataSet GetWebsiteAboutDetails() {
+            return base.Channel.GetWebsiteAboutDetails();
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetWebsiteAboutDetailsAsync() {
+            return base.Channel.GetWebsiteAboutDetailsAsync();
+        }
+        
         public string GetData(int value) {
             return base.Channel.GetData(value);
         }
@@ -2335,12 +2447,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.ValidateLoginDetailsAsync(Email, Password);
         }
         
-        public bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password) {
-            return base.Channel.RegisterNewInstructor(FirstName, LastName, PhoneNo, Email, Password);
+        public bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password, string PhoneNoVerificationGuid, string EmailIdVerificationGuid) {
+            return base.Channel.RegisterNewInstructor(FirstName, LastName, PhoneNo, Email, Password, PhoneNoVerificationGuid, EmailIdVerificationGuid);
         }
         
-        public System.Threading.Tasks.Task<bool> RegisterNewInstructorAsync(string FirstName, string LastName, string PhoneNo, string Email, string Password) {
-            return base.Channel.RegisterNewInstructorAsync(FirstName, LastName, PhoneNo, Email, Password);
+        public System.Threading.Tasks.Task<bool> RegisterNewInstructorAsync(string FirstName, string LastName, string PhoneNo, string Email, string Password, string PhoneNoVerificationGuid, string EmailIdVerificationGuid) {
+            return base.Channel.RegisterNewInstructorAsync(FirstName, LastName, PhoneNo, Email, Password, PhoneNoVerificationGuid, EmailIdVerificationGuid);
         }
         
         public System.Data.DataSet ValidateInstructorLoginDetails(string Email, string Password) {

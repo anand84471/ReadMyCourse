@@ -137,6 +137,153 @@ namespace StudentDashboard.Controllers
             return View(ViewName);
 
         }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(FormCollection collection)
+        {
+            string strCurrentMethodName = "ResetPassword";
+            string ViewName = "";
+            try
+            {
+                StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
+                objStudentRegisterModal.m_strUserId = collection["userEmail"];
+                string token = await objStudentService.InsertPasswordRecovery(objStudentRegisterModal.m_strUserId);
+                if (token != null&& token != string.Empty)
+                {
+                    string sid = objStudentRegisterModal.m_strUserId;
+                    return RedirectToAction("PasswordAuthRequest",new { sid, token });
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> SubmitUpdatePasswordOtp(FormCollection collection)
+        {
+            string strCurrentMethodName = "SubmitUpdatePasswordOtp";
+            string ViewName = "";
+            try
+            {
+                StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal = new StudentUpdatePasswordRequestModal();
+                objStudentUpdatePasswordRequestModal.m_strUserName = collection["userName"];
+                objStudentUpdatePasswordRequestModal.m_strToken = collection["token"];
+                objStudentUpdatePasswordRequestModal.m_strOtp = collection["otp"];
+                string sid = objStudentUpdatePasswordRequestModal.m_strUserName;
+                string token = objStudentUpdatePasswordRequestModal.m_strToken;
+                if (await objStudentService.ValidatePasswordRecodevrtOtp(objStudentUpdatePasswordRequestModal))
+                {
+                    
+                    return RedirectToAction("ChangePassword", new { sid, token });
+                }
+                else
+                {
+                    ViewBag.StudnentUserName = sid;
+                    ViewBag.Token = token;
+                    ViewBag.InvalidOtp = true;
+                    return View("PasswordAuthRequest");
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ChangePasswordNow(FormCollection collection)
+        {
+            string strCurrentMethodName = "ChangePasswordNow";
+            string ViewName = "";
+            try
+            {
+                StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal = new StudentUpdatePasswordRequestModal();
+                objStudentUpdatePasswordRequestModal.m_strUserName = collection["userName"];
+                objStudentUpdatePasswordRequestModal.m_strToken = collection["token"];
+                objStudentUpdatePasswordRequestModal.m_strPassword = collection["password"];
+                objStudentUpdatePasswordRequestModal.m_strMatchPassword = collection["confirmPassword"];
+                string sid = objStudentUpdatePasswordRequestModal.m_strUserName;
+                string token = objStudentUpdatePasswordRequestModal.m_strToken;
+                if (await objStudentService.ChangePasswordAfterAuth(objStudentUpdatePasswordRequestModal))
+                {
+                    string UserId = objStudentUpdatePasswordRequestModal.m_strUserName;
+                    return RedirectToAction("PasswordUpdatedSuccessfully", new { UserId });
+                }
+                else
+                {
+                    ViewBag.StudnentUserName = sid;
+                    ViewBag.Token = token;
+                    ViewBag.InvalidOtp = true;
+                    return View("PasswordAuthRequest");
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+        }
+        [HttpGet]
+        public PartialViewResult ChangePassword(string sid,string token)
+        {
+            ViewBag.StudentId = sid;
+            ViewBag.Token = token;
+            return PartialView();
+        }
+        [HttpGet]
+        public PartialViewResult ForgotPassword()
+        {
+            return PartialView();
+        }
+        
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult PasswordAuthRequest(string sid,string token)
+        {
+            string strCurrentMethodName = "PasswordAuthRequest";
+            try
+            {
+                ViewBag.StudnentUserName = sid;
+                ViewBag.Token = token;
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return View("Error");
+
+        }
+        [HttpGet]
+        public ActionResult PasswordUpdatedSuccessfully(string UserId)
+        {
+            ViewBag.UserMail = UserId;
+            ViewBag.IsRegistered = true;
+            return View();
+        }
         [HttpGet]
         public ActionResult RegistrationSuccessful(string UserId)
         {

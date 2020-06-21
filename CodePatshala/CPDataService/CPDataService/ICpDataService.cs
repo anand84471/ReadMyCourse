@@ -22,7 +22,8 @@ namespace CPDataService
         [OperationContract]
         DataSet ValidateLoginDetails(string Email, string Password);
         [OperationContract]
-        bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password);
+        bool RegisterNewInstructor(string FirstName, string LastName, string PhoneNo, string Email, string Password,
+            string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         [OperationContract]
         DataSet ValidateInstructorLoginDetails(string Email, string Password);
         [OperationContract]
@@ -168,7 +169,8 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllQuestionsOfSubjectiveAssignment(long AssignmentId);
         [OperationContract]
-        bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo);
+        bool RegisterNewStudent(string FirstName, string LastName, string UserId, string HashedPassword, string PhoneNo,
+            string PhoneNoVerificationGuid, string EmailIdVerificationGuid);
         [OperationContract]
         bool ValidateStudentLogin(string UserId, string HashedPassword, ref long StudentId);
         [OperationContract]
@@ -276,8 +278,22 @@ namespace CPDataService
         DataSet GetTestDetailsWithAccessCode(long TestId, string AccessCode);
         [OperationContract]
         DataSet GetAssignmentDetailsWithAC(long AssignmentId, string AccessCode);
-
-
+        [OperationContract]
+        DataSet GetWebsiteAboutDetails();
+        [OperationContract]
+        bool UpdateNotificationStatus(bool Status, long NotificationId);
+        [OperationContract]
+        DataSet GetAllNotificationToPrecess(int MaxRetryCount);
+        [OperationContract]
+        bool InsertSmsNotification(int NotificationTypeId, string SmsBody, string ReceiverPhoneNo);
+        [OperationContract]
+        bool InsertStudentPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        [OperationContract]
+        DataSet ValidateStudentPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        [OperationContract]
+        bool ChanegPasswordAfterAuthentication(string UserId, string Token, string HashedPassword);
+        [OperationContract]
+        bool MarkOtpVarified(string UserId, string Token);
 
 
     }

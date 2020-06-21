@@ -11,7 +11,7 @@ namespace StudentDashboard.Security.Instrcutor
         void IAuthenticationFilter.OnAuthentication(AuthenticationContext filterContext)
         {
             List<string >allowAnnonymousAction = new List<string> {
-                "Index","LogIn","ForgotPassword","Join","RegistrationSuccessful","Register","ValidateLogin","LoginFirst"
+                "Index","LogIn","ForgotPassword","Join","RegistrationSuccessful","Register","ValidateLogin","LoginFirst","PasswordAuthRequest"
             };
             if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["instructor_id"]))&&!(allowAnnonymousAction.Contains(filterContext.ActionDescriptor.ActionName)))
             {

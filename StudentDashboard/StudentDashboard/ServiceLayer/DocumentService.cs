@@ -36,5 +36,15 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentDTO.GetTestDetails(TestId, AccessCode);
         }
+        public async Task<GetWebsiteHomeDetailsResponse> GetHomeDetails()
+        {
+            return await objDocumentDTO.GetHomeDetails();
+        }
+        public async Task<bool> InsertSMSNotification(string Message, string SmsReceiver, int SmsNotificationTypeId)
+        {
+            return await objDocumentDTO.InsertSMSNotification(Message, SmsReceiver, SmsNotificationTypeId);
+        }
+
+
     }
 }

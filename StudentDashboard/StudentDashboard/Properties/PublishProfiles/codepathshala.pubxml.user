@@ -6,11 +6,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\DeployReadMyCourse\20_6_2020\DashBoard</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\DeployReadMyCourse\21_6_2020\DashBoard</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
       <publishTime>02/26/2020 19:54:58</publishTime>
+    </File>
+    <File Include="AppSetting.config">
+      <publishTime>06/21/2020 18:24:21</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>02/22/2013 08:43:40</publishTime>
@@ -100,7 +103,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/03/2014 20:33:56</publishTime>
+      <publishTime>03/20/2017 20:03:18</publishTime>
     </File>
     <File Include="bin/NLog.dll">
       <publishTime>03/27/2020 19:47:07</publishTime>
@@ -145,7 +148,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/18/2015 20:19:46</publishTime>
     </File>
     <File Include="bin/StudentDashboard.dll">
-      <publishTime>06/20/2020 09:18:58</publishTime>
+      <publishTime>06/21/2020 20:37:41</publishTime>
     </File>
     <File Include="bin/System.IdentityModel.Tokens.Jwt.dll">
       <publishTime>05/22/2020 21:29:54</publishTime>
@@ -179,6 +182,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>01/28/2015 04:04:30</publishTime>
+    </File>
+    <File Include="bin/Twilio.dll">
+      <publishTime>06/10/2020 20:31:40</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>09/10/2013 17:28:38</publishTime>
@@ -433,7 +439,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/27/2020 19:47:06</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>06/11/2020 06:42:28</publishTime>
+      <publishTime>06/20/2020 19:36:22</publishTime>
     </File>
     <File Include="Properties/DataSources/System.Data.DataSet.datasource">
       <publishTime>03/27/2020 19:47:06</publishTime>
@@ -586,55 +592,55 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/26/2020 21:21:30</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.CompositeType.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:32</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.GetInstructorIdByAssignmentIdResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.GetInstructorIdByCourseIdResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.GetInstructorIdByTestIdResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.GetInstructorIdFromUserIdResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.GetStudentIdFromUserIdResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:32</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InertNewCourseIndexResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertAssignmentResponseResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:32</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewAssignmentResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewCourseResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewCourseV2Response.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewIndependentAssignmentResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewIndependentTestResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewIndexToV2CourseResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertNewTestResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.InsertTestResponseResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:33</publishTime>
     </File>
     <File Include="Service References/CPDataService/StudentDashboard.CPDataService.ValidateStudentLoginResponse.datasource">
-      <publishTime>06/20/2020 09:16:30</publishTime>
+      <publishTime>06/21/2020 20:16:32</publishTime>
     </File>
     <File Include="site-logo.ico">
       <publishTime>03/28/2020 09:46:58</publishTime>
@@ -949,7 +955,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/16/2020 08:22:33</publishTime>
     </File>
     <File Include="Views/Assignment/StartAssignment.cshtml">
-      <publishTime>06/20/2020 08:21:59</publishTime>
+      <publishTime>06/20/2020 10:53:43</publishTime>
     </File>
     <File Include="Views/Assignment/Submissions.cshtml">
       <publishTime>06/16/2020 09:28:18</publishTime>
@@ -982,7 +988,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/27/2020 16:14:36</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
-      <publishTime>05/26/2020 21:21:30</publishTime>
+      <publishTime>06/20/2020 17:41:18</publishTime>
     </File>
     <File Include="Views/Home/Contact.cshtml">
       <publishTime>02/27/2020 15:08:26</publishTime>
@@ -994,7 +1000,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/13/2020 09:16:14</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>06/03/2020 09:29:04</publishTime>
+      <publishTime>06/20/2020 14:34:01</publishTime>
     </File>
     <File Include="Views/Home/Register.cshtml">
       <publishTime>03/27/2020 19:47:06</publishTime>
@@ -1027,7 +1033,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/16/2020 10:44:44</publishTime>
     </File>
     <File Include="Views/Instructor/CreateAssignment.cshtml">
-      <publishTime>06/18/2020 17:48:21</publishTime>
+      <publishTime>06/20/2020 11:25:30</publishTime>
     </File>
     <File Include="Views/Instructor/CreateInterativeCourse.cshtml">
       <publishTime>06/13/2020 08:09:15</publishTime>
@@ -1039,16 +1045,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/03/2020 18:07:58</publishTime>
     </File>
     <File Include="Views/Instructor/ForgotPassword.cshtml">
-      <publishTime>03/27/2020 19:47:06</publishTime>
+      <publishTime>06/21/2020 16:59:15</publishTime>
     </File>
     <File Include="Views/Instructor/Home.cshtml">
       <publishTime>06/16/2020 22:33:35</publishTime>
     </File>
     <File Include="Views/Instructor/Index.cshtml">
-      <publishTime>06/03/2020 23:21:55</publishTime>
+      <publishTime>06/21/2020 13:34:21</publishTime>
     </File>
     <File Include="Views/Instructor/Join.cshtml">
-      <publishTime>06/03/2020 23:25:40</publishTime>
+      <publishTime>06/20/2020 14:31:21</publishTime>
     </File>
     <File Include="Views/Instructor/NewCourse.cshtml">
       <publishTime>06/16/2020 11:08:26</publishTime>
@@ -1123,7 +1129,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/26/2020 19:54:45</publishTime>
     </File>
     <File Include="Views/Shared/_AboutLayout.cshtml">
-      <publishTime>05/26/2020 21:21:30</publishTime>
+      <publishTime>06/20/2020 16:50:03</publishTime>
     </File>
     <File Include="Views/Shared/_Assignment.cshtml">
       <publishTime>02/27/2020 16:17:26</publishTime>
@@ -1144,7 +1150,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/26/2020 19:54:45</publishTime>
     </File>
     <File Include="Views/Shared/_MenuAbout.cshtml">
-      <publishTime>05/26/2020 21:21:30</publishTime>
+      <publishTime>06/20/2020 15:20:55</publishTime>
     </File>
     <File Include="Views/Shared/_SchoolLayout.cshtml">
       <publishTime>05/18/2020 22:43:45</publishTime>
@@ -1170,8 +1176,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Student/AssignmentSubmissions.cshtml">
       <publishTime>06/13/2020 21:27:08</publishTime>
     </File>
+    <File Include="Views/Student/ChangePassword.cshtml">
+      <publishTime>06/21/2020 20:04:44</publishTime>
+    </File>
     <File Include="Views/Student/EditAccount.cshtml">
       <publishTime>06/13/2020 18:16:09</publishTime>
+    </File>
+    <File Include="Views/Student/ForgotPassword.cshtml">
+      <publishTime>06/21/2020 17:10:07</publishTime>
     </File>
     <File Include="Views/Student/GiveAssignment.cshtml">
       <publishTime>06/20/2020 08:07:38</publishTime>
@@ -1180,13 +1192,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/16/2020 22:39:23</publishTime>
     </File>
     <File Include="Views/Student/Index.cshtml">
-      <publishTime>06/03/2020 23:21:22</publishTime>
+      <publishTime>06/21/2020 17:01:50</publishTime>
     </File>
     <File Include="Views/Student/Instructors.cshtml">
       <publishTime>06/16/2020 15:26:02</publishTime>
     </File>
     <File Include="Views/Student/Join.cshtml">
-      <publishTime>06/11/2020 08:13:23</publishTime>
+      <publishTime>06/20/2020 14:32:18</publishTime>
     </File>
     <File Include="Views/Student/JoinCourse.cshtml">
       <publishTime>06/14/2020 07:06:55</publishTime>
@@ -1214,6 +1226,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Student/NewTest.cshtml">
       <publishTime>05/31/2020 23:11:30</publishTime>
+    </File>
+    <File Include="Views/Student/PasswordAuthRequest.cshtml">
+      <publishTime>06/21/2020 19:23:41</publishTime>
+    </File>
+    <File Include="Views/Student/PasswordUpdatedSuccessfully.cshtml">
+      <publishTime>06/21/2020 20:02:06</publishTime>
     </File>
     <File Include="Views/Student/Register.cshtml">
       <publishTime>05/17/2020 17:17:16</publishTime>
@@ -1243,7 +1261,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/17/2020 06:03:07</publishTime>
     </File>
     <File Include="Views/Test/StartTest.cshtml">
-      <publishTime>06/18/2020 08:28:49</publishTime>
+      <publishTime>06/20/2020 11:44:38</publishTime>
     </File>
     <File Include="Views/Test/TestObjective.cshtml">
       <publishTime>03/27/2020 19:47:06</publishTime>
@@ -1267,7 +1285,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/27/2020 18:42:42</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/20/2020 09:18:58</publishTime>
+      <publishTime>06/21/2020 20:37:41</publishTime>
     </File>
   </ItemGroup>
 </Project>

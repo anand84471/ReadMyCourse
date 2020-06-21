@@ -50,7 +50,10 @@ namespace StudentDashboard.Models
         public string m_strFullAddress { get; set; }
         public string m_strPinCode { get; set; }
         public char m_cGender { get; set; }
-      
+        [JsonIgnore]
+        public string m_strEmailVarificationGuid;
+        [JsonIgnore]
+        public string m_strPhoneNoVarificationGuid;
         public InstructorRegisterModel(string FirstName, string LastName,int InstructorId)
         {
             this.m_strFirstName = FirstName;

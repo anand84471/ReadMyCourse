@@ -316,7 +316,7 @@
         function showPreviousQuestion() {
             changeStatusOfButton();
             currentQuestionNo--;
-            if (currentQuestionNo < 0) {
+            if (currentQuestionNo <=0) {
                 previousButton.prop('disabled', true);
             }
             nextButton.prop('disabled', false);
@@ -335,6 +335,15 @@
             option2.text(currentQuestion.option2);
             option3.text(currentQuestion.option3);
             option4.text(currentQuestion.option4);
+            if (currentQuestion.answer != null) {
+                document.getElementsByName("options")[currentQuestion.answer - 1].checked = true;
+            }
+            else {
+                var optionRadioButtons = document.getElementsByName("options");
+                for (var i = 0; i < optionRadioButtons.length; i++) {
+                    optionRadioButtons[i].checked = false;
+                }
+            }
         }
         function showNextQuestion() {
             debugger

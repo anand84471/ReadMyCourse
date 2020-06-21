@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StudentDashboard.AlertManager;
+using StudentDashboard.BusinessLayer;
 using StudentDashboard.DTO;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
@@ -23,12 +24,15 @@ namespace StudentDashboard.ServiceLayer
         StudentDTO objStudentDTO;
         StringBuilder m_strLogMessage;
         InstructorAlertManager objInstructorAlertManager;
+        InstructorBusinessLayer objInstructorBusinessLayer;
+        SMSServiceManager objSMSServiceManager;
         public StudentService()
         {
             objStudentDTO = new StudentDTO();
             m_strLogMessage = new StringBuilder();
             objInstructorAlertManager = new InstructorAlertManager();
-
+            objInstructorBusinessLayer = new InstructorBusinessLayer();
+            objSMSServiceManager = new SMSServiceManager();
         }
         public StudentDetailsModel GetStudentDetails(int StudentId)
         {
@@ -42,6 +46,15 @@ namespace StudentDashboard.ServiceLayer
                 string EncryptedPassword = SHA256Encryption.ComputeSha256Hash(objStudentRegisterModal.m_strPassword);
                 objStudentRegisterModal.m_strHashedPassword = EncryptedPassword;
                 result = await objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
+                objStudentRegisterModal.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
+                objStudentRegisterModal.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
+                if (await objStudentDTO.RegisterNewStudent(objStudentRegisterModal))
+                {
+                    result = true;
+                    var SmsVarificationLink = objInstructorBusinessLayer.GetLinkForSmsVarification(objStudentRegisterModal.m_strEmailVarificationGuid,
+                        objStudentRegisterModal.m_strEmail, Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_STUDENT);
+                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                }
             }
             catch (Exception Ex)
             {
@@ -53,6 +66,35 @@ namespace StudentDashboard.ServiceLayer
             return result;
 
         }
+        public async Task<string> InsertPasswordRecovery(string StudentUserId)
+        {
+            string AuthToken=null;
+            try
+            {
+                var StudentId = objStudentDTO.GetStudentIdFromUserId(StudentUserId);
+                if (StudentId != -1)
+                {
+                    StudentRegisterModal objStudentRegisterModal = await objStudentDTO.GetStudentDetails(StudentId);
+                    if(objStudentRegisterModal!=null)
+                    {
+                        string OTP = objInstructorBusinessLayer.GenerateOtp();
+                        AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
+                        await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                        await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
+                    }
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return AuthToken;
+        }
+        
         public bool ValidateLogin(StudentRegisterModal objStudentRegisterModal)
         {
             bool result = false;
@@ -76,6 +118,51 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
 
+        }
+        public async Task<bool> ChangePasswordAfterAuth(StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal)
+        {
+
+            bool result = false;
+            try
+            {
+                if(objStudentUpdatePasswordRequestModal.m_strPassword.Equals(objStudentUpdatePasswordRequestModal.m_strMatchPassword))
+                {
+                    objStudentUpdatePasswordRequestModal.m_strHashedPassword = SHA256Encryption.ComputeSha256Hash(objStudentUpdatePasswordRequestModal.m_strPassword);
+                    result = await objStudentDTO.UpdateStudentPasswordAfterAuth(objStudentUpdatePasswordRequestModal.m_strUserName,
+                        objStudentUpdatePasswordRequestModal.m_strToken, objStudentUpdatePasswordRequestModal.m_strHashedPassword);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> ValidatePasswordRecodevrtOtp(StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal)
+        {
+
+            bool result = false;
+            try
+            {
+                if(await objStudentDTO.ValidatePasswordRecodevrtOtp(objStudentUpdatePasswordRequestModal.m_strUserName,
+                    objStudentUpdatePasswordRequestModal.m_strToken, objStudentUpdatePasswordRequestModal.m_strOtp))
+                {
+                    result = await objStudentDTO.MarkOtpVerifiedForPasswordRecodevry(objStudentUpdatePasswordRequestModal.m_strUserName,
+                        objStudentUpdatePasswordRequestModal.m_strToken);
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
         public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn,int NoOfRowseFetched,int SortingId)
         {

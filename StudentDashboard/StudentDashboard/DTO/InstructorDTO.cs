@@ -24,7 +24,8 @@ namespace StudentDashboard.DTO
             bool result = false;
             try
             {
-                result = await objCPDataService.RegisterNewInstructorAsync(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName, objInstructorRegisterModal.m_strPhoneNo, objInstructorRegisterModal.m_strEmail, objInstructorRegisterModal.m_strPassword);
+                result = await objCPDataService.RegisterNewInstructorAsync(objInstructorRegisterModal.m_strFirstName, objInstructorRegisterModal.m_strLastName, objInstructorRegisterModal.m_strPhoneNo, objInstructorRegisterModal.m_strEmail, objInstructorRegisterModal.m_strPassword,
+                    objInstructorRegisterModal.m_strPhoneNoVarificationGuid,objInstructorRegisterModal.m_strEmailVarificationGuid);
 
             }
             catch (Exception Ex)
@@ -33,6 +34,7 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+
         public async Task<bool> ValidateInstructorLoginDetails(InstructorRegisterModel objInstructorRegisterModel)
         {
             bool result = false;

@@ -146,5 +146,34 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("FetchHomeDetails")]
+        [HttpPost]
+        public async Task<GetWebsiteHomeDetailsResponse> GetHomeDetails()
+        {
+            GetWebsiteHomeDetailsResponse objResponse = null;
+            try
+            {
+                objResponse = await objDocumentService.GetHomeDetails();
+                if (objResponse != null)
+                {
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                }
+                else
+                {
+                    objResponse = new GetWebsiteHomeDetailsResponse();
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }
 }

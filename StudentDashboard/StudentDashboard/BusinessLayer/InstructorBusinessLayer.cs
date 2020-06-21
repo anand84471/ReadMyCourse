@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -94,6 +95,36 @@ namespace StudentDashboard.BusinessLayer
             builder.Append(RandomString(2, false));
             return builder.ToString();
         }
+        public string GetSmsVerificationString()
+        {
+            Guid obj = new Guid();
+            return Guid.NewGuid().ToString(); 
+        }
+        public string GetEmailVerficationString()
+        {
+            
+            return Guid.NewGuid().ToString();
+        }
+        public string GenerateOtp()
+        {
+            return RandomNumber(100000, 999999).ToString();
+        }
+        public string GetLinkForSmsVarification(string Guid,string Id,int RequestType)
+        {
+            return Constants.BASE_URL_PATH_FOR_AUTHORIZATION + "rt=" + RequestType + "&&sid=" + Id + "&&guid=" + Guid;
+        }
+        public string GeneratePasswordVeryficationToken()
+        {
+            string token;
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                byte[] tokenData = new byte[32];
+                rng.GetBytes(tokenData);
+                token = Convert.ToBase64String(tokenData);
+            }
+            return token;
+        }
+
     }
    
 }

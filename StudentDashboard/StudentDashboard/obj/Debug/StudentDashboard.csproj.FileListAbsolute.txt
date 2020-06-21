@@ -277,3 +277,5 @@ D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Microsoft.Owin.Security.Mi
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.dll
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.pdb
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Twilio.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Twilio.xml

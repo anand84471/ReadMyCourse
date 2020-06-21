@@ -28,6 +28,10 @@ namespace StudentDashboard.Models.Student
         public int m_iCityId { get; set; }
         public int m_iStateId { get; set; }
         public string m_strToken { get; set; }
+        public string m_strPhoneNoVarificationGuid { get; set; }
+        public string m_strEmailVarificationGuid { get; set; }
+
+        public string m_strPasswrodRecoveryAuthToken;
         public StudentRegisterModal()
         {
 

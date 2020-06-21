@@ -8,6 +8,48 @@
       <xsd:import schemaLocation="http://localhost:51735/CpDataService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CPDataService" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateNotificationStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNotificationStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllNotificationToPrecess_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllNotificationToPrecess" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllNotificationToPrecess_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllNotificationToPrecessResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertSmsNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertSmsNotification" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertSmsNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertSmsNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertStudentPasswordRecoveryRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertStudentPasswordRecoveryRequest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertStudentPasswordRecoveryRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertStudentPasswordRecoveryRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidateStudentPasswordRecoveryRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateStudentPasswordRecoveryRequest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidateStudentPasswordRecoveryRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateStudentPasswordRecoveryRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ChanegPasswordAfterAuthentication_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChanegPasswordAfterAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ChanegPasswordAfterAuthentication_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChanegPasswordAfterAuthenticationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_MarkOtpVarified_InputMessage">
+    <wsdl:part name="parameters" element="tns:MarkOtpVarified" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_MarkOtpVarified_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MarkOtpVarifiedResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_DeleteMcqTestQuestion_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteMcqTestQuestion" />
   </wsdl:message>
@@ -385,6 +427,12 @@
   </wsdl:message>
   <wsdl:message name="ICpDataService_GetAssignmentDetailsWithAC_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAssignmentDetailsWithACResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetWebsiteAboutDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWebsiteAboutDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetWebsiteAboutDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWebsiteAboutDetailsResponse" />
   </wsdl:message>
   <wsdl:message name="ICpDataService_GetData_InputMessage">
     <wsdl:part name="parameters" element="tns:GetData" />
@@ -771,6 +819,34 @@
     <wsdl:part name="parameters" element="tns:InsertNewTestToCourseResponse" />
   </wsdl:message>
   <wsdl:portType name="ICpDataService">
+    <wsdl:operation name="UpdateNotificationStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllNotificationToPrecess">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllNotificationToPrecess" message="tns:ICpDataService_GetAllNotificationToPrecess_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllNotificationToPrecessResponse" message="tns:ICpDataService_GetAllNotificationToPrecess_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertSmsNotification">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertSmsNotification" message="tns:ICpDataService_InsertSmsNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertSmsNotificationResponse" message="tns:ICpDataService_InsertSmsNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertStudentPasswordRecoveryRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequest" message="tns:ICpDataService_InsertStudentPasswordRecoveryRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequestResponse" message="tns:ICpDataService_InsertStudentPasswordRecoveryRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateStudentPasswordRecoveryRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequest" message="tns:ICpDataService_ValidateStudentPasswordRecoveryRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequestResponse" message="tns:ICpDataService_ValidateStudentPasswordRecoveryRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChanegPasswordAfterAuthentication">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthentication" message="tns:ICpDataService_ChanegPasswordAfterAuthentication_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthenticationResponse" message="tns:ICpDataService_ChanegPasswordAfterAuthentication_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MarkOtpVarified">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/MarkOtpVarified" message="tns:ICpDataService_MarkOtpVarified_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/MarkOtpVarifiedResponse" message="tns:ICpDataService_MarkOtpVarified_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="DeleteMcqTestQuestion">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion" message="tns:ICpDataService_DeleteMcqTestQuestion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse" message="tns:ICpDataService_DeleteMcqTestQuestion_OutputMessage" />
@@ -1022,6 +1098,10 @@
     <wsdl:operation name="GetAssignmentDetailsWithAC">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC" message="tns:ICpDataService_GetAssignmentDetailsWithAC_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithACResponse" message="tns:ICpDataService_GetAssignmentDetailsWithAC_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWebsiteAboutDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetWebsiteAboutDetails" message="tns:ICpDataService_GetWebsiteAboutDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetWebsiteAboutDetailsResponse" message="tns:ICpDataService_GetWebsiteAboutDetails_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetData" message="tns:ICpDataService_GetData_InputMessage" />
@@ -1282,6 +1362,69 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICpDataService" type="tns:ICpDataService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateNotificationStatus">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateNotificationStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllNotificationToPrecess">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllNotificationToPrecess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertSmsNotification">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertSmsNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertStudentPasswordRecoveryRequest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertStudentPasswordRecoveryRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateStudentPasswordRecoveryRequest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ValidateStudentPasswordRecoveryRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChanegPasswordAfterAuthentication">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ChanegPasswordAfterAuthentication" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MarkOtpVarified">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/MarkOtpVarified" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="DeleteMcqTestQuestion">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion" style="document" />
       <wsdl:input>
@@ -1842,6 +1985,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetAssignmentDetailsWithAC">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAssignmentDetailsWithAC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWebsiteAboutDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetWebsiteAboutDetails" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -11,6 +11,10 @@ namespace StudentDashboard.Utilities
     {
         public static string ComputeSha256Hash(string rawData)
         {
+            if(MvcApplication._saltForSHA256Encryption!=null)
+            {
+                rawData+= MvcApplication._saltForSHA256Encryption;
+            }
             // Create a SHA256   
             using (SHA256 sha256Hash = SHA256.Create())
             {

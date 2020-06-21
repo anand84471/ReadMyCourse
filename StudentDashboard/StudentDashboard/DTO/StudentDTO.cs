@@ -1,8 +1,10 @@
-﻿using StudentDashboard.HttpRequest;
+﻿using StudentDashboard.BusinessLayer;
+using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Student;
+using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using StudentDashboard.Views.Student;
 using System;
@@ -22,14 +24,16 @@ namespace StudentDashboard.DTO
         public StudentDTO()
         {
             objCPDataService = new CPDataService.CpDataServiceClient();
+            
         }
         public async Task<bool> RegisterNewStudent(StudentRegisterModal objStudentDetailsModal)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.RegisterNewInstructorAsync(objStudentDetailsModal.m_strFirstName,objStudentDetailsModal.m_strLastName,
-                               objStudentDetailsModal.m_strEmail,objStudentDetailsModal.m_strHashedPassword,objStudentDetailsModal.m_strPhoneNo);
+                result = await objCPDataService.RegisterNewStudentAsync(objStudentDetailsModal.m_strFirstName,objStudentDetailsModal.m_strLastName,
+                               objStudentDetailsModal.m_strEmail,objStudentDetailsModal.m_strHashedPassword,objStudentDetailsModal.m_strPhoneNo,
+                               objStudentDetailsModal.m_strPhoneNoVarificationGuid,objStudentDetailsModal.m_strEmailVarificationGuid);
 
             }
             catch (Exception Ex)
@@ -40,6 +44,22 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public long GetStudentIdFromUserId(string UserId)
+        {
+            long StudentId = -1;
+            try
+            {
+                objCPDataService.GetStudentIdFromUserId(UserId,ref StudentId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertActivityForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return StudentId;
         }
         public async Task<bool> InsertActivityForInstructor(long StudentId, string ActivityMessage)
         {
@@ -63,6 +83,83 @@ namespace StudentDashboard.DTO
             try
             {
                 result = objCPDataService.ValidateStudentLogin(UserId,HashedPassword,ref StudentId);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async  Task<bool> ValidatePasswordRecodevrtOtp(string UserId, string Token,string OTP)
+        {
+            bool result = false;
+            DateTime? TokenExpiryTime=null;
+            try
+            {
+                DataSet ds = await objCPDataService.ValidateStudentPasswordRecoveryRequestAsync(UserId, Token, OTP);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    TokenExpiryTime = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => (dataRow.Field<DateTime?>("LAST_PASSWORD_RECOVERY_REQUEST_TIME"))).ToList()[0];
+                }
+                if(TokenExpiryTime!=null&&DateTime.Now-TokenExpiryTime>TimeSpan.FromSeconds(MvcApplication._forgotPasswordExpiryTimeInMinutes))
+                {
+                    result = true;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ValidatePasswordRecodevrtOtp", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertPasswordRecovery(string UserId,string Token,string OTP)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertStudentPasswordRecoveryRequestAsync(UserId, Token, OTP);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> MarkOtpVerifiedForPasswordRecodevry(string UserId, string Token)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.MarkOtpVarifiedAsync(UserId, Token);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateStudentPasswordAfterAuth(string UserId, string Token, string HashedPasword)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.ChanegPasswordAfterAuthenticationAsync(UserId, Token, HashedPasword);
 
             }
             catch (Exception Ex)

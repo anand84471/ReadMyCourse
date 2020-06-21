@@ -228,11 +228,10 @@
         initialize();
         debugger
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(@ViewBag.id),
+            url: "/api/v1/document/FetchFullAssignmentDetails?AssignmentId=".concat(@ViewBag.id).concat("&&AccessCode=").concat("@ViewBag.AccessCode"),
             success: function (data) {
                 debugger
                 if (data != null && data.response_code == 1) {
@@ -243,7 +242,12 @@
                         return;
                     }
                     $("#assignmentQuestionSection").show();
-                    $("#AssignmentName").text(data.assignment_name);
+                    if (data.assignment_name.length > 15) {
+                        $("#AssignmentName").text(data.assignment_name.substring(0, 15) + '...');
+                    }
+                    else {
+                        $("#AssignmentName").text(data.assignment_name);
+                    }
                     var date = new Date();
                     StartTime = date.toLocaleDateString();
                     var questions = data.mcq_questions;
