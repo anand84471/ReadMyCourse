@@ -193,6 +193,98 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<bool> InsertPasswordRecoveryForInstructor(string UserId, string Token, string OTP)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertInstructorPasswordRecoveryRequestAsync(UserId, Token, OTP);
 
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> ValidatePasswordRecoveryOtpForInstructor(string UserId, string Token, string OTP)
+        {
+            bool result = false;
+            DateTime? TokenExpiryTime = null;
+            try
+            {
+                DataSet ds = await objCPDataService.ValidateInstructorPasswordRecoveryRequestAsync(UserId, Token, OTP);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    TokenExpiryTime = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => (dataRow.Field<DateTime?>("LAST_PASSWORD_RECOVERY_REQUEST_TIME"))).ToList()[0];
+                }
+                if (TokenExpiryTime != null && DateTime.Now - TokenExpiryTime > TimeSpan.FromSeconds(MvcApplication._forgotPasswordExpiryTimeInMinutes))
+                {
+                    result = true;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ValidatePasswordRecoveryOtpForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> MarkOtpVerifiedForPasswordRecoveryForInstructor(string UserId, string Token)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.MarkPassowordVarificationOtpVarifiedForInstructorAsync(UserId, Token);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "MarkOtpVerifiedForPasswordRecoveryForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public int GetInstructorIdFromUserId(string UserId)
+        {
+            int InstructorId = -1;
+            try
+            {
+                objCPDataService.GetInstructorIdFromUserId(UserId, ref InstructorId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertActivityForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return InstructorId;
+        }
+        public async Task<bool> UpdateInstructorPasswordAfterAuth(string UserId, string Token, string HashedPasword)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.ChangePasswordAfterAuthenticationForInstructorAsync(UserId, Token, HashedPasword);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

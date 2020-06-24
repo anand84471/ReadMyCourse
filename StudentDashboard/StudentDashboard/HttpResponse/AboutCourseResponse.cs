@@ -22,6 +22,12 @@ namespace StudentDashboard.HttpResponse
         public int m_iTestCount { get; set; }
         [JsonProperty("assignment_count")]
         public int m_iAssignmentCount { get; set; }
+        [JsonProperty("course_status")]
+        public string m_strCourseStatus { get; set; }
+        [JsonProperty("course_share_url")]
+        public string m_strCourseShareUrl { get; set; }
+        [JsonProperty("course_access_code")]
+        public string m_strAccessCode { get; set; }
         [JsonProperty("topic_count")]
         public int m_iTopicCount { get; set; }
         [JsonProperty("m_strEstimatedTimeOfCourse")]
@@ -36,12 +42,16 @@ namespace StudentDashboard.HttpResponse
         {
             
         }
-        public AboutCourseResponse(string CourseName,string CourseDescription,String CourseCreationDate,string CourseUpdationDateTime)
+        public AboutCourseResponse(string CourseName,string CourseDescription,String CourseCreationDate,string CourseUpdationDateTime,
+            string CourseStatus,string ShareUrl,string AccessCode)
         {
             this.m_strCourseName = CourseName;
             this.m_strCourseDescription = CourseDescription;
             this.m_strCourseCreationDate = CourseCreationDate;
             this.m_strCourseUpdationDate = CourseUpdationDateTime;
+            this.m_strCourseStatus = CourseStatus;
+            this.m_strCourseShareUrl = ShareUrl;
+            this.m_strAccessCode = AccessCode;
             m_lsIndexDetails = new List<BasicIndexDetails>();
             m_lsAssignmentDetails = new List<BasicAssignmentDetails>();
             m_lsTestDetails = new List<BasicTestDetails>();

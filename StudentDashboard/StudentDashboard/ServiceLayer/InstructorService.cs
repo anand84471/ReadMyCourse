@@ -2,10 +2,12 @@
 using StudentDashboard.DTO;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -17,13 +19,14 @@ namespace StudentDashboard.ServiceLayer
         DocumentService objDocumentService;
         InstructorBusinessLayer objInstructorBusinessLayer;
         SMSServiceManager objSMSServiceManager;
+        StringBuilder m_strLogMessage;
         public InstructorService()
         {
             objInstructorDTO = new InstructorDTO();
             objDocumentService = new DocumentService();
             objInstructorBusinessLayer = new InstructorBusinessLayer();
             objSMSServiceManager = new SMSServiceManager();
-
+            m_strLogMessage = new StringBuilder();
         }
         public async Task<bool> RegisterNewUser(InstructorRegisterModel objInstructorRegisterModel)
         {
@@ -61,7 +64,10 @@ namespace StudentDashboard.ServiceLayer
             }
             catch (Exception Ex)
             {
-
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ValidateLoginDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
             }
             return result;
 
@@ -78,6 +84,77 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objInstructorDTO.UpdateInstructorDetails(objInstructorRegisterModel);
         }
+        public async Task<string> InsertPasswordRecovery(string InstrcutorUserId)
+        {
+            string AuthToken = null;
+            try
+            {
+                var InstrcutorId = objInstructorDTO.GetInstructorIdFromUserId(InstrcutorUserId);
+                if (InstrcutorId != -1)
+                {
+                    InstructorRegisterModel objStudentRegisterModal = await objInstructorDTO.GetInstructorDetails(InstrcutorId);
+                    if (objStudentRegisterModal != null)
+                    {
+                        string OTP = objInstructorBusinessLayer.GenerateOtp();
+                        AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
+                        await objSMSServiceManager.SendInstructorPasswordRecoveryOTP(OTP, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                        await objInstructorDTO.InsertPasswordRecoveryForInstructor(InstrcutorUserId, AuthToken, OTP);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return AuthToken;
+        }
+        public async Task<bool> ValidatePasswordRecodevrtOtp(StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal)
+        {
 
+            bool result = false;
+            try
+            {
+                if (await objInstructorDTO.ValidatePasswordRecoveryOtpForInstructor(objStudentUpdatePasswordRequestModal.m_strUserName,
+                    objStudentUpdatePasswordRequestModal.m_strToken, objStudentUpdatePasswordRequestModal.m_strOtp))
+                {
+                    result = await objInstructorDTO.MarkOtpVerifiedForPasswordRecoveryForInstructor(objStudentUpdatePasswordRequestModal.m_strUserName,
+                        objStudentUpdatePasswordRequestModal.m_strToken);
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> ChangePasswordAfterAuth(StudentUpdatePasswordRequestModal objStudentUpdatePasswordRequestModal)
+        {
+
+            bool result = false;
+            try
+            {
+                if (objStudentUpdatePasswordRequestModal.m_strPassword.Equals(objStudentUpdatePasswordRequestModal.m_strMatchPassword))
+                {
+                    objStudentUpdatePasswordRequestModal.m_strHashedPassword = SHA256Encryption.ComputeSha256Hash(objStudentUpdatePasswordRequestModal.m_strPassword);
+                    result = await objInstructorDTO.UpdateInstructorPasswordAfterAuth(objStudentUpdatePasswordRequestModal.m_strUserName,
+                        objStudentUpdatePasswordRequestModal.m_strToken, objStudentUpdatePasswordRequestModal.m_strHashedPassword);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangePasswordAfterAuth", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

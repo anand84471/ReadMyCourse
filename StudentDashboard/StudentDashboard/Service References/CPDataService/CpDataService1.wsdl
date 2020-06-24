@@ -50,6 +50,84 @@
   <wsdl:message name="ICpDataService_MarkOtpVarified_OutputMessage">
     <wsdl:part name="parameters" element="tns:MarkOtpVarifiedResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidatePhoneNoVarificationLinkForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePhoneNoVarificationLinkForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidatePhoneNoVarificationLinkForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePhoneNoVarificationLinkForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidatePhoneNoVarificationLinkForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePhoneNoVarificationLinkForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidatePhoneNoVarificationLinkForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePhoneNoVarificationLinkForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertInstructorPasswordRecoveryRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertInstructorPasswordRecoveryRequest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertInstructorPasswordRecoveryRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertInstructorPasswordRecoveryRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidateInstructorPasswordRecoveryRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateInstructorPasswordRecoveryRequest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ValidateInstructorPasswordRecoveryRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateInstructorPasswordRecoveryRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ChangePasswordAfterAuthenticationForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePasswordAfterAuthenticationForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_ChangePasswordAfterAuthenticationForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePasswordAfterAuthenticationForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_MarkPassowordVarificationOtpVarifiedForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:MarkPassowordVarificationOtpVarifiedForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_MarkPassowordVarificationOtpVarifiedForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MarkPassowordVarificationOtpVarifiedForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckCourseIdExsitsForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCourseIdExsitsForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckCourseIdExsitsForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCourseIdExsitsForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckIndexIdExsitsForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckIndexIdExsitsForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckIndexIdExsitsForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckIndexIdExsitsForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckCourseAccess_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCourseAccess" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckCourseAccess_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckCourseAccessResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestIdExistsForAnyCourseForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestIdExistsForAnyCourseForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestIdExistsForAnyCourseForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestIdExistsForAnyCourseForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentIdExistsForAnyCourseForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentIdExistsForAnyCourseForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentIdExistsForAnyCourseForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentIdExistsForAnyCourseForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestIdExistsForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestIdExistsForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckTestIdExistsForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckTestIdExistsForInstructorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentIdExistsForInstructor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentIdExistsForInstructor" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckAssignmentIdExistsForInstructor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAssignmentIdExistsForInstructorResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_DeleteMcqTestQuestion_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteMcqTestQuestion" />
   </wsdl:message>
@@ -847,6 +925,58 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/MarkOtpVarified" message="tns:ICpDataService_MarkOtpVarified_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/MarkOtpVarifiedResponse" message="tns:ICpDataService_MarkOtpVarified_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ValidatePhoneNoVarificationLinkForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudent" message="tns:ICpDataService_ValidatePhoneNoVarificationLinkForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudentResponse" message="tns:ICpDataService_ValidatePhoneNoVarificationLinkForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidatePhoneNoVarificationLinkForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructor" message="tns:ICpDataService_ValidatePhoneNoVarificationLinkForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructorResponse" message="tns:ICpDataService_ValidatePhoneNoVarificationLinkForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstructorPasswordRecoveryRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequest" message="tns:ICpDataService_InsertInstructorPasswordRecoveryRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequestResponse" message="tns:ICpDataService_InsertInstructorPasswordRecoveryRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateInstructorPasswordRecoveryRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequest" message="tns:ICpDataService_ValidateInstructorPasswordRecoveryRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequestResponse" message="tns:ICpDataService_ValidateInstructorPasswordRecoveryRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePasswordAfterAuthenticationForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructor" message="tns:ICpDataService_ChangePasswordAfterAuthenticationForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructorResponse" message="tns:ICpDataService_ChangePasswordAfterAuthenticationForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MarkPassowordVarificationOtpVarifiedForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstructor" message="tns:ICpDataService_MarkPassowordVarificationOtpVarifiedForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstructorResponse" message="tns:ICpDataService_MarkPassowordVarificationOtpVarifiedForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckCourseIdExsitsForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructor" message="tns:ICpDataService_CheckCourseIdExsitsForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructorResponse" message="tns:ICpDataService_CheckCourseIdExsitsForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckIndexIdExsitsForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructor" message="tns:ICpDataService_CheckIndexIdExsitsForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructorResponse" message="tns:ICpDataService_CheckIndexIdExsitsForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckCourseAccess">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckCourseAccess" message="tns:ICpDataService_CheckCourseAccess_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckCourseAccessResponse" message="tns:ICpDataService_CheckCourseAccess_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestIdExistsForAnyCourseForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructor" message="tns:ICpDataService_CheckTestIdExistsForAnyCourseForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructorResponse" message="tns:ICpDataService_CheckTestIdExistsForAnyCourseForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentIdExistsForAnyCourseForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructor" message="tns:ICpDataService_CheckAssignmentIdExistsForAnyCourseForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructorResponse" message="tns:ICpDataService_CheckAssignmentIdExistsForAnyCourseForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestIdExistsForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructor" message="tns:ICpDataService_CheckTestIdExistsForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructorResponse" message="tns:ICpDataService_CheckTestIdExistsForInstructor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentIdExistsForInstructor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor" message="tns:ICpDataService_CheckAssignmentIdExistsForInstructor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructorResponse" message="tns:ICpDataService_CheckAssignmentIdExistsForInstructor_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="DeleteMcqTestQuestion">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion" message="tns:ICpDataService_DeleteMcqTestQuestion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse" message="tns:ICpDataService_DeleteMcqTestQuestion_OutputMessage" />
@@ -1418,6 +1548,123 @@
     </wsdl:operation>
     <wsdl:operation name="MarkOtpVarified">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/MarkOtpVarified" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidatePhoneNoVarificationLinkForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidatePhoneNoVarificationLinkForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstructorPasswordRecoveryRequest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateInstructorPasswordRecoveryRequest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePasswordAfterAuthenticationForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MarkPassowordVarificationOtpVarifiedForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckCourseIdExsitsForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckIndexIdExsitsForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckCourseAccess">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckCourseAccess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestIdExistsForAnyCourseForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentIdExistsForAnyCourseForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckTestIdExistsForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAssignmentIdExistsForInstructor">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

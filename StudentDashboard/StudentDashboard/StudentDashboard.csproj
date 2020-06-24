@@ -248,9 +248,11 @@
     <Compile Include="BusinessLayer\InstructorBusinessLayer.cs" />
     <Compile Include="BusinessLayer\StudentBusinessLayer.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\AboutUsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountManagerController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
+    <Compile Include="Controllers\AuthServiceController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
@@ -328,6 +330,7 @@
     <Compile Include="HttpResponse\SubmitAssignmentResponse.cs" />
     <Compile Include="HttpResponse\TestQuestionResponse.cs" />
     <Compile Include="HttpResponse\TestSubmissionOfStudentResponse.cs" />
+    <Compile Include="Interfaces\IInstructorApiService.cs" />
     <Compile Include="JsonSerializableObject\AssignmentSubmissionResponseJsonSerializable.cs" />
     <Compile Include="JsonSerializableObject\TestSubmissionResponseJsonSerializable.cs" />
     <Compile Include="Models\ActivityModal.cs" />
@@ -776,6 +779,12 @@
     <Content Include="Views\Student\ForgotPassword.cshtml" />
     <Content Include="Views\Student\ChangePassword.cshtml" />
     <Content Include="Views\Student\PasswordUpdatedSuccessfully.cshtml" />
+    <Content Include="Views\AuthService\Index.cshtml" />
+    <Content Include="Views\AboutUs\Index.cshtml" />
+    <Content Include="Views\Instructor\PasswordAuthRequest.cshtml" />
+    <Content Include="Views\Instructor\PasswordUpdatedSuccessfully.cshtml" />
+    <Content Include="Views\Course\Details.cshtml" />
+    <Content Include="Views\Course\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -807,7 +816,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>site-logo.ico</ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

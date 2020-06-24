@@ -12,6 +12,7 @@ namespace StudentDashboard.Controllers
         {
             return View();
         }
+        
         public async Task<ActionResult> About()
         {
             GetWebsiteHomeDetailsResponse objResponse = await objDocumentService.GetHomeDetails();

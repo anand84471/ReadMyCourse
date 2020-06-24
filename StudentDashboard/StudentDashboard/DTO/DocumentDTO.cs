@@ -74,6 +74,27 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<bool> CheckCourseAccess(long CourseId, string AccessCode)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckCourseAccessAsync(CourseId, AccessCode);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckCourseAccess", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
         public async Task<bool> CheckAssignmentAccess(long AssignmentId, string AccessCode)
         {
             bool result = false;
@@ -208,6 +229,38 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangeSmsNotificationStatus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> VialidateStudentPhoneNoVarificationLink(string UserId,string Guid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.ValidatePhoneNoVarificationLinkForStudentAsync(UserId, Guid);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateStudentPhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> VialidateInstructorPhoneNoVarificationLink(string UserId, string Guid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.ValidatePhoneNoVarificationLinkForInstructorAsync(UserId, Guid);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateInstructorPhoneNoVarificationLink", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

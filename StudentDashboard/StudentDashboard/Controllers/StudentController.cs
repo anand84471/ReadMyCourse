@@ -19,9 +19,18 @@ namespace StudentDashboard.Controllers
         // GET: Student
         StringBuilder m_strLogMessage = new StringBuilder();
         StudentService objStudentService = new StudentService();
-        public ActionResult Index()
+        public ActionResult Index(string return_url=null)
         {
+            if(return_url!=null)
+            {
+                ViewBag.ReturnUrl = "/Student/ValidateLogin?return_url="+return_url;
+            }
+            else
+            {
+                ViewBag.ReturnUrl = "/Student/ValidateLogin";
+            }
             return View();
+
         }
         [HttpGet]
         [Route("Join")]
@@ -80,7 +89,7 @@ namespace StudentDashboard.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult ValidateLogin(FormCollection collection)
+        public ActionResult ValidateLogin(FormCollection collection,string return_url=null)
         {
             string strCurrentMethodName = "Register";
             string ViewName = "";
@@ -106,7 +115,16 @@ namespace StudentDashboard.Controllers
                             ViewBag.IsLoggedIn = true;
                             Session["student_email"] = objStudentRegisterModal.m_strUserId;
                             Session["user_id"] = objStudentRegisterModal.m_llStudentId;
-                            return RedirectToAction("Home");
+                            if(return_url!=null)
+                            {
+                                return Redirect(return_url);
+                            }
+                            else
+                            {
+                                return RedirectToAction("Home");
+
+                            }
+                            
                         }
                         else
                         {

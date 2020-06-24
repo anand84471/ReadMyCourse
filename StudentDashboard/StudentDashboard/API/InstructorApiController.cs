@@ -32,6 +32,7 @@ namespace StudentDashboard.API
             InsertNewCourseResponse objInsertNewCourseResponse = new InsertNewCourseResponse();
             if(objCourseModel==null)
             {
+               
                 objInsertNewCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                 objInsertNewCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
             }
@@ -47,8 +48,28 @@ namespace StudentDashboard.API
             }
             return objInsertNewCourseResponse;
         }
+        private int GetInstructorIdInRequest()
+        {
+            int InstructorId = -1;
+            try
+            {
+                if (ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+                {
+                    int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorIdInRequest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return InstructorId;
+
+        }
         [Route("addindex")]
-        public InsertNewIndexResponse InsertNewIndex([FromBody] IndexModel objIndexModel)
+        public async Task<InsertNewIndexResponse> InsertNewIndex([FromBody] IndexModel objIndexModel)
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
@@ -65,12 +86,19 @@ namespace StudentDashboard.API
                 }
                 else
                 {
-                    if(objHomeDTO.InsertNewIndex(objIndexModel))
+                    int InstructorId = -1;
+                    int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                    if (InstructorId!=-1&&await objHomeDTO.CheckCourseIdExistsForInstrcutor(InstructorId, objIndexModel.m_llCourseId))
                     {
-                        objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
-                        objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                        objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                        if (objHomeDTO.InsertNewIndex(objIndexModel))
+                        {
+
+                            objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
+                            objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                            objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                        }
                     }
+                   
                 }
             }
             catch(Exception Ex)
@@ -100,12 +128,17 @@ namespace StudentDashboard.API
                 }
                 else
                 {
-                    if ( await objHomeService.InsertTopics(objIndexModel))
+                    int InstructorId = -1;
+                    int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                    if(InstructorId!=-1&&await objHomeDTO.CheckIndexIdExistsForInstrcutor(InstructorId,objIndexModel.m_llIndexId))
                     {
-                        objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
-                        objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                        objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                    }
+                        if (await objHomeService.InsertTopics(objIndexModel))
+                        {
+                            objInsertNewIndexResponse.m_llIndexId = objIndexModel.m_llIndexId;
+                            objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                            objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                        }
+                    }   
                 }
             }
             catch (Exception Ex)
@@ -348,16 +381,26 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.DeleteCourse(id))
+                if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    return null;
                 }
-                else
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if (await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.DeleteCourse(id))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
+                
             }
             catch (Exception Ex)
             {
@@ -375,16 +418,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.ActivateCourse(id))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId,id))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if (await objHomeService.ActivateCourse(id))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
                 else
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
+
             }
             catch (Exception Ex)
             {
@@ -839,6 +888,8 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
+
+                if(McqQuestion!=null)
                 if (await objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -888,21 +939,27 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteTopic")]
-        public async Task<APIDefaultResponse> DeleteIndexTopic(long id)
+        public async Task<APIDefaultResponse> DeleteIndexTopic(TopicModel objTopicModel)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.DeleteIndexTopic(id))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(objTopicModel!=null&&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objTopicModel.m_llIndexId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if (await objHomeService.DeleteIndexTopic(objTopicModel.m_llTopicId))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+               
             }
             catch (Exception Ex)
             {
@@ -947,16 +1004,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTopicModel != null && await objHomeService.UpdateIndexTopic(objTopicModel))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(objTopicModel != null&&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objTopicModel.m_llIndexId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if (await objHomeService.UpdateIndexTopic(objTopicModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
@@ -974,16 +1037,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objIndexModel != null && await objHomeService.UpdateCourseIndex(objIndexModel))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(objIndexModel != null &&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objIndexModel.m_llIndexId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if ( await objHomeService.UpdateCourseIndex(objIndexModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
@@ -1001,16 +1070,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.DeleteIndex(id))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,id))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if (await objHomeService.DeleteIndex(id))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
@@ -1028,16 +1103,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objCourse!=null&& await objHomeService.UpdateFullCourseDetails(objCourse))
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(objCourse!=null&&await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId,objCourse.m_llCourseid))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    if (await objHomeService.UpdateFullCourseDetails(objCourse))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
@@ -1055,16 +1136,26 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTopic != null && await objHomeService.InsertNewTopic(objTopic))
+                if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    return null;
                 }
-                else
+                int InstructorId = -1;
+                int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
+                if(await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objTopic.m_llIndexId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (objTopic != null && await objHomeService.InsertNewTopic(objTopic))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
                 }
+                
             }
             catch (Exception Ex)
             {
@@ -1082,15 +1173,15 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestDetails != null && await objHomeService.UpdateTestDetails(objTestDetails))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(objTestDetails!=null&& InstructorIdInRequest!=-1&&
+                    await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest, objTestDetails.m_llTestId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (objTestDetails != null && await objHomeService.UpdateTestDetails(objTestDetails))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)
@@ -1109,15 +1200,14 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestModel != null && await objHomeService.InsertNewMcqQuestion(objTestModel))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(objTestModel!=null&& InstructorIdInRequest!=-1&&await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest,objTestModel.m_llTestId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.InsertNewMcqQuestion(objTestModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)
@@ -1136,15 +1226,14 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objTestModel != null && await objHomeService.UpdateMcqTestQuestion(objTestModel))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(objTestModel!=null&&InstructorIdInRequest!=-1&&await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest,objTestModel.m_llTestId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.UpdateMcqTestQuestion(objTestModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)
@@ -1163,15 +1252,16 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objAssignmentModel != null && await objHomeService.InsertNewSeperateAssignmentToCourse(objAssignmentModel))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if (objAssignmentModel != null && InstructorIdInRequest != -1 && 
+                    await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorIdInRequest, objAssignmentModel.m_llCourseId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    objAssignmentModel.m_iInstructorId = InstructorIdInRequest;
+                    if (await objHomeService.InsertNewSeperateAssignmentToCourse(objAssignmentModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)
@@ -1217,16 +1307,22 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.InsertNewTestToCourse(objTestModel))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if (objTestModel != null && InstructorIdInRequest != -1 &&
+                    await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorIdInRequest, objTestModel.m_llCourseId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                    objTestModel.m_iInstructorId = InstructorIdInRequest;
+                    if (await objHomeService.InsertNewTestToCourse(objTestModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                    else
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    }
+                }    
             }
             catch (Exception Ex)
             {
@@ -1244,15 +1340,14 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.UpdateAssignmentDetails(objAssignmentModel))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(objAssignmentModel!=null&& InstructorIdInRequest!=-1)
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.UpdateAssignmentDetails(objAssignmentModel))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)

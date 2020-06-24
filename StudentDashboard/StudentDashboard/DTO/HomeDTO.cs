@@ -172,9 +172,9 @@ namespace StudentDashboard.DTO
             try
             {
                 long CourseId = 0;
-                //result = objCPDataService.InsertNewCourse(objCourseModel.m_strCourseName,objCourseModel.m_strCourseDescription,
-                 //                                      objCourseModel.m_iInstructorId, ref CourseId);
-                if(CourseId!=-1)
+                result = objCPDataService.InsertNewCourse(objCourseModel.m_strCourseName, objCourseModel.m_strCourseDescription,
+                                                       objCourseModel.m_iInstructorId, ref CourseId);
+                if (CourseId!=-1)
                 {
                     objCourseModel.m_llCourseId = CourseId;
                 }
@@ -183,6 +183,135 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertNewCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckCourseIdExistsForInstrcutor(int InstructorId, long CourseId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckCourseIdExsitsForInstructorAsync(InstructorId, CourseId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckCourseIdExistsForInstrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckAssignmentIdExistsForInstrcutor(int InstructorId, long AssignmentId)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckAssignmentIdExistsForInstructorAsync(AssignmentId, InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckCourseIdExistsForInstrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckTestIdExistsForInstrcutor(int InstructorId, long TestId)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckTestIdExistsForInstructorAsync(TestId, InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckCourseIdExistsForInstrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckAssignmentIdExistsForAnyCourseForInstrcutor(int InstructorId, long AssignmentId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckAssignmentIdExistsForAnyCourseForInstructorAsync(AssignmentId, InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckAssignmentIdExistsForAnyCourseForInstrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckTestIdExistsForAnyCourseForInstrcutor(int InstructorId, long TestId)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckTestIdExistsForAnyCourseForInstructorAsync(TestId, InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckAssignmentIdExistsForAnyCourseForInstrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIndexIdExistsForInstrcutor(int InstructorId, long IndexId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckIndexIdExsitsForInstructorAsync(InstructorId, IndexId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIndexIdExistsForInstrcutor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -315,7 +444,7 @@ namespace StudentDashboard.DTO
             }
             return lsSubjectiveQuestion;
         }
-        public  bool GetInstructorIdFromUserId(string InstructorId, ref long Id)
+        public  bool GetInstructorIdFromUserId(string InstructorId, ref int Id)
         {
             bool result = true;
             try
@@ -481,7 +610,10 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("COURSE_NAME"),
                          dataRow.Field<string>("COURSE_DESCRIPTION"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<DateTime>("ROW_UPDATION_DETETIME").ToString("d MMM yyyy")
+                         dataRow.Field<DateTime>("ROW_UPDATION_DETETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<string>("COURSE_STATUS_NAME"),
+                         dataRow.Field<string>("ACCESS_CODE"),
+                         dataRow.Field<string>("TINY_SHARE_URL")
                          )).ToList();
                 }
                 if(lsGetCourseDetailsApiResponse!=null&&lsGetCourseDetailsApiResponse.Count>0)
@@ -584,12 +716,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateCourse(long CourseId)
+        public async Task<bool> ActivateCourse(long CourseId,string ShareCode,string TinyUrl)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateCourseAsync(CourseId);
+                result = await objCPDataService.ActivateCourseAsync(CourseId, TinyUrl, ShareCode);
             }
             catch (Exception Ex)
             {

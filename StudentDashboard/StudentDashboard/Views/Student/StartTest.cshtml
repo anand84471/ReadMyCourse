@@ -220,6 +220,7 @@
     function getAssignmentDetails() {
         debugger
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -658,6 +659,7 @@
     function callSubmitTestResponse() {
         var _data = extractresponseData();
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -666,12 +668,10 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     submissionId = data.submission_id;
-                    //$("#successResponseMessage").text("question added successfully");
-                    //$("#successDelete").modal('show');
+                  
                 }
                 else {
-                    //$("#errorAlertMessageBody").text("question could not be added");
-                    //$("#errorAlertHeader").modal('show');
+                  
                 }
             }
         });

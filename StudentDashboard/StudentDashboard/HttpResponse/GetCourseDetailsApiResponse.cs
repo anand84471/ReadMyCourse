@@ -16,14 +16,24 @@ namespace StudentDashboard.HttpResponse
         public string m_strCourseCreationDate { get; set; }
         [JsonProperty("course_updation_date")]
         public string m_strCourseUpdationDate { get; set; }
+        [JsonProperty("course_status")]
+        public string m_strCourseStatus { get; set; }
+        [JsonProperty("course_share_url")]
+        public string m_strShareUrl;
+        [JsonProperty("course_access_code")]
+        public string m_strCourseAccessCode;
         [JsonProperty("indexes")]
         public List<CourseIndexDetails> m_lsIndexes { get; set; }
-        public GetCourseDetailsApiResponse(string CourseName, string CourseDescription, string CourseCreationDate,string CourseUpdationDate)
+        public GetCourseDetailsApiResponse(string CourseName, string CourseDescription, string CourseCreationDate,string CourseUpdationDate,
+            string CourseStatus,string AccessCode,string TinyUrl )
         {
             this.m_strCourseName = CourseName;
             this.m_strCourseDescription = CourseDescription;
             this.m_strCourseCreationDate = CourseCreationDate;
             this.m_strCourseUpdationDate = CourseUpdationDate;
+            this.m_strCourseStatus = CourseStatus;
+            this.m_strShareUrl = TinyUrl;
+            this.m_strCourseAccessCode = AccessCode;
         }
         public GetCourseDetailsApiResponse()
         {

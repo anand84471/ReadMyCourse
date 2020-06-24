@@ -40,7 +40,7 @@ namespace CPDataService
         [OperationContract]
         DataSet ValidateSchoolLoginDetails(string Email, string Password);
         [OperationContract]
-        bool InsertNewCourse(string CourseName, string CourseDescription, string InstructorId, ref long CourseId);
+        bool InsertNewCourse(string CourseName, string CourseDescription, int InstructorId, ref long CourseId);
         [OperationContract]
         bool InertNewCourseIndex(string IndexName, string IndexDescription, long CourseId, ref long IndexId);
         [OperationContract]
@@ -61,7 +61,7 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllCourse(long InstructorId);
         [OperationContract]
-        bool GetInstructorIdFromUserId(string InstructorId, ref long Id);
+        bool GetInstructorIdFromUserId(string InstructorId, ref int Id);
         [OperationContract]
         DataSet GetIndexDetailsOfCourse(long CourseId);
         [OperationContract]
@@ -81,7 +81,7 @@ namespace CPDataService
         [OperationContract]
         bool UpdateCourseDetails(long CourseId, string CourseDescription);
         [OperationContract]
-        bool ActivateCourse(long CourseId);
+        bool ActivateCourse(long CourseId, string ShareUrl, string AccessCode);
         [OperationContract]
         bool DeleteCourse(long CourseId);
         [OperationContract]
@@ -294,8 +294,32 @@ namespace CPDataService
         bool ChanegPasswordAfterAuthentication(string UserId, string Token, string HashedPassword);
         [OperationContract]
         bool MarkOtpVarified(string UserId, string Token);
-
-
+        [OperationContract]
+        bool ValidatePhoneNoVarificationLinkForStudent(string UserId, string guid);
+        [OperationContract]
+        bool ValidatePhoneNoVarificationLinkForInstructor(string UserId, string guid);
+        [OperationContract]
+        bool InsertInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        [OperationContract]
+        DataSet ValidateInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        [OperationContract]
+        bool ChangePasswordAfterAuthenticationForInstructor(string UserId, string Token, string HashedPassword);
+        [OperationContract]
+        bool MarkPassowordVarificationOtpVarifiedForInstructor(string UserId, string Token);
+        [OperationContract]
+        DataSet CheckCourseIdExsitsForInstructor(int InstructoId, long CourseId);
+        [OperationContract]
+        DataSet CheckIndexIdExsitsForInstructor(int InstructoId, long IndexId);
+        [OperationContract]
+        DataSet CheckCourseAccess(long CourseId, string AccessCode);
+        [OperationContract]
+        DataSet CheckTestIdExistsForAnyCourseForInstructor(long Testid, int InstructorId);
+        [OperationContract]
+        DataSet CheckAssignmentIdExistsForAnyCourseForInstructor(long AssignmentId, int InstructorId);
+        [OperationContract]
+        DataSet CheckTestIdExistsForInstructor(long Testid, int InstructorId);
+        [OperationContract]
+        DataSet CheckAssignmentIdExistsForInstructor(long AssignmentId, int InstructorId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

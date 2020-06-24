@@ -24,6 +24,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentDTO.CheckTestAccess(TestId, AccessCode);
         }
+        public async Task<bool> CheckCourseAccess(long CourseId, string AccessCode)
+        {
+            return await objDocumentDTO.CheckCourseAccess(CourseId, AccessCode);
+        }
         public async Task<bool> CheckAssignmentAccess(long AssignmentId, string AccessCode)
         {
             return await objDocumentDTO.CheckAssignmentAccess(AssignmentId, AccessCode);
@@ -44,7 +48,34 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentDTO.InsertSMSNotification(Message, SmsReceiver, SmsNotificationTypeId);
         }
-
+        public async Task<bool> ValidatePhoneNoVarificationLink(string UserId,string Guid,int RequestType)
+        {
+            bool result = false;
+            try
+            {
+                switch(RequestType)
+                {
+                    case 2:
+                        {
+                            result = await objDocumentDTO.VialidateStudentPhoneNoVarificationLink(UserId, Guid);
+                            break;
+                        }
+                    case 1:
+                        {
+                            result = await objDocumentDTO.VialidateInstructorPhoneNoVarificationLink(UserId, Guid);
+                            break;
+                        }
+                }
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ValidatePhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
 
     }
 }

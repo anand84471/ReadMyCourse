@@ -36,6 +36,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentService.InsertSMSNotification(GetStudentForgotPasswordOtpMessage(OTP), PhoneNo, Constants.SMS_NOTIFICATION_TYPE_STUDENT_FORGOT_PASSWORD);
         }
+        public async Task<bool> SendInstructorPasswordRecoveryOTP(string OTP, string PhoneNo)
+        {
+            return await objDocumentService.InsertSMSNotification(GetStudentForgotPasswordOtpMessage(OTP), PhoneNo, Constants.SMS_NOTIFICATION_TYPE_INSTRUCTOR_FORGOT_PASSWORD);
+        }
 
 
 

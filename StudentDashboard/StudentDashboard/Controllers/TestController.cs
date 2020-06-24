@@ -20,10 +20,7 @@ namespace StudentDashboard.Controllers
         {
             ViewBag.Id = id;
             ViewBag.AccessCode = access_code;
-            if (Session["user_id"] != null)
-            {
-                Response.Redirect("Student/TestDetails?id=" + id, true);
-            }
+            
             ViewBag.TestId = id;
             return View();
         }

@@ -24,12 +24,14 @@ namespace StudentDashboard.ServiceLayer
         StringBuilder m_strLogMessage;
         ActivityManager objActivityManager;
         InstructorBusinessLayer objInstructorBusinessLayer;
+       
         public HomeService()
         {
             objHomeDTO = new HomeDTO();
             objActivityManager = new ActivityManager();
             objInstructorBusinessLayer = new InstructorBusinessLayer();
             m_strLogMessage = new StringBuilder();
+           
         }
         public async Task<bool> RegisterNewUser(StaeModel objRegisterModel )
         {
@@ -143,7 +145,9 @@ namespace StudentDashboard.ServiceLayer
             bool result = false;
             try
             {
-                result = await objHomeDTO.ActivateCourse(CourseId);
+                string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
+                string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForCourse(CourseId, ShareCode);
+                result = await objHomeDTO.ActivateCourse(CourseId, ShareCode, TinyUrl);
             }
             catch (Exception Ex)
             {
@@ -261,7 +265,9 @@ namespace StudentDashboard.ServiceLayer
                 if(lsCourseIndexDetails!=null&& objGetCourseDetailsApiResponse!=null)
                 {
                     objAboutCourseResponse = new AboutCourseResponse(objGetCourseDetailsApiResponse.m_strCourseName,objGetCourseDetailsApiResponse.m_strCourseDescription,
-                                        objGetCourseDetailsApiResponse.m_strCourseCreationDate,objGetCourseDetailsApiResponse.m_strCourseUpdationDate);
+                                        objGetCourseDetailsApiResponse.m_strCourseCreationDate,objGetCourseDetailsApiResponse.m_strCourseUpdationDate,
+                                        objGetCourseDetailsApiResponse.m_strCourseStatus,objGetCourseDetailsApiResponse.m_strShareUrl,
+                                        objGetCourseDetailsApiResponse.m_strCourseAccessCode);
                     foreach (var indexes in lsCourseIndexDetails)
                     {
                         objAboutCourseResponse.AddIndex(indexes.m_strIndexName, indexes.m_llIndexId);
@@ -459,6 +465,15 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> InsertNewMcqQuestion(McqQuestion objMcqQuestion)
         {
             return await objHomeDTO.InsertNewMcqTestQuestion(objMcqQuestion);
+        }
+        public async Task<bool> CheckAssignmentIdExistsForInstrcutor(int InstructorId, long AssignmentId)
+        {
+            return await objHomeDTO.CheckAssignmentIdExistsForInstrcutor(InstructorId, AssignmentId)||
+                await objHomeDTO.CheckTestIdExistsForAnyCourseForInstrcutor(InstructorId, AssignmentId);
+        }
+        public async Task<bool> CheckTestIdExistsForInstrcutor(int InstructorId, long TestId)
+        {
+            return await objHomeDTO.CheckTestIdExistsForInstrcutor(InstructorId, TestId)||await objHomeDTO.CheckTestIdExistsForAnyCourseForInstrcutor(InstructorId, TestId);
         }
         public async Task<bool> InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
@@ -669,12 +684,8 @@ namespace StudentDashboard.ServiceLayer
             bool result = objHomeDTO.InsertNewCourse(objCourseModel);
             if(result)
             {
-                long InstructorId=-1;
-                //objHomeDTO.GetInstructorIdFromUserId(objCourseModel.m_iInstructorId,ref InstructorId);
-                if (InstructorId != -1)
-                {
-                    await InsertActivityForInstructor((int)InstructorId, objActivityManager.CreateActivityMessageForinstructor(objCourseModel.m_llCourseId, objCourseModel.m_strCourseName, (int)Constants.ActivityType.COURSE_CREATED));
-                }
+                 await InsertActivityForInstructor(objCourseModel.m_iInstructorId, objActivityManager.CreateActivityMessageForinstructor(objCourseModel.m_llCourseId, objCourseModel.m_strCourseName, (int)Constants.ActivityType.COURSE_CREATED));
+                
             }
             return result;
         }
@@ -785,6 +796,14 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.DeleteTest(TestId);
         }
+        public async Task<bool> CheckCourseIdExistsForInstrcutor(int InstructorId, long CourseId)
+        {
+            return await objHomeDTO.CheckCourseIdExistsForInstrcutor(InstructorId, CourseId);
+        }
+        public async Task<bool> CheckIndexIdExistsForInstrcutor(int InstructorId, long IndexId)
+        {
+            return await objHomeDTO.CheckIndexIdExistsForInstrcutor(InstructorId, IndexId);
+        }
         public async Task<bool> DeleteTestOfCourse(long TestId)
         {
             return await objHomeDTO.DeleteTestOfCourse(TestId);
@@ -850,6 +869,14 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> InsertNewSeperateAssignmentToCourse(AssignmentModel objAssignmentModel)
         {
             return await objHomeDTO.InsertNewAssignmentToCourse(objAssignmentModel);
+        }
+        public async Task<bool> CheckAssignmentIdExistsForAnyCourseForInstrcutor(int InstructorId, long AssignmentId)
+        {
+            return await objHomeDTO.CheckAssignmentIdExistsForAnyCourseForInstrcutor(InstructorId, AssignmentId);
+        }
+        public async Task<bool> CheckTestIdExistsForAnyCourseForInstrcutor(int InstructorId, long TestId)
+        {
+            return await objHomeDTO.CheckTestIdExistsForAnyCourseForInstrcutor(InstructorId, TestId);
         }
         public async Task<bool> DeleteMcqTestQuestion(long QuestionId)
         {

@@ -22,6 +22,7 @@ namespace StudentDashboard
         public static bool _shouldStartSMSScheduler;
         public static string _saltForSHA256Encryption;
         public static int _forgotPasswordExpiryTimeInMinutes;
+        public static string _strApplicationBaseUrl;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -64,6 +65,10 @@ namespace StudentDashboard
             if (ConfigurationManager.AppSettings["FORGOT_PASSOWORD_TOKEN_EXPIRY_TIME_IN_MINUTES"] != null)
             {
                 _forgotPasswordExpiryTimeInMinutes = int.Parse(ConfigurationManager.AppSettings["FORGOT_PASSOWORD_TOKEN_EXPIRY_TIME_IN_MINUTES"].ToString());
+            }
+            if (ConfigurationManager.AppSettings["APPLICATION_BASE_URL"] != null)
+            {
+                _strApplicationBaseUrl = (ConfigurationManager.AppSettings["APPLICATION_BASE_URL"].ToString());
             }
         }
         private void StartSMSNotificationScheduler()

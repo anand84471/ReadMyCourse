@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using System.Web.Routing;
@@ -11,7 +12,8 @@ namespace StudentDashboard.Security.Instrcutor
         void IAuthenticationFilter.OnAuthentication(AuthenticationContext filterContext)
         {
             List<string >allowAnnonymousAction = new List<string> {
-                "Index","LogIn","ForgotPassword","Join","RegistrationSuccessful","Register","ValidateLogin","LoginFirst","PasswordAuthRequest"
+                "Index","LogIn","ForgotPassword","Join","RegistrationSuccessful","Register","ValidateLogin","LoginFirst","PasswordAuthRequest","ResetPassword",
+                "PasswordUpdatedSuccessfully","SubmitUpdatePasswordOtp","ChangePassword","ChangePasswordNow"
             };
             if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["instructor_id"]))&&!(allowAnnonymousAction.Contains(filterContext.ActionDescriptor.ActionName)))
             {
@@ -26,7 +28,9 @@ namespace StudentDashboard.Security.Instrcutor
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary {
                     { "controller", "Instructor" },
-                    { "action", "Index" } });
+                    { "action", "Index" },
+                    {"return_url" ,HttpContext.Current.Request.Url.AbsoluteUri}
+                    });
             }
         }
     }

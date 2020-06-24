@@ -120,6 +120,104 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkOtpVarified", ReplyAction="http://tempuri.org/ICpDataService/MarkOtpVarifiedResponse")]
         System.Threading.Tasks.Task<bool> MarkOtpVarifiedAsync(string UserId, string Token);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudent", ReplyAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudentRespon" +
+            "se")]
+        bool ValidatePhoneNoVarificationLinkForStudent(string UserId, string guid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudent", ReplyAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForStudentRespon" +
+            "se")]
+        System.Threading.Tasks.Task<bool> ValidatePhoneNoVarificationLinkForStudentAsync(string UserId, string guid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructor", ReplyAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructorRes" +
+            "ponse")]
+        bool ValidatePhoneNoVarificationLinkForInstructor(string UserId, string guid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructor", ReplyAction="http://tempuri.org/ICpDataService/ValidatePhoneNoVarificationLinkForInstructorRes" +
+            "ponse")]
+        System.Threading.Tasks.Task<bool> ValidatePhoneNoVarificationLinkForInstructorAsync(string UserId, string guid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequestResponse" +
+            "")]
+        bool InsertInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/InsertInstructorPasswordRecoveryRequestResponse" +
+            "")]
+        System.Threading.Tasks.Task<bool> InsertInstructorPasswordRecoveryRequestAsync(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequestRespon" +
+            "se")]
+        System.Data.DataSet ValidateInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequest", ReplyAction="http://tempuri.org/ICpDataService/ValidateInstructorPasswordRecoveryRequestRespon" +
+            "se")]
+        System.Threading.Tasks.Task<System.Data.DataSet> ValidateInstructorPasswordRecoveryRequestAsync(string UserId, string Token, string OTP);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructor", ReplyAction="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructorR" +
+            "esponse")]
+        bool ChangePasswordAfterAuthenticationForInstructor(string UserId, string Token, string HashedPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructor", ReplyAction="http://tempuri.org/ICpDataService/ChangePasswordAfterAuthenticationForInstructorR" +
+            "esponse")]
+        System.Threading.Tasks.Task<bool> ChangePasswordAfterAuthenticationForInstructorAsync(string UserId, string Token, string HashedPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstruct" +
+            "or", ReplyAction="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstruct" +
+            "orResponse")]
+        bool MarkPassowordVarificationOtpVarifiedForInstructor(string UserId, string Token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstruct" +
+            "or", ReplyAction="http://tempuri.org/ICpDataService/MarkPassowordVarificationOtpVarifiedForInstruct" +
+            "orResponse")]
+        System.Threading.Tasks.Task<bool> MarkPassowordVarificationOtpVarifiedForInstructorAsync(string UserId, string Token);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructorResponse")]
+        System.Data.DataSet CheckCourseIdExsitsForInstructor(int InstructoId, long CourseId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckCourseIdExsitsForInstructorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckCourseIdExsitsForInstructorAsync(int InstructoId, long CourseId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructorResponse")]
+        System.Data.DataSet CheckIndexIdExsitsForInstructor(int InstructoId, long IndexId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckIndexIdExsitsForInstructorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckIndexIdExsitsForInstructorAsync(int InstructoId, long IndexId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckCourseAccess", ReplyAction="http://tempuri.org/ICpDataService/CheckCourseAccessResponse")]
+        System.Data.DataSet CheckCourseAccess(long CourseId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckCourseAccess", ReplyAction="http://tempuri.org/ICpDataService/CheckCourseAccessResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckCourseAccessAsync(long CourseId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructorRespo" +
+            "nse")]
+        System.Data.DataSet CheckTestIdExistsForAnyCourseForInstructor(long Testid, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForAnyCourseForInstructorRespo" +
+            "nse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckTestIdExistsForAnyCourseForInstructorAsync(long Testid, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructo" +
+            "r", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructo" +
+            "rResponse")]
+        System.Data.DataSet CheckAssignmentIdExistsForAnyCourseForInstructor(long AssignmentId, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructo" +
+            "r", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForAnyCourseForInstructo" +
+            "rResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForAnyCourseForInstructorAsync(long AssignmentId, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructorResponse")]
+        System.Data.DataSet CheckTestIdExistsForInstructor(long Testid, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckTestIdExistsForInstructorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckTestIdExistsForInstructorAsync(long Testid, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructorResponse")]
+        System.Data.DataSet CheckAssignmentIdExistsForInstructor(long AssignmentId, int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForInstructorAsync(long AssignmentId, int InstructorId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion", ReplyAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse")]
         bool DeleteMcqTestQuestion(long QuestionId);
         
@@ -714,10 +812,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<bool> UpdateCourseDetailsAsync(long CourseId, string CourseDescription);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateCourse", ReplyAction="http://tempuri.org/ICpDataService/ActivateCourseResponse")]
-        bool ActivateCourse(long CourseId);
+        bool ActivateCourse(long CourseId, string ShareUrl, string AccessCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateCourse", ReplyAction="http://tempuri.org/ICpDataService/ActivateCourseResponse")]
-        System.Threading.Tasks.Task<bool> ActivateCourseAsync(long CourseId);
+        System.Threading.Tasks.Task<bool> ActivateCourseAsync(long CourseId, string ShareUrl, string AccessCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteCourse", ReplyAction="http://tempuri.org/ICpDataService/DeleteCourseResponse")]
         bool DeleteCourse(long CourseId);
@@ -1355,7 +1453,7 @@ namespace StudentDashboard.CPDataService {
         public string CourseDescription;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public string InstructorId;
+        public int InstructorId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public long CourseId;
@@ -1363,7 +1461,7 @@ namespace StudentDashboard.CPDataService {
         public InsertNewCourseRequest() {
         }
         
-        public InsertNewCourseRequest(string CourseName, string CourseDescription, string InstructorId, long CourseId) {
+        public InsertNewCourseRequest(string CourseName, string CourseDescription, int InstructorId, long CourseId) {
             this.CourseName = CourseName;
             this.CourseDescription = CourseDescription;
             this.InstructorId = InstructorId;
@@ -1560,12 +1658,12 @@ namespace StudentDashboard.CPDataService {
         public string InstructorId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public long Id;
+        public int Id;
         
         public GetInstructorIdFromUserIdRequest() {
         }
         
-        public GetInstructorIdFromUserIdRequest(string InstructorId, long Id) {
+        public GetInstructorIdFromUserIdRequest(string InstructorId, int Id) {
             this.InstructorId = InstructorId;
             this.Id = Id;
         }
@@ -1580,12 +1678,12 @@ namespace StudentDashboard.CPDataService {
         public bool GetInstructorIdFromUserIdResult;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public long Id;
+        public int Id;
         
         public GetInstructorIdFromUserIdResponse() {
         }
         
-        public GetInstructorIdFromUserIdResponse(bool GetInstructorIdFromUserIdResult, long Id) {
+        public GetInstructorIdFromUserIdResponse(bool GetInstructorIdFromUserIdResult, int Id) {
             this.GetInstructorIdFromUserIdResult = GetInstructorIdFromUserIdResult;
             this.Id = Id;
         }
@@ -1792,6 +1890,110 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<bool> MarkOtpVarifiedAsync(string UserId, string Token) {
             return base.Channel.MarkOtpVarifiedAsync(UserId, Token);
+        }
+        
+        public bool ValidatePhoneNoVarificationLinkForStudent(string UserId, string guid) {
+            return base.Channel.ValidatePhoneNoVarificationLinkForStudent(UserId, guid);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ValidatePhoneNoVarificationLinkForStudentAsync(string UserId, string guid) {
+            return base.Channel.ValidatePhoneNoVarificationLinkForStudentAsync(UserId, guid);
+        }
+        
+        public bool ValidatePhoneNoVarificationLinkForInstructor(string UserId, string guid) {
+            return base.Channel.ValidatePhoneNoVarificationLinkForInstructor(UserId, guid);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ValidatePhoneNoVarificationLinkForInstructorAsync(string UserId, string guid) {
+            return base.Channel.ValidatePhoneNoVarificationLinkForInstructorAsync(UserId, guid);
+        }
+        
+        public bool InsertInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP) {
+            return base.Channel.InsertInstructorPasswordRecoveryRequest(UserId, Token, OTP);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertInstructorPasswordRecoveryRequestAsync(string UserId, string Token, string OTP) {
+            return base.Channel.InsertInstructorPasswordRecoveryRequestAsync(UserId, Token, OTP);
+        }
+        
+        public System.Data.DataSet ValidateInstructorPasswordRecoveryRequest(string UserId, string Token, string OTP) {
+            return base.Channel.ValidateInstructorPasswordRecoveryRequest(UserId, Token, OTP);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> ValidateInstructorPasswordRecoveryRequestAsync(string UserId, string Token, string OTP) {
+            return base.Channel.ValidateInstructorPasswordRecoveryRequestAsync(UserId, Token, OTP);
+        }
+        
+        public bool ChangePasswordAfterAuthenticationForInstructor(string UserId, string Token, string HashedPassword) {
+            return base.Channel.ChangePasswordAfterAuthenticationForInstructor(UserId, Token, HashedPassword);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangePasswordAfterAuthenticationForInstructorAsync(string UserId, string Token, string HashedPassword) {
+            return base.Channel.ChangePasswordAfterAuthenticationForInstructorAsync(UserId, Token, HashedPassword);
+        }
+        
+        public bool MarkPassowordVarificationOtpVarifiedForInstructor(string UserId, string Token) {
+            return base.Channel.MarkPassowordVarificationOtpVarifiedForInstructor(UserId, Token);
+        }
+        
+        public System.Threading.Tasks.Task<bool> MarkPassowordVarificationOtpVarifiedForInstructorAsync(string UserId, string Token) {
+            return base.Channel.MarkPassowordVarificationOtpVarifiedForInstructorAsync(UserId, Token);
+        }
+        
+        public System.Data.DataSet CheckCourseIdExsitsForInstructor(int InstructoId, long CourseId) {
+            return base.Channel.CheckCourseIdExsitsForInstructor(InstructoId, CourseId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckCourseIdExsitsForInstructorAsync(int InstructoId, long CourseId) {
+            return base.Channel.CheckCourseIdExsitsForInstructorAsync(InstructoId, CourseId);
+        }
+        
+        public System.Data.DataSet CheckIndexIdExsitsForInstructor(int InstructoId, long IndexId) {
+            return base.Channel.CheckIndexIdExsitsForInstructor(InstructoId, IndexId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckIndexIdExsitsForInstructorAsync(int InstructoId, long IndexId) {
+            return base.Channel.CheckIndexIdExsitsForInstructorAsync(InstructoId, IndexId);
+        }
+        
+        public System.Data.DataSet CheckCourseAccess(long CourseId, string AccessCode) {
+            return base.Channel.CheckCourseAccess(CourseId, AccessCode);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckCourseAccessAsync(long CourseId, string AccessCode) {
+            return base.Channel.CheckCourseAccessAsync(CourseId, AccessCode);
+        }
+        
+        public System.Data.DataSet CheckTestIdExistsForAnyCourseForInstructor(long Testid, int InstructorId) {
+            return base.Channel.CheckTestIdExistsForAnyCourseForInstructor(Testid, InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckTestIdExistsForAnyCourseForInstructorAsync(long Testid, int InstructorId) {
+            return base.Channel.CheckTestIdExistsForAnyCourseForInstructorAsync(Testid, InstructorId);
+        }
+        
+        public System.Data.DataSet CheckAssignmentIdExistsForAnyCourseForInstructor(long AssignmentId, int InstructorId) {
+            return base.Channel.CheckAssignmentIdExistsForAnyCourseForInstructor(AssignmentId, InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForAnyCourseForInstructorAsync(long AssignmentId, int InstructorId) {
+            return base.Channel.CheckAssignmentIdExistsForAnyCourseForInstructorAsync(AssignmentId, InstructorId);
+        }
+        
+        public System.Data.DataSet CheckTestIdExistsForInstructor(long Testid, int InstructorId) {
+            return base.Channel.CheckTestIdExistsForInstructor(Testid, InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckTestIdExistsForInstructorAsync(long Testid, int InstructorId) {
+            return base.Channel.CheckTestIdExistsForInstructorAsync(Testid, InstructorId);
+        }
+        
+        public System.Data.DataSet CheckAssignmentIdExistsForInstructor(long AssignmentId, int InstructorId) {
+            return base.Channel.CheckAssignmentIdExistsForInstructor(AssignmentId, InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForInstructorAsync(long AssignmentId, int InstructorId) {
+            return base.Channel.CheckAssignmentIdExistsForInstructorAsync(AssignmentId, InstructorId);
         }
         
         public bool DeleteMcqTestQuestion(long QuestionId) {
@@ -2516,7 +2718,7 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.InsertNewCourse(request);
         }
         
-        public bool InsertNewCourse(string CourseName, string CourseDescription, string InstructorId, ref long CourseId) {
+        public bool InsertNewCourse(string CourseName, string CourseDescription, int InstructorId, ref long CourseId) {
             StudentDashboard.CPDataService.InsertNewCourseRequest inValue = new StudentDashboard.CPDataService.InsertNewCourseRequest();
             inValue.CourseName = CourseName;
             inValue.CourseDescription = CourseDescription;
@@ -2648,7 +2850,7 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetInstructorIdFromUserId(request);
         }
         
-        public bool GetInstructorIdFromUserId(string InstructorId, ref long Id) {
+        public bool GetInstructorIdFromUserId(string InstructorId, ref int Id) {
             StudentDashboard.CPDataService.GetInstructorIdFromUserIdRequest inValue = new StudentDashboard.CPDataService.GetInstructorIdFromUserIdRequest();
             inValue.InstructorId = InstructorId;
             inValue.Id = Id;
@@ -2748,12 +2950,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.UpdateCourseDetailsAsync(CourseId, CourseDescription);
         }
         
-        public bool ActivateCourse(long CourseId) {
-            return base.Channel.ActivateCourse(CourseId);
+        public bool ActivateCourse(long CourseId, string ShareUrl, string AccessCode) {
+            return base.Channel.ActivateCourse(CourseId, ShareUrl, AccessCode);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateCourseAsync(long CourseId) {
-            return base.Channel.ActivateCourseAsync(CourseId);
+        public System.Threading.Tasks.Task<bool> ActivateCourseAsync(long CourseId, string ShareUrl, string AccessCode) {
+            return base.Channel.ActivateCourseAsync(CourseId, ShareUrl, AccessCode);
         }
         
         public bool DeleteCourse(long CourseId) {

@@ -119,7 +119,7 @@
                         </li>
                     </ul>
                 </nav>
-                <p>Total No of Questions:<b id="totalQuestions"></b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
+                <p>Total No of Questions:<b id="totalNoOfQuestions">0</b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
                 <button id="courseAddNewCourseButton" type="button" class="btn btn-primary  btn-block" onclick="requestSubmitAssignment()">Submit response</button>
             </div>
         </div>
@@ -248,10 +248,12 @@
                     else {
                         $("#AssignmentName").text(data.assignment_name);
                     }
+                   
                     var date = new Date();
                     StartTime = date.toLocaleDateString();
                     var questions = data.mcq_questions;
                     mcq_questions = questions;
+                    $("#totalNoOfQuestions").text(questions.length);
                     var questionButtons = '';
                     for(var i=0;i<questions.length;i++)
                     {
@@ -266,7 +268,7 @@
                     listQuestionButtons = $('button[name ="questionButtons"]');
                     showNextQuestion();
                     setOnClickForButtons();
-                    $("#totalQuestions").html(mcq_questions.length)
+                   
                     runTimer();
                 }else
                 {
@@ -326,11 +328,11 @@
     function showPreviousQuestion()
     {
         changeStatusOfButton();
-        currentQuestionNo--;
-        if(currentQuestionNo<=0)
-        {
+        if (currentQuestionNo <= 0) {
             previousButton.prop('disabled', true);
+            return;
         }
+        currentQuestionNo--;
         nextButton.prop('disabled', false);
         setQuestion();
     }

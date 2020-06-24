@@ -173,47 +173,11 @@
         (function () {
             'use strict';
             onpageshow = getCoursesDetails();
-            //window.addEventListener('load', function () {
-            //    getCoursesDetails();
-            //}, false);
-           
-
         })();
-
-
-        function serachCourse() {
-            var input, filter, table, tr, td, i, txtValue,a;
-            input = document.getElementById("courseSearchBox");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("coursesTable");
-            tr = table.getElementsByTagName("tr");
-            // Loop through all table rows, and hide those who don't match the search query
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-                a = tr[i].getElementsByTagName("th")[0];
-                a = a.getElementsByTagName("button")[0];
-                if (a) {
-                    txtValue = a.textContent || a.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
         function getCourseIndexDetails(Id) {
             debugger;
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -295,6 +259,7 @@
         {
             debugger;
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

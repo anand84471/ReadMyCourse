@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using System.Web.Routing;
@@ -27,7 +28,9 @@ namespace StudentDashboard.Security.Student
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary {
                     { "controller", "Student" },
-                    { "action", "Index" } });
+                    { "action", "Index" }, 
+                    {"return_url" ,HttpContext.Current.Request.Url.AbsoluteUri}
+                    });
             }
         }
     }

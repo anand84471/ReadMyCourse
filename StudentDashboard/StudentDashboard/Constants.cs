@@ -16,6 +16,9 @@ namespace StudentDashboard
         public static readonly int MAX_ITEMS_TO_BE_RETURNED = 10;
         public static readonly int SMS_VERIFICATION_LINK_TYPE_ID_FOR_INSTRUCTOR = 1;
         public static readonly int SMS_VERIFICATION_LINK_TYPE_ID_FOR_STUDENT = 2;
+        public const int COURSE_STATUS_ACTIVE=2;
+        public const int COURSE_STATUs_DELETED = 3;
+        public const int COURSE_STATUs_CREATED = 1;
         public static readonly string ASSIGNMENT_TYPE_MCQ = "mcq";
         public static readonly string ASSIGNMENT_TYPE_SUBJECTIVE = "sub";
         public static readonly string TEST_TYPE_MCQ = "mcq";
@@ -39,7 +42,7 @@ namespace StudentDashboard
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
         public static string BASE_URL_PATH_FOR_TEST = "https://readmycourse.com/Test/Details?id=";
         public static string BASE_URL_PATH_FOR_COURSE = "https://readmycourse.com/Course/Details?id=";
-        public static string BASE_URL_PATH_FOR_AUTHORIZATION = "https://readmycourse.com/AuthService/";
+        public static string BASE_URL_PATH_FOR_AUTHORIZATION = "https://readmycourse.com/AuthService/?";
         #endregion
 
         #region SMS notification type
@@ -48,6 +51,8 @@ namespace StudentDashboard
         public static int SMS_NOTIFICATION_TYPE_INSTRUCTOR_PHONE_NO_VERIFICATION = 3;
         public static int SMS_NOTIFICATION_TYPE_STUDENT_PHONE_NO_VERIFICATION = 4;
         #endregion
+        
+      
         #region fluent validation constants for Studnet Registration
         public static readonly int STUDENT_FIRST_NAME_MAX_LENGTH = 250;
         public static readonly int STUDENT_LAST_NAME_MAX_LENGTH = 250;
@@ -95,6 +100,7 @@ namespace StudentDashboard
             ASSIGNMENT_SUBMISSION = 3,
             TEST_SUBMISSION = 4
         }
+        
 
     }
 }

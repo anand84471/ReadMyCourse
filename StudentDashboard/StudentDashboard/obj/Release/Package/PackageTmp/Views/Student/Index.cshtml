@@ -33,7 +33,16 @@
                                         <a href="./"><img src="../Images/site-logo.png" class="img-fluid " alt="..."></a>
                                         <h4 class="text-gray-900 font-weight-bold mb-2">Student login</h4>
                                     </div>
-                                    <form method="post" class="needs-validation" action="/Student/ValidateLogin" autocomplete="off" novalidate>
+                                    @if(ViewBag.ReturnUrl!=null)
+                                    {
+                                        var action = "/Student/ValidateLogin?return_url=" + ViewBag.ReReturnUrl;
+                                    }
+                                    else
+                                    {
+                                        var action = "/Student/ValidateLogin";
+                                    }
+
+                                    <form method="post" class="needs-validation" action="@ViewBag.ReturnUrl" autocomplete="off" novalidate>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">

@@ -2,8 +2,13 @@
     ViewBag.Title = "View Course";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
 }
-
-<div class="container-fluid">
+<style type="text/css">
+    .custom-blue
+    {
+         background-image: linear-gradient(to right, rgba(51, 91, 255), rgba(51, 80, 210));
+    }
+</style>
+<div class="container-fluid pl-3">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">View Course Details</h1>
         <nav aria-label="breadcrumb">
@@ -15,14 +20,14 @@
         </nav>
     </div>
     <!-- Course section -->
-    <div class="card shadow mb-0 border-left-success">
-            <div class="jumbotron ">
-                <h1 class="display-4" id="courseName">Course Name</h1>
-                <p class="lead" id="courseDescription">Course description</p>
+    <div class="card shadow mb-0 ">
+            <div class="jumbotron custom-blue">
+                <h1 class="display-4 text-white" id="courseName">Course Name</h1>
+                <h4 class="custom-blue text-gray-200" id="courseDescription">Course description</h4>
                 <hr class="my-4">
                 <div class="row ml-2">
-                    <p class="text mr-3" id="courseCreationDate"><b>Creation date:</b> 15/4/2020</p>
-                    <p class="text" id="courseUpdationDate"><b>Updation date:</b> 15/5/2020</p>
+                    <p class="text mr-3 text-gray-100" id="courseCreationDate"><b>Creation date:</b> 15/4/2020</p>
+                    <p class="text text-gray-100" id="courseUpdationDate"><b>Updation date:</b> 15/5/2020</p>
                 </div>
             </div>
         <!--Course nav bar-->
@@ -65,9 +70,9 @@
                             Action
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestUpdateCourseDetails()" >Edit Cousre Details</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestActivateCourse()">Activate</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestDeleteCourse()">Delete</a>
+                            <a class="dropdown-item" href="#"  role="button" onclick="requestUpdateCourseDetails()" id="editCourseButton">Edit Cousre Details</a>
+                            <a class="dropdown-item" href="#"  role="button" onclick="requestActivateCourse()" id="activateCourseButton">Activate</a>
+                            <a class="dropdown-item" href="#"  role="button" onclick="requestDeleteCourse()" id="deleteCourseButton">Delete</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#"  role="button" onclick="callHome()">Exit</a>
                         </div>
@@ -130,6 +135,39 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="editTopicModalSubmitButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editAndUpdateIndexTopic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAndUpdateIndexTopicHeader">Edit Topic</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Topic Name:</label>
+                        <input type="text" class="form-control" id="bc-topicName">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label" id="bc-topicDescriptionLabel">Topic Description:</label>
+                        <textarea class="form-control" id="bc_topicDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label" id="bc-topicAddUrlLabel">Youtube video url:</label>
+                        <input class="form-control" type="url" id="bc_topicAddUrl"/>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editAndUpdateIndexTopicButton">Add</button>
             </div>
         </div>
     </div>
@@ -257,7 +295,7 @@
                     <h3 id="successResponseMessage">deleted successfully</h3>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="init()">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -382,10 +420,10 @@
                                         + ' <div class="row ml-2">'
                                             + '<p class="text mr-3" ><b>Creation date:</b> ' + topicDetails[i].creation_date + '</p>'
                                             + '<p class="text" ><b>Updation date:</b> ' + topicDetails[i].updation_date + '</p>'
-                                            + '<button class="btn close" onclick="requestEditTopic('.concat(topicDetails[i].topic_id) + ')" >'
+                                            + '<button class="btn close" onclick="requestEditTopic('.concat(topicDetails[i].topic_id) + ','+id+')" >'
                                             + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 "></i>'
                                             + '</button>'
-                                            + '<button class="btn close" onclick="requestDeleteTopic('.concat(topicDetails[i].topic_id) + ')">'
+                                            + '<button class="btn close" onclick="requestDeleteTopic('.concat(topicDetails[i].topic_id) + ',' + id + ')">'
                                                 + '<i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400 "></i>'
                                             + '</button>'
                                         + '</div>'
@@ -425,6 +463,7 @@
             "index_description": $("#ab_topicDescription").val(),
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -432,12 +471,13 @@
             url: "/api/v1/instructor/UpdateIndex",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
-                    $("#successResponseMessage").text("topic updated successfully");
+                    $("#successResponseMessage").text("index updated successfully");
                     resetEditMcqAssignmentModel();
+                    callGetIndexDetails(IndexId);
                     $("#successDelete").modal('show');
                 }
                 else {
-                    $("#errorAlertMessageBody").text("topic could not be updated");
+                    $("#errorAlertMessageBody").text("index could not be updated");
                     $("#errorAlertHeader").modal('show');
                 }
             }
@@ -454,6 +494,7 @@
     {
 
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -462,6 +503,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("index deleted successfully");
                     $("#successDelete").modal('show');
+                    init();
                 }
                 else {
                     $("#errorAlertMessageBody").text("Index could not be deleted");
@@ -487,6 +529,7 @@
             "index_description": $("#ab_topicDescription").val(),
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -510,20 +553,22 @@
         $("#editTopicModalHeader").text('Add Assignment Details');
         $("#ab-topicNameLabel").text('Enter Assignment Name');
         $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
+        $("#editTopicModalSubmitButton").text("Submit");
         $("#editTopicModalSubmitButton").attr("onclick", "AddnewAssignment()");
         $("#editTopicModal").modal('show');
     }
-    function AddnewAssignment(Courseid)
+    function AddnewAssignment()
     {
         debugger
         var _data = {
-            "course_id": Courseid,
+            "course_id": "@ViewBag.CourseId",
             "assignment_type_id": 1,
             "assignment_name": $("#ab-topicName").val(),
             "assignment_description": $("#ab_topicDescription").val(),
             "assignment_tpe":"mcq"
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -533,6 +578,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("Assignment added successfully");
                     resetEditMcqAssignmentModel();
+                    init();
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -547,24 +593,31 @@
 
     //Topic section---------start---------------------------------------
     //----------------Content Delete Topic start------------------------
-    function requestDeleteTopic(TopicId)
+    function requestDeleteTopic(TopicId,IndexId)
     {
         $("#confirmDelete").modal('dispose');
-        $("#confirmDeletButtonForCourse").attr("onclick", "deleteTopic(" + TopicId + ")");
+        $("#confirmDeletButtonForCourse").attr("onclick", "deleteTopic(" + TopicId + ","+IndexId+")");
         $("#confirmMessage").text("Are you sure to want to delete the topic");
         $("#confirmDelete").modal('show');
     }
-    function deleteTopic(TopicId)
+    function deleteTopic(TopicId,IndexId)
     {
+        var _data = {
+            "index_id": IndexId,
+            "topic_id":TopicId
+        }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/DeleteTopic?id=".concat(TopicId),
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/DeleteTopic",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("topic deleted successfully");
                     $("#successDelete").modal('show');
+                    callGetIndexDetails(IndexId);
                 }
                 else {
                     $("#errorAlertMessageBody").text("topic could not be deleted");
@@ -575,21 +628,24 @@
     }
     //--------Content Delete topic Ends---------------------------------
     //----------------Contnet topic edit section------------------------
-    function requestEditTopic(TopicId)
+    function requestEditTopic(TopicId,IndexId)
     {
-        $("#editTopicModalHeader").text('Edit Topic');
-        $("#editTopicModalSubmitButton").attr("onclick", "editTopic(" + TopicId + ")");
-        $("#editTopicModal").modal('show');
+        $("#editAndUpdateIndexTopicHeader").text('Edit Topic');
+        $("#editAndUpdateIndexTopicButton").attr("onclick", "editTopic(" + TopicId + ","+IndexId+")");
+        $("#editAndUpdateIndexTopic").modal('show');
     }
-    function editTopic(TopicId)
+    function editTopic(TopicId, IndexId)
     {
         debugger
         var _data = {
             "topic_id": TopicId,
-            "topic_name": $("#ab-topicName").val(),
-            "topic_description": $("#ab_topicDescription").val(),
+            "topic_name": $("#bc-topicName").val(),
+            "topic_description": $("#bc_topicDescription").val(),
+            "file_path": $("#bc_topicAddUrl").val(),
+            "index_id": IndexId,
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -598,7 +654,8 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("topic updated successfully");
-                    resetEditMcqAssignmentModel();
+                    resetAddTopicModal();
+                    callGetIndexDetails(IndexId);
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -612,21 +669,30 @@
     //----------------Add Topic start----------------------------------
     function requestAddTopic(IndexId)
     {
-        $("#editTopicModalHeader").text('Add Topic');
-        $("#ab-topicNameLabel").text('Enter Topic Name');
-        $("#ab-topicDescriptionLabel").text('Enter Topic Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "AddTopic(" + IndexId + ")");
-        $("#editTopicModal").modal('show');
+        $("#editAndUpdateIndexTopicHeader").text('Add Topic');
+        $("#bc-topicNameLabel").text('Enter Topic Name');
+        $("#bc-topicDescriptionLabel").text('Enter Topic Description');
+        $("#bc-topicAddUrl").text('Enter youtube url');
+        $("#editAndUpdateIndexTopicButton").attr("onclick", "AddTopic(" + IndexId + ")");
+        $("#editAndUpdateIndexTopic").modal('show');
+    }
+    function resetAddTopicModal()
+    {
+        $("#bc-topicName").val("");
+        $("#bc_topicDescription").val("");
+        $("#bc_topicAddUrl").val("");
     }
     function AddTopic(IndexId)
     {
         debugger
         var _data = {
             "index_id": IndexId,
-            "topic_name": $("#ab-topicName").val(),
-            "topic_description": $("#ab_topicDescription").val(),
+            "topic_name": $("#bc-topicName").val(),
+            "topic_description": $("#bc_topicDescription").val(),
+            "file_path": $("#bc_topicAddUrl").val()
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -635,7 +701,8 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("topic added successfully");
-                    resetEditMcqAssignmentModel();
+                    resetAddTopicModal();
+                    callGetIndexDetails(IndexId);
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -662,6 +729,7 @@
     {
         var _data = extractDataFormAddMcqQuestionModel(AssignmentId);
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -671,6 +739,8 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question added successfully");
                     $("#successDelete").modal('show');
+                    getAssignmentDetails(AssignmentId);
+                    refreshAddMcqQuestionModal();
                 }
                 else {
                     $("#errorAlertMessageBody").text("question could not be added");
@@ -679,22 +749,19 @@
             }
         });
     }
-    function requestUpdateMcqAssignmentQuestion(QuestionId)
+    function requestUpdateMcqAssignmentQuestion(QuestionId,AssignmentId)
     {
         debugger
         $("#editMcqAssignmentQuestionModal").modal('dispose');
         $("#editMcqQuestionHeader").text("Update question");
         $("#editMcqQuestionSubmitButton").text("Update");
-        $("#editMcqQuestionSubmitButton").attr("onclick", "updateMcqAssignmentQuestion(" + QuestionId + ")");
+        $("#editMcqQuestionSubmitButton").attr("onclick", "updateMcqAssignmentQuestion(" + QuestionId + ","+AssignmentId+")");
         $("#editMcqAssignmentQuestionModal").modal('show');
     }
-    function resetEditMcqAssignmentModel(AssignmentId)
+    function resetEditMcqAssignmentModel()
     {
-        $("#editTopicModalHeader").text('Edit Assignment');
-        $("#ab-topicNameLabel").text('Enter Assignment Name');
-        $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
-        $("#editTopicModalSubmitButton").attr("onclick", "editAssignment(" + AssignmentId + ")");
-        $("#editTopicModal").modal('show');
+        $("#ab-topicName").val("");
+        $("#ab_topicDescription").val("");
     }
     function editAssignment(AssignmentId)
     {
@@ -705,6 +772,7 @@
             "assignment_description": $("#ab_topicDescription").val(),
         }
         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -714,6 +782,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("Assignment updated successfully");
                     resetEditMcqAssignmentModel();
+                    getAssignmentDetails(AssignmentId);
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -748,7 +817,16 @@
         }
         return _data;
     }
-    function updateMcqAssignmentQuestion(QuestionId)
+    function refreshAddMcqQuestionModal()
+    {
+        $("#ab-question").val("");
+        $("#ab-option1").val("");
+        $("#ab-option2").val("");
+        $("#ab-option3").val("");
+        $("#ab-option4").val("");
+        $("#ab-correctOption").val("");
+    }
+    function updateMcqAssignmentQuestion(QuestionId,AssignmentId)
     {
         debugger
         var _data = extractDataFormMcqQuestionModel(QuestionId);
@@ -762,7 +840,8 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question updated successfully");
-                    resetEditMcqAssignmentModel();
+                    refreshAddMcqQuestionModal();
+                    getAssignmentDetails(AssignmentId);
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -866,7 +945,7 @@
                             rows += '<tr><th scope="row" >' + sNo + '</th>'
                             + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].option1 + '</td><td>' + questionDetails[i].option2 + '</td><td>' + questionDetails[i].option3 + '</td><td>' + questionDetails[i].option4 + '</td><td>' + questionDetails[i].correct_option + '</td>'
                             + '<td>'
-                                + '<a class="list-group-horizontal"  onclick="requestUpdateMcqAssignmentQuestion(' + questionDetails[i].question_id + ')">'
+                                + '<a class="list-group-horizontal"  onclick="requestUpdateMcqAssignmentQuestion(' + questionDetails[i].question_id + ','+id+')">'
                                     + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                 + '</a>'
                                 + '<a class="list-group-horizontal" onclick="requestDeleteMcqQuestion(' + questionDetails[i].question_id + ')" >'
@@ -1245,7 +1324,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/activatecourse?CourseId=@ViewBag.CourseId",
+            url: "/api/v1/instructor/activatecourse?id=@ViewBag.CourseId",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("course activate successfully");
@@ -1294,6 +1373,11 @@
             }
         });
     }
+    function copyText() {
+        var copyText = document.getElementById("test-url");
+        copyText.select();
+        document.execCommand("copy");
+    }
     //-----------------------Course section start----------------------
     function init() {
         $.ajax({
@@ -1306,7 +1390,7 @@
                 debugger;
                 if (data != null && data.response_code == 1) {
                     aboutCourseDetails = '';
-                    aboutCourseDetails='<dl class="row ml-3">'
+                    aboutCourseDetails = '<dl class="row ml-3" id="courseDetailsC">'
                             +'<dt class="col-sm-3">Course name</dt><dd class="col-sm-9">'+data.course_name+'</dd>'
                             +'<dt class="col-sm-3">Creation date</dt><dd class="col-sm-9">'+data.course_creation_date+'</dd>'
                             + '<dt class="col-sm-3">Last updation date</dt><dd class="col-sm-9">' + data.course_creation_date + '</dd>'
@@ -1316,7 +1400,7 @@
                             + '<dt class="col-sm-3">No of Topics</dt><dd class="col-sm-9">' + data.topic_count + '</dd>'
                             + '<dt class="col-sm-3">Estimeted time for course</dt><dd class="col-sm-9">' + data.test_count + '</dd>'
                             + '<dt class="col-sm-3">Course description</dt><dd class="col-sm-9">' + data.course_description + '</dd>'
-                            + '<dt class="col-sm-3">Course Status</dt><dd class="col-sm-9">created</dd>'
+                            + '<dt class="col-sm-3">Course Status</dt><dd class="col-sm-9" id="courseStatus">' + data.course_status + '</dd>'
                             + '</dl>';
                     $("#courseBody").html(aboutCourseDetails);
                     $("#courseName").text(data.course_name);
@@ -1357,6 +1441,23 @@
                     }
                     else {
                         $("#navBarTestList").append('<a class="dropdown-item" href="#" role="button">no test found</a>');
+                    }
+                    if(data.course_status=="created")
+                    {
+                        $("#courseStatus").append('<button id="courseStatusActivateButton" class="btn btn-sm border btn-primary ml-2" href="#" onclick=requestActivateCourse()>Activate Course</button>');
+                    }
+                    else if (data.course_status == "active")
+                    {
+                        $("#activateCourseButton").hide();
+                        $("#deleteCourseButton").hide();
+                        $("#courseStatusActivateButton").hide();
+                        $("#courseDetailsC").append('<div class="card-body p-2">'
+                          + '<p>Share url: <input type="text" readonly="readonly" id="test-url" value="' + data.course_share_url + '" /><span><button class="btn-sm btn-primary ml-2" onclick="copyText()">copy<i class="ml-1 fa fa-copy" ></i></button></span></p>'
+                          + '</div>');
+                    }
+                    else if (data.course_status == "deleted")
+                    {
+                        $("#deleteCourseButton").hide();
                     }
                 }
                 else {
