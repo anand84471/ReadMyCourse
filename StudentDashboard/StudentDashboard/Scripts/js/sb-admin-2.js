@@ -37,6 +37,16 @@
     }
   });
 
+  $(document).ready(function () {
+      $(document).click(function (event) {
+          debugger
+          var clickover = $(event.target);
+          var _opened = $(".collapse").hasClass("side-nav");
+          if (_opened === true && !clickover.hasClass("collapse-item")) {
+              document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+          }
+      });
+  });
   // Smooth scrolling using jQuery easing
   $(document).on('click', 'a.scroll-to-top', function(e) {
     var $anchor = $(this);
@@ -46,7 +56,6 @@
     e.preventDefault();
   });
 
-  
 
 })(jQuery); // End of use strict
 function isNumber(evt) {

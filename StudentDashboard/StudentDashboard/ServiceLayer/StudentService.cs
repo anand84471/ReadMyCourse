@@ -164,6 +164,10 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
+        public async Task<bool> AddQuestionAskForCourse(StudentCourseQuestionModal objStudentCourseQuestionModal)
+        {
+            return await objStudentDTO.AddQuestionAskForCourse(objStudentCourseQuestionModal);
+        }
         public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn,int NoOfRowseFetched,int SortingId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
@@ -179,6 +183,23 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return lsCourseDetailsModel;
+        }
+        public async Task<List<StudentCourseQuestionModal>> GetAllQuestionOfStudentCourse(long StudentId, long CourseId)
+        {
+
+            List<StudentCourseQuestionModal> lsStudentCourseQuestionModal = null;
+            try
+            {
+                lsStudentCourseQuestionModal = await objStudentDTO.GetAllQuestionOfStudentCourse(StudentId, CourseId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentCourseQuestionModal;
         }
         public async Task<List<CourseDetailsModel>> SearchForCourseForStudent(string SearchString, int MaxRowToReturn, int NoOfRowseFetched, int SortingId,long Studentid)
         {
@@ -243,6 +264,22 @@ namespace StudentDashboard.ServiceLayer
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinStudentToCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertReadTopicByStudent(long StudentId, long TopicId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objStudentDTO.InsertReadTopicByStudent(StudentId, TopicId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertReadTopicByStudent", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

@@ -21,7 +21,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editTestMcqQuestionModelHeader">Edit question</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=" refreshMcqTestModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -68,7 +68,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshMcqTestModal()">Close</button>
                 <button type="button" id="editTestMcqQuestionModelSubmitButton" class="btn btn-primary">Update</button>
             </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editTopicModalHeader">Edit Test</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="refreshTestDetailsModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -117,7 +117,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshTestDetailsModal()">Close</button>
                 <button type="button" class="btn btn-primary" id="editTopicModalSubmitButton">Update</button>
             </div>
         </div>
@@ -170,6 +170,9 @@
     {
        getTestDetails(@ViewBag.TestId);
     }
+    var testName;
+    var testDescription;
+    var currentTestQuestions = {};
     function copyText()
     {
         var copyText = document.getElementById("test-url");
@@ -215,6 +218,8 @@
                 if (data != null && data.response_code == 1) {
                     debugger
                     var questionDetails = data.mcq_questions;
+                    testName = data.test_name;
+                    testDescription = data.test_description;
                     $("#breadcumbCurrentName").text(data.test_name);
                     var assignmentHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                 + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
@@ -251,18 +256,19 @@
                                                             + '<th scope="col">Correct Option</th>'
                                                             + '<th scope="col">Time(sec)</th>'
                                                             + '<th scope="col">Marks</th>'
-                                                            + '<th scope="col">Actions</th>'
+                                                            + '<th scope="col" class="hideable-test-content">Actions</th>'
                                                         + '</tr>'
                                                     + '</thead>'
                                                     + '<tbody>';
                     var rows = '';
                     if (questionDetails != null) {
                         for (var i = 0; i < questionDetails.length; i++) {
+                            currentTestQuestions[questionDetails[i].question_id] = questionDetails[i];
                             var sNo = i + 1;
                             rows += '<tr><th scope="row" >' + sNo + '</th>'
                             + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].option1 + '</td><td>' + questionDetails[i].option2 + '</td><td>' + questionDetails[i].option3 + '</td><td>' + questionDetails[i].option4 + '</td><td>' + questionDetails[i].correct_option + '</td>'
                             + '<td>' + questionDetails[i].question_time_in_seconds + '</td><td>' + questionDetails[i].marks + '</td>'
-                            + '<td>'
+                            + '<td class="hideable-test-content">'
                                 + '<button type="button" class="btn btn-link" class="list-group-horizontal"  onclick="requestUpdateMcqTestQuestion(' + questionDetails[i].question_id + ')">'
                                     + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                 + '</button>'
@@ -283,7 +289,7 @@
                         + '<a class="dropdown-item" href="#" onclick=requestDeleteTest(' + id + ')>Delete Test</a>'
                         + '<a class="dropdown-item" href="#" onclick=activateTest(' + id + ')>Activate Test</a>'
                         + '<a class="dropdown-item" href="#" onclick=requestAddMcqTestQuestion(' + id + ')>Add Question</a>'
-                        + '<a class="dropdown-item" href="#" onclick=requestAddMcqTestQuestion(' + id + ')>Add Question</a>'
+                     
                                  );
                     $("#testStatus").append('<button class="btn btn-sm border btn-primary ml-2" href="#" onclick=activateTest(' + id + ')>Activate Test</button>');
                 }
@@ -296,6 +302,7 @@
                     $("#test-details").append('<div class="card-body p-2">'
                     + '<p>Share url: <input type="text" readonly="readonly" id="test-url" value="' + data.tiny_url + '" /><span><button class="btn-sm btn-primary ml-2" onclick="copyText()">copy<i class="ml-1 fa fa-copy" ></i></button></span></p>'
                     + '</div>');
+                    $(".hideable-test-content").remove();
 
                 }
             }
@@ -305,8 +312,15 @@
         $("#editTopicModalHeader").text('Update Test Details');
         $("#ab-topicNameLabel").text('Enter Test Name');
         $("#ab-topicDescriptionLabel").text('Enter Test Description');
+        $("#ab-topicName").val(testName);
+        $("#ab_topicDescription").val(testDescription);
         $("#editTopicModalSubmitButton").attr("onclick", "editTestDetails(" + TestId + ")");
         $("#editTopicModal").modal('show');
+    }
+    function refreshTestDetailsModal()
+    {
+        $("#ab-topicName").val("");
+        $("#ab_topicDescription").val("");
     }
     function editTestDetails(TestId) {
         debugger
@@ -359,6 +373,40 @@
             }
         });
     }
+    function requestUpdateMcqTestQuestion(QuestionId)
+    {
+        $("#editTestMcqQuestionModel").modal('dispose');
+        $("#editTestMcqQuestionModelHeader").text("Update question");
+        $("#editTestMcqQuestionModelSubmitButton").text("Update");
+        $("#editTestMcqQuestionModelSubmitButton").attr("onclick", "updateMcqTestQuestion(" + QuestionId + ")");
+        preSetUpdateQuestionModal(QuestionId);
+        $("#editTestMcqQuestionModel").modal('show');
+    }
+    function updateMcqTestQuestion(QuestionId) {
+        var _data = extractDataFromAddMcqTestQuestionModel();
+        _data["test_id"] = "@ViewBag.TestId";
+        _data["question_id"] = QuestionId;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            data: JSON.stringify(_data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/UpdateMcqQuestionTestDetails",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    $("#successResponseMessage").text("question updated successfully");
+                    refreshTestDetails();
+                    $("#successDelete").modal('show');
+                }
+                else {
+                    $("#errorAlertMessageBody").text("question could not be updated");
+                    $("#errorAlertHeader").modal('show');
+                }
+            }
+        });
+    }
+
     function requestAddMcqTestQuestion(TestId) {
         debugger
         $("#editTestMcqQuestionModel").modal('dispose');
@@ -380,6 +428,28 @@
         }
         return _data;
     }
+    function preSetUpdateQuestionModal(QuestionId)
+    {
+        $("#test-question").val(currentTestQuestions[QuestionId].question_statement);
+        $("#test-option1").val(currentTestQuestions[QuestionId].option1);
+        $("#test-option2").val(currentTestQuestions[QuestionId].option2);
+        $("#test-option3").val(currentTestQuestions[QuestionId].option3);
+        $("#test-option4").val(currentTestQuestions[QuestionId].option4);
+        $("#test-correctOption").val(currentTestQuestions[QuestionId].correct_option);
+        $("#test-time").val(currentTestQuestions[QuestionId].question_time_in_seconds);
+        $("#test-marks").val(currentTestQuestions[QuestionId].marks);
+    }
+    function refreshMcqTestModal()
+    {
+        $("#test-question").val("");
+        $("#test-option1").val("");
+        $("#test-option2").val("");
+        $("#test-option3").val("");
+        $("#test-option4").val("");
+        $("#test-correctOption").val("");
+        $("#test-time").val("");
+        $("#test-marks").val("");
+    }
     function addMcqTestQuestion(TestId) {
         var _data = extractDataFromAddMcqTestQuestionModel();
         _data["test_id"] = TestId;
@@ -393,6 +463,7 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question added successfully");
+                   
                     refreshTestDetails();
                     $("#successDelete").modal('show');
                 }

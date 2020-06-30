@@ -3,6 +3,7 @@ using StudentDashboard.HttpResponse;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
@@ -259,7 +260,8 @@ namespace StudentDashboard.DTO
             {
 
                 DataSet ds = await objCPDataService.CheckAssignmentIdExistsForAnyCourseForInstructorAsync(AssignmentId, InstructorId);
-                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && (ds.Tables[0].Rows.Count > 0
+                    || ds.Tables[1].Rows.Count>0||ds.Tables[2].Rows.Count>0))
                 {
                     result = true;
                 }
@@ -276,7 +278,7 @@ namespace StudentDashboard.DTO
         }
         public async Task<bool> CheckTestIdExistsForAnyCourseForInstrcutor(int InstructorId, long TestId)
         {
-            bool result = false;
+            bool result = true;
             try
             {
                 DataSet ds = await objCPDataService.CheckTestIdExistsForAnyCourseForInstructorAsync(TestId, InstructorId);
@@ -526,6 +528,37 @@ namespace StudentDashboard.DTO
             }
             return objTestModel;
         }
+        public async Task<StudentTestProgressModal> GetStudentTestProgress(long TestId,long StudentId)
+        {
+            StudentTestProgressModal objTestModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetStudentTestProgressAsync(TestId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objTestModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentTestProgressModal(
+                         dataRow.Field<long>("TEST_ID"),
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<string>("TEST_DESCRIPTION"),
+                         dataRow.Field<int>("TOTAL_NO_OF_QUESTIONS"),
+                         dataRow.Field<int>("TOTAL_ALLOWED_TIME"),
+                         dataRow.Field<int>("TOTAL_MARKS"),
+                         dataRow.Field<long?>("SUBMISSION_ID")
+
+                         )).ToList()[0];
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objTestModel;
+        }
         public async Task<List<McqQuestion>> GetMcqTestQuestions(long TestId)
         {
             List<McqQuestion> lsMcqQuestion = null;
@@ -596,6 +629,41 @@ namespace StudentDashboard.DTO
             }
             return lsIndexDetails;
         }
+        public async Task<List<CourseIndexDetails>> GetStudentCourseProgress(long CourseId,long StudentId)
+        {
+            List<CourseIndexDetails> lsIndexDetails = new List<CourseIndexDetails>();
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetIndexDetailsOfCourseAsync(CourseId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsIndexDetails = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new CourseIndexDetails(
+                         dataRow.Field<string>("INDEX_NAME"),
+                         dataRow.Field<string>("INDEX_DESCRIPTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<DateTime>("ROW_UPDATION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<String>("ASSIGNMENT_NAME"),
+                         dataRow.Field<byte?>("ASSIGNMENT_TYPE"),
+                         dataRow.Field<String>("TEST_NAME"),
+                         dataRow.Field<byte?>("TEST_TYPE"),
+                         dataRow.Field<int>("TOPIC_COUNT"),
+                         dataRow.Field<long>("INDEX_ID"),
+                         dataRow.Field<long?>("ASSIGNMENT_ID"),
+                         dataRow.Field<long?>("TEST_ID")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsIndexDetails;
+        }
         public async Task<GetCourseDetailsApiResponse> GetCourseDetails(long CourseId)
         {
             List<GetCourseDetailsApiResponse> lsGetCourseDetailsApiResponse = null;
@@ -631,8 +699,8 @@ namespace StudentDashboard.DTO
             return objGetCourseDetailsApiResponse;
         }
 
-
        
+
         public async Task<bool> UpdateTestDetails(TestModel objTestModel)
         {
             bool result = false;
@@ -897,6 +965,34 @@ namespace StudentDashboard.DTO
             }
             return lsTopicModel;
         }
+        public async Task<List<StudentTopicModal>> FetchTopicProgressForStudent(long TopicId,long StudentId)
+        {
+            List<StudentTopicModal> lsTopicModel = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetIndexTopicProgressForStudentAsync(TopicId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsTopicModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentTopicModal(
+                         dataRow.Field<long>("TOPIC_ID"),
+                         dataRow.Field<string>("TOPIC_NAME"),
+                         dataRow.Field<string>("TOPIC_DESCRIPTION"),
+                         dataRow.Field<string>("FILE_PATH_MAP_TO_SERVER"),
+                         dataRow.Field<bool?>("IS_COMPLETED")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsTopicModel;
+        }
         public async Task<IndexModel>  GetIndexDetails(long TopicId)
         {
             IndexModel objIndexModel = null;
@@ -916,6 +1012,38 @@ namespace StudentDashboard.DTO
                          )).ToList();
                 }
                 if(lsIndexModel != null&&lsIndexModel.Count>0)
+                {
+                    objIndexModel = lsIndexModel[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objIndexModel;
+        }
+        public async Task<StudentIndexModal> GetStudentIndexDetails(long IndexId)
+        {
+            StudentIndexModal objIndexModel = null;
+            try
+            {
+                List<StudentIndexModal> lsIndexModel = null;
+                DataSet ds = await objCPDataService.GetIndexDetailsAsync(IndexId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsIndexModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentIndexModal(
+                         dataRow.Field<long>("ID"),
+                         dataRow.Field<string>("INDEX_NAME"),
+                         dataRow.Field<string>("INDEX_DESCRIPTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<DateTime>("ROw_UPDATION_DATETIME").ToString("d MMM yyyy")
+                         )).ToList();
+                }
+                if (lsIndexModel != null && lsIndexModel.Count > 0)
                 {
                     objIndexModel = lsIndexModel[0];
                 }
@@ -1793,6 +1921,37 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsAssignmentDetailsModel;
+        }
+        public async Task<StudentAssignmentProgressModal> GetStudentAssignmentProgress(long AssignmentId,long StudentId)
+        {
+            StudentAssignmentProgressModal objAssignmentDetailsModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetStudentAssignmentProgressAsync(AssignmentId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentAssignmentProgressModal(
+                         dataRow.Field<long>("ASSIGNMENT_ID"),
+                         dataRow.Field<string>("ASSIGNMENT_NAME"),
+                         dataRow.Field<string>("ASSIGNMENT_DESCRIPTION"),
+                         dataRow.Field<string>("ASSIGNMENT_TYPE"),
+                         dataRow.Field<int>("NO_OF_QUESTIONS"),
+                         dataRow.Field<int>("NO_OF_SUBJECTIVE_QUESTIONS"),
+                         dataRow.Field<long?>("SUBMISSION_ID"),
+                         0,
+                         dataRow.Field<int?>("ASSIGNMANT_PERCENTAGE_SCORE")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objAssignmentDetailsModel;
         }
         public async Task<List<TestDetailsModel>> SearchForTestOfInstructor(string SearchString, int MaxRowToReturn,int InstructorId)
         {

@@ -50,7 +50,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editMcqQuestionHeader">Edit question</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetMcqQuestionModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -90,7 +90,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetMcqQuestionModal()">Close</button>
                 <button type="button" id="editMcqQuestionSubmitButton" class="btn btn-primary">Update</button>
             </div>
         </div>
@@ -101,7 +101,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editSubjectiveQuestionHeader">Edit question</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetSubjectiveAssignmentModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -118,7 +118,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetSubjectiveAssignmentModal()">Close</button>
                 <button type="button" id="editSubjectiveQuestionSubmitButton" class="btn btn-primary">Update</button>
             </div>
         </div>
@@ -182,12 +182,15 @@
     </div>
 </div>
 <script type="text/javascript">
+    var currentAssignmentName;
+    var currentAssignmentDescription;
     function requestAddMcqQuestion(AssignmentId) {
         if (AssignmentType == "mcq") {
             debugger
             $("#editMcqAssignmentQuestionModal").modal('dispose');
             $("#editMcqQuestionHeader").text("Add question");
             $("#editMcqQuestionSubmitButton").text("Submit");
+            resetMcqQuestionModal();
             $("#editMcqQuestionSubmitButton").attr("onclick", "addMcqQuestion(" + AssignmentId + ")");
             $("#editMcqAssignmentQuestionModal").modal('show');
 
@@ -216,7 +219,7 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question added successfully");
-                    resetEditMcqAssignmentModel();
+                    resetSubjectiveAssignmentModal();
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -225,6 +228,11 @@
                 }
             }
         });
+    }
+    function resetSubjectiveAssignmentModal()
+    {
+        $("#ac-question-statement").val("");
+        $("#ac-question-hint").val("");
     }
     function addMcqQuestion(AssignmentId) {
         var _data = extractDataFormAddMcqQuestionModel(AssignmentId);
@@ -239,6 +247,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question added successfully");
                     $("#successDelete").modal('show');
+                    resetMcqQuestionModal();
                 }
                 else {
                     $("#errorAlertMessageBody").text("question could not be added");
@@ -258,6 +267,7 @@
         $("#editMcqAssignmentQuestionModal").modal('dispose');
         $("#editMcqQuestionHeader").text("Update question");
         $("#editMcqQuestionSubmitButton").text("Update");
+        setPreAssignmentQuestionDetailsToUpdate(QuestionId);
         $("#editMcqQuestionSubmitButton").attr("onclick", "updateMcqAssignmentQuestion(" + QuestionId + ")");
         $("#editMcqAssignmentQuestionModal").modal('show');
     }
@@ -267,6 +277,8 @@
         $("#editSubjectiveAssignmentQuestionModal").modal('dispose');
         $("#editSubjectiveQuestionHeader").text("Update question");
         $("#editSubjectiveQuestionSubmitButton").text("Update");
+        $("#ac-question-statement").val(currentAssignmentQuestins[QuestionId].question_statement);
+        $("#ac-question-hint").val(currentAssignmentQuestins[QuestionId].hint);
         $("#editSubjectiveQuestionSubmitButton").attr("onclick", "updateSubjectiveAssignmentQuestion(" + QuestionId + ")");
         $("#editSubjectiveAssignmentQuestionModal").modal('show');
     }
@@ -283,7 +295,7 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question updated successfully");
-                    resetEditMcqAssignmentModel();
+                    resetSubjectiveAssignmentModal();
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -305,9 +317,12 @@
         $("#editTopicModalHeader").text('Edit Assignment');
         $("#ab-topicNameLabel").text('Enter Assignment Name');
         $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
+        $("#ab-topicName").val(currentAssignmentName);
+        $("#ab_topicDescription").val(currentAssignmentDescription);
         $("#editTopicModalSubmitButton").attr("onclick", "editAssignment(" + AssignmentId + ")");
         $("#editTopicModal").modal('show');
     }
+    
     function editAssignment(AssignmentId) {
         debugger
         var _data = {
@@ -359,6 +374,14 @@
         }
         return _data;
     }
+    function resetMcqQuestionModal() {
+        $("#ab-question").val("");
+        $("#ab-option1").val("");
+        $("#ab-option2").val("");
+        $("#ab-option3").val("");
+        $("#ab-option4").val("");
+        $("#ab-correctOption").val(-1);
+    }
     function updateMcqAssignmentQuestion(QuestionId) {
         debugger
         var _data = extractDataFormMcqQuestionModel(QuestionId);
@@ -388,10 +411,11 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/DeleteMcqQuestion?id=".concat(QuestionId),
+            url: "/api/v1/instructor/DeleteMcqQuestion?id=".concat(QuestionId).concat("&&AssignmentId=").concat("@ViewBag.AssignmnetId"),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question deleted successfully");
+                    refreshAssignmentDetails();
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -403,6 +427,17 @@
     }
     var assignmentId;
     var AssignmentType;
+    var currentAssignmentQuestins = {};
+    function setPreAssignmentQuestionDetailsToUpdate(QuestionId) {
+        debugger
+        var question = currentAssignmentQuestins[QuestionId];
+        $("#ab-question").val(question.question_statement);
+        $("#ab-option1").val(question.option1);
+        $("#ab-option2").val(question.option2);
+        $("#ab-option3").val(question.option3);
+        $("#ab-option4").val(question.option4);
+        $("#ab-correctOption").val(question.correct_option);
+    }
     function getAssignmentDetails(id) {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -414,6 +449,8 @@
                 debugger
                 if (data != null && data.response_code == 1) {
                     $("#breadcumbCurrentName").text(data.assignment_name);
+                    currentAssignmentName = data.assignment_name;
+                    currentAssignmentDescription = data.assignment_description;
                     var questionDetails = data.mcq_questions;
                     if (data.assignment_type == "sub")
                     {
@@ -442,6 +479,7 @@
                           + '<dt class="col-sm-3">Assignment status:</dt><dd class="col-sm-9" id="assignmentstatus">' + data.status + '</dd>'
                           + '</dl></div><h2 class="ml-3">Questions</h2>';
                     if (data.assignment_type == "mcq") {
+                       
                         assignmentHtml += '<div class="card-body" style="padding:0">'
                                                 + '<div class="table-responsive">'
                                                     + '<table id="coursesTable" class="table table-hover text-xsmall">'
@@ -454,7 +492,7 @@
                                                                 + '<th scope="col">Option3</th>'
                                                                 + '<th scope="col">Option4</th>'
                                                                 + '<th scope="col">Correct Option</th>'
-                                                                + '<th scope="col">Actions</th>'
+                                                                + '<th scope="col" class="hideable-on-active">Actions</th>'
                                                             + '</tr>'
                                                         + '</thead>'
                                                         + '<tbody>';
@@ -469,7 +507,7 @@
                                                                + '<th scope="col">Question Statement</th>'
                                                                + '<th scope="col">Hint</th>'
                                                                + '<th scope="col">Addition Date</th>'
-                                                               + '<th scope="col">Actions</th>'
+                                                               + '<th scope="col" class="hideable-on-active">Actions</th>'
                                                            + '</tr>'
                                                        + '</thead>'
                                                        + '<tbody>';
@@ -478,10 +516,11 @@
                     if (data.assignment_type == "mcq") {
                         if (questionDetails != null) {
                             for (var i = 0; i < questionDetails.length; i++) {
+                                currentAssignmentQuestins[questionDetails[i].question_id] = questionDetails[i];
                                 var sNo = i + 1;
                                 rows += '<tr><th scope="row" >' + sNo + '</th>'
                                 + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].option1 + '</td><td>' + questionDetails[i].option2 + '</td><td>' + questionDetails[i].option3 + '</td><td>' + questionDetails[i].option4 + '</td><td>' + questionDetails[i].correct_option + '</td>'
-                                + '<td>'
+                                + '<td class="hideable-on-active">'
                                     + '<button type="button" class="btn btn-link" class="list-group-horizontal"  onclick="requestUpdateMcqAssignmentQuestion(' + questionDetails[i].question_id + ')">'
                                         + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                     + '</button>'
@@ -499,12 +538,14 @@
                         var questionDetails = data.subjective_questions;
                         if(questionDetails!=null)
                         {
+                            
                             for(var i=0;i<questionDetails.length;i++)
                             {
                                 var sNo = i + 1;
+                                currentAssignmentQuestins[questionDetails[i].question_id] = questionDetails[i];
                                 rows += '<tr><th scope="row" >' + sNo + '</th>'
                                + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].hint + '</td><td>' + questionDetails[i].creation_date + '</td>'
-                               + '<td>'
+                               + '<td class="hideable-on-active">'
                                    + '<button type="button" class="btn btn-link" class="list-group-horizontal"  onclick="requestUpdateSubjectiveAssignmentQuestion(' + questionDetails[i].question_id + ')">'
                                        + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                    + '</button>'
@@ -538,55 +579,12 @@
                     $("#assignment-details").append('<div class="card-body p-2">'
                     + '<p>Share url: <input type="text" readonly="readonly" id="test-url" value="' + data.tiny_url + '" /><span><button class="btn-sm btn-primary ml-2" onclick="copyText()">copy<i class="ml-1 fa fa-copy" ></i></button></span></p>'
                     + '</div>');
-
+                    $(".hideable-on-active").remove();
                 }
             }
         });
     }
-    function getAssignmentDetailsOld(id) {
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(id),
-            success: function (data) {
-                debugger;
-                if (data != null && data.response_code == 1) {
-                    var questionDetails = data.mcq_questions;
-                    var assignmentHtml = '<div class="collapse show" id="collapseAssignment">';
-                    for (var i = 0; i < questionDetails.length; i++) {
-                        var correctOption = questionDetails[i].correct_option;
-                        assignmentHtml += '<div class="card-body">'
-                                            + '<h6 class="m-0 font-weight-bold text-primary">1.<span class="ml-2">' + questionDetails[i].question_statement + '</span></h6>'
-                                            + '<div class="custom-control custom-radio">'
-                                               + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                               + '<label class="custom-control-label" for="defaultGroupExample1">' + questionDetails[i].option1 + '</label>'
-                                            + '</div>'
-
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled> '
-                                                + '<label class="custom-control-label" for="defaultGroupExample2">' + questionDetails[i].option2 + '</label>'
-                                            + '</div>'
-
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                                + '<label class="custom-control-label" for="defaultGroupExample3">' + questionDetails[i].option3 + '</label>'
-                                            + '</div>'
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                                + '<label class="custom-control-label" for="defaultGroupExample4">' + questionDetails[i].option4 + '</label>'
-                                            + '</div>';
-                        //var corrcetRadio = document.getElementsByName("radioOptions"+i);
-                        //corrcetRadio = corrcetRadio[correctOption - 1];
-                        //corrcetRadio.setAttribute("checked", true);
-                    }
-                    assignmentHtml += '</div>';
-                    $("#courseBody").html(assignmentHtml);
-                }
-            }
-        });
-    }
+    
     function editMcqAssignmentQuestionModel(QuestionId) {
         $("#editMcqAssignmentQuestionModal").modal('show');
     }

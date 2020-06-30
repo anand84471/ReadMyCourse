@@ -130,7 +130,7 @@
                         </li>
                     </ul>
                 </nav>
-                <p>Total No of Questions:<b id="totalQuestions"></b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
+                <p>Total No of Questions:<b id="totalNoOfQuestions"></b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
                 <button id="courseAddNewCourseButton" type="button" class="btn btn-primary  btn-block" onclick="requestSubmitAssignment()">Submit response</button>
             </div>
         </div>
@@ -273,7 +273,7 @@
                     listQuestionButtons = $('button[name ="questionButtons"]');
                     showNextQuestion();
                     setOnClickForButtons();
-                    $("#totalQuestions").html(mcq_questions.length)
+                    $("#totalNoOfQuestions").html(mcq_questions.length)
                     runTimer();
                 }else
                 {

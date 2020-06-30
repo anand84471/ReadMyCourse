@@ -218,6 +218,54 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructorResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForInstructorAsync(long AssignmentId, int InstructorId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudent", ReplyAction="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudentResponse")]
+        bool InsertCompletedTopicforStudent(long TopicId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudent", ReplyAction="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudentResponse")]
+        System.Threading.Tasks.Task<bool> InsertCompletedTopicforStudentAsync(long TopicId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudent", ReplyAction="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudentResponse")]
+        bool InsertCourseQuestionByStudent(long CourseId, long StudentId, string Question);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudent", ReplyAction="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudentResponse")]
+        System.Threading.Tasks.Task<bool> InsertCourseQuestionByStudentAsync(long CourseId, long StudentId, string Question);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestion", ReplyAction="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestionResponse")]
+        bool InsertAnswerForCourseQuestion(long QuestionId, int InstructorId, string Answer);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestion", ReplyAction="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestionResponse")]
+        System.Threading.Tasks.Task<bool> InsertAnswerForCourseQuestionAsync(long QuestionId, int InstructorId, string Answer);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudentResponse")]
+        System.Data.DataSet GetIndexTopicProgressForStudent(long IndexId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetIndexTopicProgressForStudentAsync(long IndexId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentCourseProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentCourseProgressResponse")]
+        System.Data.DataSet GetStudentCourseProgress(long CourseId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentCourseProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentCourseProgressResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentCourseProgressAsync(long CourseId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentAssignmentProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentAssignmentProgressResponse")]
+        System.Data.DataSet GetStudentAssignmentProgress(long AssignmentId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentAssignmentProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentAssignmentProgressResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentAssignmentProgressAsync(long AssignmentId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentTestProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentTestProgressResponse")]
+        System.Data.DataSet GetStudentTestProgress(long TestId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentTestProgress", ReplyAction="http://tempuri.org/ICpDataService/GetStudentTestProgressResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentTestProgressAsync(long TestId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudentResponse")]
+        System.Data.DataSet GetAllQuestionAskForCourseByStudent(long Studentid, long CourseId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllQuestionAskForCourseByStudentAsync(long Studentid, long CourseId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion", ReplyAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse")]
         bool DeleteMcqTestQuestion(long QuestionId);
         
@@ -1994,6 +2042,70 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> CheckAssignmentIdExistsForInstructorAsync(long AssignmentId, int InstructorId) {
             return base.Channel.CheckAssignmentIdExistsForInstructorAsync(AssignmentId, InstructorId);
+        }
+        
+        public bool InsertCompletedTopicforStudent(long TopicId, long StudentId) {
+            return base.Channel.InsertCompletedTopicforStudent(TopicId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertCompletedTopicforStudentAsync(long TopicId, long StudentId) {
+            return base.Channel.InsertCompletedTopicforStudentAsync(TopicId, StudentId);
+        }
+        
+        public bool InsertCourseQuestionByStudent(long CourseId, long StudentId, string Question) {
+            return base.Channel.InsertCourseQuestionByStudent(CourseId, StudentId, Question);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertCourseQuestionByStudentAsync(long CourseId, long StudentId, string Question) {
+            return base.Channel.InsertCourseQuestionByStudentAsync(CourseId, StudentId, Question);
+        }
+        
+        public bool InsertAnswerForCourseQuestion(long QuestionId, int InstructorId, string Answer) {
+            return base.Channel.InsertAnswerForCourseQuestion(QuestionId, InstructorId, Answer);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertAnswerForCourseQuestionAsync(long QuestionId, int InstructorId, string Answer) {
+            return base.Channel.InsertAnswerForCourseQuestionAsync(QuestionId, InstructorId, Answer);
+        }
+        
+        public System.Data.DataSet GetIndexTopicProgressForStudent(long IndexId, long StudentId) {
+            return base.Channel.GetIndexTopicProgressForStudent(IndexId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetIndexTopicProgressForStudentAsync(long IndexId, long StudentId) {
+            return base.Channel.GetIndexTopicProgressForStudentAsync(IndexId, StudentId);
+        }
+        
+        public System.Data.DataSet GetStudentCourseProgress(long CourseId, long StudentId) {
+            return base.Channel.GetStudentCourseProgress(CourseId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentCourseProgressAsync(long CourseId, long StudentId) {
+            return base.Channel.GetStudentCourseProgressAsync(CourseId, StudentId);
+        }
+        
+        public System.Data.DataSet GetStudentAssignmentProgress(long AssignmentId, long StudentId) {
+            return base.Channel.GetStudentAssignmentProgress(AssignmentId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentAssignmentProgressAsync(long AssignmentId, long StudentId) {
+            return base.Channel.GetStudentAssignmentProgressAsync(AssignmentId, StudentId);
+        }
+        
+        public System.Data.DataSet GetStudentTestProgress(long TestId, long StudentId) {
+            return base.Channel.GetStudentTestProgress(TestId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentTestProgressAsync(long TestId, long StudentId) {
+            return base.Channel.GetStudentTestProgressAsync(TestId, StudentId);
+        }
+        
+        public System.Data.DataSet GetAllQuestionAskForCourseByStudent(long Studentid, long CourseId) {
+            return base.Channel.GetAllQuestionAskForCourseByStudent(Studentid, CourseId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllQuestionAskForCourseByStudentAsync(long Studentid, long CourseId) {
+            return base.Channel.GetAllQuestionAskForCourseByStudentAsync(Studentid, CourseId);
         }
         
         public bool DeleteMcqTestQuestion(long QuestionId) {

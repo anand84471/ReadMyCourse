@@ -1257,6 +1257,111 @@ namespace CPDataService
             }
             return sDS;
         }
+        public DataSet GetStudentAssignmentProgress(long AssignmentId,long StudentId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetStudentAssignmentProgress";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spStudentAssignmentProgress", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llAssignmentId", SqlDbType.BigInt).Value = AssignmentId;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public DataSet GetStudentTestProgress(long TestId, long StudentId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetStudentTestProgress";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetStudentTestProgress", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llTestId", SqlDbType.BigInt).Value = TestId;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public DataSet GetStudentCourseProgress(long CourseId,long StudentId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetStudentCourseProgress";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetStudentCourseProgress", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llCourseId", SqlDbType.BigInt).Value = CourseId;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
         public DataSet GetAssignmentDetails(long AssignmentId)
         {
             DataSet sDS = new DataSet();
@@ -2244,6 +2349,41 @@ namespace CPDataService
             }
             return sDS;
         }
+        public DataSet GetIndexTopicProgressForStudent(long IndexId,long StudentId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetIndexTopicDetails";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetIndexTopicProgressForStudent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llIndexId", SqlDbType.BigInt).Value = IndexId;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
         public DataSet GetIndexDetails(long IndexId)
         {
             DataSet sDS = new DataSet();
@@ -2580,6 +2720,7 @@ namespace CPDataService
                 m_command = new SqlCommand("Cp_spUpdateMcqTestQuestionDetails", m_con);
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
                 m_command.Parameters.Add("@strQuestionStatement", SqlDbType.VarChar,1000).Value = QuestionStatement;
+                m_command.Parameters.Add("@llQuestionId", SqlDbType.BigInt).Value = Questionid;
                 m_command.Parameters.Add("@strOption1", SqlDbType.VarChar, 256).Value = Option1;
                 m_command.Parameters.Add("@strOption2", SqlDbType.VarChar, 256).Value = Option2;
                 m_command.Parameters.Add("@strOption3", SqlDbType.VarChar, 256).Value = Option3;
@@ -5708,5 +5849,158 @@ namespace CPDataService
             }
             return sDS;
         }
+        public DataSet GetAllQuestionAskForCourseByStudent(long Studentid, long CourseId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetAllQuestionAskForCourseByStudent";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetAllCourseQuestionOfStudent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = Studentid;
+                m_command.Parameters.Add("@llCourseId", SqlDbType.BigInt).Value = CourseId;
+                
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public bool InsertCompletedTopicforStudent(long TopicId,long StudentId)
+        {
+            bool result = false;
+            string strCurrentMethodName = "InsertCompletedTopicforStudent";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spInsertCompletedTopicForStudent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_command.Parameters.Add("@llTopicId", SqlDbType.BigInt).Value = TopicId;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+        public bool InsertCourseQuestionByStudent(long CourseId, long StudentId,string Question)
+        {
+            bool result = false;
+            string strCurrentMethodName = "InsertCourseQuestionByStudent";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spInsrCourseQuestionByStudent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_command.Parameters.Add("@llCourseId", SqlDbType.BigInt).Value = CourseId;
+                m_command.Parameters.Add("@strQuestiOn", SqlDbType.VarChar,8000).Value = Question;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+        public bool InsertAnswerForCourseQuestion(long QuestionId, int InstructorId, string Answer)
+        {
+            bool result = false;
+            string strCurrentMethodName = "InsertAnswerForCourseQuestion";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spInsrCourseQuestionByStudent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llQuestionId", SqlDbType.BigInt).Value = QuestionId;
+                m_command.Parameters.Add("@iInstructorId", SqlDbType.Int).Value = InstructorId;
+                m_command.Parameters.Add("@strAnswer", SqlDbType.VarChar, 8000).Value = Answer;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+
     }
 }

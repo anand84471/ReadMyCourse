@@ -8,8 +8,8 @@
     <div class="card shadow mb-4 border-left-primary">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary" id="AssignmentName">Test Name</h6>
-            <ul class="list-inline m-0">
+            
+            <ul class="list-inline m-0 text-center align-content-center">
                 <li class="list-inline-item m-0"><button type="button" class="btn btn-outline-primary m-0" id="testRemainigTimeHH">00</button></li>
                 <li class="list-inline-item m-0 ml-1 font-weight-bolder">:</li>
                 <li class="list-inline-item m-0"><button type="button" class="btn btn-outline-primary m-0" id="testRemainigTimeMM">00</button></li>
@@ -97,17 +97,17 @@
                 <nav aria-label="Page navigation example" class="mt-2">
                     <ul class="pagination justify-content-start">
                         <li class="page-item">
-                            <button class="page-link" onclick="showPreviousQuestion()" id="previousButton">Previous</button>
+                            <button class="page-link" onclick="showPreviousQuestion()" id="previousButton"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
                         </li>
                         <li class="page-item">
                             <button class="page-link" tabindex="-1" onclick="markQuestionToReview()">Review</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" onclick="showNextQuestion()" id="nextButton">Next</button>
+                            <button class="page-link" onclick="showNextQuestion()" id="nextButton"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                         </li>
                     </ul>
                 </nav>
-                <p>Total No of Questions:<b id="totalQuestions"></b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
+                <p>Total No of Questions:<b id="totalNoOfQuestions"></b> | Total Answered questions: <b id="totalAnsweredQuestions">0</b></p>
                 <button id="courseAddNewCourseButton" type="button" class="btn btn-primary  btn-block" onclick="requestSubmitAssignment()">Submit response</button>
             </div>
         </div>
@@ -260,7 +260,7 @@
                     listQuestionButtons = $('button[name ="questionButtons"]');
                     showNextQuestion();
                     setOnClickForButtons();
-                    $("#totalQuestions").html(mcq_questions.length)
+                    $("#totalNoOfQuestions").html(mcq_questions.length)
                     startTimer();
                 }else
                 {
@@ -317,20 +317,18 @@
         previousButton=$("#previousButton");
         nextButton=$("#nextButton");
     }
-    function showPreviousQuestion()
-    {
+    function showPreviousQuestion() {
         changeStatusOfButton();
-        currentQuestionNo--;
-        if(currentQuestionNo<0)
-        {
+        if (currentQuestionNo <= 0) {
             previousButton.prop('disabled', true);
+            return;
         }
+        currentQuestionNo--;
         nextButton.prop('disabled', false);
         setQuestion();
     }
 
-    function setQuestion()
-    {
+    function setQuestion() {
         debugger
         preChangeStatusOfButton();
         currentQuestion = mcq_questions[currentQuestionNo];
@@ -342,6 +340,15 @@
         option2.text(currentQuestion.option2);
         option3.text(currentQuestion.option3);
         option4.text(currentQuestion.option4);
+        if (currentQuestion.answer != null) {
+            document.getElementsByName("options")[currentQuestion.answer - 1].checked = true;
+        }
+        else {
+            var optionRadioButtons = document.getElementsByName("options");
+            for (var i = 0; i < optionRadioButtons.length; i++) {
+                optionRadioButtons[i].checked = false;
+            }
+        }
     }
     function showNextQuestion()
     {

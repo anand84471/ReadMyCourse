@@ -396,25 +396,30 @@ profile:hover .profile__group{
                 <div id="courses" style="width:100%" data-toggle="courses">
                     <div class="row">
                         <div class="scroll ">
-                            @foreach (var course in Model.m_lsCourses)
+
+                            @if (Model.m_lsCourses!=null)
                             {
-                                <div class="courses-container">
-                                    <div class="course">
-                                        <div class="course-preview">
-                                            <h6>@course.m_dtCourseCreationDate</h6>
-                                            <h5>@course.m_strCourseName</h5>
-                                            <div class="form-inline"><h5><span><i class="fa fa-users p-2"></i></span>@course.m_iTotalNoOfStudentsJoined</h5>
-                                            <div class="nav-divider"></div>
-                                            <h5><span><i class="fa fa-book p-2"></i></span>@course.m_iNoOfIndexses</h5></div>
-                                        </div>
-                                        <div class="course-info">
-                                            <button class="coursebtn" onclick="callJoinCourse(@course.m_llCourseid)">View</button>
-                                            
+                                foreach (var course in Model.m_lsCourses)
+                                {
+                                    <div class="courses-container">
+                                        <div class="course">
+                                            <div class="course-preview">
+                                                <h6>@course.m_dtCourseCreationDate</h6>
+                                                <h5>@course.m_strCourseName</h5>
+                                                <div class="form-inline">
+                                                    <h5><span><i class="fa fa-users p-2"></i></span>@course.m_iTotalNoOfStudentsJoined</h5>
+                                                    <div class="nav-divider"></div>
+                                                    <h5><span><i class="fa fa-book p-2"></i></span>@course.m_iNoOfIndexses</h5>
+                                                </div>
+                                            </div>
+                                            <div class="course-info">
+                                                <button class="coursebtn" onclick="callJoinCourse(@course.m_llCourseid)">View</button>
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
-                          
                         </div>
                     </div>
                 </div>

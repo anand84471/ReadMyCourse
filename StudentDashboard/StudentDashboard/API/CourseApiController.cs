@@ -2,6 +2,7 @@
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -45,6 +46,7 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+
         [Route("FetchCourseIndexDetails")]
         [HttpPost]
         public async Task<IndexModel> GetCourseIndexDetails(int Id)
@@ -76,6 +78,51 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("FetchIndexProgress")]
+        [HttpPost]
+        public async Task<StudentIndexModal> FetchCourseIndexProgressDetailsForStudent(long IndexId)
+        {
+            StudentIndexModal objResponse = new StudentIndexModal();
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if(StudentId!=-1)
+                {
+                    objResponse = await objHomeService.GetIndexProgressForStudent(IndexId, StudentId);
+                    if (objResponse != null)
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        //[Route("FetchStudentCourseProgress")]
+        //[HttpPost]
+        //public async Task<StudentCourseModal> FetchStudentCourseProgress(long CourseId)
+        //{
+        //    StudentCourseModal objResonse = new StudentCourseModal();
+        //    try
+        //    {
+        //        objResonse = await objHomeService.GetAboutCourse(id);
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AboutCourseResponse", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return objResonse;
+        //}
         [Route("FetchAssignmentDetails")]
         [HttpPost]
         public async Task<AssignmentModel> GetAssignmentDetails(long AssignmentId)
@@ -134,6 +181,62 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("FetchStudentAssignmentProgress")]
+        [HttpPost]
+        public async Task<StudentAssignmentProgressModal> FetchStudentTestprogress(long AssignmentId)
+        {
+            StudentAssignmentProgressModal objResponse = null;
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if(StudentId!=-1)
+                {
+                    objResponse = await objHomeService.FetchStudentAssignmentProgress(StudentId, AssignmentId);
+                    if (objResponse != null)
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("FetchStudentTestprogress")]
+        [HttpPost]
+        public async Task<StudentTestProgressModal> FetchStudentAssignmentprogress(long id)
+        {
+            StudentTestProgressModal objResponse = null;
+            long StudentId = GetStudentIdInRequest();
+            try
+            {
+                if (StudentId != -1)
+                {
+                    objResponse = await objHomeService.GetStudentTestProgress(id, StudentId);
+                    if (objResponse != null)
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                }
+                
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
         [Route("SearchCourse")]
         [HttpPost]
         public async Task<SearchCourseHttpResponse> SearchCourse([FromBody]SerchCourseRequest objSerchCourseRequest)
@@ -158,6 +261,62 @@ namespace StudentDashboard.API
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("AddCourseQuestion")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> AddCourseQuestionByStudent([FromBody] StudentCourseQuestionModal objRequest)
+        {
+            SearchCourseHttpResponse objResponse = new SearchCourseHttpResponse();
+            try
+            {
+                long StudentIdInRequest = GetStudentIdInRequest();
+                if (StudentIdInRequest!=-1&&objRequest != null)
+                {
+                    objRequest.m_llStudentId = StudentIdInRequest;
+                    if (await objStudentService.AddQuestionAskForCourse(objRequest))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                }
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("FetchQuestionAsked")]
+        [HttpPost]
+        public async Task<AllQuestionAskedByStudentForCourse>FetchQuestionAsked(long CourseId)
+        {
+            AllQuestionAskedByStudentForCourse objResponse = new AllQuestionAskedByStudentForCourse();
+            try
+            {
+                long StudentIdInRequest = GetStudentIdInRequest();
+                if (StudentIdInRequest != -1 )
+                {
+                    objResponse.m_lsStudentCourseQuestionModal = await objStudentService.GetAllQuestionOfStudentCourse(StudentIdInRequest, CourseId);
+                    if(objResponse!=null)
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchQuestionAsked", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -235,6 +394,25 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        private long GetStudentIdInRequest()
+        {
+            long StudentId = -1;
+            try
+            {
+                if (ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+                {
+                    long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
+                }
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return StudentId;
+        }
         [Route("JoinStudentToInstructor")]
         [HttpPost]
         public async Task<APIDefaultResponse> JoinInstructor(int InstructorId)
@@ -257,6 +435,30 @@ namespace StudentDashboard.API
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("MarkTopicFinished")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> MarkTopicFinished(long TopicId)
+        {
+          
+            long StudentId = GetStudentIdInRequest();
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                if (StudentId!=-1&&await objStudentService.InsertReadTopicByStudent(StudentId, TopicId))
+                {
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                 }
             }
             catch (Exception Ex)

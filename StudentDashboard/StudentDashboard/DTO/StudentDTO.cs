@@ -171,6 +171,48 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<bool> AddQuestionAskForCourse(StudentCourseQuestionModal objStudentCourseQuestionModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertCourseQuestionByStudentAsync(objStudentCourseQuestionModal.m_llCourseId,
+                    objStudentCourseQuestionModal.m_llStudentId, objStudentCourseQuestionModal.m_strQuestionStatement
+                    );
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AddQuestionAskForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<StudentCourseQuestionModal>> GetAllQuestionOfStudentCourse(long StudentId,long CourseId)
+        {
+            List<StudentCourseQuestionModal> lsCourseDetailsModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllQuestionAskForCourseByStudentAsync(StudentId, CourseId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsCourseDetailsModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentCourseQuestionModal(
+                         dataRow.Field<string>("QUESTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("dd MMM yyy HH:mm:ss")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsCourseDetailsModel;
+        }
         public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString,int MaxRowToReturn,int NoOfRowsFetched,int SortingTypeId)
         {
             List<CourseDetailsModel> lsCourseDetailsModel = null;
@@ -357,6 +399,22 @@ namespace StudentDashboard.DTO
             try
             {
                 result = await objCPDataService.JoinStudentToInstructorAsync(StudentId, InstructorId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertReadTopicByStudent(long StudentId, long TopicId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertCompletedTopicforStudentAsync(TopicId, StudentId);
             }
             catch (Exception Ex)
             {

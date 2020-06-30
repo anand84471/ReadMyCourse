@@ -801,20 +801,19 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteMcqQuestion")]
-        public async Task<APIDefaultResponse> DeleteMcqAssignmentQuestion(long id)
+        public async Task<APIDefaultResponse> DeleteMcqAssignmentQuestion(long id,long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objHomeService.DeleteMcqAssignmentQuestion(id))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(InstructorIdInRequest!=-1&&await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest, AssignmentId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.DeleteMcqAssignmentQuestion(id))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)
@@ -888,17 +887,14 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-
-                if(McqQuestion!=null)
-                if (await objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
+                int InstructorIdInRequest = GetInstructorIdInRequest();
+                if(InstructorIdInRequest!=-1&&McqQuestion != null&& await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest,McqQuestion.m_llAssignmentId))
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-                }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                    if (await objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
+                    {
+                        objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                        objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    }
                 }
             }
             catch (Exception Ex)

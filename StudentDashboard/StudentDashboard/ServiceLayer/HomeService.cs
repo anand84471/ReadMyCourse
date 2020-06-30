@@ -7,6 +7,7 @@ using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
@@ -295,6 +296,46 @@ namespace StudentDashboard.ServiceLayer
             }
             return objAboutCourseResponse;
         }
+        //public async Task<StudentCourseModal> GetStudentCourseProgress(long CourseId,long StudentId)
+        //{
+        //    StudentCourseModal objAboutCourseResponse = new StudentCourseModal();
+        //    try
+        //    {
+        //        GetCourseDetailsApiResponse objGetCourseDetailsApiResponse = await objHomeDTO.GetCourseDetails(CourseId);
+        //        List<CourseIndexDetails> lsCourseIndexDetails = await objHomeDTO.GetCourseIndexDetails(CourseId);
+        //        if (lsCourseIndexDetails != null && objGetCourseDetailsApiResponse != null)
+        //        {
+        //            objAboutCourseResponse = new StudentCourseModal(objGetCourseDetailsApiResponse.m_strCourseName, objGetCourseDetailsApiResponse.m_strCourseDescription,
+                                        
+        //                                objGetCourseDetailsApiResponse.m_strCourseStatus, objGetCourseDetailsApiResponse.m_strShareUrl,
+        //                                objGetCourseDetailsApiResponse.m_strCourseAccessCode);
+        //            foreach (var indexes in lsCourseIndexDetails)
+        //            {
+        //                objAboutCourseResponse.AddIndex(indexes.m_strIndexName, indexes.m_llIndexId);
+        //                if (indexes.m_llAssignmentId != null) { objAboutCourseResponse.AddAssignment(indexes.m_strAssignmentName, indexes.m_llAssignmentId); }
+        //                if (indexes.m_llTestId != null) { objAboutCourseResponse.AddTest(indexes.m_strTestName, indexes.m_llTestId); }
+        //                objAboutCourseResponse.IncremetTopicCount(indexes.m_iTotalNoOfTopic);
+        //            }
+        //            List<BasicAssignmentDetails> lsAssignmentDetails = await GetAssignmentForCourse(CourseId);
+        //            if (lsAssignmentDetails != null && lsAssignmentDetails.Count > 0) { objAboutCourseResponse.m_lsAssignmentDetails.AddRange(lsAssignmentDetails); }
+        //            List<BasicTestDetails> lsBasicTestDetails = await GetTestOfCourse(CourseId);
+        //            if (lsBasicTestDetails != null && lsBasicTestDetails.Count > 0) { objAboutCourseResponse.m_lsTestDetails.AddRange(lsBasicTestDetails); }
+        //            objAboutCourseResponse.SetCounts();
+        //            objAboutCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+        //            objAboutCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+        //        }
+
+
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertTopics", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return objAboutCourseResponse;
+        //}
         public async Task<IndexModel> GetIndexDetails(int id)
         {
             IndexModel objIndexModel = null;
@@ -314,6 +355,28 @@ namespace StudentDashboard.ServiceLayer
                 }
             }
             catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertAssignment", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objIndexModel;
+        }
+        public async Task<StudentIndexModal> GetIndexProgressForStudent(long IndexId,long StudentId)
+        {
+            StudentIndexModal objIndexModel = null;
+            try
+            {
+                objIndexModel = await objHomeDTO.GetStudentIndexDetails(IndexId);
+                if (objIndexModel != null)
+                {
+                    objIndexModel.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objIndexModel.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    objIndexModel.m_lsTopicModel = await objHomeDTO.FetchTopicProgressForStudent(IndexId, StudentId);
+                }
+            }
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertAssignment", Ex.ToString());
@@ -461,6 +524,41 @@ namespace StudentDashboard.ServiceLayer
             }
             return objTestModel;
         }
+        public async Task<StudentTestProgressModal> GetStudentTestProgress(long TestId,long StudentId)
+        {
+            StudentTestProgressModal objTestModel = null;
+            try
+            {
+                objTestModel = await objHomeDTO.GetStudentTestProgress(TestId, StudentId);
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentTestProgress", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objTestModel;
+        }
+
+        public async Task<StudentAssignmentProgressModal> FetchStudentAssignmentProgress(long StudentId,long AssignmentId)
+        {
+            StudentAssignmentProgressModal objAssignmentModal = null;
+            try
+            {
+                objAssignmentModal = await objHomeDTO.GetStudentAssignmentProgress(AssignmentId, StudentId);
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetFullTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objAssignmentModal;
+        }
 
         public async Task<bool> InsertNewMcqQuestion(McqQuestion objMcqQuestion)
         {
@@ -469,12 +567,13 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> CheckAssignmentIdExistsForInstrcutor(int InstructorId, long AssignmentId)
         {
             return await objHomeDTO.CheckAssignmentIdExistsForInstrcutor(InstructorId, AssignmentId)||
-                await objHomeDTO.CheckTestIdExistsForAnyCourseForInstrcutor(InstructorId, AssignmentId);
+                await objHomeDTO.CheckAssignmentIdExistsForAnyCourseForInstrcutor(InstructorId, AssignmentId);
         }
         public async Task<bool> CheckTestIdExistsForInstrcutor(int InstructorId, long TestId)
         {
             return await objHomeDTO.CheckTestIdExistsForInstrcutor(InstructorId, TestId)||await objHomeDTO.CheckTestIdExistsForAnyCourseForInstrcutor(InstructorId, TestId);
         }
+       
         public async Task<bool> InsertNewMcqAssignmentQuestion(McqQuestion objMcqQuestion)
         {
             return await objHomeDTO.InsertNewMcqAssignmentQuestion(objMcqQuestion);

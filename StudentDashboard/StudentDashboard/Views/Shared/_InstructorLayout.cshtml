@@ -32,7 +32,7 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Courses</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Courses for you</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewCourse()">Create new course</a>
@@ -47,7 +47,7 @@
                     <i class="fas fa-fw fa-pen"></i>
                     <span>Assignments</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Assignments:</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewAssignment()">Create new assignment</a>
@@ -60,7 +60,7 @@
                     <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Tests</span>
                 </a>
-                <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseUtilities1" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tests:</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewTest()">Create new Test</a>
@@ -75,7 +75,7 @@
                     <i class="fas fa-fw fa-users"></i>
                     <span>Students</span>
                 </a>
-                <div id="headingUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="headingUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Students:</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callGetAllStudentsJoined()">Students Joined</a>
@@ -358,6 +358,8 @@
             }
         });
     }
+
+   
     function callActivity()
     {
         startSpinner();
@@ -388,6 +390,7 @@
     }
     function callEditAccount() {
         startSpinner();
+
         $('#accordionSidebar').addClass("toggled");
         $.ajax({
             url: '@Url.Action("EditAccount", "Instructor")',
@@ -399,6 +402,16 @@
             }
         });
     }
+    $(document).ready(function () {
+        $(document).click(function (event) {
+            debugger
+            var clickover = $(event.target);
+            var _opened = $(".collapse").hasClass("side-nav");
+            if (_opened === true && !clickover.hasClass("collapse-item")) {
+                document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+            }
+        });
+    });
     function callCreateNewCourse() {
         startSpinner();
         $('#accordionSidebar').addClass("toggled");

@@ -13,7 +13,7 @@
 }
 
 #courseCard.card {
-  background-color: #fbfcfc;
+  background-color: #858796;
   border: unset;
   border-radius: 0rem;
 }
@@ -23,6 +23,11 @@
  
   padding-left: 0rem !important;
 }
+pre {
+  white-space: pre-wrap;
+  overflow-x:hidden;
+}
+
 
 #collapseIcon {
   cursor: pointer;
@@ -37,8 +42,12 @@
 .courseDetail {
   width: 70%;
   min-height:500px;
-  background-color: #fff;
+  max-height: 90vh;
+    overflow: auto;
+    
+  
 }
+    .courseDetail::-webkit-scrollbar { width: 0 !important }
 
 .indexHeader {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -105,9 +114,9 @@
       text-align:left;
 }
 
-#allIndexAndContent {
-  overflow: auto;
-  max-height: 500px;
+#indexContent {
+    max-height: 80vh;
+    overflow: auto;
 }
 @@media (max-width: 480px) {
   .indexIcon {
@@ -159,9 +168,26 @@
   outline: 0;
   width: 100%;
 }
+.ui-form-chat {
+  padding: 13px 15px;
+  margin-bottom:0px;
+  border-radius: 8px;
+  border: 2px solid #1a73e8;
+  outline: 0;
+  width: 70%;
+  float:right;
+}
+.time_date {
+    margin-top:5px;
+    margin-bottom:10px;
+    color: #747474;
+    display: block;
+    font-size: 12px;
+    width: 70%;
+    float:right;
+}
 
 .form-input-label {
-  position: absolute;
   top: -7px;
   left: 10px;
   color: #1a73e8;
@@ -233,35 +259,57 @@ textarea {
         color:white;
          background-image: linear-gradient(to right, rgba(8, 254, 58, 0.84), rgba(27, 164, 26, 0.63));
      }
+    .custom-black{
+        color:rgba(0, 0, 0, 0.9) !important;
+    }
 </style>
-<nav class="navbar fixed-top bg-dark " style="padding:0px;">
-    <a href="./MyCourses" class="btn navbar-item text-white nav-item active">
+<nav class="navbar  bg-white shadow" style="padding:0px;">
+    <a href="./MyCourses" class="btn navbar-item nav-item active pr-0">
         <i class="fa fa-arrow-left"></i>
-    </a>
-    <a class="navbar-brand " href="#">
-        <img src="~/Images/site-logo.png" width="140" height="35" class="align-top bg-white" alt="">
        
     </a>
+   
+    <div id="courseSpinnerS" class="float-left" style="width:150px">
+        <div class="spinner-grow text-success course-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger course-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-warning course-spinner" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    
+    <a class="navbar-brand " href="#">
+        <img src="~/Images/site-logo.png" width="140" height="45" class="align-top " alt="">
+    </a>
 </nav>
-<h3 class="removeThis text-center navbar-header container-fluid pt-5" id="courseName"></h3>
-<div id="extraContainer">
 
-</div>
-    <div id="courseCard" class="card mx-auto mt-4 shadow">
+
+
+    <div id="courseCard content-wrapper" class="d-flex flex-column">
         <div class="container-fluid" id="course-container">
+            <h1 class="navbar-item nav-item pl-0 text-danger text-center" id="courseName"></h1>
             <div class="row" >
-                <div class="courseDetail col-sm-8 text-center">
+                <div class="courseDetail col-sm-8">
+                   
+                    
                     <div id="mainCourseContainer">
-                        <div class="h3 font-weight-bolder mt-2 p-1" id="courseHeading">
+                        <div class="h3 custom-black font-weight-bolder mt-2 p-1" id="courseHeading">
                             About this Course
+                        </div>
+                        <div id="extraContainer">
+                            <div id="content-wrapper" class="d-flex flex-column">
+                            </div>
                         </div>
                         <div class="embed-responsive embed-responsive-16by9 " id="videoContainer" style="display:none">
 
                         </div>
                         
-                        <div id="courseDetails" class="p-2 text-justify">
+                        <pre id="courseDetails" class="p-2 h5 text-gray-900">
                             
-                        </div>
+                        </pre>
                         <div id="aboutAssignmentContainer" class="p-3 rounded m-4 card p-4 custom-blue shadow-lg" style="display:none">
                             <dl class="row">
                                 <dt class="col-sm-3">Assignment Name:</dt>
@@ -273,14 +321,16 @@ textarea {
                                 <dt class="col-sm-3">Assignment Type:</dt>
                                 <dd class="col-sm-9" id="assignmentType">
                                 <dt class="col-sm-3">Status:</dt>
-                                <dd class="col-sm-9" id="assignmentAttemptStatus">
+                                <dd class="col-sm-6" id="assignmentAttemptStatus">
                                 </dd>
                             </dl>
                             <h1 class="glow" id="assignmentProgress" style="display:none">Assignment is in progress</h1>
                             <hr class="border border-info" />
                             <div id="assignmentResponseObject"></div>
-                            <button id="startAssignmentButton" onclick="startAssignment()" type="button" class="btn btn-outline-success btn-sm btn-block text-white" style="width:50%">Start</button>
-                            <button id="closeAssignmentButton" onclick="closeAssignment()" type="button" class="btn btn-danger btn-sm btn-block text-white" style="width:50%;display:none">Close</button>
+                            <div class="form-inline">
+                                <button id="startAssignmentButton" onclick="startAssignment()" type="button" class="btn btn-outline-success btn-sm btn-block text-white" style="width:50%">Start</button>
+                                <button id="closeAssignmentButton" onclick="callAssignemntResponse()" type="button" class="btn btn-outline-info mt-0 btn-sm btn-block text-white" style="width:50%;display:none">See Response</button>
+                            </div>
                         </div>
                         <div id="aboutTestContainer" class="p-3 rounded m-4 card p-4 custom-blue shadow-lg" style="display:none">
                             
@@ -304,34 +354,25 @@ textarea {
                                 <h1 class="glow" id="testProgress" style="display:none">Test is in progress</h1>
                                 <hr class="border border-info"/>
                                 <div id="testResponse"></div>
-                                <button id="startTestButton" onclick="startTest()" type="button" class="btn btn-outline-success btn-sm btn-block text-white" style="width:50%">Start</button>
-                                <button id="closeTestButton" onclick="closeTest()" type="button" class="btn btn-danger btn-sm btn-block text-white" style="width:50%;display:none">Close</button>
+                                <button id="startTestButton" onclick="startTest()" type="button" class="btn btn-outline-success btn-sm btn-block text-white" style="width:50%">Resubmit</button>
+                                <button id="closeTestButton" onclick="callTestResponse()" type="button" class="btn btn-danger btn-sm btn-block text-white" style="width:50%;display:none">View Response</button>
                             </div>
                            
                             <div class="test-start-section"></div>
                         </div>
-                        @*<nav aria-label="d-flex align-items-end Page navigation example" class="m-4">
-                            <ul class="pagination ">
-                                <li class="page-item">
-                                    <button class="page-link" onclick="showNextItem()" id="previousButton">Next</button>
-                                </li>
-                                <li class="page-item">
-                                    <button class="page-link" onclick="showPreviousItem()" id="nextButton">Next</button>
-                                </li>
-                            </ul>
-                        </nav>*@
+                        
                     </div>
                     
                 </div>
                 <div class="indexDetail col-sm-4">
-                    <div id="collapseIcon"
+                    @*<div id="collapseIcon"
                          data-toggle="collapse"
                          href="#indexContent"
-                         aria-expanded="true">
+                         aria-expanded="true" onclick="this.d">
                         <span>
                             <i class="fa fa-angle-double-right indexIcon"></i>
                         </span>
-                    </div>
+                    </div>*@
                     <div id="indexContent" class="collapse show">
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -339,7 +380,7 @@ textarea {
                                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-indexes" role="tab" aria-controls="pills-indexes" aria-selected="true">Contents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-ask-questions" role="tab" aria-controls="pills-ask-questions" aria-selected="false">Ask question</a>
+                                    <a class="nav-link" onclick="getAlLQuestionAsked()" id="pills-contact-tab" data-toggle="pill" href="#pills-ask-questions" role="tab" aria-controls="pills-ask-questions" aria-selected="false">Ask question</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-about-course" role="tab" aria-controls="pills-about-course" aria-selected="false">About course</a>
@@ -354,16 +395,42 @@ textarea {
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pills-ask-questions" role="tabpanel" aria-labelledby="pills-ask-questions">
+                                    <div class="question" id="questionContainer">
+                                       
+                                    </div>
                                     <div class="ui-input-container">
-                                        <h3>Write your question</h3>
+                                        
                                         <label class="ui-form-input-container">
-                                            <textarea class="ui-form-input"></textarea>
-                                            <span class="form-input-label">Message</span>
+                                            <textarea class="ui-form-input" id="questionStatement" placeholder="Message"></textarea>
+                                           
                                         </label>
-                                        <button type="button" class="btn btn-primary btn-sm">submit</button>
+                                        <button type="button" onclick="callSubmitQuestion()" class="btn btn-primary btn-sm">submit</button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="pills-about-course" role="tabpanel" aria-labelledby="pills-contact-tab">About course</div>
+                                <div class="tab-pane fade" id="pills-about-course" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                    <div class="ui-input-container">
+                                        
+                                        <dl class="row">
+                                            <dt class="col-sm-3">Name:</dt>
+                                            <dd class="col-sm-9" id="aboutCourseName"></dd>
+                                            <dt class="col-sm-3">Description:</dt>
+                                            <pre class="col-sm-9" id="aboutCourseDescription"></pre>
+                                            <dt class="col-sm-5 ">Created on:</dt>
+                                            <dd class="col-sm-7" id="courseCreationsDate">
+                                            </dd>
+                                            <dt class="col-sm-5">Assignments:</dt>
+                                            <dd class="col-sm-7" id="noOfAssignments"></dd>
+                                            <dt class="col-sm-5">Tests:</dt>
+                                            <dd class="col-sm-7" id="noOfTests"></dd>
+                                            <dt class="col-sm-5">Indexes:</dt>
+                                            <dd class="col-sm-7" id="noOfIndexes"></dd>
+                                        </dl>
+                                        <ul class="list-group z-depth-0" id="indexContainer"></ul>
+                                    </div>
+                                    
+
+                                   
+                                </div>
                                 
                             </div>
                         </div>
@@ -390,24 +457,34 @@ textarea {
     </div>
 </div>
 <script>
-    document
-      .getElementById("collapseIcon")
-      .addEventListener("click", function (e) {
-        const stylingClassIndex = document.querySelector(".indexDetail");
-        const stylingClassContent = document.querySelector(".courseDetail");
-        let targetElement = document.getElementById("indexContent");
-        if (window.getComputedStyle(targetElement).display === "block") {
-          stylingClassIndex.style.width = "6%";
-          stylingClassContent.style.width = "94%";
-        } else {
-          stylingClassIndex.style.width = "30%";
-          stylingClassContent.style.width = "70%";
-        }
-      });
+    //document
+    //  .getElementById("collapseIcon")
+    //  .addEventListener("click", function (e) {
+    //    const stylingClassIndex = document.querySelector(".indexDetail");
+    //    const stylingClassContent = document.querySelector(".courseDetail");
+    //    let targetElement = document.getElementById("indexContent");
+    //    if (window.getComputedStyle(targetElement).display === "block") {
+    //      stylingClassIndex.style.width = "6%";
+    //      stylingClassContent.style.width = "94%";
+    //    } else {
+    //      stylingClassIndex.style.width = "30%";
+    //      stylingClassContent.style.width = "70%";
+    //    }
+    //  });
     (function () {
         'use strict';
         onpageshow = init();
     })();
+    function stopCourseSpinner()
+    {
+        $("#courseSpinner").hide();
+        $(".course-spinner").hide();
+    }
+    function startCourseSpinner()
+    {
+        $("#courseSpinner").show();
+        $(".course-spinner").show();
+    }
     function callGetIndexDetails(id, topicContainerId) {
         debugger
         var elem = $("#collapseSingleIndex".concat(topicContainerId));
@@ -415,14 +492,17 @@ textarea {
         {
             return;
         }
+        startCourseSpinner();
         $.ajax({
+           
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchCourseIndexDetails?id=".concat(id),
+            url: "/api/v1/Course/FetchIndexProgress?IndexId=".concat(id),
             success: function (data) {
                 debugger
+                stopCourseSpinner();
                 if (data != null && data.response_code == 1) {
                     var topicDetails = data.topic_details;
                     if (topicDetails != null && topicDetails.length > 0) {
@@ -432,14 +512,50 @@ textarea {
                             var data={
                                 id: topicDetails[i]
                             };
+                            if (topicDetails[i].is_compelted == true)
+                            {
+                                var icon="fas fa-fw fa-check-square text-success";
+                            }
+                            else
+                            {
+                                var icon = "fas fa-fw fa-square";
+                            }
                             topicContentDetails[id] = topicDetails[i];
-                            htmlData += '<div class="dynamicChapter custom-white" onclick="getTopicDetails(' + topicDetails[i].topic_id + ')"><i class="fas fa-fw fa-book"></i>' + topicDetails[i].topic_name + '</div>';
+                            htmlData += '<div class="dynamicChapter custom-white" onclick="getTopicDetails(' + topicDetails[i].topic_id + ')"><i class="' + icon + '"></i>' + topicDetails[i].topic_name + '</div>';
                         }
                         $(elem).html(htmlData);
                     }
                     else {
                         $(elem).html('<div class="dynamicChapter">No data</div>');
                     }
+                }
+            }
+        });
+    }
+    function callSubmitQuestion() {
+        if ($("#questionStatement").val() == "")
+        {
+            return;
+        }
+        var _data = {
+            "course_id": "@ViewBag.id",
+            "question_statetment":$("#questionStatement").val()
+    };
+    $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            data: JSON.stringify(_data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/AddCourseQuestion",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    $("#questionStatement").val("");
+                    getAlLQuestionAsked();
+                    
+                }
+                else {
+                   
                 }
             }
         });
@@ -469,11 +585,42 @@ textarea {
         else {
             $("#videoContainer").hide();
         }
+        if (topicContentDetails[topicId].is_compelted != true)
+        {
+            markTopicFinished(topicId);
+        }
     }
-    
     var currentTestId = 0;
+    function getAlLQuestionAsked()
+    {
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/FetchQuestionAsked?CourseId=".concat("@ViewBag.id"),
+            success: function (data) {
+                debugger;
+                stopCourseSpinner();
+                if (data != null && data.response_code == 1) {
+                    $("#questionContainer").empty();
+                    for (var i = 0; i < data.questions.length; i++)
+                    {
+                        var row = ' <div class="container-fluid">'
+                                            + '<p class="ui-form-chat">' + data.questions[i].question_statetment + '</p>'
+                                            + '<p class="time_date">' + data.questions[i].asked_date + '</p>'
+                                        + '</div>';
+                        $("#questionContainer").append(row);
+                    }
+                   
+                    
+                }
+            }
+        });
+    }
     function getTestDetails(Id) {
         debugger;
+        startCourseSpinner();
         $("#courseHeading").text("");
         $("#courseDetails").text("");
         $("#aboutAssignmentContainer").hide();
@@ -484,10 +631,11 @@ textarea {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchTestDetails?id=".concat(Id),
+            url: "/api/v1/Course/FetchStudentTestprogress?id=".concat(Id),
 
             success: function (data) {
                 debugger;
+                stopCourseSpinner();
                 if (data != null && data.response_code == 1) {
                     $("#testName").text(data.test_name);
                     $("#testDescription").text(data.test_description);
@@ -496,16 +644,39 @@ textarea {
                     var date = new Date(null);
                     date.setSeconds(data.max_time_allowed_for_test);
                     $("#timeForTest").text(date.toISOString().substr(11, 8));
-                    $("#marksForTest").text(data.total_marks);
+                    $("#marksForTest").text(data.marks);
                     $("#aboutTestContainer").show();
-                    if (testResponses[Id] != null) {
-                        $("#testResponse").html(testResponses[Id]);
+                    if (data.submission_id!=null) {
+                        
                         $("#testAttemptStatus").text("attempted");
+                        $("#startTestButton").text("Resubmit");
+                        $("#closeTestButton").show();
+                        currentTestSubmissionId = data.submission_id;
                     }
                     else {
                         $("#testResponse").empty();
                         $("#testAttemptStatus").text("unattempted");
+                        $("#startTestButton").text("start");
+                        $("#closeTestButton").hide();
+                        $("#startTestButton").show();
                     }
+                }
+            }
+        });
+    }
+    function markTopicFinished(Id) {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/MarkTopicFinished?TopicId=".concat(Id),
+            success: function (data) {
+                debugger;
+                stopCourseSpinner();
+                if (data != null && data.response_code == 1) {
+                    
                 }
             }
         });
@@ -513,16 +684,54 @@ textarea {
     var testDetails = {};
     function startTest()
     {
+        startCourseSpinner();
         $("#startTestButton").hide();
         $("#extraContainer").show();
         $("#testProgress").show();
+        $("#aboutTestContainer").hide();
         $.ajax({
 
             url: "StartTest?id=".concat(currentTestId),
             type: 'GET',
             success: function (data) {
+                stopCourseSpinner();
                 $("#extraContainer").html(data);
                 runTestTimer();
+                $(".breadcrumb").remove();
+            }
+        });
+    }
+    var currentTestSubmissionId;
+    function callTestResponse() {
+        startCourseSpinner();
+        $("#extraContainer").show();
+        $("#aboutTestContainer").hide();
+        $.ajax({
+
+            url: "TestResponse?id=".concat(currentTestSubmissionId),
+            type: 'GET',
+            success: function (data) {
+                stopCourseSpinner();
+                $("#extraContainer").html(data);
+                runTestTimer();
+                $(".breadcrumb").remove();
+            }
+        });
+    }
+    function callAssignemntResponse() {
+        startCourseSpinner();
+        $("#startTestButton").hide();
+        $("#extraContainer").show();
+        $("#aboutAssignmentContainer").hide();
+        $.ajax({
+
+            url: "AssignmentResponse?id=".concat(currentAssignmentSubmissionId),
+            type: 'GET',
+            success: function (data) {
+                stopCourseSpinner();
+                $("#extraContainer").html(data);
+                runTestTimer();
+                $(".breadcrumb").remove();
             }
         });
     }
@@ -551,7 +760,7 @@ textarea {
             }
         }, 1000);
     }
-   
+    var currentAssignmentSubmissionId;
     function getAssignmentDetails1(Id) {
         debugger;
 
@@ -559,32 +768,40 @@ textarea {
         $("#aboutTestContainer").hide();
         $("#courseHeading").text("");
         $("#courseDetails").text("");
+        startCourseSpinner();
         //startSpinner();
         currentAssignmentId = Id;
+        
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(Id),
+            url: "/api/v1/Course/FetchStudentAssignmentProgress?AssignmentId=".concat(Id),
             success: function (data) {
                 //stopSpinner();
                 debugger;
+                stopCourseSpinner();
                 if (data != null && data.response_code == 1) {
 
                     $("#assignmentName").text(data.assignment_name);
                     $("#assignmentDescription").text(data.assignment_description);
-                    $("#noOfQuestionsInAssignment").text(data.total_no_of_questions);
+                    $("#noOfQuestionsInAssignment").text(data.total_of_question);
                     $("#assignmentType").text(data.assignment_type);
                     $("#aboutAssignmentContainer").show();
-                    if(assignmentResponses[Id]!=null)
+                    if (data.submission_id != null)
                     {
                         $("#assignmentResponseObject").html(assignmentResponses[Id]);
                         $("#assignmentAttemptStatus").text("attempted");
+                        $("#startAssignmentButton").text("Resubmit");
+                        $("#closeAssignmentButton").show();
+                        currentAssignmentSubmissionId=data.submission_id;
                     }
                     else {
                         $("#assignmentResponseObject").empty();
                         $("#assignmentAttemptStatus").text("unattempted");
+                        $("#startAssignmentButton").text("Start");
+                        $("#closeAssignmentButton").hide();
                     }
                 }
                
@@ -593,6 +810,7 @@ textarea {
     }
     var currentAssignmentId = 0;
     function startAssignment(id) {
+        startCourseSpinner();
         $("#startAssignmentButton").hide();
         $("#closeAssignmentButton").show();
         $("#extraContainer").show();
@@ -601,8 +819,11 @@ textarea {
             url: "GiveAssignment?id=".concat(currentAssignmentId),
             type: 'GET',
             success: function (data) {
+                stopCourseSpinner();
+                $("#aboutAssignmentContainer").hide();  
                 $("#extraContainer").html(data);
                 runAssignmentTimer();
+                $(".breadcrumb").remove();
             }
         });
     }
@@ -651,9 +872,16 @@ textarea {
             url: "/api/v1/Course/FetchAboutCourse?id=".concat(@ViewBag.id),
             success: function (data) {
                 debugger;
+                stopCourseSpinner();
                 if (data != null && data.response_code == 1) {
                     $("#courseName").text(data.course_name);
                     $("#courseDetails").text(data.course_description);
+                    $("#aboutCourseDescription").text(data.course_description);
+                    $("#aboutCourseName").text(data.course_name);
+                    $("#courseCreationsDate").text(data.course_creation_date);
+                    $("#noOfAssignments").text(data.assignment_count);
+                    $("#noOfTests").text(data.test_count);
+                    $("#noOfIndexes").text(data.index_count);
                     var indexes = data.index_details;
                     var sideHeaderContents='';
                     if(indexes!=null&&indexes.length>0)
@@ -700,7 +928,7 @@ textarea {
                     + '</div>'
                         + '<div id="collapseSingleTest'.concat(i) + '" class="dynamicContent collapse">'
                         for (var i = 0; i < testDetails.length; i++) {
-                            sideHeaderContents += '<div class="dynamicChapter custom-white form-inline" onclick="getTestDetails(' + testDetails[i].test_id + ')"><div class="icon-circle bg-primary mr-2"><i class="fas fa-hourglass-start text-white"></i></div></i>' + testDetails[i].test_name + '</div>';
+                            sideHeaderContents += '<div class="dynamicChapter custom-white form-inline" onclick="getTestDetails(' + testDetails[i].test_id + ')"><div class="icon-circle bg-primary mr-2"><i class="fas fa-pen text-white"></i></div></i>' + testDetails[i].test_name + '</div>';
                         }
                         sideHeaderContents += '</div>'
                         + '</div>';

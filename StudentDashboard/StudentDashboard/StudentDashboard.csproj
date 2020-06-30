@@ -284,6 +284,7 @@
     <Compile Include="HttpResponse\AddTestResponse.cs" />
     <Compile Include="HttpResponse\AllInstructorAssignmentsApiResponse.cs" />
     <Compile Include="HttpResponse\AllInstructorTestsApiResponse.cs" />
+    <Compile Include="HttpResponse\AllQuestionAskedByStudentForCourse.cs" />
     <Compile Include="HttpResponse\APIDefaultResponse.cs" />
     <Compile Include="HttpResponse\APIObjectInfoResponse.cs" />
     <Compile Include="HttpResponse\AssignmentsSubmissionModal.cs" />
@@ -364,9 +365,21 @@
     <Compile Include="Models\InstructorRegisterModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\Student\AssignmentAccessModal.cs" />
+    <Compile Include="Models\Student\CourseAccessModal.cs" />
+    <Compile Include="Models\Student\StudentAssignmentProgressModal.cs" />
+    <Compile Include="Models\Student\StudentBasicAssignmentDettails.cs" />
+    <Compile Include="Models\Student\StudentBasicIndexDetails.cs" />
+    <Compile Include="Models\Student\StudentBasicTestDetails.cs" />
+    <Compile Include="Models\Student\StudentCourseModal.cs" />
+    <Compile Include="Models\Student\StudentCourseQuestionModal.cs" />
     <Compile Include="Models\Student\StudentHomeModal.cs" />
+    <Compile Include="Models\Student\StudentIndexModal.cs" />
     <Compile Include="Models\Student\StudentRegisterModal.cs" />
+    <Compile Include="Models\Student\StudentTestProgressModal.cs" />
+    <Compile Include="Models\Student\StudentTopicModal.cs" />
     <Compile Include="Models\Student\StudentUpdatePasswordRequestModal.cs" />
+    <Compile Include="Models\Student\TestAccessModal.cs" />
     <Compile Include="Models\Utils\SmsNotificationModal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedulers\ForgotPasswordScheduler.cs" />
@@ -785,6 +798,7 @@
     <Content Include="Views\Instructor\PasswordUpdatedSuccessfully.cshtml" />
     <Content Include="Views\Course\Details.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\Student\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

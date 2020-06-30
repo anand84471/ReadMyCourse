@@ -26,8 +26,8 @@
                 <h4 class="custom-blue text-gray-200" id="courseDescription">Course description</h4>
                 <hr class="my-4">
                 <div class="row ml-2">
-                    <p class="text mr-3 text-gray-100" id="courseCreationDate"><b>Creation date:</b> 15/4/2020</p>
-                    <p class="text text-gray-100" id="courseUpdationDate"><b>Updation date:</b> 15/5/2020</p>
+                    <p class="text mr-3 text-gray-100" id="courseCreationDate"><b>Creation date:</b></p>
+                    <p class="text text-gray-100" id="courseUpdationDate"><b>Updation date:</b> </p>
                 </div>
             </div>
         <!--Course nav bar-->
@@ -115,7 +115,7 @@
         <div class="modal-content">
             <div class="modal-header">
                     <h5 class="modal-title" id="editTopicModalHeader">Edit Topic</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetEditMcqAssignmentModel()" >
                         <span aria-hidden="true">&times;</span>
                     </button>
             </div>
@@ -133,7 +133,7 @@
                 </div>
             
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="resetEditMcqAssignmentModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="editTopicModalSubmitButton">Update</button>
             </div>
         </div>
@@ -144,7 +144,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editAndUpdateIndexTopicHeader">Edit Topic</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetAddTopicModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -166,7 +166,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="resetAddTopicModal()">Close</button>
                 <button type="button" class="btn btn-primary" id="editAndUpdateIndexTopicButton">Add</button>
             </div>
         </div>
@@ -228,7 +228,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editTestMcqQuestionModelHeader">Edit question</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="refreshMcqTestModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -275,7 +275,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshMcqTestModal()">Close</button>
                 <button type="button" id="editTestMcqQuestionModelSubmitButton" class="btn btn-primary">Update</button>
             </div>
         </div>
@@ -367,15 +367,15 @@
     var aboutCourseDetails;
     var courseId;
 
-    function showSpinner()
-    {
-       $("#spinner").show();
+    function showSpinner() {
+        $("#spinner").show();
     }
-    function hideSpinner()
-    {
+    function hideSpinner() {
         $("#spinner").fadeOut();
     }
-
+    var currentIndexName;
+    var currentIndexDescription;
+    var currentTopicDetails = {};
     //----------------Index Section-------------------------------------
     function callGetIndexDetails(id) {
         $.ajax({
@@ -388,6 +388,8 @@
                 debugger
                 if (data != null && data.response_code == 1) {
                     var topicDetails = data.topic_details;
+                    currentIndexName = data.index_name;
+                    currentIndexDescription = data.index_description;
                     var topicHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
                                    + '<h6 class="m-0 font-weight-bold text-primary">Index Details</h6>'
@@ -410,6 +412,7 @@
                     if (topicDetails != null) {
                         topicHtml += ' <div class="accordion ml-2 mr-2" id="accordionExample"><h2 class="mb-0 ml-2">Topics</h2>';
                         for (var i = 0; i < topicDetails.length; i++) {
+                            currentTopicDetails[topicDetails[i].topic_id] = topicDetails[i];
                             topicHtml += ' <div class="card ">'
                                     + '<div class="card-header" id="headingOne'.concat(i) + '">'
                                         + '<h2 class="mb-0">'
@@ -420,7 +423,7 @@
                                         + ' <div class="row ml-2">'
                                             + '<p class="text mr-3" ><b>Creation date:</b> ' + topicDetails[i].creation_date + '</p>'
                                             + '<p class="text" ><b>Updation date:</b> ' + topicDetails[i].updation_date + '</p>'
-                                            + '<button class="btn close" onclick="requestEditTopic('.concat(topicDetails[i].topic_id) + ','+id+')" >'
+                                            + '<button class="btn close" onclick="requestEditTopic('.concat(topicDetails[i].topic_id) + ',' + id + ')" >'
                                             + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 "></i>'
                                             + '</button>'
                                             + '<button class="btn close" onclick="requestDeleteTopic('.concat(topicDetails[i].topic_id) + ',' + id + ')">'
@@ -446,16 +449,16 @@
         });
 
     }
-    function requestEditIndex(IndexId)
-    {
+    function requestEditIndex(IndexId) {
         $("#editTopicModalHeader").text('Edit Index Details');
         $("#ab-topicNameLabel").text('Enter Index Name');
         $("#ab-topicDescriptionLabel").text('Enter Index Description');
+        $("#ab-topicName").val(currentIndexName);
+        $("#ab_topicDescription").val(currentIndexDescription);
         $("#editTopicModalSubmitButton").attr("onclick", "UpdateIndexDetails(" + IndexId + ")");
         $("#editTopicModal").modal('show');
     }
-    function UpdateIndexDetails(IndexId)
-    {
+    function UpdateIndexDetails(IndexId) {
         debugger
         var _data = {
             "index_id": IndexId,
@@ -483,15 +486,13 @@
             }
         });
     }
-    function requestDeleteIndex(IndexId)
-    {
+    function requestDeleteIndex(IndexId) {
         $("#confirmDelete").modal('dispose');
         $("#confirmDeletButtonForCourse").attr("onclick", "deleteIndex(" + IndexId + ")");
         $("#confirmMessage").text("Are you sure to want to delete the Index");
         $("#confirmDelete").modal('show');
     }
-    function deleteIndex(IndexId)
-    {
+    function deleteIndex(IndexId) {
 
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -512,19 +513,18 @@
             }
         });
     }
-    function requestAddNewIndex()
-    {
+    function requestAddNewIndex() {
         $("#editTopicModalHeader").text('Add Index Details');
         $("#ab-topicNameLabel").text('Enter Index Name');
         $("#ab-topicDescriptionLabel").text('Enter Index Description');
+        $("#editTopicModalSubmitButton").text("Add");
         $("#editTopicModalSubmitButton").attr("onclick", "AddNewIndex()");
         $("#editTopicModal").modal('show');
     }
-    function AddNewIndex(CourseId)
-    {
+    function AddNewIndex(CourseId) {
         debugger
         var _data = {
-            "course_id": CourseId,
+            "course_id": "@ViewBag.CourseId",
             "index_name": $("#ab-topicName").val(),
             "index_description": $("#ab_topicDescription").val(),
         }
@@ -539,6 +539,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("Index added successfully");
                     resetEditMcqAssignmentModel();
+                    init();
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -548,8 +549,7 @@
             }
         });
     }
-    function requestAddNewAssignment()
-    {
+    function requestAddNewAssignment() {
         $("#editTopicModalHeader").text('Add Assignment Details');
         $("#ab-topicNameLabel").text('Enter Assignment Name');
         $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
@@ -557,15 +557,14 @@
         $("#editTopicModalSubmitButton").attr("onclick", "AddnewAssignment()");
         $("#editTopicModal").modal('show');
     }
-    function AddnewAssignment()
-    {
+    function AddnewAssignment() {
         debugger
         var _data = {
             "course_id": "@ViewBag.CourseId",
             "assignment_type_id": 1,
             "assignment_name": $("#ab-topicName").val(),
             "assignment_description": $("#ab_topicDescription").val(),
-            "assignment_tpe":"mcq"
+            "assignment_tpe": "mcq"
         }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -593,18 +592,16 @@
 
     //Topic section---------start---------------------------------------
     //----------------Content Delete Topic start------------------------
-    function requestDeleteTopic(TopicId,IndexId)
-    {
+    function requestDeleteTopic(TopicId, IndexId) {
         $("#confirmDelete").modal('dispose');
-        $("#confirmDeletButtonForCourse").attr("onclick", "deleteTopic(" + TopicId + ","+IndexId+")");
+        $("#confirmDeletButtonForCourse").attr("onclick", "deleteTopic(" + TopicId + "," + IndexId + ")");
         $("#confirmMessage").text("Are you sure to want to delete the topic");
         $("#confirmDelete").modal('show');
     }
-    function deleteTopic(TopicId,IndexId)
-    {
+    function deleteTopic(TopicId, IndexId) {
         var _data = {
             "index_id": IndexId,
-            "topic_id":TopicId
+            "topic_id": TopicId
         }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -628,14 +625,16 @@
     }
     //--------Content Delete topic Ends---------------------------------
     //----------------Contnet topic edit section------------------------
-    function requestEditTopic(TopicId,IndexId)
-    {
+    function requestEditTopic(TopicId, IndexId) {
+        debugger
         $("#editAndUpdateIndexTopicHeader").text('Edit Topic');
-        $("#editAndUpdateIndexTopicButton").attr("onclick", "editTopic(" + TopicId + ","+IndexId+")");
+        $("#bc-topicName").val(currentTopicDetails[TopicId].topic_name);
+        $("#bc_topicDescription").val(currentTopicDetails[TopicId].topic_description);
+        $("#bc_topicAddUrl").val(currentTopicDetails[TopicId].file_path);
+        $("#editAndUpdateIndexTopicButton").attr("onclick", "editTopic(" + TopicId + "," + IndexId + ")");
         $("#editAndUpdateIndexTopic").modal('show');
     }
-    function editTopic(TopicId, IndexId)
-    {
+    function editTopic(TopicId, IndexId) {
         debugger
         var _data = {
             "topic_id": TopicId,
@@ -667,8 +666,7 @@
     }
     //---------------------Content topic edit section ends-------------
     //----------------Add Topic start----------------------------------
-    function requestAddTopic(IndexId)
-    {
+    function requestAddTopic(IndexId) {
         $("#editAndUpdateIndexTopicHeader").text('Add Topic');
         $("#bc-topicNameLabel").text('Enter Topic Name');
         $("#bc-topicDescriptionLabel").text('Enter Topic Description');
@@ -676,14 +674,12 @@
         $("#editAndUpdateIndexTopicButton").attr("onclick", "AddTopic(" + IndexId + ")");
         $("#editAndUpdateIndexTopic").modal('show');
     }
-    function resetAddTopicModal()
-    {
+    function resetAddTopicModal() {
         $("#bc-topicName").val("");
         $("#bc_topicDescription").val("");
         $("#bc_topicAddUrl").val("");
     }
-    function AddTopic(IndexId)
-    {
+    function AddTopic(IndexId) {
         debugger
         var _data = {
             "index_id": IndexId,
@@ -716,8 +712,7 @@
     //Topic section end
 
     //----------------------Assignment Section Start-------------------
-    function requestAddMcqQuestion(AssignmentId)
-    {
+    function requestAddMcqQuestion(AssignmentId) {
         debugger
         $("#editMcqAssignmentQuestionModal").modal('dispose');
         $("#editMcqQuestionHeader").text("Add question");
@@ -725,8 +720,7 @@
         $("#editMcqQuestionSubmitButton").attr("onclick", "addMcqQuestion(" + AssignmentId + ")");
         $("#editMcqAssignmentQuestionModal").modal('show');
     }
-    function addMcqQuestion(AssignmentId)
-    {
+    function addMcqQuestion(AssignmentId) {
         var _data = extractDataFormAddMcqQuestionModel(AssignmentId);
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -749,22 +743,33 @@
             }
         });
     }
-    function requestUpdateMcqAssignmentQuestion(QuestionId,AssignmentId)
-    {
+    function requestUpdateMcqAssignmentQuestion(QuestionId, AssignmentId) {
         debugger
         $("#editMcqAssignmentQuestionModal").modal('dispose');
         $("#editMcqQuestionHeader").text("Update question");
         $("#editMcqQuestionSubmitButton").text("Update");
-        $("#editMcqQuestionSubmitButton").attr("onclick", "updateMcqAssignmentQuestion(" + QuestionId + ","+AssignmentId+")");
+        setPreAssignmentQuestionDetailsToUpdate(QuestionId);
+        $("#editMcqQuestionSubmitButton").attr("onclick", "updateMcqAssignmentQuestion(" + QuestionId + "," + AssignmentId + ")");
         $("#editMcqAssignmentQuestionModal").modal('show');
     }
-    function resetEditMcqAssignmentModel()
-    {
+    function resetEditMcqAssignmentModel() {
         $("#ab-topicName").val("");
         $("#ab_topicDescription").val("");
     }
-    function editAssignment(AssignmentId)
-    {
+
+    function requestUpdateAssignmentDetails(AssignmentId) {
+        $("#editTopicModalHeader").text('Update Assignment Details');
+        $("#ab-topicNameLabel").text('Enter Assignment Name');
+        $("#ab-topicDescriptionLabel").text('Enter Assignment Description');
+        $("#editTopicModalSubmitButton").text("Update");
+        $("#editTopicModalSubmitButton").attr("onclick", "editAssignment(" + AssignmentId + ")");
+        $("#editTopicModal").modal('show');
+        $("#ab-topicName").val(currentAssignmentName);
+        $("#ab_topicDescription").val(currentAssignmentDescription)
+    }
+    var currentAssignmentName;
+    var currentAssignmentDescription;
+    function editAssignment(AssignmentId) {
         debugger
         var _data = {
             "assignment_id": AssignmentId,
@@ -792,11 +797,10 @@
             }
         });
     }
-    function extractDataFormMcqQuestionModel(QuestionId)
-    {
+    function extractDataFormMcqQuestionModel(QuestionId) {
         var _data = {
             "question_id": QuestionId,
-            "question_statement":  $("#ab-question").val(),
+            "question_statement": $("#ab-question").val(),
             "option1": $("#ab-option1").val(),
             "option2": $("#ab-option2").val(),
             "option3": $("#ab-option3").val(),
@@ -817,8 +821,7 @@
         }
         return _data;
     }
-    function refreshAddMcqQuestionModal()
-    {
+    function refreshAddMcqQuestionModal() {
         $("#ab-question").val("");
         $("#ab-option1").val("");
         $("#ab-option2").val("");
@@ -826,8 +829,17 @@
         $("#ab-option4").val("");
         $("#ab-correctOption").val("");
     }
-    function updateMcqAssignmentQuestion(QuestionId,AssignmentId)
-    {
+    function setPreAssignmentQuestionDetailsToUpdate(QuestionId) {
+        debugger
+        var question = currentAssignmentQuestins[QuestionId];
+        $("#ab-question").val(question.question_statement);
+        $("#ab-option1").val(question.option1);
+        $("#ab-option2").val(question.option2);
+        $("#ab-option3").val(question.option3);
+        $("#ab-option4").val(question.option4);
+        $("#ab-correctOption").val(question.correct_option);
+    }
+    function updateMcqAssignmentQuestion(QuestionId, AssignmentId) {
         debugger
         var _data = extractDataFormMcqQuestionModel(QuestionId);
         $.ajax({
@@ -851,18 +863,18 @@
             }
         });
     }
-    function deleteMcqQuestion(QuestionId)
-    {
+    function deleteMcqQuestion(QuestionId, AssignmentId) {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/DeleteMcqQuestion?id=".concat(QuestionId),
+            url: "/api/v1/instructor/DeleteMcqQuestion?id=".concat(QuestionId).concat("&&AssignmentId=").concat(AssignmentId),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question deleted successfully");
                     $("#successDelete").modal('show');
+                    getAssignmentDetails(AssignmentId);
                 }
                 else {
                     $("#errorAlertMessageBody").text("question could not be deleted");
@@ -890,6 +902,8 @@
             }
         });
     }
+    var currentAssignmentQuestins = {};
+    var currentTestQuestions = {};
     function getAssignmentDetails(id) {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -898,8 +912,11 @@
             dataType: "json",
             url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(id),
             success: function (data) {
+                debugger
                 if (data != null && data.response_code == 1) {
                     var questionDetails = data.mcq_questions;
+                    currentAssignmentName = data.assignment_name;
+                    currentAssignmentDescription = data.assignment_description;
                     var assignmentHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                 + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
                                     + '<h6 class="m-0 font-weight-bold text-primary">Assignment Details</h6>'
@@ -908,7 +925,7 @@
                                             + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
                                          + '</a>'
                                          + '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">'
-                                             + '<a class="dropdown-item" href="#" onclick=resetEditMcqAssignmentModel(' + id + ')>Edit Assignment</a>'
+                                             + '<a class="dropdown-item" href="#" onclick=requestUpdateAssignmentDetails(' + id + ')>Edit Assignment</a>'
                                              + '<a class="dropdown-item" href="#" onclick=requestDeletAssignment(' + id + ')>Delete Assignment</a>'
                                              + '<a class="dropdown-item" href="#" onclick=requestAddMcqQuestion(' + id + ')>Add Question</a>'
                                          + '</div>'
@@ -941,14 +958,16 @@
                     var rows = '';
                     if (questionDetails != null) {
                         for (var i = 0; i < questionDetails.length; i++) {
+
+                            currentAssignmentQuestins[questionDetails[i].question_id] = questionDetails[i];
                             var sNo = i + 1;
                             rows += '<tr><th scope="row" >' + sNo + '</th>'
                             + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].option1 + '</td><td>' + questionDetails[i].option2 + '</td><td>' + questionDetails[i].option3 + '</td><td>' + questionDetails[i].option4 + '</td><td>' + questionDetails[i].correct_option + '</td>'
                             + '<td>'
-                                + '<a class="list-group-horizontal"  onclick="requestUpdateMcqAssignmentQuestion(' + questionDetails[i].question_id + ','+id+')">'
+                                + '<a class="list-group-horizontal"  onclick="requestUpdateMcqAssignmentQuestion(' + questionDetails[i].question_id + ',' + id + ')">'
                                     + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                 + '</a>'
-                                + '<a class="list-group-horizontal" onclick="requestDeleteMcqQuestion(' + questionDetails[i].question_id + ')" >'
+                                + '<a class="list-group-horizontal" onclick="requestDeleteMcqQuestion(' + questionDetails[i].question_id + ',' + id + ')" >'
                                     + '<i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                 + '</a>'
                             + '</td>'
@@ -962,50 +981,7 @@
             }
         });
     }
-    function getAssignmentDetailsOld(id) {
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: "/api/v1/Course/FetchAssignmentDetails?AssignmentId=".concat(id),
-            success: function (data) {
-                debugger;
-                if (data != null && data.response_code == 1) {
-                    var questionDetails = data.mcq_questions;
-                    var assignmentHtml = '<div class="collapse show" id="collapseAssignment">';
-                    for (var i = 0; i < questionDetails.length; i++) {
-                        var correctOption = questionDetails[i].correct_option;
-                        assignmentHtml += '<div class="card-body">'
-                                            + '<h6 class="m-0 font-weight-bold text-primary">1.<span class="ml-2">' + questionDetails[i].question_statement + '</span></h6>'
-                                            + '<div class="custom-control custom-radio">'
-                                               + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                               + '<label class="custom-control-label" for="defaultGroupExample1">' + questionDetails[i].option1 + '</label>'
-                                            + '</div>'
 
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled> '
-                                                + '<label class="custom-control-label" for="defaultGroupExample2">' + questionDetails[i].option2 + '</label>'
-                                            + '</div>'
-
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                                + '<label class="custom-control-label" for="defaultGroupExample3">' + questionDetails[i].option3 + '</label>'
-                                            + '</div>'
-                                            + '<div class="custom-control custom-radio">'
-                                                + '<input type="radio" class="custom-control-input" name="radioOptions'.concat(i) + '" disabled>'
-                                                + '<label class="custom-control-label" for="defaultGroupExample4">' + questionDetails[i].option4 + '</label>'
-                                            + '</div>';
-                        //var corrcetRadio = document.getElementsByName("radioOptions"+i);
-                        //corrcetRadio = corrcetRadio[correctOption - 1];
-                        //corrcetRadio.setAttribute("checked", true);
-                    }
-                    assignmentHtml += '</div>';
-                    $("#courseBody").html(assignmentHtml);
-                }
-            }
-        });
-    }
     function editMcqAssignmentQuestionModel(QuestionId) {
         $("#editMcqAssignmentQuestionModal").modal('show');
     }
@@ -1014,9 +990,9 @@
         $("#confirmDeletButtonForCourse").attr("onclick", "deleteAssignment(" + AssignmentId + ")");
         $("#confirmDelete").modal('show');
     }
-    function requestDeleteMcqQuestion(QuestionId) {
+    function requestDeleteMcqQuestion(QuestionId, AssignmentId) {
         $("#confirmDelete").modal('dispose');
-        $("#confirmDeletButtonForCourse").attr("onclick", "deleteMcqQuestion(" + QuestionId + ")");
+        $("#confirmDeletButtonForCourse").attr("onclick", "deleteMcqQuestion(" + QuestionId + "," + AssignmentId + ")");
         $("#confirmMessage").text("Are you sure to want to delete the question");
         $("#confirmDelete").modal('show');
     }
@@ -1031,11 +1007,13 @@
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            dataType: "json",   
+            dataType: "json",
             url: "/api/v1/Course/FetchTestDetails?id=".concat(id),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     var questionDetails = data.mcq_questions;
+                    testName = data.test_name;
+                    testDescription = data.test_description;
                     var assignmentHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                 + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
                                     + '<h6 class="m-0 font-weight-bold text-primary">Test Details</h6>'
@@ -1080,6 +1058,7 @@
                     if (questionDetails != null) {
                         for (var i = 0; i < questionDetails.length; i++) {
                             var sNo = i + 1;
+                            currentTestQuestions[questionDetails[i].question_id] = questionDetails[i];
                             rows += '<tr><th scope="row" >' + sNo + '</th>'
                             + '<td>' + questionDetails[i].question_statement + '</td><td>' + questionDetails[i].option1 + '</td><td>' + questionDetails[i].option2 + '</td><td>' + questionDetails[i].option3 + '</td><td>' + questionDetails[i].option4 + '</td><td>' + questionDetails[i].correct_option + '</td>'
                             + '<td>' + questionDetails[i].question_time_in_seconds + '</td><td>' + questionDetails[i].marks + '</td>'
@@ -1101,16 +1080,59 @@
             }
         });
     }
-    function requestEditTestDeails(TestId)
-    {
+    function requestUpdateMcqTestQuestion(QuestionId) {
+        $("#editTestMcqQuestionModel").modal('dispose');
+        $("#editTestMcqQuestionModelHeader").text("Update question");
+        $("#editTestMcqQuestionModelSubmitButton").text("Update");
+        $("#editTestMcqQuestionModelSubmitButton").attr("onclick", "updateMcqTestQuestion(" + QuestionId + ")");
+        preSetUpdateQuestionModal(QuestionId);
+        $("#editTestMcqQuestionModel").modal('show');
+    }
+    function updateMcqTestQuestion(QuestionId) {
+        var _data = extractDataFromAddMcqTestQuestionModel();
+        _data["test_id"] = "@ViewBag.TestId";
+        _data["question_id"] = QuestionId;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            data: JSON.stringify(_data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/UpdateMcqQuestionTestDetails",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    $("#successResponseMessage").text("question updated successfully");
+                    refreshTestDetails();
+                    refreshMcqTestModal();
+                    $("#successDelete").modal('show');
+                }
+                else {
+                    $("#errorAlertMessageBody").text("question could not be updated");
+                    $("#errorAlertHeader").modal('show');
+                }
+            }
+        });
+    }
+    function refreshMcqTestModal() {
+        $("#test-question").val("");
+        $("#test-option1").val("");
+        $("#test-option2").val("");
+        $("#test-option3").val("");
+        $("#test-option4").val("");
+        $("#test-correctOption").val("");
+        $("#test-time").val("");
+        $("#test-marks").val("");
+    }
+    function requestEditTestDeails(TestId) {
         $("#editTopicModalHeader").text('Update Test Details');
         $("#ab-topicNameLabel").text('Enter Test Name');
         $("#ab-topicDescriptionLabel").text('Enter Test Description');
         $("#editTopicModalSubmitButton").attr("onclick", "editTestDetails(" + TestId + ")");
+        $("#ab-topicName").val(testName);
+        $("#ab_topicDescription").val(testDescription);
         $("#editTopicModal").modal('show');
     }
-    function editTestDetails(TestId)
-    {
+    function editTestDetails(TestId) {
         debugger
         var _data = {
             "test_id": TestId,
@@ -1137,14 +1159,12 @@
             }
         });
     }
-    function requestDeleteTest(TestId)
-    {
+    function requestDeleteTest(TestId) {
         $("#confirmDelete").modal('show');
         $("#confirmMessage").text("Are you sure to want to delete the test?");
-        $("#confirmDeletButtonForCourse").attr("onclick", "DeleteTest("+TestId+")");
+        $("#confirmDeletButtonForCourse").attr("onclick", "DeleteTest(" + TestId + ")");
     }
-    function DeleteTest(TestId)
-    {
+    function DeleteTest(TestId) {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
@@ -1161,10 +1181,19 @@
                     $("#errorAlertHeader").modal('show');
                 }
             }
-    });
+        });
     }
-    function requestAddMcqTestQuestion(TestId)
-    {
+    function preSetUpdateQuestionModal(QuestionId) {
+        $("#test-question").val(currentTestQuestions[QuestionId].question_statement);
+        $("#test-option1").val(currentTestQuestions[QuestionId].option1);
+        $("#test-option2").val(currentTestQuestions[QuestionId].option2);
+        $("#test-option3").val(currentTestQuestions[QuestionId].option3);
+        $("#test-option4").val(currentTestQuestions[QuestionId].option4);
+        $("#test-correctOption").val(currentTestQuestions[QuestionId].correct_option);
+        $("#test-time").val(currentTestQuestions[QuestionId].question_time_in_seconds);
+        $("#test-marks").val(currentTestQuestions[QuestionId].marks);
+    }
+    function requestAddMcqTestQuestion(TestId) {
         debugger
         $("#editTestMcqQuestionModel").modal('dispose');
         $("#editTestMcqQuestionModelHeader").text("Add question");
@@ -1172,8 +1201,7 @@
         $("#editTestMcqQuestionModelSubmitButton").attr("onclick", "addMcqTestQuestion(" + TestId + ")");
         $("#editTestMcqQuestionModel").modal('show');
     }
-    function extractDataFromAddMcqTestQuestionModel()
-    {
+    function extractDataFromAddMcqTestQuestionModel() {
         var _data = {
             "question_statement": $("#test-question").val(),
             "option1": $("#test-option1").val(),
@@ -1186,10 +1214,9 @@
         }
         return _data;
     }
-    function addMcqTestQuestion(TestId)
-    {
+    function addMcqTestQuestion(TestId) {
         var _data = extractDataFromAddMcqTestQuestionModel();
-        _data["test_id"]=TestId;
+        _data["test_id"] = TestId;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
@@ -1200,7 +1227,7 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question added successfully");
-                   
+                    getTestDetails(TestId);
                     $("#successDelete").modal('show');
                 }
                 else {
@@ -1210,15 +1237,13 @@
             }
         });
     }
-    function requestDeleteMcqTestQuestion(QuestionId)
-    {
+    function requestDeleteMcqTestQuestion(QuestionId) {
         $("#confirmDelete").modal('dispose');
         $("#confirmDeletButtonForCourse").attr("onclick", "deleteMcqTestQuestion(" + QuestionId + ")");
         $("#confirmMessage").text("Are you sure to want to delete the question");
         $("#confirmDelete").modal('show');
     }
-    function deleteMcqTestQuestion(QuestionId)
-    {
+    function deleteMcqTestQuestion(QuestionId) {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
@@ -1229,6 +1254,7 @@
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("question deleted successfully");
                     $("#successDelete").modal('show');
+
                 }
                 else {
                     $("#errorAlertMessageBody").text("question could not be deleted");
@@ -1237,26 +1263,25 @@
             }
         });
     }
-    function requestUpdateTestMcqQuestion(QuestionId)
-    {
+    var courseName;
+    var courseDescription;
+    function requestUpdateTestMcqQuestion(QuestionId) {
 
     }
-    function UpdateMcqTestQuestion(QuestionId)
-    {
+    function UpdateMcqTestQuestion(QuestionId) {
 
     }
-    function requestAddNewTest()
-    {
+    function requestAddNewTest() {
         $("#editTopicModalHeader").text('Add Test Details');
         $("#ab-topicNameLabel").text('Enter Test Name');
         $("#ab-topicDescriptionLabel").text('Enter Test Description');
         $("#editTopicModalSubmitButton").attr("onclick", "addNewTest()");
         $("#editTopicModal").modal('show');
     }
-    function addNewTest(Courseid) {
+    function addNewTest() {
         debugger
         var _data = {
-            "course_id": Courseid,
+            "course_id": "@ViewBag.CourseId",
             "test_type_id": 1,
             "test_name": $("#ab-topicName").val(),
             "test_description": $("#ab_topicDescription").val(),
@@ -1272,8 +1297,8 @@
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("Test added successfully");
-                    resetEditMcqAssignmentModel();
                     $("#successDelete").modal('show');
+                    init();
                 }
                 else {
                     $("#errorAlertMessageBody").text("Test could not be added");
@@ -1296,8 +1321,7 @@
         $("#confirmMessage").text("Are you sure to want to activate the course");
         $("#confirmDelete").modal('show');
     }
-    function deleteCourse()
-    {
+    function deleteCourse() {
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
@@ -1316,8 +1340,7 @@
             }
         });
     }
-    function activateCourse()
-    {
+    function activateCourse() {
         debugger;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -1337,16 +1360,18 @@
             }
         });
     }
-    function requestUpdateCourseDetails()
-    {
+    function requestUpdateCourseDetails() {
         $("#editTopicModalHeader").text('Edit Course Details');
         $("#ab-topicNameLabel").text('Enter Course Name');
         $("#ab-topicDescriptionLabel").text('Enter Course Description');
         $("#editTopicModalSubmitButton").attr("onclick", "UpdateCourseDetails()");
+        $("#ab-topicName").val(courseName);
+        $("#ab_topicDescription").val(courseDescription);
         $("#editTopicModal").modal('show');
     }
-    function UpdateCourseDetails(CourseId)
-    {
+    var testName;
+    var testDescription;
+    function UpdateCourseDetails(CourseId) {
         debugger
         var _data = {
             "course_id": CourseId,
@@ -1390,9 +1415,11 @@
                 debugger;
                 if (data != null && data.response_code == 1) {
                     aboutCourseDetails = '';
+                    courseName = data.course_name;
+                    courseDescription = data.course_description;
                     aboutCourseDetails = '<dl class="row ml-3" id="courseDetailsC">'
-                            +'<dt class="col-sm-3">Course name</dt><dd class="col-sm-9">'+data.course_name+'</dd>'
-                            +'<dt class="col-sm-3">Creation date</dt><dd class="col-sm-9">'+data.course_creation_date+'</dd>'
+                            + '<dt class="col-sm-3">Course name</dt><dd class="col-sm-9">' + data.course_name + '</dd>'
+                            + '<dt class="col-sm-3">Creation date</dt><dd class="col-sm-9">' + data.course_creation_date + '</dd>'
                             + '<dt class="col-sm-3">Last updation date</dt><dd class="col-sm-9">' + data.course_creation_date + '</dd>'
                             + '<dt class="col-sm-3">No of indexes</dt><dd class="col-sm-9">' + data.index_count + '</dd>'
                             + '<dt class="col-sm-3">No of Assignments</dt><dd class="col-sm-9">' + data.assignment_count + '</dd>'
@@ -1423,9 +1450,9 @@
                     //fill assignments in nav
                     $("#navBarAssignmentList").empty();
                     var assignment_details = data.assignment_details;
-                    if (assignment_details != null && assignment_details.length>0) {
+                    if (assignment_details != null && assignment_details.length > 0) {
                         for (var i = 0; i < assignment_details.length; i++) {
-                            $("#navBarAssignmentList").append('<a class="dropdown-item" href="#" role="button" onclick=getAssignmentDetails('+assignment_details[i].assignment_id+')>' + assignment_details[i].assignment_name + '</a>');
+                            $("#navBarAssignmentList").append('<a class="dropdown-item" href="#" role="button" onclick=getAssignmentDetails(' + assignment_details[i].assignment_id + ')>' + assignment_details[i].assignment_name + '</a>');
                         }
                     }
                     else {
@@ -1434,7 +1461,7 @@
                     //fill tests in nav
                     var test_details = data.test_details;
                     $("#navBarTestList").empty();
-                    if (test_details != null&&test_details.length>0) {
+                    if (test_details != null && test_details.length > 0) {
                         for (var i = 0; i < test_details.length; i++) {
                             $("#navBarTestList").append('<a class="dropdown-item" href="#" role="button" onclick=getTestDetails(' + test_details[i].test_id + ')>' + test_details[i].test_name + '</a>');
                         }
@@ -1442,12 +1469,10 @@
                     else {
                         $("#navBarTestList").append('<a class="dropdown-item" href="#" role="button">no test found</a>');
                     }
-                    if(data.course_status=="created")
-                    {
+                    if (data.course_status == "created") {
                         $("#courseStatus").append('<button id="courseStatusActivateButton" class="btn btn-sm border btn-primary ml-2" href="#" onclick=requestActivateCourse()>Activate Course</button>');
                     }
-                    else if (data.course_status == "active")
-                    {
+                    else if (data.course_status == "active") {
                         $("#activateCourseButton").hide();
                         $("#deleteCourseButton").hide();
                         $("#courseStatusActivateButton").hide();
@@ -1455,8 +1480,7 @@
                           + '<p>Share url: <input type="text" readonly="readonly" id="test-url" value="' + data.course_share_url + '" /><span><button class="btn-sm btn-primary ml-2" onclick="copyText()">copy<i class="ml-1 fa fa-copy" ></i></button></span></p>'
                           + '</div>');
                     }
-                    else if (data.course_status == "deleted")
-                    {
+                    else if (data.course_status == "deleted") {
                         $("#deleteCourseButton").hide();
                     }
                 }

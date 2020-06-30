@@ -320,6 +320,22 @@ namespace CPDataService
         DataSet CheckTestIdExistsForInstructor(long Testid, int InstructorId);
         [OperationContract]
         DataSet CheckAssignmentIdExistsForInstructor(long AssignmentId, int InstructorId);
+        [OperationContract]
+        bool InsertCompletedTopicforStudent(long TopicId, long StudentId);
+        [OperationContract]
+        bool InsertCourseQuestionByStudent(long CourseId, long StudentId, string Question);
+        [OperationContract]
+        bool InsertAnswerForCourseQuestion(long QuestionId, int InstructorId, string Answer);
+        [OperationContract]
+        DataSet GetIndexTopicProgressForStudent(long IndexId, long StudentId);
+        [OperationContract]
+        DataSet GetStudentCourseProgress(long CourseId, long StudentId);
+        [OperationContract]
+        DataSet GetStudentAssignmentProgress(long AssignmentId, long StudentId);
+        [OperationContract]
+        DataSet GetStudentTestProgress(long TestId, long StudentId);
+        [OperationContract]
+        DataSet GetAllQuestionAskForCourseByStudent(long Studentid, long CourseId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

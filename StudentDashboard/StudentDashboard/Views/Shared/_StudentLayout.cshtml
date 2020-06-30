@@ -32,7 +32,7 @@
                     <i class="fas fa-fw fa-book"></i>
                     <span>Courses</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Courses for you</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callMyCourses()">My Courses</a>
@@ -46,7 +46,7 @@
                     <i class="fas fa-fw fa-pen"></i>
                     <span>Assignments</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Assignments:</h6>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callMyAssignments()">My Assignments</a>*@
@@ -61,7 +61,7 @@
                     <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Tests</span>
                 </a>
-                <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseUtilities1" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tests:</h6>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callMyTests()">My Tests</a>*@
@@ -75,7 +75,7 @@
                     <i class="fas fa-fw fa-users"></i>
                     <span>Instructors</span>
                 </a>
-                <div id="testUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="testUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Instructors:</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllInstructors()">Joined Instructors</a>
@@ -279,7 +279,7 @@
         $('#accordionSidebar').addClass("toggled");
         startSpinner();
         $.ajax({
-            url: '@Url.Action("Contact", "Instructor")',
+            url: '@Url.Action("Contact", "Student")',
             type: 'GET',
             success: function (data) {
                 stopSpinner();

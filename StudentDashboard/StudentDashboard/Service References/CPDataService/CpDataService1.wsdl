@@ -128,6 +128,54 @@
   <wsdl:message name="ICpDataService_CheckAssignmentIdExistsForInstructor_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckAssignmentIdExistsForInstructorResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertCompletedTopicforStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertCompletedTopicforStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertCompletedTopicforStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertCompletedTopicforStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertCourseQuestionByStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertCourseQuestionByStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertCourseQuestionByStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertCourseQuestionByStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertAnswerForCourseQuestion_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertAnswerForCourseQuestion" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertAnswerForCourseQuestion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertAnswerForCourseQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetIndexTopicProgressForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetIndexTopicProgressForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetIndexTopicProgressForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetIndexTopicProgressForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentCourseProgress_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentCourseProgress" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentCourseProgress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentCourseProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentAssignmentProgress_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentAssignmentProgress" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentAssignmentProgress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentAssignmentProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentTestProgress_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentTestProgress" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentTestProgress_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentTestProgressResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllQuestionAskForCourseByStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllQuestionAskForCourseByStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllQuestionAskForCourseByStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllQuestionAskForCourseByStudentResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_DeleteMcqTestQuestion_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteMcqTestQuestion" />
   </wsdl:message>
@@ -977,6 +1025,38 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor" message="tns:ICpDataService_CheckAssignmentIdExistsForInstructor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructorResponse" message="tns:ICpDataService_CheckAssignmentIdExistsForInstructor_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="InsertCompletedTopicforStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudent" message="tns:ICpDataService_InsertCompletedTopicforStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudentResponse" message="tns:ICpDataService_InsertCompletedTopicforStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertCourseQuestionByStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudent" message="tns:ICpDataService_InsertCourseQuestionByStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudentResponse" message="tns:ICpDataService_InsertCourseQuestionByStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertAnswerForCourseQuestion">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestion" message="tns:ICpDataService_InsertAnswerForCourseQuestion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestionResponse" message="tns:ICpDataService_InsertAnswerForCourseQuestion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetIndexTopicProgressForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudent" message="tns:ICpDataService_GetIndexTopicProgressForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudentResponse" message="tns:ICpDataService_GetIndexTopicProgressForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentCourseProgress">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentCourseProgress" message="tns:ICpDataService_GetStudentCourseProgress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentCourseProgressResponse" message="tns:ICpDataService_GetStudentCourseProgress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentAssignmentProgress">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentAssignmentProgress" message="tns:ICpDataService_GetStudentAssignmentProgress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentAssignmentProgressResponse" message="tns:ICpDataService_GetStudentAssignmentProgress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentTestProgress">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentTestProgress" message="tns:ICpDataService_GetStudentTestProgress_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentTestProgressResponse" message="tns:ICpDataService_GetStudentTestProgress_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllQuestionAskForCourseByStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudent" message="tns:ICpDataService_GetAllQuestionAskForCourseByStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudentResponse" message="tns:ICpDataService_GetAllQuestionAskForCourseByStudent_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="DeleteMcqTestQuestion">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion" message="tns:ICpDataService_DeleteMcqTestQuestion_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse" message="tns:ICpDataService_DeleteMcqTestQuestion_OutputMessage" />
@@ -1665,6 +1745,78 @@
     </wsdl:operation>
     <wsdl:operation name="CheckAssignmentIdExistsForInstructor">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckAssignmentIdExistsForInstructor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertCompletedTopicforStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertCompletedTopicforStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertCourseQuestionByStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertCourseQuestionByStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertAnswerForCourseQuestion">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertAnswerForCourseQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetIndexTopicProgressForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetIndexTopicProgressForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentCourseProgress">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentCourseProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentAssignmentProgress">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentAssignmentProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentTestProgress">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentTestProgress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllQuestionAskForCourseByStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

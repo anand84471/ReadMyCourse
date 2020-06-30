@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace StudentDashboard.AlertManager
@@ -49,33 +50,37 @@ namespace StudentDashboard.AlertManager
             objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.STUDNET_JOINED), (int)Constants.InstructorAlertType.STUDNET_JOINED,
                  StudentId,null);
         }
-        public void AddCourseJoinAlert(long StudentId, long CourseId)
+        public async Task<bool> AddCourseJoinAlert(long StudentId, long CourseId)
         {
+            bool result = false;
             try
             {
                 int InstructorId = -1;
                 objHomeService.GetInstructorIdByCourseId(ref InstructorId, CourseId);
-                objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.COURSE_JOINED), (int)Constants.InstructorAlertType.COURSE_JOINED,
+                result=await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.COURSE_JOINED), (int)Constants.InstructorAlertType.COURSE_JOINED,
                      StudentId, CourseId);
             }
             catch
             {
 
             }
+            return result;
         }
-        public void AddTestSubmissionAlert(long StudentId,long TestId)
+        public async Task<bool> AddTestSubmissionAlert(long StudentId,long TestId)
         {
+            bool result = false;
             try
             {
                 int InstructorId = -1;
                 objHomeService.GetInstructorIdByTestId(ref InstructorId,TestId);
-                objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.TEST_SUBMISSION), (int)Constants.InstructorAlertType.TEST_SUBMISSION,
+                result=await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.TEST_SUBMISSION), (int)Constants.InstructorAlertType.TEST_SUBMISSION,
                      StudentId, TestId);
             }
             catch
             {
 
             }
+            return result;
         }
         public void AddAssignmentSubmissionAlert(long StudentId, long AssignmentId)
         {

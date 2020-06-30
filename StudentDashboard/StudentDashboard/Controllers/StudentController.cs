@@ -19,6 +19,7 @@ namespace StudentDashboard.Controllers
         // GET: Student
         StringBuilder m_strLogMessage = new StringBuilder();
         StudentService objStudentService = new StudentService();
+        DocumentService objDocumentService = new DocumentService();
         public ActionResult Index(string return_url=null)
         {
             if(return_url!=null)
@@ -273,7 +274,12 @@ namespace StudentDashboard.Controllers
         {
             return PartialView();
         }
-        
+        [HttpGet]
+        public PartialViewResult Contact()
+        {
+            return PartialView();
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult PasswordAuthRequest(string sid,string token)
@@ -405,6 +411,36 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RequestAssignmentAccess(FormCollection collection)
+        {
+            string strCurrentMethodName = "Register";
+            ViewBag.IsAccessError = true;
+            try
+            {
+                if(collection!=null)
+                {
+                    AssignmentAccessModal objAssignmentAccessModal = new AssignmentAccessModal();
+                    long.TryParse(collection["assignment_id"],out objAssignmentAccessModal.m_llAssignmentId);
+                    objAssignmentAccessModal.m_strAccessCode = collection["assignment_access_code"].ToString();
+                    if (await objDocumentService.CheckAssignmentAccess(objAssignmentAccessModal.m_llAssignmentId,objAssignmentAccessModal.m_strAccessCode))
+                    {
+                        return Redirect("./GiveAssignment?id="+ objAssignmentAccessModal.m_llAssignmentId+"&&access_code="+
+                            objAssignmentAccessModal.m_strAccessCode);
+                    }
+                } 
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return View("Error");
+            }
+            return View("NewAssignment");
+        }
         [HttpGet]
         public PartialViewResult JoinNewCourse()
         {
@@ -530,19 +566,13 @@ namespace StudentDashboard.Controllers
                 return PartialView("Error");
             }
         }
-        [HttpGet]
-        public async Task<ActionResult> GiveAssignment(long id)
-        {
 
-            if (!await objStudentService.CheckIsStudentHasSubmittedTheAssignment((long)Session["user_id"], id))
-            {
-                ViewBag.id = id;
-                return PartialView();
-            }
-            else
-            {
-                return RedirectToAction("AssignmentResponse",new { id });
-            }
+        [HttpGet]
+        public ActionResult GiveAssignment(long id,string access_code)
+        {
+            ViewBag.id = id;
+            ViewBag.AccessCode = access_code;
+            return PartialView();
         }
         [HttpGet]
         public async Task<ActionResult> AssignmentResponse(long id)
@@ -601,19 +631,15 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> StartTest(long id)
+        public ActionResult StartTest(long id)
         {
             try
             {
-                if (!await objStudentService.CheckIsStudentHasSubmittedTheTest((long)Session["user_id"], id))
-                {
+               
                     ViewBag.id = id;
                     return PartialView();
-                }
-                else
-                {
-                    return RedirectToAction("TestResponse", new { id });
-                }
+              
+               
             }
             catch (Exception Ex)
             {
