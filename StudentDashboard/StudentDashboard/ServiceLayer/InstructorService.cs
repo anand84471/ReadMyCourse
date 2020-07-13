@@ -2,6 +2,7 @@
 using StudentDashboard.DTO;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
@@ -155,6 +156,59 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<bool> InertNewMeetingToClassroom(JitsiMeetingModal objJitsiMeetingModal)
+        {
+
+            bool result = false;
+            try
+            {
+                objJitsiMeetingModal.m_strMeetingName = objInstructorBusinessLayer.GetRandomMeetingName();
+                objJitsiMeetingModal.m_strMeetingPassword = objInstructorBusinessLayer.GetRandomMeetingPassword();
+                result = await objInstructorDTO.InertNewMeetingToClassroom(objJitsiMeetingModal);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangePasswordAfterAuth", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+
+        public async Task<ClassRoomModal> GetClassroomDetailsForInstructor(long ClassroomId, int InstructorId)
+        {
+            ClassRoomModal objClassRoomModal = null;
+            try
+            {
+                objClassRoomModal = await objInstructorDTO.GetClassroomDetailsForInstructor(ClassroomId, InstructorId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangePasswordAfterAuth", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objClassRoomModal;
+        }
+        public async Task<JitsiMeetingModal> GetClassroomMeetingDetails(long ClassroomId, int InstructorId)
+        {
+
+            JitsiMeetingModal objJitsiMeetingModal = null;
+            try
+            {
+                objJitsiMeetingModal = await objInstructorDTO.GetClassroomMeetingDetails(ClassroomId,-1);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangePasswordAfterAuth", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objJitsiMeetingModal;
         }
     }
 }

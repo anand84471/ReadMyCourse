@@ -83,18 +83,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post" class="needs-validation" action="RequestAssignmentAccess" novalidate>
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" >Assignment Id</label>
+                        <input type="text" name="assignment_id" class="form-control" id="assignmentModalId" disabled>
+                    </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Access code</label>
-                        <input type="text" class="form-control" id="accessCode" placeholder="Enter access code">
+                        <input type="text" name="assignment_access_code" class="form-control" id="assignmentModalAccessCode"  placeholder="Enter access code">
                     </div>
-                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block btn-outline-primary">Submit</button>
+                    </div>
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetAddTopicModal()">Close</button>
-                <button type="button" class="btn btn-primary" id="editAndUpdateIndexTopicButton">Submit</button>
             </div>
         </div>
     </div>
@@ -208,9 +214,10 @@
             }
         });
         $("#spinner").remove();
-        onpageshow = searchForAssignments();
+        //onpageshow = searchForAssignments();
     })();
     function searchForAssignments() {
+        $("#assignmentAccessController").remove();
         debugger
         var _data =
             {
@@ -258,16 +265,7 @@
     function joinAssignment(id) {
         $('#accordionSidebar').addClass("toggled");
         $("#requestAssignemntAccess").modal("show");
-        return;
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
-            url: "GiveAssignment?id=".concat(id),
-            type: 'GET',
-            success: function (data) {
-                $("#body").html(data);
-                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "GiveAssignment?id=".concat(id));
-            }
-        });
+        $("#assignmentModalId").val(id);
     }
 
 </script>

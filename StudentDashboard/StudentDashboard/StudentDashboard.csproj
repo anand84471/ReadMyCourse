@@ -44,6 +44,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.107.20\lib\net45\AWSSDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AWSSDK.S3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.S3.3.3.111.21\lib\net45\AWSSDK.S3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.8.6.2\lib\net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
@@ -253,6 +261,7 @@
     <Compile Include="Controllers\AccountManagerController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
     <Compile Include="Controllers\AuthServiceController.cs" />
+    <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
@@ -295,6 +304,15 @@
     <Compile Include="HttpResponse\BasicCourseDetails.cs" />
     <Compile Include="HttpResponse\BasicIndexDetails.cs" />
     <Compile Include="HttpResponse\BasicTestDetails.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomDetailsResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomInsertResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomMeetingModal.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomMeetingResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllClassroomForInstructorResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllClassroomMeetingResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllStudentJoinedToClassroomResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\StudentClassroomResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\StudentClassrromJoinModal.cs" />
     <Compile Include="HttpResponse\CourseDetailsModel.cs" />
     <Compile Include="HttpResponse\CourseIndexDetails.cs" />
     <Compile Include="HttpResponse\CourseJoinedResponse.cs" />
@@ -356,6 +374,9 @@
     <Compile Include="Models\Course\TestDetailsModel.cs" />
     <Compile Include="Models\Course\TestModel.cs" />
     <Compile Include="Models\Course\TopicModel.cs" />
+    <Compile Include="Models\Instructor\ClassRoomModal.cs" />
+    <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
+    <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
     <Compile Include="Models\SchoolRegisterModel.cs" />
     <Compile Include="Models\StudentDetailsModel.cs" />
     <Compile Include="HttpRequest\UserLoginRequest.cs" />
@@ -371,6 +392,7 @@
     <Compile Include="Models\Student\StudentBasicAssignmentDettails.cs" />
     <Compile Include="Models\Student\StudentBasicIndexDetails.cs" />
     <Compile Include="Models\Student\StudentBasicTestDetails.cs" />
+    <Compile Include="Models\Student\StudentClassroomModal.cs" />
     <Compile Include="Models\Student\StudentCourseModal.cs" />
     <Compile Include="Models\Student\StudentCourseQuestionModal.cs" />
     <Compile Include="Models\Student\StudentHomeModal.cs" />
@@ -415,6 +437,7 @@
     <Compile Include="ValidationHandler\InstructorLoginValidator.cs" />
     <Compile Include="ValidationHandler\StudentAccountRegisterValidator.cs" />
     <Compile Include="ValidationHandler\StudentLoginValidator.cs" />
+    <Compile Include="Zoom\GenrateToke.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -799,8 +822,22 @@
     <Content Include="Views\Course\Details.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
     <Content Include="Views\Student\Contact.cshtml" />
+    <Content Include="Views\Instructor\CreateClassRoom.cshtml" />
+    <Content Include="Views\Instructor\Classrooms.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroom.cshtml" />
+    <Content Include="Views\Instructor\ClassroomDashboard.cshtml" />
+    <Content Include="Views\Instructor\StartMetting.cshtml" />
+    <Content Include="Views\Student\JoinMeeting.cshtml" />
+    <Content Include="Views\Instructor\StartMeeting.cshtml" />
+    <Content Include="Views\Classroom\Details.cshtml" />
+    <Content Include="Views\Student\JoinClassroom.cshtml" />
+    <Content Include="Views\Student\MyClassrooms.cshtml" />
+    <Content Include="Views\Student\ViewClassroom.cshtml" />
+    <Content Include="Views\Student\JoinClassroomMeeting.cshtml" />
+    <Content Include="Views\Student\JoinNewClassroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AmazonAWSServices\" />
     <Folder Include="App_Data\" />
     <Folder Include="Message\" />
     <Folder Include="Scripts\vendor\bootstrap\" />
@@ -825,6 +862,9 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\CPDataService\" />
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.S3.3.3.111.21\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -844,9 +884,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56068</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56068/</IISUrl>
+          <IISUrl>http://localhost:52322/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

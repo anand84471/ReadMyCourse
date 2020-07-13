@@ -609,6 +609,339 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetClassRoomDetailsForInstructor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InstrcutorId" type="xs:int" />
+        <xs:element minOccurs="0" name="ClassRoomId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClassRoomDetailsForInstructorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetClassRoomDetailsForInstructorResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllClassRoomForInstrcutor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InstrcutorId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllClassRoomForInstrcutorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetAllClassRoomForInstrcutorResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertNewClassRoomForInstructor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InstrcuctorId" type="xs:int" />
+        <xs:element minOccurs="0" name="ClassRoomName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ClassRoomDescription" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="BackGroundImageUrl" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertNewClassRoomForInstructorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InsertNewClassRoomForInstructorResult" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InertNewPostToClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="Post" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InertNewPostToClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InertNewPostToClassroomResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InertNewMeetingToClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="MeetingName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="MeetingPassword" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InertNewMeetingToClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InertNewMeetingToClassroomResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMeetingDetailsOfClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassRoomId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMeetingDetailsOfClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetMeetingDetailsOfClassroomResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ActivateClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="ShareCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ShareUrl" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ActivateClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ActivateClassroomResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClasroomDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassRoomId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClasroomDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetClasroomDetailsResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinStudentToClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinStudentToClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="JoinStudentToClassroomResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetJoinedClassroomForStudent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetJoinedClassroomForStudentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetJoinedClassroomForStudentResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinStudentToMeeting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MeetingId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinStudentToMeetingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="JoinStudentToMeetingResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReportMeetingLeftForStudent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MeetingId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReportMeetingLeftForStudentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ReportMeetingLeftForStudentResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReportMeetingLeftForHost">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MeetingId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReportMeetingLeftForHostResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ReportMeetingLeftForHostResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllMeetingForClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllMeetingForClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetAllMeetingForClassroomResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckClassroomAccess">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="AccessCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CheckClassroomAccessResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CheckClassroomAccessResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllStudentsJoinedToClassroom">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllStudentsJoinedToClassroomResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetAllStudentsJoinedToClassroomResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="DeleteMcqTestQuestion">
     <xs:complexType>
       <xs:sequence>

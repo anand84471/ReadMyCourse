@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Create Classroom";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
+}
+<style type="text/css"> 
+    .classroom-background{
+        padding-top:10px;
+        align-items:center;
+        overflow-y:no-display;
+        background:#f8f8f8;
+        margin-bottom:10px;
+        text-align:center;
+        border:3px solid #eee;
+        box-shadow: 2px;
+        border-radius: 8px; 
+        
+    }
+    .classroom-background:hover{
+        border:2px solid red;
+        
+    }
+    .upload-icon{
+  
+        font-size:72px;
+        align-items:center;
+    }
+
+</style>
+
+<div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Create Classroom</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create Classroom</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Create New Classroom</h6>
+            <div class="dropdown no-arrow">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="./Contact">Save</a>
+                    <a class="dropdown-item" href="./LogOut">Release</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#cancelModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Delete
+                    </a>
+                </div>
+                <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to delete the test?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">All the data of the current session will be gone.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
+                                <a class="btn btn-primary" href="./Home">Yes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success" id="postsubmit" style="display:none" role="alert">
+                Classroom added successfully
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Name of Classroom</label>
+                    <div class="col-sm-8">
+                        <input onchange="validateInputField(this)" type="text" name="courseName" class="form-control" id="classroomName" placeholder="Enter name of classroom">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Description of Classroom</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" onchange="validateInputField(this)" placeholder="Enter course classroom" id="classroomDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                    </div>
+
+                </div>
+                <div class="card-img-top classroom-background">
+                    <i class="fa fa-download upload-icon" aria-hidden="true"></i>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Upload classroom back ground image</label>
+                        <button type="button" class="btn btn-primary">Upload</button>
+                        
+                    </div>
+                </div> 
+                <button id="addAssignmentButton" type="button" class="btn btn-primary  btn-block" onclick="callInsertNewClassRoom(this)">Add Classroom</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-top" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header ">
+                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Assignment Details:</b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Name:</dt>
+                    <dd class="col-sm-9" id="previewAssignmentName">Assignment Name</dd>
+                    <dt class="col-sm-3">Description:</dt>
+                    <dd class="col-sm-9" id="previewAssignmentDescription" value="">Assignment Description</dd>
+                </dl>
+                <div id="previewOptions" onloadstart="fillQuestions()">
+
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="infoMessage">Classroom created successfully</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="card border-danger modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-danger">
+                <h3 id="courseIdGenerated">Classroom could not be added</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function callGetAssignmentDetailsApi()
+    {
+        $("#previewAssignmentName").val()=$("#assignmentName").val();
+        $("#previewAssignmentDescription").val()=$("#assignmentDescription").val();
+
+    }
+    function addNewTestQuestion() {
+        var questionType = $("#selectAssignmentTypeId").val();
+        $("#selectAssignmentTypeId").prop("disabled", true);
+        switch (questionType) {
+            case "sub":
+                {
+                    addNewSubjectiveQuestion();
+                    break;
+                }
+            case "mcq":
+                {
+                    addNewMcqQuestion();
+                    break;
+                }
+        }
+        $("#submitAssignmentButton").show();
+    }
+    function validateInputField(id) {
+        if ($(id).val() == "") {
+            $(id).addClass("is-invalid");
+            return false;
+        }
+        else {
+            $(id).addClass("is-valid").removeClass("is-invalid");
+            return true;
+        }
+    }
+   
+    function callInsertNewClassRoom(buttonid)
+    {
+        $(buttonid).append('<i class="fa fa-spinner fa-spin" id="tempspinner"></i>');
+        $(buttonid).disabled = true;
+        var classRoomName = $("#classroomName").val();
+        var classRoomDescription = $("#classroomDescription").val();
+        var BackGroundUrl = $("#classroomBackGroundUrl").val();
+        if(validateInputField(classroomName)&&validateInputField(classroomDescription))
+        {
+            var _data =
+            {
+                "classroom_name": classRoomName,
+                "classroom_description": classRoomDescription,
+                "background_url": BackGroundUrl
+            }
+            $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+                type: "POST",
+                data: JSON.stringify(_data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/api/v1/instructor/InsertClassRoom",
+                success: function (data) {
+                    debugger;
+                    if (data != null && data.response_code == 1) {
+                        $("successModal").modal("show");
+                        $("#postsubmit").show();
+                        $("#postsubmit").append('<button type="button" class="btn btn-link" onclick="callClassroomDashboard(' + data.classroom_id + ')">View classroom&rarr;</button>');
+                    }
+                    else {
+                        $("errorModal").modal("show");
+                    }
+                    $(buttonid).disabled = false;
+                    $(buttonid).find(":first-child").remove();
+                },
+                error:function(data)
+                {
+                    $("errorModal").modal("show");
+                    $(buttonid).disabled = false;
+                    $(buttonid).find(":first-child").remove();
+                }
+            });
+        }
+        else {
+            $(buttonid).disabled = false;
+            $(buttonid).find(":first-child").remove();
+        }
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imageUpload").change(function () {
+        readURL(this);
+    });
+   
+</script>

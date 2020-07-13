@@ -336,6 +336,38 @@ namespace CPDataService
         DataSet GetStudentTestProgress(long TestId, long StudentId);
         [OperationContract]
         DataSet GetAllQuestionAskForCourseByStudent(long Studentid, long CourseId);
+        [OperationContract]
+        DataSet GetClassRoomDetailsForInstructor(int InstrcutorId, long ClassRoomId);
+        [OperationContract]
+        DataSet GetAllClassRoomForInstrcutor(int InstrcutorId);
+        [OperationContract]
+        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        [OperationContract]
+        bool InertNewPostToClassroom(long ClassroomId, string Post);
+        [OperationContract]
+        bool InertNewMeetingToClassroom(long ClassroomId, string MeetingName, string MeetingPassword);
+        [OperationContract]
+        DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
+        [OperationContract]
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl);
+        [OperationContract]
+        DataSet GetClasroomDetails(long ClassRoomId);
+        [OperationContract]
+        bool JoinStudentToClassroom(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetJoinedClassroomForStudent(long StudentId);
+        [OperationContract]
+        bool JoinStudentToMeeting(long MeetingId, long StudentId);
+        [OperationContract]
+        bool ReportMeetingLeftForStudent(long MeetingId, long StudentId);
+        [OperationContract]
+        bool ReportMeetingLeftForHost(long MeetingId);
+        [OperationContract]
+        DataSet GetAllMeetingForClassroom(long ClassroomId);
+        [OperationContract]
+        DataSet CheckClassroomAccess(long ClassroomId, string AccessCode);
+        [OperationContract]
+        DataSet GetAllStudentsJoinedToClassroom(long ClassroomId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

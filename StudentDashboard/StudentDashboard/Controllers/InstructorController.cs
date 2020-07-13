@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
 using StudentDashboard.Security.Instrcutor;
@@ -318,6 +319,34 @@ namespace StudentDashboard.Controllers
             return View(ViewName);
 
         }
+        [AsyncTimeout(150)]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> RequestStartMeeting(FormCollection collection)
+        {
+            string strCurrentMethodName = "ResetPassword";
+            string ViewName = "Error";
+            try
+            {
+                JitsiMeetingModal objModal = new JitsiMeetingModal();
+                long.TryParse(collection["classroom_id"],out objModal.m_llClassroomId);
+                if (await objInstructorService.InertNewMeetingToClassroom(objModal))
+                {
+                    return Redirect("StartMeeting?ClassroomId="+ objModal.m_llClassroomId);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                
+            }
+            return View(ViewName);
+
+        }
         [AllowAnonymous]
         [HttpGet]
         public ActionResult PasswordAuthRequest(string sid, string token)
@@ -356,11 +385,76 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
+        public PartialViewResult CreateClassRoom()
+        {
+            try
+            {
+                return PartialView("CreateClassRoom");
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateNewCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public PartialViewResult Classrooms()
+        {
+            try
+            {
+                return PartialView("Classrooms");
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateNewCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
         public PartialViewResult CreateTest()
         {
             try
             {
                 return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public PartialViewResult StartMetting()
+        {
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> StartMeeting(long ClassroomId)
+        {
+            try
+            {
+                JitsiMeetingModal objJitsiMeetingModal = await objInstructorService.GetClassroomMeetingDetails(ClassroomId,-1);
+                return PartialView(objJitsiMeetingModal);
             }
             catch (Exception Ex)
             {
@@ -544,6 +638,26 @@ namespace StudentDashboard.Controllers
                 return PartialView("Errors");
             }
             return PartialView();
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> ClassroomDashboard(long id)
+        {
+            string strCurrentMethodName = "ClassroomDashboard";
+            try
+            {
+                ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id, 
+                    (int)Session["instructor_id"]);
+                return PartialView(objClassRoomModal);
+            }
+            catch (Exception Ex)
+            {
+
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
         }
         [HttpGet]
         public PartialViewResult PreviewCourse(int id)

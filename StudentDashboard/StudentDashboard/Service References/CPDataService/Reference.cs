@@ -266,6 +266,102 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllQuestionAskForCourseByStudentResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllQuestionAskForCourseByStudentAsync(long Studentid, long CourseId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/GetClassRoomDetailsForInstructorResponse")]
+        System.Data.DataSet GetClassRoomDetailsForInstructor(int InstrcutorId, long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForInstructor", ReplyAction="http://tempuri.org/ICpDataService/GetClassRoomDetailsForInstructorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassRoomDetailsForInstructorAsync(int InstrcutorId, long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassRoomForInstrcutor", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassRoomForInstrcutorResponse")]
+        System.Data.DataSet GetAllClassRoomForInstrcutor(int InstrcutorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassRoomForInstrcutor", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassRoomForInstrcutorResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassRoomForInstrcutorAsync(int InstrcutorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
+        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
+        System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewPostToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewPostToClassroomResponse")]
+        bool InertNewPostToClassroom(long ClassroomId, string Post);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewPostToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewPostToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> InertNewPostToClassroomAsync(long ClassroomId, string Post);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewMeetingToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewMeetingToClassroomResponse")]
+        bool InertNewMeetingToClassroom(long ClassroomId, string MeetingName, string MeetingPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewMeetingToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewMeetingToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> InertNewMeetingToClassroomAsync(long ClassroomId, string MeetingName, string MeetingPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMeetingDetailsOfClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetMeetingDetailsOfClassroomResponse")]
+        System.Data.DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMeetingDetailsOfClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetMeetingDetailsOfClassroomResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetMeetingDetailsOfClassroomAsync(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
+        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClasroomDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClasroomDetailsResponse")]
+        System.Data.DataSet GetClasroomDetails(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClasroomDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClasroomDetailsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClasroomDetailsAsync(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/JoinStudentToClassroom", ReplyAction="http://tempuri.org/ICpDataService/JoinStudentToClassroomResponse")]
+        bool JoinStudentToClassroom(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/JoinStudentToClassroom", ReplyAction="http://tempuri.org/ICpDataService/JoinStudentToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> JoinStudentToClassroomAsync(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetJoinedClassroomForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetJoinedClassroomForStudentResponse")]
+        System.Data.DataSet GetJoinedClassroomForStudent(long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetJoinedClassroomForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetJoinedClassroomForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetJoinedClassroomForStudentAsync(long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/JoinStudentToMeeting", ReplyAction="http://tempuri.org/ICpDataService/JoinStudentToMeetingResponse")]
+        bool JoinStudentToMeeting(long MeetingId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/JoinStudentToMeeting", ReplyAction="http://tempuri.org/ICpDataService/JoinStudentToMeetingResponse")]
+        System.Threading.Tasks.Task<bool> JoinStudentToMeetingAsync(long MeetingId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ReportMeetingLeftForStudent", ReplyAction="http://tempuri.org/ICpDataService/ReportMeetingLeftForStudentResponse")]
+        bool ReportMeetingLeftForStudent(long MeetingId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ReportMeetingLeftForStudent", ReplyAction="http://tempuri.org/ICpDataService/ReportMeetingLeftForStudentResponse")]
+        System.Threading.Tasks.Task<bool> ReportMeetingLeftForStudentAsync(long MeetingId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ReportMeetingLeftForHost", ReplyAction="http://tempuri.org/ICpDataService/ReportMeetingLeftForHostResponse")]
+        bool ReportMeetingLeftForHost(long MeetingId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ReportMeetingLeftForHost", ReplyAction="http://tempuri.org/ICpDataService/ReportMeetingLeftForHostResponse")]
+        System.Threading.Tasks.Task<bool> ReportMeetingLeftForHostAsync(long MeetingId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllMeetingForClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAllMeetingForClassroomResponse")]
+        System.Data.DataSet GetAllMeetingForClassroom(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllMeetingForClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAllMeetingForClassroomResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllMeetingForClassroomAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckClassroomAccess", ReplyAction="http://tempuri.org/ICpDataService/CheckClassroomAccessResponse")]
+        System.Data.DataSet CheckClassroomAccess(long ClassroomId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckClassroomAccess", ReplyAction="http://tempuri.org/ICpDataService/CheckClassroomAccessResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckClassroomAccessAsync(long ClassroomId, string AccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllStudentsJoinedToClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAllStudentsJoinedToClassroomResponse")]
+        System.Data.DataSet GetAllStudentsJoinedToClassroom(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllStudentsJoinedToClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAllStudentsJoinedToClassroomResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllStudentsJoinedToClassroomAsync(long ClassroomId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion", ReplyAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse")]
         bool DeleteMcqTestQuestion(long QuestionId);
         
@@ -2106,6 +2202,134 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetAllQuestionAskForCourseByStudentAsync(long Studentid, long CourseId) {
             return base.Channel.GetAllQuestionAskForCourseByStudentAsync(Studentid, CourseId);
+        }
+        
+        public System.Data.DataSet GetClassRoomDetailsForInstructor(int InstrcutorId, long ClassRoomId) {
+            return base.Channel.GetClassRoomDetailsForInstructor(InstrcutorId, ClassRoomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassRoomDetailsForInstructorAsync(int InstrcutorId, long ClassRoomId) {
+            return base.Channel.GetClassRoomDetailsForInstructorAsync(InstrcutorId, ClassRoomId);
+        }
+        
+        public System.Data.DataSet GetAllClassRoomForInstrcutor(int InstrcutorId) {
+            return base.Channel.GetAllClassRoomForInstrcutor(InstrcutorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassRoomForInstrcutorAsync(int InstrcutorId) {
+            return base.Channel.GetAllClassRoomForInstrcutorAsync(InstrcutorId);
+        }
+        
+        public long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl) {
+            return base.Channel.InsertNewClassRoomForInstructor(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl);
+        }
+        
+        public System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl) {
+            return base.Channel.InsertNewClassRoomForInstructorAsync(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl);
+        }
+        
+        public bool InertNewPostToClassroom(long ClassroomId, string Post) {
+            return base.Channel.InertNewPostToClassroom(ClassroomId, Post);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InertNewPostToClassroomAsync(long ClassroomId, string Post) {
+            return base.Channel.InertNewPostToClassroomAsync(ClassroomId, Post);
+        }
+        
+        public bool InertNewMeetingToClassroom(long ClassroomId, string MeetingName, string MeetingPassword) {
+            return base.Channel.InertNewMeetingToClassroom(ClassroomId, MeetingName, MeetingPassword);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InertNewMeetingToClassroomAsync(long ClassroomId, string MeetingName, string MeetingPassword) {
+            return base.Channel.InertNewMeetingToClassroomAsync(ClassroomId, MeetingName, MeetingPassword);
+        }
+        
+        public System.Data.DataSet GetMeetingDetailsOfClassroom(long ClassRoomId) {
+            return base.Channel.GetMeetingDetailsOfClassroom(ClassRoomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetMeetingDetailsOfClassroomAsync(long ClassRoomId) {
+            return base.Channel.GetMeetingDetailsOfClassroomAsync(ClassRoomId);
+        }
+        
+        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl) {
+            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl) {
+            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl);
+        }
+        
+        public System.Data.DataSet GetClasroomDetails(long ClassRoomId) {
+            return base.Channel.GetClasroomDetails(ClassRoomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClasroomDetailsAsync(long ClassRoomId) {
+            return base.Channel.GetClasroomDetailsAsync(ClassRoomId);
+        }
+        
+        public bool JoinStudentToClassroom(long ClassroomId, long StudentId) {
+            return base.Channel.JoinStudentToClassroom(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> JoinStudentToClassroomAsync(long ClassroomId, long StudentId) {
+            return base.Channel.JoinStudentToClassroomAsync(ClassroomId, StudentId);
+        }
+        
+        public System.Data.DataSet GetJoinedClassroomForStudent(long StudentId) {
+            return base.Channel.GetJoinedClassroomForStudent(StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetJoinedClassroomForStudentAsync(long StudentId) {
+            return base.Channel.GetJoinedClassroomForStudentAsync(StudentId);
+        }
+        
+        public bool JoinStudentToMeeting(long MeetingId, long StudentId) {
+            return base.Channel.JoinStudentToMeeting(MeetingId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> JoinStudentToMeetingAsync(long MeetingId, long StudentId) {
+            return base.Channel.JoinStudentToMeetingAsync(MeetingId, StudentId);
+        }
+        
+        public bool ReportMeetingLeftForStudent(long MeetingId, long StudentId) {
+            return base.Channel.ReportMeetingLeftForStudent(MeetingId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ReportMeetingLeftForStudentAsync(long MeetingId, long StudentId) {
+            return base.Channel.ReportMeetingLeftForStudentAsync(MeetingId, StudentId);
+        }
+        
+        public bool ReportMeetingLeftForHost(long MeetingId) {
+            return base.Channel.ReportMeetingLeftForHost(MeetingId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ReportMeetingLeftForHostAsync(long MeetingId) {
+            return base.Channel.ReportMeetingLeftForHostAsync(MeetingId);
+        }
+        
+        public System.Data.DataSet GetAllMeetingForClassroom(long ClassroomId) {
+            return base.Channel.GetAllMeetingForClassroom(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllMeetingForClassroomAsync(long ClassroomId) {
+            return base.Channel.GetAllMeetingForClassroomAsync(ClassroomId);
+        }
+        
+        public System.Data.DataSet CheckClassroomAccess(long ClassroomId, string AccessCode) {
+            return base.Channel.CheckClassroomAccess(ClassroomId, AccessCode);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckClassroomAccessAsync(long ClassroomId, string AccessCode) {
+            return base.Channel.CheckClassroomAccessAsync(ClassroomId, AccessCode);
+        }
+        
+        public System.Data.DataSet GetAllStudentsJoinedToClassroom(long ClassroomId) {
+            return base.Channel.GetAllStudentsJoinedToClassroom(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllStudentsJoinedToClassroomAsync(long ClassroomId) {
+            return base.Channel.GetAllStudentsJoinedToClassroomAsync(ClassroomId);
         }
         
         public bool DeleteMcqTestQuestion(long QuestionId) {

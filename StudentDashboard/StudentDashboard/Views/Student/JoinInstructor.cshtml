@@ -24,84 +24,7 @@
         </div>
 
 </div>
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="card border-success modal-content">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="infoTitle">Confirm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h3 id="infoMessageSuccess">Course joined successfully</h3>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="card border-danger modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-danger">
-                <h3 id="infoMessageFail">Could not be joined to instructor</h3>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-full-height modal-top" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header ">
-                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Course Details:</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-3">Name:</dt>
-                    <dd class="col-sm-9" id="courseName"></dd>
-                    <dt class="col-sm-3">Description:</dt>
-                    <dd class="col-sm-9" id="courseDescription"></dd>
-                    <dt class="col-sm-3">Created on:</dt>
-                    <dd class="col-sm-9" id="insertDate">
-                    </dd>
-                    <dt class="col-sm-3">Assignments:</dt>
-                    <dd class="col-sm-9" id="assignments"></dd>
-                    <dt class="col-sm-3">Tests:</dt>
-                    <dd class="col-sm-9" id="tests"></dd>
-                    <dt class="col-sm-3">Indexes:</dt>
-                    <dd class="col-sm-9" id="indexes"></dd>
-                </dl>
-                <ul class="list-group z-depth-0" id="indexContainer"></ul>
 
-            </div>
-            <!--Footer-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
 <script>
     (function () {
         'use strict';
@@ -144,7 +67,7 @@
                                    +' <p class="text mr-3"><i class="fas fa-fw fa-book mr-2"></i><b>Courses Created:</b> '+instructors[i].no_of_course+'</p>'
                                     +'<ul class="list-unstyled list-inline rating mb-0">'
                                        + ' <li class="list-inline-item mr-2"><button  class="btn btn-outline-primary" onclick=callJoinInstructor(' + instructors[i].id + ')>Profile</button></li>'
-                                        + '<li class="list-inline-item mr-0"><button  class="btn btn-dark" onclick=joinInstructor(' + instructors[i] .id+ ')>Join Now</button></li>'
+               
                                     +'</ul>'
                                 +'</div>'
                             +'</div>'
@@ -159,7 +82,7 @@
         });
     }
 
-    function getInstructorDetails(Id) {
+    function getCourseDetails(Id) {
         debugger;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
@@ -231,27 +154,4 @@
             }
         });
     }
-    function joinInstructor(InstructorId) {
-        debugger;
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: "/api/v1/Course/JoinStudentToInstructor?InstructorId=".concat(InstructorId).concat("&StudentId=@Session["user_id"].ToString()"),
-            success: function (data) {
-            debugger;
-            if (data != null && data.response_code == 1) {
-                $("#successModal").modal('show');
-                $("#infoMessageSuccess").text('joined to instructor successfully');
-            }
-            else {
-                $("#failModal").modal('show');
-                $("#infoMessageFail").test('Could not be joined to the Instructor');
-            }
-        }
-    });
-    }
-
-
 </script>

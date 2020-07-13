@@ -3,10 +3,12 @@ using StudentDashboard.BusinessLayer;
 using StudentDashboard.DTO;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
@@ -907,6 +909,14 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.DeleteTestOfCourse(TestId);
         }
+        public async Task<long> InsertNewClassroom(ClassRoomModal objClassRoomModal)
+        {
+            return await objHomeDTO.InsertNewClassroom(objClassRoomModal);
+        }
+        public async Task<bool> InsertNewPostToClassroom(ClassroomPostModal objClassroomPostModal)
+        {
+            return await objHomeDTO.InsertNewPostToClassroom(objClassroomPostModal);
+        }
         public async Task<bool> ActivateAssignment(long AssignmentId)
         {
             string AccessCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
@@ -1088,5 +1098,79 @@ namespace StudentDashboard.ServiceLayer
             }
             return objInstructorSearchResponse;
         }
+        public async Task<List<ClassRoomModal>> GetAllClassroomForIsntrcutor(int InstrucorId)
+        {
+            return await objHomeDTO.GetAllClassroomForIsntrcutor(InstrucorId);
+        }
+        public async Task<bool> ActivateClassroom(long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
+                string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForClassroom(ClassroomId, ShareCode);
+                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> MarkMeetingClosed(long MeetingId)
+        {
+            bool result = false;
+            try
+            {
+                
+                result = await objHomeDTO.MarkMeetingClosed(MeetingId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "MarkMeetingClosed", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomMeetingModal>> GetAllMeetingForClassroom(long ClassroomId)
+        {
+            List<ClassroomMeetingModal> result=new List<ClassroomMeetingModal>();
+            try
+            {
+
+                result = await objHomeDTO.GetAllMeetingForClassroom(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<StudentClassrromJoinModal>> GetAllStudentsJoinedToClassroomResponse(long ClassroomId)
+        {
+            List<StudentClassrromJoinModal> result = new List<StudentClassrromJoinModal>();
+            try
+            {
+
+                result = await objHomeDTO.GetAllStudentsJoinedToClassroomResponse(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
+
 }

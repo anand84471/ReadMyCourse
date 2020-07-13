@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "Courses";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
+}
+<div class="container-fluid" id="addNewCourseContainer">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Classrooms</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Classrooms</li>
+               
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card ">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="coursesTable" class="table-responsive table-hover" style="display:none">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Classroom Name</th>
+                            <th>Creation Date</th>
+                            <th>Status</th>
+                            <th>Students joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot class="thead-dark">
+                        <tr>
+                            <th>Classroom Name</th>
+                            <th>Creation Date</th>
+                            <th>Status</th>
+                            <th>Students joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <div id="spinner" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card text-center" id="footer" style="display:none">
+                <div class="card-body">
+                    <h6 class="card-title"> You have not created any courses</h6>
+                    @*<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>*@
+                    <div id="assignmentContainer" class="assignmentContainer"></div>
+                    <a id="addAssignmentButton" class="btn btn-primary" href="./CreateNewCourse">Add new course</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Thank you!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+<div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-top" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header ">
+                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Course Details:</b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Name:</dt>
+                    <dd class="col-sm-9" id="courseName"></dd>
+                    <dt class="col-sm-3">Description:</dt>
+                    <dd class="col-sm-9" id="courseDescription"></dd>
+                    <dt class="col-sm-3">Created on:</dt>
+                    <dd class="col-sm-9" id="insertDate">
+                    </dd>
+                    <dt class="col-sm-3">Assignments:</dt>
+                    <dd class="col-sm-9" id="assignments"></dd>
+                    <dt class="col-sm-3">Tests:</dt>
+                    <dd class="col-sm-9" id="tests"></dd>
+                    <dt class="col-sm-3">Indexes:</dt>
+                    <dd class="col-sm-9" id="indexes"></dd>
+                </dl>
+                <ul class="list-group z-depth-0" id="indexContainer"></ul>
+
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="infoMessage">Are you sure to want to delete the course?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="deleteCourse()">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="card border-success modal-content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoTitle">Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 id="infoMessage">Course deleted successfully</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="failDelete" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="card border-danger modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-danger">
+                <h3 id="courseIdGenerated">Course could not be deleted</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Height Modal Right -->
+
+<script type="text/javascript">
+        (function () {
+            'use strict';
+            onpageshow = getCoursesDetails();
+        })();
+        
+       
+
+        function getCoursesDetails() {
+        //debugger;
+            $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/classrooms",
+            success: function (data) {
+                debugger;
+
+                if (data != null && data.response_code == 1) {
+                    var classrooms=data.classrooms;
+                    for (var i = 0; i < classrooms.length; i++) {
+                        if (classrooms[i].classroom_name.length > 30)
+                        {
+                            classrooms[i].classroom_name = classrooms[i].classroom_name.substring(0, 30) + "...";
+                        }
+                        var rows = '<tr><td scope="row" ><button type="button" class="btn btn-link font-weight-bold" onclick="getCourseIndexDetails('.concat(classrooms[i].classroom_id) + ')">' + classrooms[i].classroom_name + '</button></td>'
+                        + '<td>' + classrooms[i].creation_date + '</td><td>' + classrooms[i].classroom_status + '</td>'
+                        + '<td>' + 0 +'</td>'
+
+                        +'<td>'
+                            + '<button type="button" class="btn btn-link" class="list-group-horizontal"  onclick="callClassroomDashboard(' + classrooms[i].classroom_id + ')">'
+                                +'<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
+                            +'</button>'
+                           
+                        +'</td>'
+                        +'</tr>';
+                        $('#tableBody').append(rows);
+                        $("#spinner").remove();
+                        $("#coursesTable").show();
+                    }
+                    $('#coursesTable').DataTable();
+
+                }
+                else {
+                    $("#footer").show();
+                    $("#spinner").remove();
+                }
+            }
+    });
+    }
+</script>

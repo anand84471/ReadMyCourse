@@ -6,6 +6,7 @@ using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using StudentDashboard.Views.Student;
@@ -589,6 +590,26 @@ namespace StudentDashboard.ServiceLayer
         public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(int InstructorId)
         {
             return await objStudentDTO.GetAllCourseDetailsForInstructor(InstructorId);
+        }
+        public async Task<ClassRoomModal> GetClassroomDetailsForStudent(long ClassroomId)
+        {
+            return await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
+        }
+        public async Task<bool> JoinClassroom(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.JoinClassroom(ClassroomId, StudentId);
+        }
+        public async Task<bool> JoinClassroomMeeting(long MeetingId, long StudentId)
+        {
+            return await objStudentDTO.JoinClassroomMeeting(MeetingId, StudentId);
+        }
+        public async Task<List<StudentClassroomModal>> GetJoinedClassroom(long StudentId)
+        {
+            return await objStudentDTO.GetJoinedClassroom( StudentId);
+        }
+        public async Task<JitsiMeetingModal> GetClassroomMeetingDetails(long ClassroomId)
+        {
+            return await objStudentDTO.GetClassroomMeetingDetails(ClassroomId);
         }
     }
 }

@@ -28,6 +28,20 @@
             </div>
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-university"></i>
+                    <span>Classroom</span>
+                </a>
+                <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">ReadMyCourse Classroom</h6>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callMyClassrooms()">My classrooms</a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewClassroom()">Join new classroom</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-book"></i>
                     <span>Courses</span>
@@ -470,6 +484,32 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateAssignment");
+            }
+        });
+    }
+    function callJoinNewClassroom() {
+        $('#accordionSidebar').addClass("toggled");
+        startSpinner();
+        $.ajax({
+            url: '@Url.Action("JoinNewClassroom", "Student")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "JoinNewClassroom");
+            }
+        });
+    }
+    function callMyClassrooms() {
+        $('#accordionSidebar').addClass("toggled");
+        startSpinner();
+        $.ajax({
+            url: '@Url.Action("MyClassrooms", "Student")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "MyClassrooms" }, "", "MyClassrooms");
             }
         });
     }

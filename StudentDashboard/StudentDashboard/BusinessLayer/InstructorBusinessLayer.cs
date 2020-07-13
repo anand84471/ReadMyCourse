@@ -141,7 +141,32 @@ namespace StudentDashboard.BusinessLayer
             }
             return token;
         }
-
+        public string GetRandomMeetingName()
+        {
+            Guid id = Guid.NewGuid();
+            return id.ToString();
+        }
+        public string GetRandomMeetingPassword()
+        {
+            return GenerateOtp();
+        }
+        public async Task<string> GetTinyUrlForClassroom(long id, string AccessCode)
+        {
+            string result = null;
+            try
+            {
+                string path = Constants.BASE_URL_PATH_FOR_CLASSROOM + id + "&access_code=" + AccessCode;
+                result = await objTinyUrlService.GetTinyUrl(path);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
    
 }

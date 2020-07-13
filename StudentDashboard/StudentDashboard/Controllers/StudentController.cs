@@ -1,4 +1,5 @@
 ﻿using StudentDashboard.HttpResponse;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
 using StudentDashboard.Security.Student;
@@ -441,6 +442,66 @@ namespace StudentDashboard.Controllers
             }
             return View("NewAssignment");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RequestClassroomAccess(FormCollection collection)
+        {
+            string strCurrentMethodName = "Register";
+            ViewBag.IsAccessError = true;
+            try
+            {
+                if (collection != null)
+                {
+                    AssignmentAccessModal objAssignmentAccessModal = new AssignmentAccessModal();
+                    long.TryParse(collection["classroom_id"], out objAssignmentAccessModal.m_llAssignmentId);
+                    objAssignmentAccessModal.m_strAccessCode = collection["access_code"].ToString();
+                    if (await objDocumentService.CheckClassroomAccess(objAssignmentAccessModal.m_llAssignmentId, objAssignmentAccessModal.m_strAccessCode))
+                    {
+                        return Redirect("./JoinClassroom?id=" + objAssignmentAccessModal.m_llAssignmentId + "&&access_code=" +
+                            objAssignmentAccessModal.m_strAccessCode);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return View("Error");
+            }
+            return View("JoinNewClassroom");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RequestTestAccess(FormCollection collection)
+        {
+            string strCurrentMethodName = "Register";
+            ViewBag.IsAccessError = true;
+            try
+            {
+                if (collection != null)
+                {
+                    AssignmentAccessModal objAssignmentAccessModal = new AssignmentAccessModal();
+                    long.TryParse(collection["test_id"], out objAssignmentAccessModal.m_llAssignmentId);
+                    objAssignmentAccessModal.m_strAccessCode = collection["test_access_code"].ToString();
+                    if (await objDocumentService.CheckTestAccess(objAssignmentAccessModal.m_llAssignmentId, objAssignmentAccessModal.m_strAccessCode))
+                    {
+                        return Redirect("./StartTest?id=" + objAssignmentAccessModal.m_llAssignmentId + "&&access_code=" +
+                            objAssignmentAccessModal.m_strAccessCode);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return View("Error");
+            }
+            return View("NewTest");
+        }
         [HttpGet]
         public PartialViewResult JoinNewCourse()
         {
@@ -566,12 +627,18 @@ namespace StudentDashboard.Controllers
                 return PartialView("Error");
             }
         }
-
         [HttpGet]
-        public ActionResult GiveAssignment(long id,string access_code)
+        public async Task<ActionResult> GiveAssignment(long id,string access_code)
         {
-            ViewBag.id = id;
-            ViewBag.AccessCode = access_code;
+            if(await objDocumentService.CheckAssignmentAccess(id,access_code))
+            {
+                ViewBag.id = id;
+                ViewBag.AccessCode = access_code;
+            }
+            else
+            {
+                return Redirect("Home");
+            }
             return PartialView();
         }
         [HttpGet]
@@ -631,15 +698,19 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public ActionResult StartTest(long id)
+        public async Task<ActionResult> StartTest(long id,string access_code)
         {
             try
             {
-               
+                if(await objDocumentService.CheckTestAccess(id,access_code))
+                { 
                     ViewBag.id = id;
-                    return PartialView();
-              
-               
+                   
+                }
+                else
+                {
+                    return Redirect("Home");
+                }
             }
             catch (Exception Ex)
             {
@@ -649,6 +720,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
+            return PartialView();
         }
         [HttpGet]
         public PartialViewResult TestSubmissions()
@@ -746,6 +818,111 @@ namespace StudentDashboard.Controllers
         {
             try
             {
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public ActionResult JoinMeeting()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> JoinClassroomMeeting(long ClassroomId)
+        {
+            try
+            {
+                JitsiMeetingModal objJitsiMeetingModal = await objStudentService.GetClassroomMeetingDetails(ClassroomId);
+                return View(objJitsiMeetingModal);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> JoinClassroom(long id, string access_code)
+        {
+            try
+            {
+                if (await objDocumentService.CheckClassroomAccess(id, access_code))
+                {
+                    ViewBag.Id = id;
+                }
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public ActionResult ViewClassroom(long classroom_id)
+        {
+            try
+            {
+                ViewBag.Id = classroom_id;
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public ActionResult MyClassrooms()
+        {
+            //id =classroom id
+            try
+            {
+                return View();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+
+        }
+        [HttpGet]
+        public ActionResult JoinNewClassroom()
+        {
+            try
+            {
+                
                 return View();
             }
             catch (Exception Ex)

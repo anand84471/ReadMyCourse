@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Join classroom";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_AboutLayout.cshtml";
+}
+<style type="text/css">
+    .classroom-background-container {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .classroom-background-image {
+        max-height: 300px;
+        height: 300px;
+        z-index: -1;
+    }
+
+    .classroom-background-mask {
+        width: 100%;
+        border: 10px;
+        z-index: 10;
+        background: rgb(3,0,237);
+        background: linear-gradient(360deg, rgba(3,0,237,0.969625350140056) 5%, rgba(11,33,196,0.7063200280112045) 77%);
+        backdrop-filter: blur(8px);
+        padding: 20px;
+        margin-top: 140px;
+        margin-bottom: 20px;
+        color: #f8f9fccc !important;
+        border-radius: 8px;
+    }
+
+    .classroom-background {
+        padding-top: 10px;
+        align-items: center;
+        overflow-y: no-display;
+        background: #f8f8f8;
+        margin-bottom: 10px;
+        text-align: center;
+        border: 3px solid #eee;
+        box-shadow: 2px;
+        border-radius: 8px;
+    }
+
+        .classroom-background:hover {
+            border: 2px solid red;
+        }
+
+    .upload-icon {
+        font-size: 72px;
+        align-items: center;
+    }
+
+    .ui-input-container {
+        background-color: #fff;
+        border-radius: 4px;
+    }
+
+    .ui-form-input-container {
+        position: relative;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .ui-input-container h2 {
+        font-family: sans-serif;
+        margin-bottom: 20px;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .ui-form-input {
+        padding: 13px 15px;
+        border-radius: 8px;
+        border: 2px solid #1a73e8;
+        outline: 0;
+        width: 100%;
+        min-height: 200px;
+    }
+
+    #zmmtg-root {
+        background-color: aquamarine;
+    }
+</style>
+
+
+<div class="course-demo-card container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Join new classroom</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/AboutUs" onclick="">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Join classroom</li>
+                @*<li class="breadcrumb-item active" >Data</li>*@
+            </ol>
+        </nav>
+    </div>
+    <!-- Course section -->
+    @*<nav class="navbar  bg-dark ">
+            <a href="./JoinNewCourse" class="btn navbar-item text-white nav-item active">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+            <a class="navbar-brand " href="#">
+                <img src="~/Images/site-logo.png" width="160" height="40" class="align-top bg-white" alt="">
+
+            </a>
+        </nav>*@
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4 border-bottom-success ">
+                <div class="card-body classroom-background-container" style="background-image:url(../../Images/course-3.jpg)">
+                    <div class="classroom-background-mask">
+                        <h1 class="text-white font-weight-bold text-gray-100 " id="classroomName"></h1>
+
+                        <h6 class="mb-0 font-weight-bold" id="classroomDescription"></h6>
+
+                        <p class="text mr-3  text-white" id="classroomCreationDate"></p>
+                        <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
+                        <span><a class="btn btn-outline-danger custom-green text-white font-weight-bold" href="@ViewBag.ReturnUrl">Join now</a></span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript">
+    (function () {
+        'use strict';
+        onpageshow = init();
+    })();
+    function getAboutCourse() {
+        $("#courseBody").html(aboutCourseDetails);
+    }
+    var aboutCourseDetails;
+    function showSpinner()
+    {
+       $("#spinner").show();
+    }
+    function hideSpinner()
+    {
+        $("#spinner").fadeOut();
+    }
+
+    //----------------Index Section-------------------------------------
+
+    var indexDetails = [];
+    var courseId = 0;
+    //-----------------------Course section start----------------------
+    function init() {
+        debugger
+
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/GetClasroomDetails?id=".concat("@ViewBag.Id"),
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    var classroomDetails = data.classroom_details;
+                    $("#classroomName").text(classroomDetails.classroom_name);
+                    $("#classroomDescription").text(classroomDetails.classroom_description);
+
+                    $("#classroomCreationDate").text("Creation date:" + classroomDetails.creation_date);
+                    hideSpinner();
+                }
+                hideSpinner();
+            }
+        });
+    }
+    function joinClassroom() {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/JoinClassroom?id=".concat("@ViewBag.id"),
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    $("#successModal").modal('show');
+                    $("#enrollNowButton").remove();
+                    $("#successbadge").show();
+                    $("#goToCourse").show();
+                }
+                else {
+                    $("#failModal").modal('show');
+                    $("#infoMessageFail").test('Course could not be joined');
+                }
+            }
+        });
+
+    }
+
+</script>

@@ -8,6 +8,8 @@ namespace StudentDashboard.HttpResponse
 {
     public class InstructorProfileDetailsModal:APIDefaultResponse
     {
+        [JsonProperty("instructor_id")]
+        public long m_iInstructorId;
         [JsonProperty("instructor_name")]
         public string m_strInstructorName { get; set; }
         [JsonProperty("date_of_joining")]

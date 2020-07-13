@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
@@ -843,6 +844,110 @@ namespace StudentDashboard.API
                     objResponse = new GetTestSubmissionDetailsResponse();
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetClasroomDetails")]
+        [HttpPost]
+        public async Task<ClassroomDetailsResponse> GetClassroomDetails(long id)
+        {
+            ClassroomDetailsResponse objResponse = new ClassroomDetailsResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    objResponse.m_objClassRoomModal = await objStudentService.GetClassroomDetailsForStudent(id);
+                    if (objResponse != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("JoinClassroom")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> JoinClassroom(long id)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    if(await objStudentService.JoinClassroom(id,StudentidInRequest))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                    
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetJoinedClassroom")]
+        [HttpPost]
+        public async Task<StudentClassroomResponse> GetJoinedClassrooms()
+        {
+            StudentClassroomResponse objResponse = new StudentClassroomResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    objResponse.m_lsStudentClassroomModal = await objStudentService.GetJoinedClassroom(StudentidInRequest);
+                    if (objResponse != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("JoinClassroomMeeting")]
+        [HttpPost]
+        public async Task<StudentClassroomResponse> JoinClassroomMeeting(long MeetingId)
+        {
+            StudentClassroomResponse objResponse = new StudentClassroomResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    
+                    if (await objStudentService.JoinClassroomMeeting(MeetingId, StudentidInRequest))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
                 }
             }
             catch (Exception Ex)

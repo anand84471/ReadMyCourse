@@ -279,3 +279,9 @@ D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.dll
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.pdb
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Twilio.dll
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Twilio.xml
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.Core.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.S3.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.Core.pdb
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.Core.xml
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.S3.pdb
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.S3.xml

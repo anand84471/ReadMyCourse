@@ -1,0 +1,60 @@
+﻿@using StudentDashboard.Models.Instructor;
+@model JitsiMeetingModal
+<script src="../../Scripts/vendor/jquery/jquery.min.js"></script>
+<script src='https://goodpathshala.com/external_api.js'></script>
+<div id="meet"></div>
+<script>
+    const domain = 'goodpathshala.com';
+    const options = {
+        roomName: "@Model.m_strMeetingName",
+        parentNode: document.querySelector('#meet'),
+    };
+    const api = new JitsiMeetExternalAPI(domain, options);
+    api.addEventListener('participantRoleChanged', function (event) {
+        if (event.role === "moderator") {
+            api.executeCommand('password', "@Model.m_strMeetingPassword");
+        }
+    });
+    // join a protected channel
+    //api.on('passwordRequired', function () {
+    //    api.executeCommand('password', 'The Password');
+    //});
+    api.executeCommand('subject', "@Model.m_strMeetingTopic");
+    api.executeCommand('toggleAudio');
+    api.executeCommand('toggleVideo');
+    //api.executeCommand('avatarUrl', 'https://readmycourse.com/Images/site-logo.png');
+    api.on("videoConferenceLeft",
+        (object) => 
+            $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/api/v1/instructor/CloseClassroomMeeting?MeetingId=".concat("@Model.m_llMeetingId"),
+                success: function (data) {
+                    if(data != null && data.response_code == 1)
+                    {
+
+                    }
+                }
+            })
+        );
+    function markMeetingClosed()
+    {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/CloseClassroomMeeting?MeetingId=".concat("@Model.m_llMeetingId"),
+            success: function (data) {
+                if(data != null && data.response_code == 1)
+                {
+
+                }
+            }
+        });
+    }
+
+</script>

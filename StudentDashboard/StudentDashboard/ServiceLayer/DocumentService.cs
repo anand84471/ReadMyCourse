@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.DTO;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Utilities;
 using System;
 
@@ -31,6 +32,10 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> CheckAssignmentAccess(long AssignmentId, string AccessCode)
         {
             return await objDocumentDTO.CheckAssignmentAccess(AssignmentId, AccessCode);
+        }
+        public async Task<bool> CheckClassroomAccess(long ClassroomId, string AccessCode)
+        {
+            return await objDocumentDTO.CheckClassroomAccess(ClassroomId, AccessCode);
         }
         //public async Task<GetAssignmentDetailsResponseForAnonymous> GetAssignmentDetailsWithAccessCode(long AssignmentId, string AccessCode)
         //{
@@ -75,6 +80,10 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<ClassRoomModal> GetClassroomDetailsForStudent(long ClassroomId)
+        {
+            return await objDocumentDTO.GetClassroomDetailsForStudent(ClassroomId);
         }
 
     }

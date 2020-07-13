@@ -41,6 +41,20 @@
                     </div>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-university"></i>
+                    <span>Classroom</span>
+                </a>
+                <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">ReadMyCourse Classroom</h6>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateClassroom()">Create new Classroom </a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllClassroom()">View all Classroom </a>
+                    </div>
+                </div>
+            </li>
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -359,7 +373,7 @@
         });
     }
 
-   
+
     function callActivity()
     {
         startSpinner();
@@ -374,6 +388,46 @@
             }
         });
     }
+    function callCreateClassroom() {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("CreateClassroom", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "CreateClassroom" }, "", "CreateClassroom");
+            }
+        });
+    }
+    function callClassroomDashboard(id) {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: "ClassroomDashboard?id=".concat(id),
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "ClassroomDashboard" }, "", "ClassroomDashboard?id=".concat(id));
+            }
+        });
+    }
+    function callViewAllClassroom() {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("Classrooms", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "Classrooms" }, "", "Classrooms");
+            }
+        });
+    }
+
     function callAccount()
     {
         startSpinner();
@@ -404,11 +458,14 @@
     }
     $(document).ready(function () {
         $(document).click(function (event) {
-            debugger
+ 
             var clickover = $(event.target);
             var _opened = $(".collapse").hasClass("side-nav");
             if (_opened === true && !clickover.hasClass("collapse-item")) {
-                document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+                if (document.getElementsByClassName("collapse show side-nav") != undefined && document.getElementsByClassName("collapse show side-nav").length > 0) {
+                    document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+                }
+                
             }
         });
     });

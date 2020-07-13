@@ -37,11 +37,14 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION = "new test submission";
         public static readonly string CONTENT_STATUS_ACTIVE = "active";
         public static readonly string CONTENT_STATUS_INACTIVE = "in active";
+        public static readonly string MEETING_STATUS_ACTIVE = "active";
+        public static readonly string MEETING_STATUS_CLOSED = "closed";
 
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
         public static string BASE_URL_PATH_FOR_TEST = "https://readmycourse.com/Test/Details?id=";
         public static string BASE_URL_PATH_FOR_COURSE = "https://readmycourse.com/Course/Details?id=";
+        public static string BASE_URL_PATH_FOR_CLASSROOM = "https://readmycourse.com/Classroom/Details?id=";
         public static string BASE_URL_PATH_FOR_AUTHORIZATION = "https://readmycourse.com/AuthService/?";
         #endregion
 

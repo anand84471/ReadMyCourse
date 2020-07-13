@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Utils;
 using StudentDashboard.Utilities;
 using System;
@@ -101,6 +102,27 @@ namespace StudentDashboard.DTO
             try
             {
                 DataSet ds = await objCPDataService.CheckAssignmentAccessAsync(AssignmentId, AccessCode);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckAssignmentAccess", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckClassroomAccess(long ClassroomId, string AccessCode)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckClassroomAccessAsync(ClassroomId, AccessCode);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     result = true;
@@ -265,6 +287,33 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<ClassRoomModal> GetClassroomDetailsForStudent(long ClassroomId)
+        {
+            ClassRoomModal objClassRoomModal = new ClassRoomModal();
+            try
+            {
+                DataSet ds = await objCPDataService.GetClasroomDetailsAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objClassRoomModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassRoomModal(
+                         dataRow.Field<long>("CLASSROOM_ID"),
+                         dataRow.Field<string>("CLASSROOM_NAME"),
+                          dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
+                         dataRow.Field<bool>("IS_MEETING_ACTIVE")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objClassRoomModal;
         }
     }
 }
