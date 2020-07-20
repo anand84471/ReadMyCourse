@@ -36,6 +36,24 @@ namespace StudentDashboard.ServiceLayer
             m_strLogMessage = new StringBuilder();
            
         }
+        public JitsiMeetingModal GetMeetingObject()
+        {
+            JitsiMeetingModal result = new JitsiMeetingModal();
+            try
+            {
+
+                result.m_strMeetingName = objInstructorBusinessLayer.GetRandomMeetingName();
+                result.m_strMeetingPassword = objInstructorBusinessLayer.GetRandomMeetingPassword();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewUser", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
         public async Task<bool> RegisterNewUser(StaeModel objRegisterModel )
         {
             bool result = false;
@@ -1161,6 +1179,55 @@ namespace StudentDashboard.ServiceLayer
             {
 
                 result = await objHomeDTO.GetAllStudentsJoinedToClassroomResponse(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<StudentMeetingJoinedResponse>> GetAllStudentsJoinedToMeetingResponse(long MeetingId, long ClassroomId)
+        {
+            List<StudentMeetingJoinedResponse> result = new List<StudentMeetingJoinedResponse>();
+            try
+            {
+                result = await objHomeDTO.GetAllStudentsJoinedToMeetingResponse(MeetingId,ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertNewMessageToClassroom(InsertInstructorMessageToClassroom insertInstructorMessageToClassroom)
+        {
+
+            bool result = false;
+            try
+            {
+                result = await objHomeDTO.InsertNewMessageToClassroom(insertInstructorMessageToClassroom);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomInstructorMessageModal>> GetAllClassroomMessageForInstructor(long ClassroomId)
+        {
+            List<ClassroomInstructorMessageModal> result = null;
+            try
+            {
+                result = await objHomeDTO.GetAllClassroomMessageForInstructor(ClassroomId);
             }
             catch (Exception Ex)
             {

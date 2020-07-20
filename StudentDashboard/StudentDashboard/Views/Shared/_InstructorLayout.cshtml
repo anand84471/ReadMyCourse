@@ -9,7 +9,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#" onclick="callHome()">
-                    <img width="60" height="22" src="../Images/site-logo.png" style="background-color:white" />
+                    <img width="60" height="60" src="../Images/site-logo.jpg" style="background-color:white" />
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -26,6 +26,20 @@
             <div class="sidebar-heading">
                 Learning
             </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-university"></i>
+                    <span>Classroom</span>
+                </a>
+                <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">ReadMyCourse Classroom</h6>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateClassroom()">Create new Classroom </a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllClassroom()">View all Classroom </a>
+                    </div>
+                </div>
+            </li>
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -41,20 +55,7 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                    <i class="fas fa-fw fa-university"></i>
-                    <span>Classroom</span>
-                </a>
-                <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">ReadMyCourse Classroom</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateClassroom()">Create new Classroom </a>
-                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllClassroom()">View all Classroom </a>
-                    </div>
-                </div>
-            </li>
+            
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -696,7 +697,11 @@
                   +'</div>'
                 +'</a>';
                     }
+                  
                     $("#alertContainer").html(alertHtml);
+                    if (alerts.length == 0) {
+                        $("#alertContainer").html('<a class="dropdown-item text-center small text-gray-500" href="#">No alerts</a>');
+                    }
                 }
                 else {
                     $("#alertContainer").html('<a class="dropdown-item text-center small text-gray-500" href="#">No alerts</a>');

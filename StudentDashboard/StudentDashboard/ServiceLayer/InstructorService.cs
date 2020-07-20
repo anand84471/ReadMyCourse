@@ -210,5 +210,9 @@ namespace StudentDashboard.ServiceLayer
             }
             return objJitsiMeetingModal;
         }
+        public async Task<bool> CheckClassroomAccess(long ClassroomId, int InstructorId)
+        {
+            return await objInstructorDTO.CheckClassroomAccess(ClassroomId, InstructorId);
+        }
     }
 }

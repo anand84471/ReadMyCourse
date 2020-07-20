@@ -35,6 +35,7 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_COURSE_JOIN = "new course join";
         public static readonly string ALERT_INSTRUCTOR_NEW_ASSIGNMENT_SUBMISSION = "new assignment submission";
         public static readonly string ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION = "new test submission";
+        public static readonly string MESSEGE_SENDER_CLASSROOM = "admin";
         public static readonly string CONTENT_STATUS_ACTIVE = "active";
         public static readonly string CONTENT_STATUS_INACTIVE = "in active";
         public static readonly string MEETING_STATUS_ACTIVE = "active";

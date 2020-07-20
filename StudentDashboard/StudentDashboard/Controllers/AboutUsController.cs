@@ -17,5 +17,7 @@ namespace StudentDashboard.Controllers
             GetWebsiteHomeDetailsResponse objResponse = await objDocumentService.GetHomeDetails();
             return View(objResponse);
         }
+       
+
     }
 }

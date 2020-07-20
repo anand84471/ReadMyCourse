@@ -2210,6 +2210,74 @@ namespace StudentDashboard.DTO
             }
             return lsClassroomMeetingModal;
         }
+        public async Task<List<StudentMeetingJoinedResponse>> GetAllStudentsJoinedToMeetingResponse(long MeetingId,long ClassroomId)
+        {
+            List<StudentMeetingJoinedResponse> lsClassroomMeetingModal = new List<StudentMeetingJoinedResponse>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllStudentsJoinedToMeetingAsync(ClassroomId,MeetingId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsClassroomMeetingModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentMeetingJoinedResponse(
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("STUDENT_NAME").ToString(),
+                         dataRow.Field<DateTime>("MEETING_JOIN_TIME").ToString("hh:mm:ss tt"))).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsClassroomMeetingModal;
+        }
+        public async Task<bool> InsertNewMessageToClassroom(InsertInstructorMessageToClassroom insertInstructorMessageToClassroom)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertNewInstructorClassroomMessageAsync(insertInstructorMessageToClassroom.m_llClassroomId,
+                    insertInstructorMessageToClassroom.m_strMessage);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "MarkMeetingClosed", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomInstructorMessageModal>> GetAllClassroomMessageForInstructor(long ClassroomId)
+        {
+            List<ClassroomInstructorMessageModal> lsResponse = new List<ClassroomInstructorMessageModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomMessageAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomInstructorMessageModal(
+                         dataRow.Field<string>("MESSAGE"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("f"),
+                         dataRow.Field<long>("MESSAGE_ID"),
+                         dataRow.Field<bool>("IS_INSTRUCTOR")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
     }
 }
  

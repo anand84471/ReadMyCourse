@@ -645,9 +645,11 @@ namespace StudentDashboard.Controllers
             string strCurrentMethodName = "ClassroomDashboard";
             try
             {
-                ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id, 
+                if(await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"])){
+                    ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id,
                     (int)Session["instructor_id"]);
-                return PartialView(objClassRoomModal);
+                    return PartialView(objClassRoomModal);
+                }
             }
             catch (Exception Ex)
             {
@@ -658,6 +660,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Errors");
             }
+            return PartialView("UnAuthorizedAccess");
         }
         [HttpGet]
         public PartialViewResult PreviewCourse(int id)

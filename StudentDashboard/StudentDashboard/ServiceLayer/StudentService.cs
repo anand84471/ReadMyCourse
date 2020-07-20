@@ -4,6 +4,7 @@ using StudentDashboard.BusinessLayer;
 using StudentDashboard.DTO;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
@@ -610,6 +611,18 @@ namespace StudentDashboard.ServiceLayer
         public async Task<JitsiMeetingModal> GetClassroomMeetingDetails(long ClassroomId)
         {
             return await objStudentDTO.GetClassroomMeetingDetails(ClassroomId);
+        }
+        public async Task<bool> InsertNewMessageToClassroomByStudent(InsertStudentMessageToClassroom insertStudentMessageToClassroom)
+        {
+            return await objStudentDTO.InsertNewMessageToClassroomByStudent(insertStudentMessageToClassroom);
+        }
+        public async Task<bool> CheckStudentAccessToClassroom(long StudentId, long ClassroomId)
+        {
+            return await objStudentDTO.CheckStudentAccessToClassroom(StudentId, ClassroomId);
+        }
+        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomMessageForStudent(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomMessageForInstructor(ClassroomId, StudentId);
         }
     }
 }

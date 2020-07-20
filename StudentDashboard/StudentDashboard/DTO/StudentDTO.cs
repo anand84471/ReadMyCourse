@@ -1,6 +1,7 @@
 ﻿using StudentDashboard.BusinessLayer;
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
@@ -867,7 +868,7 @@ namespace StudentDashboard.DTO
                           dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED").ToString(),
-                          dataRow.Field<bool>("IS_MEETING_ACTIVE")
+                          dataRow.Field<bool?>("IS_MEETING_ACTIVE")
                          )).ToList()[0];
                 }
             }
@@ -968,6 +969,75 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return objJitsiMeetingModal;
+        }
+        public async Task<bool> InsertNewMessageToClassroomByStudent(InsertStudentMessageToClassroom insertStudentMessageToClassroom)
+        {
+            bool result = false;
+            try
+            {
+
+                result = await objCPDataService.InsertNewStudentClassroomMessageAsync(insertStudentMessageToClassroom.m_llClassroomId,
+                    insertStudentMessageToClassroom.m_strMessage, insertStudentMessageToClassroom.m_llStudentId);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinClassroomMeeting", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckStudentAccessToClassroom(long StudentId, long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+
+                DataSet ds = await objCPDataService.CheckStudentClassroomAccessAsync(ClassroomId,StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomMessageForInstructor(long ClassroomId,long StudentId)
+        {
+            List<ClassroomStudentMessageModal> lsResponse = new List<ClassroomStudentMessageModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomMessageAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomStudentMessageModal(
+                         dataRow.Field<string>("MESSAGE"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("hh:mm:ss tt"),
+                         dataRow.Field<long>("MESSAGE_ID"),
+                         dataRow.Field<bool>("IS_INSTRUCTOR"),
+                         dataRow.Field<long?>("STUDENT_ID") != null && dataRow.Field<long?>("STUDENT_ID") == StudentId ? true : false
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
         }
     }
 }

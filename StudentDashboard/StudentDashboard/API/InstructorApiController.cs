@@ -23,7 +23,8 @@ namespace StudentDashboard.API
         StringBuilder m_strLogMessage = new StringBuilder();
         HomeDTO objHomeDTO = new HomeDTO();
         HomeService objHomeService = new HomeService();
-        
+        InstructorService objInstructorService = new InstructorService();
+
         [Route("addcourse")]
         [HttpPost]
         public async Task<InsertNewCourseResponse> InsertNewCourse([FromBody]CourseModel objCourseModel)
@@ -1629,8 +1630,9 @@ namespace StudentDashboard.API
             try
             {
                
-                if (objInstructorSearchRequest != null)
+                if (objInstructorSearchRequest != null&& GetInstructorIdInRequest()!=-1)
                 {
+                    objInstructorSearchRequest.m_iInstructorId = GetInstructorIdInRequest();
                     objResponse = await objHomeService.GetInstructorSearchDetails(objInstructorSearchRequest);
                     if (objResponse != null)
                     {
@@ -1893,6 +1895,83 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [HttpPost]
+        [Route("GetAllStudentsJoinedToMeeting")]
+        public async Task<GetAllStudentJoinedTomMeetingResponse> GetAllStudentJoinedToMeeting(long MeetingId,long ClassroomId)
+        {
+            GetAllStudentJoinedTomMeetingResponse objResponse = new GetAllStudentJoinedTomMeetingResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1)
+                {
+                    objResponse.m_lsStudnetJoinedToMeeting = await objHomeService.GetAllStudentsJoinedToMeetingResponse(MeetingId,ClassroomId);
+                    if (objResponse.m_lsStudnetJoinedToMeeting != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("InsertNewClassroomMessage")]
+        public async Task<APIDefaultResponse> InsertNewClassroomMessage([FromBody]InsertInstructorMessageToClassroom insertInstructorMessageToClassroom)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (insertInstructorMessageToClassroom!=null&&InstructorId != -1&&await objInstructorService.CheckClassroomAccess(insertInstructorMessageToClassroom.m_llClassroomId,InstructorId))
+                {
+                    if(await objHomeService.InsertNewMessageToClassroom(insertInstructorMessageToClassroom))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                   
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("GetAllClassroomMessage")]
+        public async Task<GetClassroomAllMessageResponse> GetAllClassroomMessage( long ClassroomId)
+        {
+            GetClassroomAllMessageResponse objResponse = new GetClassroomAllMessageResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1&& await objInstructorService.CheckClassroomAccess(ClassroomId,InstructorId))
+                {
+                    objResponse.m_lsClassroomInstructorMessageModal = await objHomeService.GetAllClassroomMessageForInstructor( ClassroomId);
+                    if (objResponse.m_lsClassroomInstructorMessageModal != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }
-
 }

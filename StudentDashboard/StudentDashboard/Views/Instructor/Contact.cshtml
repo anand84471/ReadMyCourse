@@ -250,6 +250,7 @@
             }
             var _data = extractDataFromContactUsForm();
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                 type: "POST",
                 data: JSON.stringify(_data),
                 contentType: "application/json; charset=utf-8",

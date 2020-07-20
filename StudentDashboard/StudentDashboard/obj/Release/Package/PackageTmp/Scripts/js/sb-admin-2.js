@@ -39,11 +39,13 @@
 
   $(document).ready(function () {
       $(document).click(function (event) {
-          debugger
           var clickover = $(event.target);
           var _opened = $(".collapse").hasClass("side-nav");
           if (_opened === true && !clickover.hasClass("collapse-item")) {
-              document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+              var items = document.getElementsByClassName("collapse show side-nav");
+              if (items != null && items.length > 0) {
+                  document.getElementsByClassName("collapse show side-nav")[0].classList.remove("show");
+              }
           }
       });
   });

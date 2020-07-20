@@ -23,6 +23,15 @@ namespace StudentDashboard.Controllers
         DocumentService objDocumentService = new DocumentService();
         public ActionResult Index(string return_url=null)
         {
+            if(Session["user_id"]!=null)
+            {
+                if (return_url == null)
+                {
+                    return Redirect("/Student/Home");
+                }
+                
+                return Redirect(return_url);
+            }
             if(return_url!=null)
             {
                 ViewBag.ReturnUrl = "/Student/ValidateLogin?return_url="+return_url;

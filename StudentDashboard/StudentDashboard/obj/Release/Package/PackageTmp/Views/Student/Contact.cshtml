@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Contact";
-    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
 <div class="modal fade" id="successDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -250,6 +250,7 @@
             }
             var _data = extractDataFromContactUsForm();
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
                 type: "POST",
                 data: JSON.stringify(_data),
                 contentType: "application/json; charset=utf-8",

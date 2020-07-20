@@ -2,7 +2,7 @@
     ViewBag.Title = "View all assignments";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
-<div class="container-fluid" id="addNewCourseContainer">
+<div class="container-fluid " id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Give new assignment</h1>
         <nav aria-label="breadcrumb">
@@ -27,26 +27,80 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
+    <div id="assignmentAccessController" class="card col-sm-6 ml-xl-5 shadow-lg ">
+        <div class="card-body">
+            <h5>Please enter assignment id and access code to continue</h5>
+            <form method="post" class="needs-validation" action="RequestAssignmentAccess" novalidate>
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Assignment Id</label>
+                    <input type="text" name="assignment_id" class="form-control" id="accessCode" placeholder="Enter id" required>
+                    <div class="invalid-feedback">
+                        Please enter assignment id
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Access code</label>
+                    <input type="text" name="assignment_access_code"  class="form-control" id="accessCode" placeholder="Enter access code" required>
+                    <div class="invalid-feedback">
+                        Please enter access code
+                    </div>
+                </div>
+                @if (ViewBag.IsAccessError != null)
+                {
+                    if (ViewBag.IsAccessError)
+                    {
+                        <div class="alert alert-danger" role="alert" name="loginMessage1">
+                            Access denied!
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-primary" role="alert" name="loginMessage1">
+                            Access granted
+                        </div>
+                    }
+                    ViewBag.IsLoggedIn = null;
+                }
+                <div class="form-group">
+                    <button type="submit" class="btn btn-block btn-outline-primary">Submit</button>
+                </div>
+            </form>
+           
+        </div>
+    </div>
     <div class="row" id="coursesContainer">
     </div>
 
 </div>
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="card border-success modal-content">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="infoTitle">Confirm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h3 id="infoMessageSuccess">Course joined successfully</h3>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Close</button>
-                </div>
+<div class="modal fade" id="requestAssignemntAccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAndUpdateIndexTopicHeader">Please enter access code to continue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetAddTopicModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="needs-validation" action="RequestAssignmentAccess" novalidate>
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" >Assignment Id</label>
+                        <input type="text" name="assignment_id" class="form-control" id="assignmentModalId" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Access code</label>
+                        <input type="text" name="assignment_access_code" class="form-control" id="assignmentModalAccessCode"  placeholder="Enter access code">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block btn-outline-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetAddTopicModal()">Close</button>
             </div>
         </div>
     </div>
@@ -103,12 +157,52 @@
             </div>
             <!--Footer-->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary " data-dismiss="modal" onclick="requestStartAssignment()">Close</button>
             </div>
         </div>
         <!--/.Content-->
     </div>
 </div>
+<script type="text/javascript">
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form)
+                {
+                    form.addEventListener('submit', function (event)
+                    {
+                        if (form.checkValidity() === false ) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                            form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+        function requestStartAssignment() {
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(_data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/api/v1/instructor/contact",
+                success: function (data) {
+                    if (data != null && data.response_code == 1) {
+                        $("#successResponseMessage").text("response received. we will contact you soon");
+                        $("#successDelete").modal('show');
+                    }
+                    else {
+                        $("#errorAlertMessageBody").text("Form submission failed. Please try again");
+                        $("#errorAlertHeader").modal('show');
+                    }
+                }
+            });
+        }
+</script>
 <script>
     (function () {
         'use strict';
@@ -119,9 +213,11 @@
                 searchForAssignments();
             }
         });
-        onpageshow = searchForAssignments();
+        $("#spinner").remove();
+        //onpageshow = searchForAssignments();
     })();
     function searchForAssignments() {
+        $("#assignmentAccessController").remove();
         debugger
         var _data =
             {
@@ -168,15 +264,8 @@
     }
     function joinAssignment(id) {
         $('#accordionSidebar').addClass("toggled");
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
-            url: "GiveAssignment?id=".concat(id),
-            type: 'GET',
-            success: function (data) {
-                $("#body").html(data);
-                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "GiveAssignment?id=".concat(id));
-            }
-        });
+        $("#requestAssignemntAccess").modal("show");
+        $("#assignmentModalId").val(id);
     }
 
 </script>

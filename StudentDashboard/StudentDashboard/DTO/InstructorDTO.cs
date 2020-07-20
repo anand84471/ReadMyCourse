@@ -306,6 +306,7 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        
         public async Task<ClassRoomModal> GetClassroomDetailsForInstructor(long ClassroomId, int InstructorId)
         {
             ClassRoomModal objClassRoomModal = new ClassRoomModal();
@@ -361,6 +362,27 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return objJitsiMeetingModal;
+        }
+        public async Task<bool> CheckClassroomAccess(long ClassroomId, int InstructorId)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckInstructorClassroomAccessAsync(ClassroomId, InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckTestAccess", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

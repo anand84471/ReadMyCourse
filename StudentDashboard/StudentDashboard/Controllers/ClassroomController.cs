@@ -25,13 +25,13 @@ namespace StudentDashboard.Controllers
                 if (Session["user_id"] != null)
                 {
 
-                    Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id);
+                    Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id+"&&access_code="+access_code);
                 }
-                ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id;
+                ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id+ "&&access_code=" + access_code;
                 ViewBag.Id = id;
                 return PartialView();
             }
-            return PartialView("~./");
+            return PartialView();
         }
     }
 }
