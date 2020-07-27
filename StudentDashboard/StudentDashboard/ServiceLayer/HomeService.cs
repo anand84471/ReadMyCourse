@@ -7,6 +7,7 @@ using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
@@ -676,7 +677,15 @@ namespace StudentDashboard.ServiceLayer
                 }
                 if(result)
                 {
-                    await InsertActivityForInstructor(objAssignmentmodel.m_iInstructorId, objActivityManager.CreateActivityMessageForinstructor(objAssignmentmodel.m_llAssignemntId,objAssignmentmodel.m_strAssignmentName, (int)Constants.ActivityType.ASSIGNMENT_CREATED));
+                    if (objAssignmentmodel.m_bIsClassroomAssignment)
+                    {
+                        result=await InsertnewAssignmentToClassroom(objAssignmentmodel.m_llAssignemntId,objAssignmentmodel.m_llClassroomId);
+                    }
+                    else
+                    {
+                        result=await InsertActivityForInstructor(objAssignmentmodel.m_iInstructorId, objActivityManager.CreateActivityMessageForinstructor(objAssignmentmodel.m_llAssignemntId, objAssignmentmodel.m_strAssignmentName, (int)Constants.ActivityType.ASSIGNMENT_CREATED));
+                    }
+                    
                 }
             }
             catch (Exception Ex)
@@ -768,7 +777,10 @@ namespace StudentDashboard.ServiceLayer
 
                             }
                         }
-
+                    if (objTestmodel.m_bIsClassroomAccess)
+                    {
+                        result = await objHomeDTO.InsertnewTestToClassroom(objTestmodel.m_llTestId, objTestmodel.m_llClassroomId);
+                    }
                     
                 }
                 if(result)
@@ -1237,6 +1249,70 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<List<ClassroomInstructorMessageModal>> GetAllClassroomLastMessagesForInstructor(long ClassroomId, long LastMessageId)
+        {
+            List<ClassroomInstructorMessageModal> result = null;
+            try
+            {
+                result = await objHomeDTO.GetAllClassroomLastMessagesForInstructor(ClassroomId, LastMessageId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllMeetingForClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> DeleteClassroom(long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objHomeDTO.DeleteClassroom(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomDetails(ClassRoomModal classRoomModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objHomeDTO.UpdateClassroomDetails(classRoomModal);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertnewAssignmentToClassroom(long AssignmentId, long ClassroomId)
+        {
+            return await objHomeDTO.InsertnewAssignmentToClassroom(AssignmentId, ClassroomId);
+        }
+        public async Task<List<ClassroomAssignmentModal>> GetAllClassroomAssignments(long ClassroomId)
+        {
+            return await objHomeDTO.GetAllClassroomAssignments(ClassroomId);
+        }
+        public async Task<List<ClassroomTestModal>> GetAllClassroomTests(long ClassroomId)
+        {
+            return await objHomeDTO.GetAllClassroomTests(ClassroomId);
+        }
+        public async Task<bool> DeleteClassroomTest(long ClassroomId, long TestId)
+        {
+            return await objHomeDTO.DeleteClassroomTest(ClassroomId, TestId);
         }
     }
 

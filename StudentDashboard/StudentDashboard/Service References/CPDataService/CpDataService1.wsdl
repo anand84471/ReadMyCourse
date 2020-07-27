@@ -8,6 +8,12 @@
       <xsd:import schemaLocation="http://localhost:51735/CpDataService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CPDataService" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudentResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -307,6 +313,90 @@
   </wsdl:message>
   <wsdl:message name="ICpDataService_GetAllClassroomMessage_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAllClassroomMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomMessageAfterLastMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomMessageAfterLastMessage" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomMessageAfterLastMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomMessageAfterLastMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroom_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroom" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroomResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewAssignmentToClassroom_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewAssignmentToClassroom" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewAssignmentToClassroom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewAssignmentToClassroomResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignments_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignments" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignments_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignmentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroomAssignment_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroomAssignment" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroomAssignment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroomAssignmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroomTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroomTest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeleteClassroomTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteClassroomTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewTestToClassroom_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewTestToClassroom" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewTestToClassroom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewTestToClassroomResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTest" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomMeetingForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomMeetingForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomMeetingForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomMeetingForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignmntForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignmntForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignmntForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignmntForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignmentSubmissionsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignmentSubmissionsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomAssignmentSubmissionsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomAssignmentSubmissionsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTestSubmissionsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTestSubmissionsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTestSubmissionsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTestSubmissionsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTestForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTestForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomTestForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomTestForStudentResponse" />
   </wsdl:message>
   <wsdl:message name="ICpDataService_DeleteMcqTestQuestion_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteMcqTestQuestion" />
@@ -1077,6 +1167,10 @@
     <wsdl:part name="parameters" element="tns:InsertNewTestToCourseResponse" />
   </wsdl:message>
   <wsdl:portType name="ICpDataService">
+    <wsdl:operation name="GetClassroomHomeDetailsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -1276,6 +1370,62 @@
     <wsdl:operation name="GetAllClassroomMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMessage" message="tns:ICpDataService_GetAllClassroomMessage_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMessageResponse" message="tns:ICpDataService_GetAllClassroomMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomMessageAfterLastMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessage" message="tns:ICpDataService_GetAllClassroomMessageAfterLastMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessageResponse" message="tns:ICpDataService_GetAllClassroomMessageAfterLastMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails" message="tns:ICpDataService_UpdateClassroomDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse" message="tns:ICpDataService_UpdateClassroomDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroom">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroom" message="tns:ICpDataService_DeleteClassroom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroomResponse" message="tns:ICpDataService_DeleteClassroom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNewAssignmentToClassroom">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroom" message="tns:ICpDataService_AddNewAssignmentToClassroom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroomResponse" message="tns:ICpDataService_AddNewAssignmentToClassroom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignments">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignments" message="tns:ICpDataService_GetAllClassroomAssignments_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentsResponse" message="tns:ICpDataService_GetAllClassroomAssignments_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroomAssignment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroomAssignment" message="tns:ICpDataService_DeleteClassroomAssignment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroomAssignmentResponse" message="tns:ICpDataService_DeleteClassroomAssignment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroomTest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroomTest" message="tns:ICpDataService_DeleteClassroomTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeleteClassroomTestResponse" message="tns:ICpDataService_DeleteClassroomTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNewTestToClassroom">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/AddNewTestToClassroom" message="tns:ICpDataService_AddNewTestToClassroom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/AddNewTestToClassroomResponse" message="tns:ICpDataService_AddNewTestToClassroom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTest">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTest" message="tns:ICpDataService_GetAllClassroomTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTestResponse" message="tns:ICpDataService_GetAllClassroomTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomMeetingForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudent" message="tns:ICpDataService_GetAllClassroomMeetingForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudentResponse" message="tns:ICpDataService_GetAllClassroomMeetingForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignmntForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudent" message="tns:ICpDataService_GetAllClassroomAssignmntForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudentResponse" message="tns:ICpDataService_GetAllClassroomAssignmntForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignmentSubmissionsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudent" message="tns:ICpDataService_GetAllClassroomAssignmentSubmissionsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudentResponse" message="tns:ICpDataService_GetAllClassroomAssignmentSubmissionsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTestSubmissionsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudent" message="tns:ICpDataService_GetAllClassroomTestSubmissionsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudentResponse" message="tns:ICpDataService_GetAllClassroomTestSubmissionsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTestForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudent" message="tns:ICpDataService_GetAllClassroomTestForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudentResponse" message="tns:ICpDataService_GetAllClassroomTestForStudent_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DeleteMcqTestQuestion">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion" message="tns:ICpDataService_DeleteMcqTestQuestion_InputMessage" />
@@ -1792,6 +1942,15 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICpDataService" type="tns:ICpDataService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetClassroomHomeDetailsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateNotificationStatus" style="document" />
       <wsdl:input>
@@ -2235,6 +2394,132 @@
     </wsdl:operation>
     <wsdl:operation name="GetAllClassroomMessage">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomMessageAfterLastMessage">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroom">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/DeleteClassroom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNewAssignmentToClassroom">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignments">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroomAssignment">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/DeleteClassroomAssignment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteClassroomTest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/DeleteClassroomTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNewTestToClassroom">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/AddNewTestToClassroom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTest">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomMeetingForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignmntForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomAssignmentSubmissionsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTestSubmissionsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomTestForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

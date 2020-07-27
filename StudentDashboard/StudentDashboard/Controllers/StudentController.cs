@@ -892,12 +892,13 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public ActionResult ViewClassroom(long classroom_id)
+        public async Task<ActionResult> ViewClassroom(long classroom_id)
         {
             try
             {
+                StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
                 ViewBag.Id = classroom_id;
-                return View();
+                return View(studentClassroomHomeDetails);
             }
             catch (Exception Ex)
             {

@@ -1,4 +1,5 @@
 ﻿using StudentDashboard.Models;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Utilities;
@@ -324,7 +325,11 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("CLASSROOM_STATUS"),
                          dataRow.Field<int>("NO_OF_POSTS"),
                          dataRow.Field<string>("SHARE_URL"),
-                         dataRow.Field<string>("SHARE_CODE")
+                         dataRow.Field<string>("SHARE_CODE"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS"),
+                         dataRow.Field<int>("NO_OF_TESTS"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
+                         dataRow.Field<int>("NO_OF_MEETINGS")
                          )).ToList()[0];
                 }
             }
@@ -379,6 +384,23 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckTestAccess", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> DeleteClassroomAssignment(long ClassroomID,long AssignmentId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.DeleteClassroomAssignmentAsync(ClassroomID,AssignmentId);
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteClassroomAssignment", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

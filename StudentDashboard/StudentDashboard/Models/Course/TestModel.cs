@@ -48,6 +48,10 @@ namespace StudentDashboard.Models.Course
         public string m_strTinyUrl;
         [JsonProperty("access_code")]
         public string m_strAccessCode;
+        [JsonProperty("classroom_id")]
+        public long m_llClassroomId;
+        [JsonProperty("is_classroom_acess")]
+        public bool m_bIsClassroomAccess;
         public TestModel()
         {
 

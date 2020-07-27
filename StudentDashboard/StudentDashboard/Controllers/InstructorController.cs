@@ -481,6 +481,91 @@ namespace StudentDashboard.Controllers
                 return PartialView("Error");
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> CreateClassroomAssignment(long id)
+        {
+            try
+            {
+                if(await objInstructorService.CheckClassroomAccess(id,(int)Session["instructor_id"]))
+                {
+                    ViewBag.ClassroomId = id;
+                }
+                
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateAssignment/rtype", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> CreateClassroomTest(long id)
+        {
+            try
+            {
+                if (await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"]))
+                {
+                    ViewBag.ClassroomId = id;
+                }
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateClassroomTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> ViewClassroomAssignment(long c_id,long ass_id)
+        {
+            try
+            {
+                if (await objInstructorService.CheckClassroomAccess(c_id, (int)Session["instructor_id"]))
+                {
+                    ViewBag.ClassroomId = c_id;
+                    ViewBag.AssignmnetId = ass_id;
+                }
+
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateAssignment/rtype", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> ViewClassroomTest(long c_id, long t_id)
+        {
+            try
+            {
+                if (await objInstructorService.CheckClassroomAccess(c_id, (int)Session["instructor_id"]))
+                {
+                    ViewBag.ClassroomId = c_id;
+                    ViewBag.TestId = t_id;
+                }
+
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateAssignment/rtype", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
         [HttpPost]
         public String FileUpload(FormCollection collection, HttpPostedFileBase[] fileUploads)
         {
@@ -646,6 +731,30 @@ namespace StudentDashboard.Controllers
             try
             {
                 if(await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"])){
+                    ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id,
+                    (int)Session["instructor_id"]);
+                    return PartialView(objClassRoomModal);
+                }
+            }
+            catch (Exception Ex)
+            {
+
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+            return PartialView("UnAuthorizedAccess");
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> ClassroomDashboardV2(long id)
+        {
+            string strCurrentMethodName = "ClassroomDashboardV2";
+            try
+            {
+                if (await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"]))
+                {
                     ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id,
                     (int)Session["instructor_id"]);
                     return PartialView(objClassRoomModal);

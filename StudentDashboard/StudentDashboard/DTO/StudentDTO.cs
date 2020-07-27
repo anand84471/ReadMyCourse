@@ -1023,7 +1023,7 @@ namespace StudentDashboard.DTO
                      dataRow => new ClassroomStudentMessageModal(
                          dataRow.Field<string>("MESSAGE"),
                          dataRow.Field<string>("STUDENT_NAME"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("hh:mm:ss tt"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("f"),
                          dataRow.Field<long>("MESSAGE_ID"),
                          dataRow.Field<bool>("IS_INSTRUCTOR"),
                          dataRow.Field<long?>("STUDENT_ID") != null && dataRow.Field<long?>("STUDENT_ID") == StudentId ? true : false
@@ -1038,6 +1038,146 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsResponse;
+        }
+        public async Task<List<StudentClassroomAssignmentModal>> GetAllClassroomAssignment(long ClassroomId, long StudentId)
+        {
+            List<StudentClassroomAssignmentModal> lsResponse = new List<StudentClassroomAssignmentModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomAssignmntForStudentAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentClassroomAssignmentModal(
+                         dataRow.Field<long>("ASSIGNMENT_ID"),
+                         dataRow.Field<string>("ASSIGNMENT_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<long?>("SUBMISSION_ID"),
+                         dataRow.Field<int?>("ASSIGNMANT_PERCENTAGE_SCORE"),
+                         dataRow.Field<string>("ASSIGNMENT_TYPE_NAME"),
+                         dataRow.Field<int>("NO_OF_MCQ_QUESTIONS")+ dataRow.Field<int>("NO_OF_SUBJECTIVE_QUESTIONS"),
+                         dataRow.Field<string>("SHARE_CODE")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<List<StudentClassroomAssignmentModal>> GetAllClassroomSubmittedAssignment(long ClassroomId, long StudentId)
+        {
+            List<StudentClassroomAssignmentModal> lsResponse = new List<StudentClassroomAssignmentModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomAssignmentSubmissionsForStudentAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentClassroomAssignmentModal(
+                          dataRow.Field<string>("ASSIGNMENT_NAME"),
+                         dataRow.Field<long>("SUBMISSION_ID"),
+                         dataRow.Field<DateTime>("SUBMISSION_DATE").ToString("d MMM yyyy"),
+                         dataRow.Field<int?>("ASSIGNMANT_PERCENTAGE_SCORE"),
+                         dataRow.Field<int>("TOTAL_NO_OF_QUESTIONS")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<List<StudentClassroomTestModal>> GetAllClassroomTest(long ClassroomId, long StudentId)
+        {
+            List<StudentClassroomTestModal> lsResponse = new List<StudentClassroomTestModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomTestForStudentAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentClassroomTestModal(
+                         dataRow.Field<long>("TEST_ID"),
+                         dataRow.Field<long?>("SUBMISSION_ID"),
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<string>("TEST_DESCRIPTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_QUESTIONS"),
+                         dataRow.Field<string>("TEST_TYPE_NAME"),
+                         dataRow.Field<string>("SHARE_CODE")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<List<StudentClassroomTestModal>> GetAllClassroomTestSubmissons(long ClassroomId, long StudentId)
+        {
+            List<StudentClassroomTestModal> lsResponse = new List<StudentClassroomTestModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomTestSubmissionsForStudentAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentClassroomTestModal(
+                         dataRow.Field<long>("SUBMISSION_ID"),
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<DateTime>("SUBMISSION_DATE").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("TEST_SCORE"),
+                         dataRow.Field<int>("PERCENTAGE_SCORE")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<StudentClassroomHomeDetails> GetStudentClassroomHomeDetails(long ClassroomId, long StudentId)
+        {
+            StudentClassroomHomeDetails studentClassroomHomeDetails = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomHomeDetailsForStudentAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    studentClassroomHomeDetails = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentClassroomHomeDetails(
+                         ClassroomId,
+                         dataRow.Field<int>("NO_OF_MEETINGS_JOINED"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED"),
+                         dataRow.Field<int>("NO_OF_TESTS_SUBMITTED")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return studentClassroomHomeDetails;
         }
     }
 }

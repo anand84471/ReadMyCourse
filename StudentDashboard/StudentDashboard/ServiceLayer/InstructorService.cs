@@ -1,6 +1,7 @@
 ﻿using StudentDashboard.BusinessLayer;
 using StudentDashboard.DTO;
 using StudentDashboard.Models;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
@@ -213,6 +214,10 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> CheckClassroomAccess(long ClassroomId, int InstructorId)
         {
             return await objInstructorDTO.CheckClassroomAccess(ClassroomId, InstructorId);
+        }
+        public async Task<bool> DeleteClassroomAssignment(long ClassroomID, long AssignmentId)
+        {
+            return await objInstructorDTO.DeleteClassroomAssignment(ClassroomID, AssignmentId);
         }
     }
 }

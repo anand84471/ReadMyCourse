@@ -3,6 +3,7 @@ using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
@@ -2096,36 +2097,36 @@ namespace StudentDashboard.DTO
             }
             return objClassRoomModal;
         }
-        public async Task<ClassRoomModal> GetClassroomDetailsForInstructor(long ClassroomId,int InstructorId)
-        {
-            ClassRoomModal objClassRoomModal = new ClassRoomModal();
-            try
-            {
-                DataSet ds = await objCPDataService.GetClassRoomDetailsForInstructorAsync( InstructorId, ClassroomId);
-                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
-                {
-                    objClassRoomModal = ds.Tables[0].AsEnumerable().Select(
-                     dataRow => new ClassRoomModal(
-                         dataRow.Field<long>("CLASSROOM_ID"),
-                         dataRow.Field<string>("CLASSROOM_NAME"),
-                          dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
-                         dataRow.Field<string>("COURSE_STATUS_NAME"),
-                         dataRow.Field<int>("NO_OF_POSTS"),
-                          dataRow.Field<string>("SHARE_URL"),
-                           dataRow.Field<string>("SHARE_CODE")
-                         )).ToList()[0];
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return objClassRoomModal;
-        }
+        //public async Task<ClassRoomModal> GetClassroomDetailsForInstructor(long ClassroomId,int InstructorId)
+        //{
+        //    ClassRoomModal objClassRoomModal = new ClassRoomModal();
+        //    try
+        //    {
+        //        DataSet ds = await objCPDataService.GetClassRoomDetailsForInstructorAsync( InstructorId, ClassroomId);
+        //        if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            objClassRoomModal = ds.Tables[0].AsEnumerable().Select(
+        //             dataRow => new ClassRoomModal(
+        //                 dataRow.Field<long>("CLASSROOM_ID"),
+        //                 dataRow.Field<string>("CLASSROOM_NAME"),
+        //                  dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
+        //                 dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
+        //                 dataRow.Field<string>("COURSE_STATUS_NAME"),
+        //                 dataRow.Field<int>("NO_OF_POSTS"),
+        //                  dataRow.Field<string>("SHARE_URL"),
+        //                   dataRow.Field<string>("SHARE_CODE")
+        //                 )).ToList()[0];
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return objClassRoomModal;
+        //}
         public async Task<bool> InsertNewPostToClassroom(ClassroomPostModal objClassroomPostModal)
         {
             bool result = false;
@@ -2277,6 +2278,168 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsResponse;
+        }
+        public async Task<List<ClassroomInstructorMessageModal>> GetAllClassroomLastMessagesForInstructor(long ClassroomId,long LastMessageId)
+        {
+            List<ClassroomInstructorMessageModal> lsResponse = new List<ClassroomInstructorMessageModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomMessageAfterLastMessageAsync(ClassroomId, LastMessageId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomInstructorMessageModal(
+                         dataRow.Field<string>("MESSAGE"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("f"),
+                         dataRow.Field<long>("MESSAGE_ID"),
+                         dataRow.Field<bool>("IS_INSTRUCTOR")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<bool> DeleteClassroom(long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.DeleteClassroomAsync(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomDetails(ClassRoomModal classRoomModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomDetailsAsync(classRoomModal.m_llClassRoomId,
+                    classRoomModal.m_strClassRoomName, classRoomModal.m_strClassRoomDescription);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertnewAssignmentToClassroom(long AssignmentId, long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.AddNewAssignmentToClassroomAsync(ClassroomId, AssignmentId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertnewAssignmentToClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomAssignmentModal>> GetAllClassroomAssignments(long ClassroomId)
+        {
+            List<ClassroomAssignmentModal> lsResponse = new List<ClassroomAssignmentModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomAssignmentsAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomAssignmentModal(
+                         dataRow.Field<string>("ASSIGNMENT_NAME"),
+                         dataRow.Field<int>("NO_OF_SUBMISSIONS"),
+                           dataRow.Field<long>("ASSIGNMENT_ID"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<bool> InsertnewTestToClassroom(long TestId, long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.AddNewTestToClassroomAsync(ClassroomId,TestId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertnewAssignmentToClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomTestModal>> GetAllClassroomTests(long ClassroomId)
+        {
+            List<ClassroomTestModal> lsResponse = new List<ClassroomTestModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomTestAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomTestModal(
+                         ClassroomId,
+                         dataRow.Field<long>("TEST_ID"),
+                         dataRow.Field<string>("TEST_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_SUBMISSIONS"),
+                         dataRow.Field<int>("NO_OF_QUESTIONS")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<bool> DeleteClassroomTest(long ClassroomId,long TestId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.DeleteClassroomTestAsync(ClassroomId,TestId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

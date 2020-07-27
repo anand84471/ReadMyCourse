@@ -313,8 +313,12 @@
     <Compile Include="HttpResponse\ClassRoom\ClassroomMeetingModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomMeetingResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomStudentMessageModal.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllClassroomAssignmentResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomForInstructorResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomMeetingResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllClassroomTestResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllStudentClassroomAssignment.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllStudentClassroomtTest.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllStudentJoinedToClassroomResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllStudentJoinedTomMeetingResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetClassroomAllMessageResponse.cs" />
@@ -370,6 +374,8 @@
     <Compile Include="Models\Alert\StudentAlertModal.cs" />
     <Compile Include="Models\AssignmentMcqModel.cs" />
     <Compile Include="Models\AssignmentSubjectiveModel.cs" />
+    <Compile Include="Models\Classroom\ClassroomAssignmentModal.cs" />
+    <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
     <Compile Include="Models\Course\AssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\AssignmentModel.cs" />
     <Compile Include="Models\Course\ContentModel.cs" />
@@ -401,7 +407,10 @@
     <Compile Include="Models\Student\StudentBasicAssignmentDettails.cs" />
     <Compile Include="Models\Student\StudentBasicIndexDetails.cs" />
     <Compile Include="Models\Student\StudentBasicTestDetails.cs" />
+    <Compile Include="Models\Student\StudentClassroomAssignmentModal.cs" />
+    <Compile Include="Models\Student\StudentClassroomHomeDetails.cs" />
     <Compile Include="Models\Student\StudentClassroomModal.cs" />
+    <Compile Include="Models\Student\StudentClassroomTestModal.cs" />
     <Compile Include="Models\Student\StudentCourseModal.cs" />
     <Compile Include="Models\Student\StudentCourseQuestionModal.cs" />
     <Compile Include="Models\Student\StudentHomeModal.cs" />
@@ -507,6 +516,7 @@
     <Content Include="Images\register_bg.jpg" />
     <Content Include="Images\search-gen.svg" />
     <Content Include="Images\site-logo-pro.png" />
+    <Content Include="Images\site-logo-square.png" />
     <Content Include="Images\site-logo.jpg" />
     <Content Include="Images\site-logo.png" />
     <Content Include="Images\teacher.svg" />
@@ -868,6 +878,11 @@
     <Content Include="Views\Student\JoinNewClassroom.cshtml" />
     <Content Include="Views\CreateMeeting\Index.cshtml" />
     <Content Include="Views\Shared\UnAuthorizedAccess.cshtml" />
+    <Content Include="Views\Instructor\ClassroomDashboardV2.cshtml" />
+    <Content Include="Views\Instructor\CreateClassroomAssignment.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroomAssignment.cshtml" />
+    <Content Include="Views\Instructor\CreateClassroomTest.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroomTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

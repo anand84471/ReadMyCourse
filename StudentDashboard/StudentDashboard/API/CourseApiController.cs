@@ -1013,6 +1013,118 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("GetAllClassroomAssignment")]
+        [HttpPost]
+        public async Task<GetAllStudentClassroomAssignment> GetAllClassroomAssignment(long ClassroomId)
+        {
+            GetAllStudentClassroomAssignment objResponse = new GetAllStudentClassroomAssignment();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, ClassroomId))
+                {
+                    objResponse.m_lsStudentClassroomAssignmentModal =
+                        await objStudentService.GetAllClassroomAssignment(ClassroomId, StudentidInRequest
+                        );
+                    if (objResponse.m_lsStudentClassroomAssignmentModal != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetAllClassroomSubmittedAssignment")]
+        [HttpPost]
+        public async Task<GetAllStudentClassroomAssignment> GetAllClassroomSubmittedAssignment(long ClassroomId)
+        {
+            GetAllStudentClassroomAssignment objResponse = new GetAllStudentClassroomAssignment();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, ClassroomId))
+                {
+                    objResponse.m_lsStudentClassroomAssignmentModal =
+                        await objStudentService.GetAllClassroomSubmittedAssignment(ClassroomId, StudentidInRequest
+                        );
+                    if (objResponse.m_lsStudentClassroomAssignmentModal != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetAllClassroomTest")]
+        [HttpPost]
+        public async Task<GetAllStudentClassroomtTest> GetAllClassroomTest(long ClassroomId)
+        {
+            GetAllStudentClassroomtTest objResponse = new GetAllStudentClassroomtTest();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, ClassroomId))
+                {
+                    objResponse.m_lsStudentClassroomTestModal =
+                        await objStudentService.GetAllClassroomTest(ClassroomId, StudentidInRequest
+                        );
+                    if (objResponse.m_lsStudentClassroomTestModal != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetAllClassroomTestSubmissions")]
+        [HttpPost]
+        public async Task<GetAllStudentClassroomtTest> GetAllClassroomTestSubmissions(long ClassroomId)
+        {
+            GetAllStudentClassroomtTest objResponse = new GetAllStudentClassroomtTest();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, ClassroomId))
+                {
+                    objResponse.m_lsStudentClassroomTestModal =
+                        await objStudentService.GetAllClassroomTestSubmissons(ClassroomId, StudentidInRequest
+                        );
+                    if (objResponse.m_lsStudentClassroomTestModal != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }  
 }
 

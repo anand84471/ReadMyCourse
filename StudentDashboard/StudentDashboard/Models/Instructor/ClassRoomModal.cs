@@ -34,7 +34,14 @@ namespace StudentDashboard.Models.Instructor
         public int m_iNoOfPosts;
         [JsonProperty("is_meeting_active")]
         public bool? m_bIsMeetingActive;
-
+        [JsonProperty("no_of_test")]
+        public int m_iNoOfTests;
+        [JsonProperty("no_of_assignments")]
+        public int m_iNoOfAssignments;
+        [JsonProperty("no_of_student_joined")]
+        public int m_iNoOfStudentsJoined;
+        [JsonProperty("no_of_meetings")]
+        public int m_iNoOfMeetings;
         public ClassRoomModal()
         {
 
@@ -55,7 +62,7 @@ namespace StudentDashboard.Models.Instructor
             this.m_bIsMeetingActive = IsMeetingActive;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string ClassroomDescription, string CreationDate, string ClassroomStatus,
-            int NoOfPosts,string ShareUrl,string AccessCode)
+            int NoOfPosts,string ShareUrl,string AccessCode,int NoOfAssignments,int NoOfTests,int NoOfStudentsJoined,int NoOfMeetings)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -65,6 +72,10 @@ namespace StudentDashboard.Models.Instructor
             this.m_iNoOfPosts = NoOfPosts;
             this.m_strShareCode = AccessCode;
             this.m_strShareUrl = ShareUrl;
+            this.m_iNoOfAssignments = NoOfAssignments;
+            this.m_iNoOfTests = NoOfTests;
+            this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
+            this.m_iNoOfMeetings = NoOfMeetings;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
              string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive)

@@ -380,6 +380,36 @@ namespace CPDataService
         bool InsertNewInstructorClassroomMessage(long ClassroomId, string Message);
         [OperationContract]
         DataSet GetAllClassroomMessage(long ClassroomId);
+        [OperationContract]
+        DataSet GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId);
+        [OperationContract]
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        [OperationContract]
+        bool DeleteClassroom(long ClassroomId);
+        [OperationContract]
+        bool AddNewAssignmentToClassroom(long ClassroomId, long AssignmentId);
+        [OperationContract]
+        DataSet GetAllClassroomAssignments(long ClassroomId);
+        [OperationContract]
+        bool DeleteClassroomAssignment(long ClassroomId, long AssignmentId);
+        [OperationContract]
+        bool DeleteClassroomTest(long ClassroomId, long TestId);
+        [OperationContract]
+        bool AddNewTestToClassroom(long ClassroomId, long TestId);
+        [OperationContract]
+        DataSet GetAllClassroomTest(long ClassroomId);
+        [OperationContract]
+        DataSet GetAllClassroomMeetingForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetAllClassroomAssignmntForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetAllClassroomAssignmentSubmissionsForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetAllClassroomTestSubmissionsForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetAllClassroomTestForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

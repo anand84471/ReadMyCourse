@@ -78,6 +78,12 @@ namespace StudentDashboard.CPDataService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CPDataService.ICpDataService")]
     public interface ICpDataService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
+        System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomHomeDetailsForStudentAsync(long ClassroomId, long StudentId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -397,6 +403,94 @@ namespace StudentDashboard.CPDataService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomMessage", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomMessageResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessage", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessageResponse")]
+        System.Data.DataSet GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessage", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomMessageAfterLastMessageResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAfterLastMessageAsync(long ClassroomId, long LastMessageId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
+        System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroom", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomResponse")]
+        bool DeleteClassroom(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroom", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomResponse")]
+        System.Threading.Tasks.Task<bool> DeleteClassroomAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroomResponse")]
+        bool AddNewAssignmentToClassroom(long ClassroomId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewAssignmentToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> AddNewAssignmentToClassroomAsync(long ClassroomId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignments", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentsResponse")]
+        System.Data.DataSet GetAllClassroomAssignments(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignments", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmentsAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomAssignment", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomAssignmentResponse")]
+        bool DeleteClassroomAssignment(long ClassroomId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomAssignment", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomAssignmentResponse")]
+        System.Threading.Tasks.Task<bool> DeleteClassroomAssignmentAsync(long ClassroomId, long AssignmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomTest", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomTestResponse")]
+        bool DeleteClassroomTest(long ClassroomId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomTest", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomTestResponse")]
+        System.Threading.Tasks.Task<bool> DeleteClassroomTestAsync(long ClassroomId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewTestToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewTestToClassroomResponse")]
+        bool AddNewTestToClassroom(long ClassroomId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewTestToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewTestToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> AddNewTestToClassroomAsync(long ClassroomId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTest", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestResponse")]
+        System.Data.DataSet GetAllClassroomTest(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTest", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudentResponse")]
+        System.Data.DataSet GetAllClassroomMeetingForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomMeetingForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMeetingForStudentAsync(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudentResponse")]
+        System.Data.DataSet GetAllClassroomAssignmntForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmntForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmntForStudentAsync(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudentR" +
+            "esponse")]
+        System.Data.DataSet GetAllClassroomAssignmentSubmissionsForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomAssignmentSubmissionsForStudentR" +
+            "esponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmentSubmissionsForStudentAsync(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudentRespons" +
+            "e")]
+        System.Data.DataSet GetAllClassroomTestSubmissionsForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestSubmissionsForStudentRespons" +
+            "e")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestSubmissionsForStudentAsync(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudentResponse")]
+        System.Data.DataSet GetAllClassroomTestForStudent(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomTestForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestForStudentAsync(long ClassroomId, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteMcqTestQuestion", ReplyAction="http://tempuri.org/ICpDataService/DeleteMcqTestQuestionResponse")]
         bool DeleteMcqTestQuestion(long QuestionId);
@@ -2016,6 +2110,14 @@ namespace StudentDashboard.CPDataService {
                 base(binding, remoteAddress) {
         }
         
+        public System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetClassroomHomeDetailsForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomHomeDetailsForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetClassroomHomeDetailsForStudentAsync(ClassroomId, StudentId);
+        }
+        
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {
             return base.Channel.UpdateNotificationStatus(Status, NotificationId);
         }
@@ -2414,6 +2516,118 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAsync(long ClassroomId) {
             return base.Channel.GetAllClassroomMessageAsync(ClassroomId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId) {
+            return base.Channel.GetAllClassroomMessageAfterLastMessage(ClassroomId, LastMessageId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAfterLastMessageAsync(long ClassroomId, long LastMessageId) {
+            return base.Channel.GetAllClassroomMessageAfterLastMessageAsync(ClassroomId, LastMessageId);
+        }
+        
+        public bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription) {
+            return base.Channel.UpdateClassroomDetails(ClassroomId, ClassroomName, ClassroomDescription);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription) {
+            return base.Channel.UpdateClassroomDetailsAsync(ClassroomId, ClassroomName, ClassroomDescription);
+        }
+        
+        public bool DeleteClassroom(long ClassroomId) {
+            return base.Channel.DeleteClassroom(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteClassroomAsync(long ClassroomId) {
+            return base.Channel.DeleteClassroomAsync(ClassroomId);
+        }
+        
+        public bool AddNewAssignmentToClassroom(long ClassroomId, long AssignmentId) {
+            return base.Channel.AddNewAssignmentToClassroom(ClassroomId, AssignmentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> AddNewAssignmentToClassroomAsync(long ClassroomId, long AssignmentId) {
+            return base.Channel.AddNewAssignmentToClassroomAsync(ClassroomId, AssignmentId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomAssignments(long ClassroomId) {
+            return base.Channel.GetAllClassroomAssignments(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmentsAsync(long ClassroomId) {
+            return base.Channel.GetAllClassroomAssignmentsAsync(ClassroomId);
+        }
+        
+        public bool DeleteClassroomAssignment(long ClassroomId, long AssignmentId) {
+            return base.Channel.DeleteClassroomAssignment(ClassroomId, AssignmentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteClassroomAssignmentAsync(long ClassroomId, long AssignmentId) {
+            return base.Channel.DeleteClassroomAssignmentAsync(ClassroomId, AssignmentId);
+        }
+        
+        public bool DeleteClassroomTest(long ClassroomId, long TestId) {
+            return base.Channel.DeleteClassroomTest(ClassroomId, TestId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteClassroomTestAsync(long ClassroomId, long TestId) {
+            return base.Channel.DeleteClassroomTestAsync(ClassroomId, TestId);
+        }
+        
+        public bool AddNewTestToClassroom(long ClassroomId, long TestId) {
+            return base.Channel.AddNewTestToClassroom(ClassroomId, TestId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> AddNewTestToClassroomAsync(long ClassroomId, long TestId) {
+            return base.Channel.AddNewTestToClassroomAsync(ClassroomId, TestId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomTest(long ClassroomId) {
+            return base.Channel.GetAllClassroomTest(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestAsync(long ClassroomId) {
+            return base.Channel.GetAllClassroomTestAsync(ClassroomId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomMeetingForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomMeetingForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMeetingForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomMeetingForStudentAsync(ClassroomId, StudentId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomAssignmntForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomAssignmntForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmntForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomAssignmntForStudentAsync(ClassroomId, StudentId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomAssignmentSubmissionsForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomAssignmentSubmissionsForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomAssignmentSubmissionsForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomAssignmentSubmissionsForStudentAsync(ClassroomId, StudentId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomTestSubmissionsForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomTestSubmissionsForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestSubmissionsForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomTestSubmissionsForStudentAsync(ClassroomId, StudentId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomTestForStudent(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomTestForStudent(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomTestForStudentAsync(long ClassroomId, long StudentId) {
+            return base.Channel.GetAllClassroomTestForStudentAsync(ClassroomId, StudentId);
         }
         
         public bool DeleteMcqTestQuestion(long QuestionId) {

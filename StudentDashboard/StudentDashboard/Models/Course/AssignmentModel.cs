@@ -46,7 +46,10 @@ namespace StudentDashboard.Models.Course
         public string m_strAccessCode;
         [JsonProperty("status")]
         public string m_strStatus;
-
+        [JsonProperty("classroom_id")]
+        public long m_llClassroomId;
+        [JsonProperty("is_classroom_assignment")]
+        public bool m_bIsClassroomAssignment;
         public AssignmentModel()
         {
         }

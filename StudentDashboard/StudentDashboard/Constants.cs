@@ -104,6 +104,10 @@ namespace StudentDashboard
             ASSIGNMENT_SUBMISSION = 3,
             TEST_SUBMISSION = 4
         }
+        public enum AssignentHostType
+        {
+            CLASSROOM=1
+        }
         
 
     }

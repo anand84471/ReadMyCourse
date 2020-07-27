@@ -624,5 +624,25 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.GetAllClassroomMessageForInstructor(ClassroomId, StudentId);
         }
+        public async Task<List<StudentClassroomAssignmentModal>> GetAllClassroomAssignment(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomAssignment(ClassroomId, StudentId);
+        }
+        public async Task<List<StudentClassroomAssignmentModal>> GetAllClassroomSubmittedAssignment(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomSubmittedAssignment(ClassroomId, StudentId);
+        }
+        public async Task<List<StudentClassroomTestModal>> GetAllClassroomTest(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomTest(ClassroomId, StudentId);
+        }
+        public async Task<List<StudentClassroomTestModal>> GetAllClassroomTestSubmissons(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomTestSubmissons(ClassroomId, StudentId);
+        }
+        public async Task<StudentClassroomHomeDetails> GetStudentClassroomHomeDetails(long ClassroomId, long StudentId)
+        {
+            return await objStudentDTO.GetStudentClassroomHomeDetails(ClassroomId, StudentId);
+        }
     }
 }
