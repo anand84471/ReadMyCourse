@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models.Course;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,7 @@ namespace StudentDashboard.HttpResponse
         public List<AssignmentDetailsModel> m_lsAssignments;
         [JsonProperty("tests")]
         public List<TestDetailsModel> m_lsTestDetails;
+        [JsonProperty("classrooms")]
+        public List<ClassroomBasicDetailsModal> m_lsClassroomBasicDetailsModal;
     }
 }

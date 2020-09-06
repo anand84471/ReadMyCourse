@@ -2,6 +2,8 @@
     ViewBag.Title = "Edit Account";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
 }
+@using StudentDashboard.Models;
+@model InstructorRegisterModel
 <div class="container-fluid">
     <div class="card shadow mb-4 border-left-primary">
         <!-- Card Header - Dropdown -->
@@ -22,22 +24,19 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-            <form action="./UpdateDetails"  method="post" class="needs-validation" novalidate@{
-    ViewBag.Title = "Account Details";
-    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
-}>
+            <form action="./UpdateDetails"  method="post" class="needs-validation" novalidate>
                 @Html.AntiForgeryToken()
                 <div class="form-group row">
                     <label for="firstName" class="col-sm-2 col-form-label text-success font-weight-bolder">First Name:</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " id="firstName" name="firstName" placeholder="Enter first name..." required>
+                        <input type="text" class="form-control " id="firstName" name="firstName" value="@Model.m_strFirstName" placeholder="Enter first name..." required>
                     </div>
                     <div class="invalid-feedback">
                         Please enter  first name
                     </div>
                     <label for="lastName" class="col-sm-2 col-form-label text-success font-weight-bolder">Last Name:</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " id="lastName" name="lastName" placeholder="Enter last name..." required>
+                        <input type="text" class="form-control " id="lastName"  value="@Model.m_strLastName" name="lastName" placeholder="Enter last name..." required>
                     </div>
                     <div class="invalid-feedback">
                         Please  enter last name
@@ -47,7 +46,7 @@
                 <div class="form-group row">
                     <label for="staticPhone" class="col-sm-2 col-form-label text-success font-weight-bolder">Phone No:</label>
                     <div class="col-sm-4">
-                        <input type="tel" name="phoneNo" class="form-control" id="staticPhone" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" size="10" placeholder="Enter phone no..." required>
+                        <input type="tel" name="phoneNo" class="form-control" value="@Model.m_strPhoneNo" id="staticPhone" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" size="10" placeholder="Enter phone no..." required>
                     </div>
                     <div class="invalid-feedback">
                         Please enter phone no
@@ -55,9 +54,9 @@
                     <label for="staticGender" class="col-sm-2 col-form-label text-success font-weight-bolder">Gender:</label>
                     <div class="col-sm-4">
                         <select id="genderselect" name="gender" class="browser-default custom-select">
-                            <option selected value="N">select..</option>
+                            <option selected value="Not selected">@Model.m_strGender</option>
                             <option value="M">Male</option>
-                            <option value="F">Femal</option>
+                            <option value="F">Female</option>
                             <option value="O">Other</option>
                         </select>
                         <div class="invalid-feedback">
@@ -70,9 +69,9 @@
                 </div>
                
                 <div class="form-group row">
-                    <label for="staticAddressLine1" class="col-sm-2 col-form-label text-success font-weight-bolder">Address Line 1:</label>
+                    <label for="staticAddressLine1"  class="col-sm-2 col-form-label text-success font-weight-bolder">Address Line 1:</label>
                     <div class="col-sm-10">
-                        <input type="text"  name="address1" class="form-control" id="staticAddressLine1" placeholder="Enter address line 1..." required>
+                        <input type="text" value="@Model.m_strAddressLine1"  name="address1" class="form-control" id="staticAddressLine1" placeholder="Enter address line 1..." required>
                     </div>
                     <div class="invalid-feedback">
                         Please enter address line 1
@@ -81,14 +80,14 @@
                 <div class="form-group row">
                     <label for="staticAddressLine2" class="col-sm-2 col-form-label text-success font-weight-bolder">Address Line 2:</label>
                     <div class="col-sm-10">
-                        <input type="text" name="address2" class="form-control" id="staticAddressLine2" placeholder="Enter address line 2..." required>
+                        <input type="text" value="@Model.m_strAddressLine2"  name="address2" class="form-control" id="staticAddressLine2" placeholder="Enter address line 2..." required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 mb-3 md-form">
                         <label for="validationCustom012" class="col-form-label text-success font-weight-bolder">State</label>
                         <select id="stateselect" name="state" onclick="getStates()" onchange="getCities()" class="browser-default custom-select" required>
-                            <option selected value="-1">select state</option>
+                            <option selected value="@Model.m_iStateId">@Model.m_strState</option>
                         </select>
                         <div class="invalid-feedback">
                             please select state
@@ -99,7 +98,7 @@
                     <div class="col-md-4 mb-3 md-form">
                         <label for="validationCustom012" class="col-form-label text-success font-weight-bolder">City</label>
                         <select name="city" id="cityselect" class="browser-default custom-select" pattern="^\d+$">
-                            <option selected value="-1">select city</option>
+                            <option selected value="@Model.m_iCityid">@Model.m_strCity</option>
                         </select>
                         <div class="invalid-feedback">
                             please select city
@@ -108,7 +107,8 @@
                     </div>
                     <div class="col-md-4 mb-3 md-form">
                         <label for="validationCustom022" class="col-form-label text-success font-weight-bolder">Pin Code</label>
-                        <input name="pinCode" type="tel" pattern=".{6,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="6" size="6" class="form-control"  placeholder="Enter Pin Code.." required>
+                        <input name="pinCode" type="tel" pattern=".{6,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="6" size="6" class="form-control" 
+                                value="@Model.m_strPineCode" placeholder="Enter Pin Code.." required>
                         <div class="invalid-feedback">
                             Please enter a valid pin code
                         </div>
@@ -131,6 +131,7 @@
                 return;
             }
             $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                 type: "POST",
                 url: "../school/api/v1/GetStates",
                 success: function (data) {
@@ -148,6 +149,7 @@
             }
             else {
                 $.ajax({
+                    headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
                     type: "POST",
                     url: "../school/api/v1/GetCities?StateId=".concat($("#stateselect").val()),
                     success: function (data) {

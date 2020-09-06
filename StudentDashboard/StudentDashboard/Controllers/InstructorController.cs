@@ -28,17 +28,34 @@ namespace StudentDashboard.Controllers
         InstructorService objInstructorService = new InstructorService();
         HomeService objHomeService = new HomeService();
       
-        // GET: Instructor
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string return_url = null)
         {
-           return View();
+            if (Session["instructor_id"] != null)
+            {
+                if (return_url == null)
+                {
+                    return Redirect("/Instructor/Home");
+                }
+                return Redirect(return_url);
+            }
+            if (return_url != null)
+            {
+                ViewBag.ReturnUrl = "/Instructor/ValidateLogin?return_url=" + return_url;
+            }
+            else
+            {
+                ViewBag.ReturnUrl = "/Instructor/ValidateLogin";
+            }
+            return View();
         }
         
         [HttpGet]
-        public ActionResult EditAccount()
+        public async Task<ActionResult>  EditAccount()
         {
-            return View();
+            int Id = (int)Session["instructor_id"];
+            InstructorRegisterModel objModel = await objInstructorService.GetInstructorDetails(Id);
+            return View(objModel);
         }
         [AsyncTimeout(150)]
         public async Task<PartialViewResult> Home()
@@ -129,7 +146,7 @@ namespace StudentDashboard.Controllers
                 {
                     ViewBag.IsRegistered = false;
                 }
-                return View();
+                
             }
             catch (Exception Ex)
             {
@@ -137,8 +154,9 @@ namespace StudentDashboard.Controllers
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
-                return View("Error");
+               
             }
+            return View("Error");
         }
         [AsyncTimeout(150)]
         [HttpPost]
@@ -233,7 +251,7 @@ namespace StudentDashboard.Controllers
             }
         }
         [AsyncTimeout(150)][ValidateAntiForgeryToken][AllowAnonymous][HttpPost]
-        public async Task<ActionResult> ValidateLogin(FormCollection collection)
+        public async Task<ActionResult> ValidateLogin(FormCollection collection, string return_url = null)
         {
             string strCurrentMethodName = "Register";
             string ViewName = "";
@@ -259,8 +277,15 @@ namespace StudentDashboard.Controllers
                             ViewBag.IsLoggedIn = true;
                             Session["instructor_id"] = objInstructorRegiserModel.m_iInstructorId;
                             Session["instructor_user_name"] = objInstructorRegiserModel.m_strEmail;
-                           
-                            return RedirectToAction("Home");
+                            Session["instructor_profile_picture_url"] = objInstructorRegiserModel.m_strProfilePictureUrl;
+                            if (return_url != null)
+                            {
+                                return Redirect(return_url);
+                            }
+                            else
+                            {
+                                return RedirectToAction("Home");
+                            }
                         }
                         else
                         {
@@ -417,6 +442,22 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
+        public PartialViewResult StartTeaching()
+        {
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateNewCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
         public PartialViewResult CreateTest()
         {
             try
@@ -453,8 +494,11 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                JitsiMeetingModal objJitsiMeetingModal = await objInstructorService.GetClassroomMeetingDetails(ClassroomId,-1);
-                return PartialView(objJitsiMeetingModal);
+                if(await objInstructorService.CheckClassroomAccess(ClassroomId, (int)Session["instructor_id"]))
+                {
+                    JitsiMeetingModal objJitsiMeetingModal = await objInstructorService.GetClassroomMeetingDetails(ClassroomId, -1);
+                    return PartialView(objJitsiMeetingModal);
+                }
             }
             catch (Exception Ex)
             {
@@ -464,6 +508,28 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
+            return PartialView("UnAuthorizedAccess");
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> StartPreviousMeeting(long ClassroomId,long MeetingId)
+        {
+            try
+            {
+                if(await objInstructorService.CheckClassroomAccess(ClassroomId, (int)Session["instructor_id"]))
+                {
+                    JitsiMeetingModal objJitsiMeetingModal = await objInstructorService.GetClassroomMeetingDetails(ClassroomId, -1);
+                    return PartialView(objJitsiMeetingModal);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CreateTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+            return PartialView("UnAuthorizedAccess");
         }
         [HttpGet]
         public PartialViewResult CreateAssignment()
@@ -999,6 +1065,24 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
+        public PartialViewResult Notification(string q)
+        {
+            string strCurrentMethodName = "Search";
+            try
+            {
+                ViewBag.q = q;
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+        }
+        [HttpGet]
         public ActionResult PasswordUpdatedSuccessfully(string UserId)
         {
             ViewBag.UserMail = UserId;
@@ -1039,6 +1123,33 @@ namespace StudentDashboard.Controllers
                     ViewBag.Token = token;
                     ViewBag.InvalidOtp = true;
                     return View("PasswordAuthRequest");
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> UpdateProfilePictute(FormCollection collection)
+        {
+            string strCurrentMethodName = "UpdateProfilePictute";
+            string ViewName = "Home";
+            try
+            {
+                string  url = collection["url"];
+                if (await objHomeService.UpdateInstructorProfilePicture(url,(int)Session["instructor_id"]))
+                {
+                    InstructorRegisterModel objInstructorRegisterModel = new InstructorRegisterModel();
+                    objInstructorRegisterModel = await objInstructorService.GetInstructorBasicDetails((int)Session["instructor_id"]);
+                    Session["instructor_profile_picture_url"] = objInstructorRegisterModel.m_strProfilePictureUrl;
+                    return RedirectToAction("Home");
                 }
             }
             catch (Exception Ex)

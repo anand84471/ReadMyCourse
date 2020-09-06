@@ -44,7 +44,7 @@ namespace CPDataService
         [OperationContract]
         bool InertNewCourseIndex(string IndexName, string IndexDescription, long CourseId, ref long IndexId);
         [OperationContract]
-        bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId);
+        bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId, string FileAttachmetPath);
         [OperationContract]
         bool InsertNewTest(string TestName, string TestDescription, string FilePath, short FileTypeId, short TestType, ref long TestId);
         [OperationContract]
@@ -75,7 +75,7 @@ namespace CPDataService
         [OperationContract]
         bool UpdateAssignmentDetails(long AssignmentId, string AssignmentName, string AssignmentDescription, string FilePath, byte FileType);
         [OperationContract]
-        bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType);
+        bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType, string FileAttachmentPath);
         [OperationContract]
         bool UpdateCourseIndexDetails(long IndexId, string IndexName, string IndexDescription);
         [OperationContract]
@@ -92,7 +92,7 @@ namespace CPDataService
         DataSet GetInstructorDetails(int Id);
         [OperationContract]
         bool UpdateInstructorDetails(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2,
-                                          int CityId, int StateId, string PinCode, int InstructorId);
+                                          int? CityId, int? StateId, string PinCode, int InstructorId);
         [OperationContract]
         bool UpdateInstructorPassword(string Password, int InstructorId);
         [OperationContract]
@@ -185,7 +185,7 @@ namespace CPDataService
         bool GetStudentIdFromUserId(string UserId, ref long StudentId);
         [OperationContract]
         bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode,
-                                          int StateId, int CityId, string Gender);
+                                          int? StateId, int? CityId, string Gender, long StudentId);
         [OperationContract]
         bool UpdateStudentPassword(long StudentId, string OldHashedPassword, string NewHashedPassword);
         [OperationContract]
@@ -341,7 +341,8 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllClassRoomForInstrcutor(int InstrcutorId);
         [OperationContract]
-        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl,
+            string ClassroomMeetingName);
         [OperationContract]
         bool InertNewPostToClassroom(long ClassroomId, string Post);
         [OperationContract]
@@ -349,7 +350,7 @@ namespace CPDataService
         [OperationContract]
         DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
         [OperationContract]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType);
         [OperationContract]
         DataSet GetClasroomDetails(long ClassRoomId);
         [OperationContract]
@@ -410,6 +411,43 @@ namespace CPDataService
         DataSet GetAllClassroomTestForStudent(long ClassroomId, long StudentId);
         [OperationContract]
         DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetInstructorClassroomSearchDetails(int InstructorId, string SearchString);
+        [OperationContract]
+        bool UpdateInstructorProfilePicture(int InstructorId, string Url);
+        [OperationContract]
+        bool UpdateStudentProfilePicture(long StudentId, string Url);
+        [OperationContract]
+        DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId);
+        [OperationContract]
+        bool InsertClassroomAttachment(long ClassroomId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        [OperationContract]
+        bool UpdateClassroomAttachmentDetails(long AttachmentId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        [OperationContract]
+        bool DeleteClassroomAttachment(long AttachmentId);
+        [OperationContract]
+        DataSet GetClassroomAttachments(long ClassroomId);
+        [OperationContract]
+        DataSet GetInstructorProfileDetailsForStudent(int InstructorId, long StudentId);
+        [OperationContract]
+        DataSet GetClassroomSchedule(long ClassroomId);
+        [OperationContract]
+        bool UpdateClassroomSchedule(long ClassroomId, string ClassroomSchedule);
+        [OperationContract]
+        bool InsertClassroomSchedule(long ClassroomId, string ClassroomSchedule);
+        [OperationContract]
+        DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId,
+            int NoOfRecordsToBeFetched, string QueryString);
+        [OperationContract]
+        DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
+        [OperationContract]
+        DataSet GetInstructorAcademicRecords(int InstructorId);
+        [OperationContract]
+        DataSet UpdateInstructorAcademicRecord(string Certificates,
+            string Publications, string Conferences, string LinkedInId, string GoogleScholarId,
+            int InstructorId, string LatestQualification, string m_strProjects);
+        [OperationContract]
+        DataSet UpdateInstructorBio(int InstructorId, string InstructoBioData);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

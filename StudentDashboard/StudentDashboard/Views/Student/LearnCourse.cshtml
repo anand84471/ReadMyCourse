@@ -11,11 +11,19 @@
   font-family: cursive;
   color: red;
 }
+    .full-screen {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    top: 0;
+    left: 0;
+}
 
 #courseCard.card {
   background-color: #858796;
   border: unset;
   border-radius: 0rem;
+   overflow-y: auto;
 }
 
 #courseCard .card-body {
@@ -43,11 +51,12 @@ pre {
   width: 70%;
   min-height:500px;
   max-height: 90vh;
-    overflow: auto;
+
+  overflow-y:scroll;
     
   
 }
-    .courseDetail::-webkit-scrollbar { width: 0 !important }
+   
 
 .indexHeader {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -282,7 +291,7 @@ textarea {
     </div>
     
     <a class="navbar-brand " href="#">
-        <img src="~/Images/site-logo.png" width="140" height="45" class="align-top " alt="">
+        <img src="~/Images/site-logo-v2-full.png" width="140" height="35" class="align-top " alt="">
     </a>
 </nav>
 
@@ -310,6 +319,9 @@ textarea {
                         <pre id="courseDetails" class="p-2 h5 text-gray-900">
                             
                         </pre>
+                        <div class="" id="attachmentContainer" style="display:none">
+
+                        </div>
                         <div id="aboutAssignmentContainer" class="p-3 rounded m-4 card p-4 custom-blue shadow-lg" style="display:none">
                             <dl class="row">
                                 <dt class="col-sm-3">Assignment Name:</dt>
@@ -456,21 +468,28 @@ textarea {
         </div>
     </div>
 </div>
+<div class="modal fade" id="previewPdfModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTopicModalHeader">Preview upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive " id="pdfAttachmentContainer" style="display:none">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    //document
-    //  .getElementById("collapseIcon")
-    //  .addEventListener("click", function (e) {
-    //    const stylingClassIndex = document.querySelector(".indexDetail");
-    //    const stylingClassContent = document.querySelector(".courseDetail");
-    //    let targetElement = document.getElementById("indexContent");
-    //    if (window.getComputedStyle(targetElement).display === "block") {
-    //      stylingClassIndex.style.width = "6%";
-    //      stylingClassContent.style.width = "94%";
-    //    } else {
-    //      stylingClassIndex.style.width = "30%";
-    //      stylingClassContent.style.width = "70%";
-    //    }
-    //  });
+
     (function () {
         'use strict';
         onpageshow = init();
@@ -560,33 +579,50 @@ textarea {
             }
         });
     }
-    function getTopicDetails(topicId)
-    {
+    function getTopicDetails(topicId) {
         debugger
+        $("#videoContainer").empty();
         $("#aboutAssignmentContainer").hide();
         $("#aboutTestContainer").hide();
         $("#extraContainer").fadeOut();
         $("#extraContainer").html("");
+        $("#attachmentContainer").html("");
         $("#courseDetails").text(topicContentDetails[topicId].topic_description);
         $("#courseHeading").text(topicContentDetails[topicId].topic_name);
-        if (topicContentDetails[topicId].file_path != null) {
+        if (topicContentDetails[topicId].file_path != null && topicContentDetails[topicId].file_path!="") {
             var videoId = topicContentDetails[topicId].file_path.split("/").pop();
-            if (videoId != null&&videoId!="") {
+            if (videoId != null && videoId != "") {
                 $("#videoContainer").show();
-                $("#videoContainer iframe").remove();
-                $('<iframe class="embed-responsive-item" allowfullscreen></iframe>')
-                    .attr("src", "https://www.youtube.com/embed/" + videoId)
-                    .appendTo("#videoContainer");
-            }
-            else {
-                $("#videoContainer").hide();
+                $("#videoContainer player").remove();
+                if (topicContentDetails[topicId].file_path.includes("youtu")) {
+                    $('<iframe class="embed-responsive-item" allowfullscreen></iframe>')
+                   .attr("src", "https://www.youtube.com/embed/" + videoId)
+                   .appendTo("#videoContainer");
+                }
+
+                else {
+                    //  $('<iframe class="embed-responsive-item" allowfullscreen></iframe>')
+                    //.attr("src", topicContentDetails[topicId].file_path)
+                    //.appendTo("#videoContainer");
+                    $("#videoContainer").append('<video class="embed-responsive-item" allowfullscreen id="player" playsinline controls data-poster="/path/to/poster.jpg"  loop muted preload="auto" >'
+                     + '<source src="' + topicContentDetails[topicId].file_path + '" type="video/mp4" /><source src="' + topicContentDetails[topicId].file_path + '" type="video/webm" /></video>");');
+                }
             }
         }
         else {
+            $("#videoContainer").empty();
             $("#videoContainer").hide();
         }
-        if (topicContentDetails[topicId].is_compelted != true)
-        {
+        if (topicContentDetails[topicId].file_attachment_path != null && topicContentDetails[topicId].file_attachment_path != "") {
+
+            //PDFObject.embed(topicContentDetails[topicId].file_attachment_path, "#pdfAttachmentContainer");
+            $("#attachmentContainer").append('<a download="attachment" download class="btn btn-primary" target="_blank" href="' + topicContentDetails[topicId].file_attachment_path + '"><i class="fa fa-download" aria-hidden="true"></i>download attachment</a>');
+            $("#attachmentContainer").show();
+        }
+        else {
+            $("#attachmentContainer").hide();
+        }
+        if (topicContentDetails[topicId].is_compelted != true) {
             markTopicFinished(topicId);
         }
     }
@@ -620,11 +656,14 @@ textarea {
     }
     function getTestDetails(Id) {
         debugger;
+        $("#attachmentContainer").hide();
         startCourseSpinner();
         $("#courseHeading").text("");
         $("#courseDetails").text("");
         $("#aboutAssignmentContainer").hide();
         $("#extraContainer").html("");
+        $("#videoContainer").empty();
+        $("#videoContainer").hide();
         currentTestId = Id;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
@@ -689,6 +728,8 @@ textarea {
         $("#extraContainer").show();
         $("#testProgress").show();
         $("#aboutTestContainer").hide();
+        $("#videoContainer").empty();
+        $("#videoContainer").hide();
         $.ajax({
 
             url: "StartTest?id=".concat(currentTestId),
@@ -763,12 +804,14 @@ textarea {
     var currentAssignmentSubmissionId;
     function getAssignmentDetails1(Id) {
         debugger;
-
+        $("#attachmentContainer").hide();
         $("#extraContainer").html("");
         $("#aboutTestContainer").hide();
         $("#courseHeading").text("");
         $("#courseDetails").text("");
         startCourseSpinner();
+        $("#videoContainer").empty();
+        $("#videoContainer").hide();
         //startSpinner();
         currentAssignmentId = Id;
         
@@ -944,6 +987,10 @@ textarea {
                     $("#spinner").hide();
                 }
     });
+    }
+    function requestPreviewUploadedAttachment() {
+        $("#previewPdfModal").modal("show");
+        $("#pdfAttachmentContainer").show();
     }
 </script>
 

@@ -584,9 +584,9 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.CheckIsAssignmentSubmissionIdExsitsForStudent(StudentId, SubmissionId);
         }
-        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId)
+        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId,long StudentId)
         {
-            return await objStudentDTO.GetInstructorProfileDetails(InstructorId);
+            return await objStudentDTO.GetInstructorProfileDetails(InstructorId, StudentId);
         }
         public async Task<List<CourseDetailsModel>> GetAllCourseDetailsForInstructor(int InstructorId)
         {
@@ -622,7 +622,11 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomMessageForStudent(long ClassroomId, long StudentId)
         {
-            return await objStudentDTO.GetAllClassroomMessageForInstructor(ClassroomId, StudentId);
+            return await objStudentDTO.GetAllClassroomMessageForStudent(ClassroomId, StudentId);
+        }
+        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomLastMessagesForStudentAfterLast(long ClassroomId, long LastMessageId, long StudentId)
+        {
+            return await objStudentDTO.GetAllClassroomLastMessagesForStudentAfterLast(ClassroomId, LastMessageId,StudentId);
         }
         public async Task<List<StudentClassroomAssignmentModal>> GetAllClassroomAssignment(long ClassroomId, long StudentId)
         {
@@ -643,6 +647,38 @@ namespace StudentDashboard.ServiceLayer
         public async Task<StudentClassroomHomeDetails> GetStudentClassroomHomeDetails(long ClassroomId, long StudentId)
         {
             return await objStudentDTO.GetStudentClassroomHomeDetails(ClassroomId, StudentId);
+        }
+        public async Task<bool> UpdateProfilePicture(StudentProfilePictureUpdtaeRequest objStudentProfilePictureUpdtaeRequest)
+        {
+            bool result = false;
+            try
+            {
+
+                result = await objStudentDTO.UpdateProfilePicture(objStudentProfilePictureUpdtaeRequest);
+
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<StudentRegisterModal> GetStudentBasicDetails(long StudentId)
+        {
+            return await objStudentDTO.GetStudentBasicDetails(StudentId);
+        }
+        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(long LastClassroomId,
+           long StudentId, string QueryString)
+        {
+            if(QueryString==null)
+            {
+                QueryString = "";
+            }
+            return await objStudentDTO.SearchClassroom(LastClassroomId,10, StudentId, QueryString);
         }
     }
 }

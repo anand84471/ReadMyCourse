@@ -70,11 +70,11 @@
                             Action
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestUpdateCourseDetails()" id="editCourseButton">Edit Cousre Details</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestActivateCourse()" id="activateCourseButton">Activate</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestDeleteCourse()" id="deleteCourseButton">Delete</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestUpdateCourseDetails()" id="editCourseButton">Edit Cousre Details</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestActivateCourse()" id="activateCourseButton">Activate</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestDeleteCourse()" id="deleteCourseButton">Delete</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"  role="button" onclick="callHome()">Exit</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="callHome()">Exit</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -82,9 +82,9 @@
                             Add
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestAddNewAssignment()">Assignment</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestAddNewTest()">Test</a>
-                            <a class="dropdown-item" href="#"  role="button" onclick="requestAddNewIndex()">Index</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewAssignment()">Assignment</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewTest()">Test</a>
+                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewIndex()">Index</a>
                         </div>
                     </li>
                     @*<li class="nav-item">
@@ -139,8 +139,28 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editAndUpdateIndexTopic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " id="previewPdfModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTopicModalHeader">Preview upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="previewNow"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="resetEditMcqAssignmentModel()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editTopicModalSubmitButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editAndUpdateIndexTopic" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editAndUpdateIndexTopicHeader">Edit Topic</h5>
@@ -149,7 +169,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Topic Name:</label>
                         <input type="text" class="form-control" id="bc-topicName">
@@ -159,17 +179,58 @@
                         <textarea class="form-control" id="bc_topicDescription"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="message-text" class="col-form-label" id="bc-topicAddUrlLabel">Youtube video url:</label>
-                        <input class="form-control" type="url" id="bc_topicAddUrl"/>
+                        <label for="message-text" class="col-form-label" id="bc-topicAddUrlLabel">video url:</label>
+                        <input class="form-control" type="url" id="bc_topicAddUrl" />
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1" class="col-form-label">Upload Video</label>
+                        <div class="">
+                            <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                                
+                                <div class="form-group">
+                                    <input type="file" id="fileVideoUpload" accept="video/*" />
+                                    <input type="text" name="fileVideoUploadPath" readonly hidden />
+                                    <button type="button" class="btn btn-primary" onclick="requestUpload()"><i class="fa fa-download upload-icon" aria-hidden="true"></i>Upload</button>
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                    </div>
+                                    <div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">
+                                       
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label" id="bc-topicAddUrlLabel">Attachment url:</label>
+                        <input class="form-control" type="url" id="bc_topicAddAttachmentUrl" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1" class="col-form-label">Upload Attachment</label>
+                        <div class="">
+                            <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                               
+                                <div class="form-group">
+                                    <input type="file" id="fileAttachmentUpload" accept="application/pdf,application/vnd.ms-excel"/>
+                                    <button type="button" class="btn btn-primary" onclick="requestPdfUpload()"><i class="fa fa-download upload-icon" aria-hidden="true"></i>Upload</button>
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileAttachmentUploadProgressBar"></div>
+                                    </div>
+                                    <div class="alert alert-success" id="postAttachmentUploadAlert" style="display:none" role="alert">
+                                      
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="resetAddTopicModal()">Close</button>
-                <button type="button" class="btn btn-primary" id="editAndUpdateIndexTopicButton">Add</button>
-            </div>
-        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetAddTopicModal()">Close</button>
+                        <button type="button" class="btn btn-primary" id="editAndUpdateIndexTopicButton">Add</button>
+                    </div>
+                </div>
     </div>
 </div>
 <div class="modal fade" id="editMcqAssignmentQuestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -301,6 +362,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="previewUploadModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Upload preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video class="video-fluid embed-responsive embed-responsive-16by9" controls id="imagePreview"></video>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -342,6 +422,11 @@
     (function () {
         'use strict';
         onpageshow = init();
+        $('body').on('hidden.bs.modal', function () {
+            if ($('.modal.in').length > 0) {
+                $('body').addClass('modal-open');
+            }
+        });
     })();
     function getAboutCourse() {
         $("#courseBody").html(aboutCourseDetails);
@@ -398,9 +483,9 @@
                                            + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
                                         + '</a>'
                                         + '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">'
-                                            + '<a class="dropdown-item" href="#" onclick=requestEditIndex(' + id + ')>Edit Index Details</a>'
-                                            + '<a class="dropdown-item" href="#" onclick=requestDeleteIndex(' + id + ')>Delete Index</a>'
-                                            + '<a class="dropdown-item" href="#" onclick=requestAddTopic(' + id + ')>Add Topic</a>'
+                                            + '<a class="dropdown-item" href="#courseBody" onclick=requestEditIndex(' + id + ')>Edit Index Details</a>'
+                                            + '<a class="dropdown-item" href="#courseBody" onclick=requestDeleteIndex(' + id + ')>Delete Index</a>'
+                                            + '<a class="dropdown-item" href="#courseBody" onclick=requestAddTopic(' + id + ')>Add Topic</a>'
                                         + '</div>'
                                     + '</div>'
                                 + '</div>'
@@ -631,16 +716,28 @@
         $("#bc-topicName").val(currentTopicDetails[TopicId].topic_name);
         $("#bc_topicDescription").val(currentTopicDetails[TopicId].topic_description);
         $("#bc_topicAddUrl").val(currentTopicDetails[TopicId].file_path);
+        $("#bc_topicAddAttachmentUrl").val(currentTopicDetails[TopicId].file_attachment_path);
+        $("#fileAttachmentUploadProgressBar").show();
+        $("#fileUploadProgressBar").show();
         $("#editAndUpdateIndexTopicButton").attr("onclick", "editTopic(" + TopicId + "," + IndexId + ")");
         $("#editAndUpdateIndexTopic").modal('show');
     }
     function editTopic(TopicId, IndexId) {
         debugger
+
+        if (currentTopicVideoAwsPath == "") {
+            currentTopicVideoAwsPath = $("#bc_topicAddUrl").val();
+
+        }
+        if (currentTopicAttachmentAwsPath != "") {
+            currentTopicVideoAwsPath = $("#bc_topicAddAttachmentUrl").val();
+        }
         var _data = {
             "topic_id": TopicId,
             "topic_name": $("#bc-topicName").val(),
             "topic_description": $("#bc_topicDescription").val(),
-            "file_path": $("#bc_topicAddUrl").val(),
+            "file_attachment_path": currentTopicAttachmentAwsPath,
+            "file_path": currentTopicVideoAwsPath,
             "index_id": IndexId,
         }
         $.ajax({
@@ -671,6 +768,8 @@
         $("#bc-topicNameLabel").text('Enter Topic Name');
         $("#bc-topicDescriptionLabel").text('Enter Topic Description');
         $("#bc-topicAddUrl").text('Enter youtube url');
+        $("#fileAttachmentUploadProgressBar").show();
+        $("#fileUploadProgressBar").show();
         $("#editAndUpdateIndexTopicButton").attr("onclick", "AddTopic(" + IndexId + ")");
         $("#editAndUpdateIndexTopic").modal('show');
     }
@@ -678,14 +777,33 @@
         $("#bc-topicName").val("");
         $("#bc_topicDescription").val("");
         $("#bc_topicAddUrl").val("");
+        $("#postAttachmentUploadAlert").html("");
+        $("#bc_topicAddAttachmentUrl").val("");
+        $("#postAttachmentUploadAlert").hide();
+        $("#postUploadAlert").html("");
+        $("#postUploadAlert").hide();
+        $("#fileVideoUpload").val("");
+        $("#fileAttachmentUpload").val("");
+        document.getElementById("fileAttachmentUploadProgressBar").style.width = "0%";
+        document.getElementById("fileUploadProgressBar").style.width = "0%";
     }
     function AddTopic(IndexId) {
         debugger
+        if(currentTopicVideoAwsPath=="")
+        {
+            currentTopicVideoAwsPath=$("#bc_topicAddUrl").val();
+            
+        }
+        if (currentTopicAttachmentAwsPath=="")
+        {
+            currentTopicVideoAwsPath = $("#bc_topicAddAttachmentUrl").val();
+        }
         var _data = {
             "index_id": IndexId,
             "topic_name": $("#bc-topicName").val(),
             "topic_description": $("#bc_topicDescription").val(),
-            "file_path": $("#bc_topicAddUrl").val()
+            "file_attachment_path":currentTopicAttachmentAwsPath,
+            "file_path": currentTopicVideoAwsPath
         }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -1445,29 +1563,29 @@
                         }
                     }
                     else {
-                        $("#navBarIndexList").append('<a class="dropdown-item" href="#" role="button">no index found</a>');
+                        $("#navBarIndexList").append('<a class="dropdown-item" href="#courseBody" role="button">no index found</a>');
                     }
                     //fill assignments in nav
                     $("#navBarAssignmentList").empty();
                     var assignment_details = data.assignment_details;
                     if (assignment_details != null && assignment_details.length > 0) {
                         for (var i = 0; i < assignment_details.length; i++) {
-                            $("#navBarAssignmentList").append('<a class="dropdown-item" href="#" role="button" onclick=getAssignmentDetails(' + assignment_details[i].assignment_id + ')>' + assignment_details[i].assignment_name + '</a>');
+                            $("#navBarAssignmentList").append('<a class="dropdown-item" href="#courseBody" role="button" onclick=getAssignmentDetails(' + assignment_details[i].assignment_id + ')>' + assignment_details[i].assignment_name + '</a>');
                         }
                     }
                     else {
-                        $("#navBarAssignmentList").append('<a class="dropdown-item" href="#" role="button">no assignment found</a>');
+                        $("#navBarAssignmentList").append('<a class="dropdown-item" href="#courseBody" role="button">no assignment found</a>');
                     }
                     //fill tests in nav
                     var test_details = data.test_details;
                     $("#navBarTestList").empty();
                     if (test_details != null && test_details.length > 0) {
                         for (var i = 0; i < test_details.length; i++) {
-                            $("#navBarTestList").append('<a class="dropdown-item" href="#" role="button" onclick=getTestDetails(' + test_details[i].test_id + ')>' + test_details[i].test_name + '</a>');
+                            $("#navBarTestList").append('<a class="dropdown-item" href="#courseBody" role="button" onclick=getTestDetails(' + test_details[i].test_id + ')>' + test_details[i].test_name + '</a>');
                         }
                     }
                     else {
-                        $("#navBarTestList").append('<a class="dropdown-item" href="#" role="button">no test found</a>');
+                        $("#navBarTestList").append('<a class="dropdown-item" href="#courseBody" role="button">no test found</a>');
                     }
                     if (data.course_status == "created") {
                         $("#courseStatus").append('<button id="courseStatusActivateButton" class="btn btn-sm border btn-primary ml-2" href="#" onclick=requestActivateCourse()>Activate Course</button>');
@@ -1491,4 +1609,114 @@
             }
         });
     }
+
+
+
+
+
+    function requestUpload() {
+        document.getElementById("fileUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        //var file = $('#fileUpload')[0];
+        var file = $("#fileVideoUpload")[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("fileUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadVideo",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1 && data.file_location != null && data.file_location != "") {
+                    awsPath = data.file_location;
+                    $("#imagePreview").attr("src", data.file_location);
+                    currentTopicVideoAwsPath = data.file_location;
+                    $("#postUploadAlert").show();
+                    $("#postUploadAlert").append('<button type="button" class="btn btn-link" >File uploaded successfully </button>');
+                }
+                else {
+                    $("#postUploadAlert").show();
+                    $("#postUploadAlert").append('<button type="button" class="btn btn-link" >File uploading failed</button>');
+                }
+            }
+        });
+    }
+
+    function requestPreviewUpload() {
+        $("#previewUploadModal").modal("show");
+    }
+
+    function requestPreviewUploadedAttachment() {
+        $("#previewPdfModal").modal("show");
+    }
+    function requestPdfUpload() {
+        document.getElementById("fileAttachmentUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        //var file = $('#fileUpload')[0];
+        var file = $("#fileAttachmentUpload")[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("fileAttachmentUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadPdf",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1 && data.file_location != null && data.file_location != "") {
+                    awsPath = data.file_location;
+                    $("#imagePreview").attr("src", data.file_location);
+                    $("#postAttachmentUploadAlert").show();
+                    PDFObject.embed(data.file_location, "#previewNow");
+                    currentTopicAttachmentAwsPath = data.file_location;
+                    $("#postAttachmentUploadAlert").append('<a type="button" target="_blank" >File uploaded successfully </button>');
+                }
+                else {
+                    $("#postAttachmentUploadAlert").show();
+                    $("#postAttachmentUploadAlert").append('<a type="button" class="btn btn-link" onclick="requestPreviewUploadedAttachment()">File uploading failed</button>');
+                }
+            }
+        });
+    }
+    var currentTopicVideoAwsPath="";
+    var currentTopicAttachmentAwsPath = "";
 </script>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="FkUFYScdVjJz/jn3JwlD1mE3wXU=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="XqGwBMaX7+3jgHW+Xgn8WLCnHQY=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_ICpDataService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_ICpDataService" contract="CPDataService.ICpDataService" bindingType="basicHttpBinding" address="http://localhost:51735/CpDataService.svc" bindingConfiguration="BasicHttpBinding_ICpDataService">
+    <endpoint name="BasicHttpBinding_ICpDataService" contract="CPDataService.ICpDataService" bindingType="basicHttpBinding" address="http://localhost:60955/CpDataService.svc" bindingConfiguration="BasicHttpBinding_ICpDataService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:51735/CpDataService.svc</serializedValue>
+          <serializedValue>http://localhost:60955/CpDataService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

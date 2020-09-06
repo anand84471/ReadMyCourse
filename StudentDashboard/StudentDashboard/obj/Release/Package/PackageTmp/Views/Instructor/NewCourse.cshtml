@@ -61,7 +61,9 @@
                     <div class="col-sm-8">
                         <textarea type="text" onchange="validateInputField(this)" placeholder="Enter course description" id="courseDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
                     </div>
-                   
+                    <div class="alert alert-success" id="postsubmit" style="display:none" role="alert">
+                        course added successfully
+                    </div>
                 </div>
                 @*<script>
     tinymce.init({
@@ -118,6 +120,27 @@
             </div>
             <div class="modal-body">
                 <h3 id="courseIdGenerated">Added successfully</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="previewUploadModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Upload preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video class="video-fluid embed-responsive embed-responsive-16by9" controls id="imagePreview" >
+                    
+                </video>
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -383,6 +406,7 @@
         var topicDescriptions = $("[name='topicDescription".concat(indexcount) + "']");
         var topicFiles = $("[name='topicFileUpload".concat(indexcount) + "']");
         var topiRemoveButtons = $("[name='topicRemoveButton".concat(indexcount) + "']");
+        var topicAttachment = $("[name='topicAttachment".concat(indexcount) + "']");
         var topicData = [];
         var noOfTopics = 0;
         for (var i = 0; i < topicNames.length; i++) {
@@ -403,7 +427,8 @@
 
                     "topic_name": topicNames[i].value,
                     "topic_description": topicDescriptions[i].value,
-                    "file_path": topicFiles[i].value
+                    "file_path": topicFiles[i].value,
+                    "file_attachment_path":topicAttachment[i].value
                 }
                 topicData.push(topic);
             }
@@ -548,11 +573,13 @@
                     $('#exampleModalCenter').modal('show');
                     $("#courseDescription").prop("disabled", true);
                     $("#courseName").prop("disabled", true);
-                    $("#courseId").prop("value", data.course_id);
-                    $("#courseAddNewindexButton").show();
-                    $("#courseSubmitButton").show();
-                    $("#courseAddNewCourseButton").hide();
-                    $("#courseMenuButton").show();
+                    $("#postsubmit").show();
+                    $("#postsubmit").append('<a type="button" class="btn btn-link" href="ViewCourse?id=' + data.course_id + '">View course&rarr;</a>');
+                    //$("#courseId").prop("value", data.course_id);
+                    //$("#courseAddNewindexButton").show();
+                   // $("#courseSubmitButton").show();
+                    //$("#courseAddNewCourseButton").hide();
+                    //$("#courseMenuButton").show();
                 }
                 else {
                     
@@ -943,23 +970,102 @@
                             + '<textarea onchange="validateInputField(this)" type="text" name="topicDescription'.concat(indexCount) + '" placeholder="Enter topic description" id="message"  rows="2" class="form-control md-textarea"></textarea>'
                         +'</div>'
                 + '</div> '
-                //+ '<div class="form-group row">'
-                //+'<label for="exampleFormControlFile1" class="col-sm-3 col-form-label">Add file</label>'
-                //+ '<div class="col-sm-5"><form action="/FileUpload" method="post">'
-                //    + '<div class="input-group-append">'
-                //    + '<input type="file" name="fileUploads' + '" class="form-control-file" id="exampleFormControlFile1">'
-                //        +'<button class="btn btn-outline-secondary" type="submit">Upload</button>'+
-                //    '</div></form>'
-                //+ '</div>'
-                //+ '</div>'
+                + '<div class="form-group row">'
+                +'<label for="exampleFormControlFile1" class="col-sm-3 col-form-label">Add Video</label>'
+                + '<div class="col-sm-7">'
+                +'<form class="card-img-top classroom-background" method="post" enctype="multipart/form-data" >'
+                    +'<i class="fa fa-download upload-icon" aria-hidden="true"></i>'
+                    +'<div class="form-group">'
+                        + '<input type="file"  name="fileVideoUpload'.concat(indexCount) + '"  accept="video/*"/>'
+                        + '<input type="text"  name="fileVideoUploadPath'.concat(indexCount) + '"  readonly hidden/>'
+                        + '<button type="button" class="btn btn-primary" onclick="requestUpload('.concat(indexCount) + ')">Upload</button>'
+                        +'<div class="progress progress-sm mr-2">'
+                            +'<div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>'
+                        +'</div>'
+                        +'<div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">file uploaded successfully'
+                        +'</div>'
+                    +'</div>'
+                +'</form> '
+
+                + '</div>'
+                + '</div>'
                  + '<div class="form-group row">'
-                        + '<label for="inputPassword" class="col-sm-3 col-form-label card-text">link</label>'
+                        + '<label for="inputPassword" class="col-sm-3 col-form-label card-text">Video link</label>'
                         + '<div class="col-sm-8">'
-                            + '<input onchange="validateInputField(this)" type="url" class="form-control"  name="topicFileUpload'.concat(indexCount) + '" placeholder="add link">'
+                            + '<input onchange="validateInputField(this)" type="url" class="form-control"  name="topicFileUpload'.concat(indexCount) + '" placeholder="add youtube vodeo link">'
                         + '</div>'
+                + '</div>'
+                  + '<div class="form-group row">'
+                + '<label for="exampleFormControlFile1" class="col-sm-3 col-form-label">Add Attachment</label>'
+                + '<div class="col-sm-7">'
+                + '<form class="card-img-top classroom-background" method="post" enctype="multipart/form-data" >'
+                    + '<i class="fa fa-download upload-icon" aria-hidden="true"></i>'
+                    + '<div class="form-group">'
+                        + '<input type="file"  name="fileAttachmentUpload'.concat(indexCount) + '"  accept="video/*"/>'
+                        + '<input type="text"  name="fileAttachmentPath'.concat(indexCount) + '"  readonly hidden/>'
+                        + '<button type="button" class="btn btn-primary" onclick="requestUpload('.concat(indexCount) + ')">Upload</button>'
+                        + '<div class="progress progress-sm mr-2">'
+                            + '<div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>'
+                        + '</div>'
+                        + '<div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">file uploaded successfully'
+                        + '</div>'
+                    + '</div>'
+                + '</form> '
+
+                + '</div>'
                 + '</div>'
                 +'<hr/></div>'
             );
     }
-    //Region add index end
+    var awsPath = "";
+    function requestUpload(indexcount) {
+        document.getElementById("fileUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        //var file = $('#fileUpload')[0];
+        var file = $("[name='fileVideoUpload".concat(indexcount) + "']")[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("fileUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+                           
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadVideo",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1 && data.file_location != null && data.file_location!="") {
+                    awsPath = data.file_location;
+                    $("#imagePreview").attr("src", data.file_location);
+                    $("#postUploadAlert").show();
+                    $("#postUploadAlert").append('<button type="button" class="btn btn-link" onclick="requestPreviewUpload()">View upload&rarr;</button>');
+                }
+                else {
+                    $("#postUploadAlert").append('<button type="button" class="btn btn-link" onclick="requestPreviewUpload()">File uploading failed</button>');
+                }
+            }
+        });
+    }
+
+    function requestPreviewUpload() {
+        $("#previewUploadModal").modal("show");
+    }
 </script>

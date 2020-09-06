@@ -157,12 +157,11 @@
                 "sorting_id": $("#inlineFormCustomSelect").val()
             }
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/SearchCourseForStudent",
+            url: "/api/v1/document/SearchCourse",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1 && data.courses!=null) {
@@ -195,7 +194,7 @@
 
                         + '<h6 class="custom-color-desc font-weight-bold">' + courses[i].course_description + '</h6>'
                          + '<h6 class="text-mutated font-weight-bold">' + courses[i].course_activation_date + ' | FREE</h6>'
-                         + ' <p class="text mr-3"><i class="icon-user mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
+                         + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Created by:</b> ' + courses[i].instructor_name + '</p>'
                         +'<ul class="list-unstyled list-inline rating mb-0">'
                             + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id + ',this)"> Details</button></p></li>'
@@ -223,12 +222,11 @@
                 "sorting_id": $("#inlineFormCustomSelect").val()
             }
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/SearchCourseForStudent",
+            url: "/api/v1/document/SearchCourse",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1&&data.courses!=null) {
@@ -259,7 +257,7 @@
 
                          + '<h6 class="custom-color-desc font-weight-bold">' + courses[i].course_description + '</h6>'
                           + '<h6 class="text-mutated font-weight-bold">' + courses[i].course_activation_date + ' | FREE</h6>'
-                         + ' <p class="text mr-3"><i class="fas fa-fw fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
+                         + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Taught by:</b> ' + courses[i].instructor_name + '</p>'
                          + '<ul class="list-unstyled list-inline rating mb-0">'
                              + '<li class="list-inline-item mr-2"><p><button  class="btn lg btn-outline-primary " onclick="getCourseDetails(' + courses[i].course_id + ',this)">Details</button></p></li>'

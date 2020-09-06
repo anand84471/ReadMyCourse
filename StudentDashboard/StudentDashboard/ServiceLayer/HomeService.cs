@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using static StudentDashboard.Constants;
 
 namespace StudentDashboard.ServiceLayer
 {
@@ -941,6 +942,7 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<long> InsertNewClassroom(ClassRoomModal objClassRoomModal)
         {
+            objClassRoomModal.m_strClassroomMeetingName = objInstructorBusinessLayer.GetRandomMeetingName();
             return await objHomeDTO.InsertNewClassroom(objClassRoomModal);
         }
         public async Task<bool> InsertNewPostToClassroom(ClassroomPostModal objClassroomPostModal)
@@ -1118,6 +1120,8 @@ namespace StudentDashboard.ServiceLayer
                 objInstructorSearchResponse.m_lsAssignments = await SearchForAssignmentOfInstructor(objInstructorSearchRequest.m_strSerachStraing,4,objInstructorSearchRequest.m_iInstructorId);
                 objInstructorSearchResponse.m_lsCourses = await SearchForCourseOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
                 objInstructorSearchResponse.m_lsTestDetails = await SearchForTestOfInstructor(objInstructorSearchRequest.m_strSerachStraing, 4, objInstructorSearchRequest.m_iInstructorId);
+                objInstructorSearchResponse.m_lsClassroomBasicDetailsModal = await GetInstructorSearchResultForClassrom(objInstructorSearchRequest.m_iInstructorId, objInstructorSearchRequest.m_strSerachStraing);
+
             }
             catch (Exception Ex)
             {
@@ -1132,14 +1136,14 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.GetAllClassroomForIsntrcutor(InstrucorId);
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId)
+        public async Task<bool> ActivateClassroom(long ClassroomId,int ClassroomPublicType)
         {
             bool result = false;
             try
             {
                 string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
                 string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForClassroom(ClassroomId, ShareCode);
-                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl);
+                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType);
             }
             catch (Exception Ex)
             {
@@ -1313,6 +1317,88 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> DeleteClassroomTest(long ClassroomId, long TestId)
         {
             return await objHomeDTO.DeleteClassroomTest(ClassroomId, TestId);
+        }
+        public async Task<string> UploadFiles(List<AwsFileUploadRequest> lsAwsFileUploadRequest,int FileTypeId)
+        {
+            string awsFilePath = null;
+            switch(FileTypeId)
+            {
+                case (int)FileUploadTypeId.IMAGE:
+                    {
+                        foreach (var files in lsAwsFileUploadRequest)
+                        {
+                            awsFilePath=await objInstructorBusinessLayer.UploadImageAsync(files.m_strFileName, files.m_strFilePath);
+                        }
+                        break;
+                    }
+                case (int)FileUploadTypeId.VIDEO:
+                    {
+                        foreach (var files in lsAwsFileUploadRequest)
+                        {
+                            awsFilePath = await objInstructorBusinessLayer.UploadVideoAsync(files.m_strFileName, files.m_strFilePath);
+                        }
+                        break;
+                    }
+                case (int)FileUploadTypeId.PDF:
+                    {
+                        foreach (var files in lsAwsFileUploadRequest)
+                        {
+                            awsFilePath = await objInstructorBusinessLayer.UploadPdfAsync(files.m_strFileName, files.m_strFilePath);
+                        }
+                        break;
+                    }
+                case (int)FileUploadTypeId.CUSTOM:
+                    {
+                        foreach (var files in lsAwsFileUploadRequest)
+                        {
+                            awsFilePath = await objInstructorBusinessLayer.UploadCustomTypeAttachmentAsync(files.m_strFileName, files.m_strFilePath);
+                        }
+                        break;
+                    }
+            }
+            return awsFilePath;
+        }
+        public async Task<List<ClassroomBasicDetailsModal>> GetInstructorSearchResultForClassrom(int InstructorId, string SearchString)
+        {
+            return await objHomeDTO.GetInstructorSearchResultForClassrom(InstructorId, SearchString);
+        }
+        public async Task<bool> UpdateInstructorProfilePicture(string Url, int InstructorId)
+        {
+            return await objHomeDTO.UpdateInstructorProfilePicture(Url, InstructorId);
+        }
+        public async Task<bool> AddAttachmentToClassroom(ClassroomAttachmentRequest classroomAttachmentRequest)
+        {
+            return await objHomeDTO.AddAttachmentToClassroom(classroomAttachmentRequest);
+        }
+        public async Task<List<ClassroomAttachmentDetailsResponse>> GetAllClassroomAttachments(long ClassroomId)
+        {
+            return await objHomeDTO.GetAllClassroomAttachments(ClassroomId);
+        }
+        public async Task<bool> DeleteClassroomAttachment(long AttachmentId)
+        {
+            return await objHomeDTO.DeleteClassroomAttachment(AttachmentId);
+        }
+        public async Task<bool> InsertClassroomSchedule(ClassroomScheduleDetails classroomScheduleDetails)
+        {
+            string strClassroomScheduleSerialized = JsonConvert.SerializeObject(classroomScheduleDetails);
+            return await objHomeDTO.InsertClassroomSchedule(classroomScheduleDetails.m_llClassroomId, strClassroomScheduleSerialized);
+        }
+        public async Task<bool> UpdateClassroomSchedule(ClassroomScheduleDetails classroomScheduleDetails)
+        {
+            string strClassroomScheduleSerialized = JsonConvert.SerializeObject(classroomScheduleDetails);
+            return await objHomeDTO.UpdateClassroomSchedule(classroomScheduleDetails.m_llClassroomId, strClassroomScheduleSerialized);
+        }
+        public async Task<ClassroomScheduleDetails> GetClassroomSchedule(long ClassroomId)
+        {
+            ClassroomScheduleDTO classroomScheduleDTO = await objHomeDTO.GetClassroomScheduleDetails(ClassroomId);
+            ClassroomScheduleDetails classroomScheduleDetails = null;
+            if (classroomScheduleDTO!=null)
+            {
+                classroomScheduleDetails = JsonConvert.DeserializeObject<ClassroomScheduleDetails>(classroomScheduleDTO.m_strClassroomScheduleObj);
+                classroomScheduleDetails.m_strClassroomScheduleInsertionTime = classroomScheduleDTO.m_dtClassroomScheduleInsertionTime.ToString();
+                classroomScheduleDetails.m_strClassroomScheduleUpdationTime = classroomScheduleDTO.m_dtClassroomScheduleUpdationTime.ToString();
+            }
+            return classroomScheduleDetails;
         }
     }
 

@@ -3,7 +3,7 @@ using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Utilities;
 using System;
-
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +85,9 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentDTO.GetClassroomDetailsForStudent(ClassroomId);
         }
-
+        public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn, int NoOfRowsFetched, int SortingTypeId)
+        {
+            return await objDocumentDTO.SearchForCourse(SearchString,MaxRowToReturn,NoOfRowsFetched,SortingTypeId);
+        }
     }
 }

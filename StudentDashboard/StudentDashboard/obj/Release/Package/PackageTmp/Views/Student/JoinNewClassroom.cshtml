@@ -2,6 +2,32 @@
     ViewBag.Title = "Join new classroom";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
+<style type="text/css">
+    .classroom-assignemnts
+    {
+        width:100%;
+        border:10px;
+background: rgb(58,180,60);
+background: linear-gradient(90deg, rgba(58,180,60,1) 26%, rgba(253,29,29,1) 100%, rgba(252,176,69,1) 100%);
+        padding:3px;
+        margin-top:10px;
+        margin-bottom:10px;
+        color:#f8f9fccc !important;
+        border-radius: 8px; 
+    }
+    .classroom-assignemnts-submitted
+    {
+        width:100%;
+        border:10px;
+background: rgb(58,180,60);
+background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 100%, rgba(252,176,69,1) 100%);
+        padding:3px;
+        margin-top:10px;
+        margin-bottom:10px;
+        color:#f8f9fccc !important;
+        border-radius: 8px; 
+    }
+</style>
 <div class="container-fluid " id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Join new classroom</h1>
@@ -14,7 +40,7 @@
         </nav>
     </div>
     <div class="input-group pl-lg-5 pr-lg-5">
-        <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for classrooms..." aria-label="Search">
+        <input type="text" class="form-control" id="classroomSearchBox" placeholder="Search for classrooms..." aria-label="Search">
         <div class="input-group-append">
             <button class="btn btn-primary" onclick="searchForClassrooms()" type="button">
                 <i class="fas fa-search fa-sm"></i>
@@ -27,50 +53,16 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    <div id="assignmentAccessController" class="card col-sm-6 ml-xl-5 shadow-lg ">
-        <div class="card-body">
-            <h5>Please enter classroom id and access code to continue</h5>
-            <form method="post" class="needs-validation" action="RequestClassroomAccess" novalidate>
-                @Html.AntiForgeryToken()
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Classroom Id</label>
-                    <input type="text" name="classroom_id" class="form-control" id="accessCode" placeholder="Enter id" required>
-                    <div class="invalid-feedback">
-                        Please enter assignment id
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Access code</label>
-                    <input type="text" name="access_code" class="form-control" id="accessCode" placeholder="Enter access code" required>
-                    <div class="invalid-feedback">
-                        Please enter access code
-                    </div>
-                </div>
-                @if (ViewBag.IsAccessError != null)
-                {
-                    if (ViewBag.IsAccessError)
-                    {
-                        <div class="alert alert-danger" role="alert" name="loginMessage1">
-                            Access denied!
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-primary" role="alert" name="loginMessage1">
-                            Access granted
-                        </div>
-                    }
-                    ViewBag.IsLoggedIn = null;
-                }
-                <div class="form-group">
-                    <button type="submit" class="btn btn-block btn-outline-primary">Submit</button>
-                </div>
-            </form>
+    <div  id="allClassroomContainer">
 
-        </div>
     </div>
-    <div class="row" id="coursesContainer">
+    <div class="alert alert-danger" id="footerAllClassroom" style="display:none">
+        No more classrooms founds
     </div>
+    <button class="btn btn-block mh-100 btn-outline-primary" onclick="searchForClassrooms()">view more</button>
+    
+   
+    
 
 </div>
 <div class="modal fade" id="requestAssignemntAccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -118,7 +110,7 @@
                 <h3 id="infoMessageFail">Course could not be joined</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-lg btn-outline-primary mr-lg-5 ml-lg-5" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -139,18 +131,16 @@
             <div class="modal-body">
                 <dl class="row">
                     <dt class="col-sm-3">Name:</dt>
-                    <dd class="col-sm-9" id="courseName"></dd>
+                    <dd class="col-sm-9" id="classroomName"></dd>
                     <dt class="col-sm-3">Description:</dt>
-                    <dd class="col-sm-9" id="courseDescription"></dd>
+                    <dd class="col-sm-9" id="classroomDescription"></dd>
                     <dt class="col-sm-3">Created on:</dt>
-                    <dd class="col-sm-9" id="insertDate">
+                    <dd class="col-sm-9" id="createdOn">
                     </dd>
-                    <dt class="col-sm-3">Assignments:</dt>
-                    <dd class="col-sm-9" id="assignments"></dd>
-                    <dt class="col-sm-3">Tests:</dt>
-                    <dd class="col-sm-9" id="tests"></dd>
-                    <dt class="col-sm-3">Indexes:</dt>
-                    <dd class="col-sm-9" id="indexes"></dd>
+                    <dt class="col-sm-3">Instructor:</dt>
+                    <dd class="col-sm-9" id="instructorName"></dd>
+                    <dt class="col-sm-3">No od enrollments:</dt>
+                    <dd class="col-sm-9" id="noOfStudentsJoined"></dd>
                 </dl>
                 <ul class="list-group z-depth-0" id="indexContainer"></ul>
 
@@ -167,6 +157,7 @@
         (function () {
             'use strict';
             window.addEventListener('load', function () {
+                searchForClassrooms();
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 var forms = document.getElementsByClassName('needs-validation');
                 // Loop over them and prevent submission
@@ -206,66 +197,61 @@
 <script>
     (function () {
         'use strict';
-        var input = document.getElementById("courseSearchBox");
+        var input = document.getElementById("classroomSearchBox");
         input.addEventListener("keyup", function (event) {
-            // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
-                searchForAssignments();
+                searchForClassrooms();
             }
         });
         $("#spinner").remove();
-        //onpageshow = searchForAssignments();
     })();
-    function searchForAssignments() {
-        $("#assignmentAccessController").remove();
-        debugger
-        var _data =
-            {
-                "key": $("#courseSearchBox").val()
-            }
+    var lastClassroomIdFetched=0;
+    function searchForClassrooms() {
+        var queryString = $("#classroomSearchBox").val();
+        if (queryString == null)
+        {
+            queryString = "";
+        }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
-            data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/SearchAssignments",
+            url: "/api/v1/Course/SearchClassroom?LastClassroomId=".concat(lastClassroomIdFetched).
+                concat("&SearchString=").concat(queryString),
             success: function (data) {
-                debugger;
                 if (data != null && data.response_code == 1) {
-                    var assignments = data.assignments;
-                    var coursesContainer = $("#coursesContainer");
-                    var rows='';
-                    for (var i = 0; i < assignments.length; i++) {
-                        rows+=''
-                        +'<div class="col-xl-3 col-md-6 mb-4">'
-                            +'<div class="card shadow border-left-success  ml-2 mr-2 mb-2">'
-                                +'<div class="card-body text-center">'
-                                   + ' <h4 class="card-title font-weight-bold text-info">' + assignments[i].name + '</h4>'
-                                   + ' <h5 class="card-text font-weight-bold ">Created on:</h5><p>' + assignments[i].creation_date + '</p>'
-                                   + ' <p class="text mr-3"><i class="fas fa-fw fa-list mr-2"></i><b>No of questions :</b> ' + assignments[i].no_of_questions + '</p>'
-                                   //+ ' <p class="text mr-3"><i class="fas fa-fw fa-book mr-2"></i><b>Courses Created:</b> ' + assignments[i].no_of_course + '</p>'
-                                    +'<ul class="list-unstyled list-inline rating mb-1">'
-                                       //+' <li class="list-inline-item mr-2"><button  class="btn btn-outline-primary">Profile</button></li>'
-                                        + '<li class="list-inline-item mr-0"><button  class="btn btn-dark mb-1" onclick=joinAssignment(' + assignments[i].assignment_id + ')>Start</button></li>'
-                                    +'</ul>'
-                                +'</div>'
-                            +'</div>'
-                         +'</div>';
+                    var row = '';
+                    var classrooms = data.classrooms;
+                    if (classrooms != null && classrooms.length > 0) {
+                        for (var i = 0; i < classrooms.length; i++) {
+                            lastClassroomIdFetched = classrooms[i].classroom_id;
+                            if (classrooms[i].is_joined == false) {
+                                row = '<div class="card shadow classroom-assignemnts p-2">' +
+                           '<h4 class="text-white font-weight-bold p2"><span ><i class="fa fa-bookmark"></i></span> ' + classrooms[i].classroom_name + '</h4>' +
+                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Added On: ' + classrooms[i].classroom_creation_date + '</h6>' +
+                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-users"></i></span> No Of students joined: ' + classrooms[i].no_of_enrollments + '</h6>';
+                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Free </span><a class="ml-2 btn btn-sm btn-outline-light" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id +'">Join Now</a></h6>';
+                            }
+                            else {
+                                row = '<div class="card shadow classroom-assignemnts-submitted p-2">' +
+                           '<h4 class="text-white font-weight-bold p2"><span ><i class="fa fa-check-circle"></i></span> ' + classrooms[i].classroom_name + '</h4>' +
+                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Added On: ' + classrooms[i].classroom_creation_date + '</h6>' +
+                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-users"></i></span> No Of students joined: ' + classrooms[i].no_of_enrollments + '</h6>';
+                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Status: Joined</span><a class="btn btn-sm btn-outline-light ml-2" href="ViewClassroom?classroom_id=' + classrooms[i].classroom_id + '">Visit</a></h6>';
+                            }
+                            row += '</div>';
+                            $("#allClassroomContainer").append(row);
+                        }
+
+                    } else {
+                        $("#footerAllClassroom").show();
                     }
-                    coursesContainer.html(rows);
-                    $("#spinner").remove();
+                    
                 }
-                else {
-                    $("#spinner").remove();
-                }
+
+                $("#spinnerAllClassroom").remove();
             }
         });
     }
-    function joinAssignment(id) {
-        $('#accordionSidebar').addClass("toggled");
-        $("#requestAssignemntAccess").modal("show");
-        $("#assignmentModalId").val(id);
-    }
-
 </script>

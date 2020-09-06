@@ -84,6 +84,108 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomHomeDetailsForStudentAsync(long ClassroomId, long StudentId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomSearchDetails", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomSearchDetailsResponse")]
+        System.Data.DataSet GetInstructorClassroomSearchDetails(int InstructorId, string SearchString);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomSearchDetails", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomSearchDetailsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomSearchDetailsAsync(int InstructorId, string SearchString);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorProfilePictureResponse")]
+        bool UpdateInstructorProfilePicture(int InstructorId, string Url);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorProfilePictureResponse")]
+        System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentProfilePictureResponse")]
+        bool UpdateStudentProfilePicture(long StudentId, string Url);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentProfilePictureResponse")]
+        System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string Url);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsResponse")]
+        System.Data.DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomMeetingDetailsAsync(long ClassroomId, long MeetingId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertClassroomAttachment", ReplyAction="http://tempuri.org/ICpDataService/InsertClassroomAttachmentResponse")]
+        bool InsertClassroomAttachment(long ClassroomId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertClassroomAttachment", ReplyAction="http://tempuri.org/ICpDataService/InsertClassroomAttachmentResponse")]
+        System.Threading.Tasks.Task<bool> InsertClassroomAttachmentAsync(long ClassroomId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomAttachmentDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomAttachmentDetailsResponse")]
+        bool UpdateClassroomAttachmentDetails(long AttachmentId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomAttachmentDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomAttachmentDetailsResponse")]
+        System.Threading.Tasks.Task<bool> UpdateClassroomAttachmentDetailsAsync(long AttachmentId, string AttachmentName, string AttachmentDescription, string AttachmentUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomAttachment", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomAttachmentResponse")]
+        bool DeleteClassroomAttachment(long AttachmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroomAttachment", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomAttachmentResponse")]
+        System.Threading.Tasks.Task<bool> DeleteClassroomAttachmentAsync(long AttachmentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomAttachments", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomAttachmentsResponse")]
+        System.Data.DataSet GetClassroomAttachments(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomAttachments", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomAttachmentsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomAttachmentsAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsForStudentResponse")]
+        System.Data.DataSet GetInstructorProfileDetailsForStudent(int InstructorId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorProfileDetailsForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorProfileDetailsForStudentAsync(int InstructorId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomScheduleResponse")]
+        System.Data.DataSet GetClassroomSchedule(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomScheduleResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomScheduleAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomScheduleResponse")]
+        bool UpdateClassroomSchedule(long ClassroomId, string ClassroomSchedule);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomScheduleResponse")]
+        System.Threading.Tasks.Task<bool> UpdateClassroomScheduleAsync(long ClassroomId, string ClassroomSchedule);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/InsertClassroomScheduleResponse")]
+        bool InsertClassroomSchedule(long ClassroomId, string ClassroomSchedule);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertClassroomSchedule", ReplyAction="http://tempuri.org/ICpDataService/InsertClassroomScheduleResponse")]
+        System.Threading.Tasks.Task<bool> InsertClassroomScheduleAsync(long ClassroomId, string ClassroomSchedule);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudentResponse")]
+        System.Data.DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUser", ReplyAction="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUserResponse")]
+        System.Data.DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUser", ReplyAction="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUserResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> SearchForCourseForNotLoggedUserAsync(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorAcademicRecords", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorAcademicRecordsResponse")]
+        System.Data.DataSet GetInstructorAcademicRecords(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorAcademicRecords", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorAcademicRecordsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorAcademicRecordsAsync(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorAcademicRecord", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorAcademicRecordResponse")]
+        System.Data.DataSet UpdateInstructorAcademicRecord(string Certificates, string Publications, string Conferences, string LinkedInId, string GoogleScholarId, int InstructorId, string LatestQualification, string m_strProjects);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorAcademicRecord", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorAcademicRecordResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> UpdateInstructorAcademicRecordAsync(string Certificates, string Publications, string Conferences, string LinkedInId, string GoogleScholarId, int InstructorId, string LatestQualification, string m_strProjects);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorBio", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorBioResponse")]
+        System.Data.DataSet UpdateInstructorBio(int InstructorId, string InstructoBioData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorBio", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorBioResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> UpdateInstructorBioAsync(int InstructorId, string InstructoBioData);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -285,10 +387,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassRoomForInstrcutorAsync(int InstrcutorId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
-        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
-        System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl);
+        System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewPostToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewPostToClassroomResponse")]
         bool InertNewPostToClassroom(long ClassroomId, string Post);
@@ -309,10 +411,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetMeetingDetailsOfClassroomAsync(long ClassRoomId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl);
+        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClasroomDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClasroomDetailsResponse")]
         System.Data.DataSet GetClasroomDetails(long ClassRoomId);
@@ -597,10 +699,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<StudentDashboard.CPDataService.GetStudentIdFromUserIdResponse> GetStudentIdFromUserIdAsync(StudentDashboard.CPDataService.GetStudentIdFromUserIdRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentDetailsResponse")]
-        bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, int StateId, int CityId, string Gender);
+        bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, System.Nullable<int> StateId, System.Nullable<int> CityId, string Gender, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentDetailsResponse")]
-        System.Threading.Tasks.Task<bool> UpdateStudentDetailsAsync(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, int StateId, int CityId, string Gender);
+        System.Threading.Tasks.Task<bool> UpdateStudentDetailsAsync(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, System.Nullable<int> StateId, System.Nullable<int> CityId, string Gender, long StudentId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentPassword", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentPasswordResponse")]
         bool UpdateStudentPassword(long StudentId, string OldHashedPassword, string NewHashedPassword);
@@ -974,10 +1076,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<StudentDashboard.CPDataService.InertNewCourseIndexResponse> InertNewCourseIndexAsync(StudentDashboard.CPDataService.InertNewCourseIndexRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTopic", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTopicResponse")]
-        bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId);
+        bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId, string FileAttachmetPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTopic", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTopicResponse")]
-        System.Threading.Tasks.Task<bool> InsertNewTopicAsync(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId);
+        System.Threading.Tasks.Task<bool> InsertNewTopicAsync(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId, string FileAttachmetPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTest", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTestResponse")]
         StudentDashboard.CPDataService.InsertNewTestResponse InsertNewTest(StudentDashboard.CPDataService.InsertNewTestRequest request);
@@ -1068,10 +1170,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<bool> UpdateAssignmentDetailsAsync(long AssignmentId, string AssignmentName, string AssignmentDescription, string FilePath, byte FileType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateIndexTopicDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateIndexTopicDetailsResponse")]
-        bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType);
+        bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType, string FileAttachmentPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateIndexTopicDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateIndexTopicDetailsResponse")]
-        System.Threading.Tasks.Task<bool> UpdateIndexTopicDetailsAsync(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType);
+        System.Threading.Tasks.Task<bool> UpdateIndexTopicDetailsAsync(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType, string FileAttachmentPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateCourseIndexDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateCourseIndexDetailsResponse")]
         bool UpdateCourseIndexDetails(long IndexId, string IndexName, string IndexDescription);
@@ -1116,10 +1218,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorDetailsAsync(int Id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorDetailsResponse")]
-        bool UpdateInstructorDetails(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, int CityId, int StateId, string PinCode, int InstructorId);
+        bool UpdateInstructorDetails(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, System.Nullable<int> CityId, System.Nullable<int> StateId, string PinCode, int InstructorId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorDetailsResponse")]
-        System.Threading.Tasks.Task<bool> UpdateInstructorDetailsAsync(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, int CityId, int StateId, string PinCode, int InstructorId);
+        System.Threading.Tasks.Task<bool> UpdateInstructorDetailsAsync(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, System.Nullable<int> CityId, System.Nullable<int> StateId, string PinCode, int InstructorId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorPassword", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorPasswordResponse")]
         bool UpdateInstructorPassword(string Password, int InstructorId);
@@ -2118,6 +2220,142 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetClassroomHomeDetailsForStudentAsync(ClassroomId, StudentId);
         }
         
+        public System.Data.DataSet GetInstructorClassroomSearchDetails(int InstructorId, string SearchString) {
+            return base.Channel.GetInstructorClassroomSearchDetails(InstructorId, SearchString);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomSearchDetailsAsync(int InstructorId, string SearchString) {
+            return base.Channel.GetInstructorClassroomSearchDetailsAsync(InstructorId, SearchString);
+        }
+        
+        public bool UpdateInstructorProfilePicture(int InstructorId, string Url) {
+            return base.Channel.UpdateInstructorProfilePicture(InstructorId, Url);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url) {
+            return base.Channel.UpdateInstructorProfilePictureAsync(InstructorId, Url);
+        }
+        
+        public bool UpdateStudentProfilePicture(long StudentId, string Url) {
+            return base.Channel.UpdateStudentProfilePicture(StudentId, Url);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string Url) {
+            return base.Channel.UpdateStudentProfilePictureAsync(StudentId, Url);
+        }
+        
+        public System.Data.DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId) {
+            return base.Channel.GetClassroomMeetingDetails(ClassroomId, MeetingId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomMeetingDetailsAsync(long ClassroomId, long MeetingId) {
+            return base.Channel.GetClassroomMeetingDetailsAsync(ClassroomId, MeetingId);
+        }
+        
+        public bool InsertClassroomAttachment(long ClassroomId, string AttachmentName, string AttachmentDescription, string AttachmentUrl) {
+            return base.Channel.InsertClassroomAttachment(ClassroomId, AttachmentName, AttachmentDescription, AttachmentUrl);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertClassroomAttachmentAsync(long ClassroomId, string AttachmentName, string AttachmentDescription, string AttachmentUrl) {
+            return base.Channel.InsertClassroomAttachmentAsync(ClassroomId, AttachmentName, AttachmentDescription, AttachmentUrl);
+        }
+        
+        public bool UpdateClassroomAttachmentDetails(long AttachmentId, string AttachmentName, string AttachmentDescription, string AttachmentUrl) {
+            return base.Channel.UpdateClassroomAttachmentDetails(AttachmentId, AttachmentName, AttachmentDescription, AttachmentUrl);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateClassroomAttachmentDetailsAsync(long AttachmentId, string AttachmentName, string AttachmentDescription, string AttachmentUrl) {
+            return base.Channel.UpdateClassroomAttachmentDetailsAsync(AttachmentId, AttachmentName, AttachmentDescription, AttachmentUrl);
+        }
+        
+        public bool DeleteClassroomAttachment(long AttachmentId) {
+            return base.Channel.DeleteClassroomAttachment(AttachmentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteClassroomAttachmentAsync(long AttachmentId) {
+            return base.Channel.DeleteClassroomAttachmentAsync(AttachmentId);
+        }
+        
+        public System.Data.DataSet GetClassroomAttachments(long ClassroomId) {
+            return base.Channel.GetClassroomAttachments(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomAttachmentsAsync(long ClassroomId) {
+            return base.Channel.GetClassroomAttachmentsAsync(ClassroomId);
+        }
+        
+        public System.Data.DataSet GetInstructorProfileDetailsForStudent(int InstructorId, long StudentId) {
+            return base.Channel.GetInstructorProfileDetailsForStudent(InstructorId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorProfileDetailsForStudentAsync(int InstructorId, long StudentId) {
+            return base.Channel.GetInstructorProfileDetailsForStudentAsync(InstructorId, StudentId);
+        }
+        
+        public System.Data.DataSet GetClassroomSchedule(long ClassroomId) {
+            return base.Channel.GetClassroomSchedule(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomScheduleAsync(long ClassroomId) {
+            return base.Channel.GetClassroomScheduleAsync(ClassroomId);
+        }
+        
+        public bool UpdateClassroomSchedule(long ClassroomId, string ClassroomSchedule) {
+            return base.Channel.UpdateClassroomSchedule(ClassroomId, ClassroomSchedule);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateClassroomScheduleAsync(long ClassroomId, string ClassroomSchedule) {
+            return base.Channel.UpdateClassroomScheduleAsync(ClassroomId, ClassroomSchedule);
+        }
+        
+        public bool InsertClassroomSchedule(long ClassroomId, string ClassroomSchedule) {
+            return base.Channel.InsertClassroomSchedule(ClassroomId, ClassroomSchedule);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertClassroomScheduleAsync(long ClassroomId, string ClassroomSchedule) {
+            return base.Channel.InsertClassroomScheduleAsync(ClassroomId, ClassroomSchedule);
+        }
+        
+        public System.Data.DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
+            return base.Channel.GetPublicClassroomDetailsForStudent(LastFetchedClassroomId, StudentId, NoOfRecordsToBeFetched, QueryString);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
+            return base.Channel.GetPublicClassroomDetailsForStudentAsync(LastFetchedClassroomId, StudentId, NoOfRecordsToBeFetched, QueryString);
+        }
+        
+        public System.Data.DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId) {
+            return base.Channel.SearchForCourseForNotLoggedUser(SerachString, MaxRowToReturn, NoOfRowsFetch, SortType, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> SearchForCourseForNotLoggedUserAsync(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId) {
+            return base.Channel.SearchForCourseForNotLoggedUserAsync(SerachString, MaxRowToReturn, NoOfRowsFetch, SortType, StudentId);
+        }
+        
+        public System.Data.DataSet GetInstructorAcademicRecords(int InstructorId) {
+            return base.Channel.GetInstructorAcademicRecords(InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorAcademicRecordsAsync(int InstructorId) {
+            return base.Channel.GetInstructorAcademicRecordsAsync(InstructorId);
+        }
+        
+        public System.Data.DataSet UpdateInstructorAcademicRecord(string Certificates, string Publications, string Conferences, string LinkedInId, string GoogleScholarId, int InstructorId, string LatestQualification, string m_strProjects) {
+            return base.Channel.UpdateInstructorAcademicRecord(Certificates, Publications, Conferences, LinkedInId, GoogleScholarId, InstructorId, LatestQualification, m_strProjects);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> UpdateInstructorAcademicRecordAsync(string Certificates, string Publications, string Conferences, string LinkedInId, string GoogleScholarId, int InstructorId, string LatestQualification, string m_strProjects) {
+            return base.Channel.UpdateInstructorAcademicRecordAsync(Certificates, Publications, Conferences, LinkedInId, GoogleScholarId, InstructorId, LatestQualification, m_strProjects);
+        }
+        
+        public System.Data.DataSet UpdateInstructorBio(int InstructorId, string InstructoBioData) {
+            return base.Channel.UpdateInstructorBio(InstructorId, InstructoBioData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> UpdateInstructorBioAsync(int InstructorId, string InstructoBioData) {
+            return base.Channel.UpdateInstructorBioAsync(InstructorId, InstructoBioData);
+        }
+        
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {
             return base.Channel.UpdateNotificationStatus(Status, NotificationId);
         }
@@ -2358,12 +2596,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllClassRoomForInstrcutorAsync(InstrcutorId);
         }
         
-        public long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl) {
-            return base.Channel.InsertNewClassRoomForInstructor(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl);
+        public long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName) {
+            return base.Channel.InsertNewClassRoomForInstructor(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName);
         }
         
-        public System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl) {
-            return base.Channel.InsertNewClassRoomForInstructorAsync(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl);
+        public System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName) {
+            return base.Channel.InsertNewClassRoomForInstructorAsync(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName);
         }
         
         public bool InertNewPostToClassroom(long ClassroomId, string Post) {
@@ -2390,12 +2628,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetMeetingDetailsOfClassroomAsync(ClassRoomId);
         }
         
-        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl) {
-            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl);
+        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType) {
+            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl) {
-            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl);
+        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType) {
+            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType);
         }
         
         public System.Data.DataSet GetClasroomDetails(long ClassRoomId) {
@@ -2787,12 +3025,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetStudentIdFromUserIdAsync(request);
         }
         
-        public bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, int StateId, int CityId, string Gender) {
-            return base.Channel.UpdateStudentDetails(FirstName, LastName, AddressLine1, AddressLine2, PinCode, StateId, CityId, Gender);
+        public bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, System.Nullable<int> StateId, System.Nullable<int> CityId, string Gender, long StudentId) {
+            return base.Channel.UpdateStudentDetails(FirstName, LastName, AddressLine1, AddressLine2, PinCode, StateId, CityId, Gender, StudentId);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateStudentDetailsAsync(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, int StateId, int CityId, string Gender) {
-            return base.Channel.UpdateStudentDetailsAsync(FirstName, LastName, AddressLine1, AddressLine2, PinCode, StateId, CityId, Gender);
+        public System.Threading.Tasks.Task<bool> UpdateStudentDetailsAsync(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode, System.Nullable<int> StateId, System.Nullable<int> CityId, string Gender, long StudentId) {
+            return base.Channel.UpdateStudentDetailsAsync(FirstName, LastName, AddressLine1, AddressLine2, PinCode, StateId, CityId, Gender, StudentId);
         }
         
         public bool UpdateStudentPassword(long StudentId, string OldHashedPassword, string NewHashedPassword) {
@@ -3387,12 +3625,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.InertNewCourseIndexAsync(request);
         }
         
-        public bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId) {
-            return base.Channel.InsertNewTopic(TopicName, TopicDescription, FileUploadPath, FileUploadTypeId, IndexId);
+        public bool InsertNewTopic(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId, string FileAttachmetPath) {
+            return base.Channel.InsertNewTopic(TopicName, TopicDescription, FileUploadPath, FileUploadTypeId, IndexId, FileAttachmetPath);
         }
         
-        public System.Threading.Tasks.Task<bool> InsertNewTopicAsync(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId) {
-            return base.Channel.InsertNewTopicAsync(TopicName, TopicDescription, FileUploadPath, FileUploadTypeId, IndexId);
+        public System.Threading.Tasks.Task<bool> InsertNewTopicAsync(string TopicName, string TopicDescription, string FileUploadPath, short FileUploadTypeId, long IndexId, string FileAttachmetPath) {
+            return base.Channel.InsertNewTopicAsync(TopicName, TopicDescription, FileUploadPath, FileUploadTypeId, IndexId, FileAttachmetPath);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3560,12 +3798,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.UpdateAssignmentDetailsAsync(AssignmentId, AssignmentName, AssignmentDescription, FilePath, FileType);
         }
         
-        public bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType) {
-            return base.Channel.UpdateIndexTopicDetails(TopicId, TopicName, TopicDescription, FilePath, FileType);
+        public bool UpdateIndexTopicDetails(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType, string FileAttachmentPath) {
+            return base.Channel.UpdateIndexTopicDetails(TopicId, TopicName, TopicDescription, FilePath, FileType, FileAttachmentPath);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateIndexTopicDetailsAsync(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType) {
-            return base.Channel.UpdateIndexTopicDetailsAsync(TopicId, TopicName, TopicDescription, FilePath, FileType);
+        public System.Threading.Tasks.Task<bool> UpdateIndexTopicDetailsAsync(long TopicId, string TopicName, string TopicDescription, string FilePath, byte FileType, string FileAttachmentPath) {
+            return base.Channel.UpdateIndexTopicDetailsAsync(TopicId, TopicName, TopicDescription, FilePath, FileType, FileAttachmentPath);
         }
         
         public bool UpdateCourseIndexDetails(long IndexId, string IndexName, string IndexDescription) {
@@ -3624,11 +3862,11 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetInstructorDetailsAsync(Id);
         }
         
-        public bool UpdateInstructorDetails(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, int CityId, int StateId, string PinCode, int InstructorId) {
+        public bool UpdateInstructorDetails(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, System.Nullable<int> CityId, System.Nullable<int> StateId, string PinCode, int InstructorId) {
             return base.Channel.UpdateInstructorDetails(FirstName, LastName, PhoneNo, Gender, AddressLine1, AddressLine2, CityId, StateId, PinCode, InstructorId);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateInstructorDetailsAsync(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, int CityId, int StateId, string PinCode, int InstructorId) {
+        public System.Threading.Tasks.Task<bool> UpdateInstructorDetailsAsync(string FirstName, string LastName, string PhoneNo, string Gender, string AddressLine1, string AddressLine2, System.Nullable<int> CityId, System.Nullable<int> StateId, string PinCode, int InstructorId) {
             return base.Channel.UpdateInstructorDetailsAsync(FirstName, LastName, PhoneNo, Gender, AddressLine1, AddressLine2, CityId, StateId, PinCode, InstructorId);
         }
         

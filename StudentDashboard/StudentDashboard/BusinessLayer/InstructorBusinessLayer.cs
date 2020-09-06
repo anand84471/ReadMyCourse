@@ -1,4 +1,5 @@
 ﻿using StudentDashboard.Utilities;
+using StudentDashboard.Vendors.AWS.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace StudentDashboard.BusinessLayer
     {
         StringBuilder m_strLogMessage;
         TinyUrlService objTinyUrlService;
+        AWSS3ServiceManagerLayer objAWSS3ServiceManagerLayer;
+
         public InstructorBusinessLayer()
         {
             objTinyUrlService = new TinyUrlService();
             m_strLogMessage = new StringBuilder();
+            objAWSS3ServiceManagerLayer = new AWSS3ServiceManagerLayer();
         }
         public async Task<string> GetTinyUrlForAssignment(long id,string AccessCode)
         {
@@ -143,8 +147,9 @@ namespace StudentDashboard.BusinessLayer
         }
         public string GetRandomMeetingName()
         {
+
             Guid id = Guid.NewGuid();
-            return id.ToString();
+            return id.ToString() + GetRandomMeetingPassword();
         }
         public string GetRandomMeetingPassword()
         {
@@ -166,6 +171,79 @@ namespace StudentDashboard.BusinessLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+     
+        public async Task<string> UploadImageAsync(string FileName, string FilePath)
+        {
+            string awsFilePath = null;
+            try
+            {
+                awsFilePath= await objAWSS3ServiceManagerLayer.UploadImageFileAsync(FileName, FilePath,(int)Constants.AWSFolderType.INSTRUCTOR);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return awsFilePath;
+            
+        }
+        public async Task<string> UploadVideoAsync(string FileName, string FilePath)
+        {
+            string awsFilePath = null;
+            try
+            {
+                awsFilePath = await objAWSS3ServiceManagerLayer.UploadVideoFileAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return awsFilePath;
+
+        }
+        public async Task<string> UploadPdfAsync(string FileName, string FilePath)
+        {
+            string awsFilePath = null;
+            try
+            {
+                awsFilePath = await objAWSS3ServiceManagerLayer.UploaddPdfFileAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return awsFilePath;
+
+        }
+        public async Task<string> UploadCustomTypeAttachmentAsync(string FileName, string FilePath)
+        {
+            string awsFilePath = null;
+            try
+            {
+                awsFilePath = await objAWSS3ServiceManagerLayer.UploaddCustomeFileAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return awsFilePath;
+
+        }
+        public string GetClassroomAttachmentName(string ClassroomName,string FileName)
+        {
+            return MasterUtilities.RemoveWhitespace(ClassroomName) + "_" + MasterUtilities.RemoveWhitespace(FileName);
         }
     }
    

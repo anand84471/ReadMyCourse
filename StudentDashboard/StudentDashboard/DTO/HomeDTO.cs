@@ -159,7 +159,7 @@ namespace StudentDashboard.DTO
             try
             {
                 result = await objCPDataService.InsertNewTopicAsync(objTopicModel.m_strTopicName, objTopicModel.m_strTopicDescription, 
-                                     objTopicModel.m_strFilePath, objTopicModel.m_iFileUploadTypeId,objTopicModel.m_llIndexId);
+                                     objTopicModel.m_strFilePath, objTopicModel.m_iFileUploadTypeId,objTopicModel.m_llIndexId,objTopicModel.m_strFileAttachmentPath);
             }
             catch (Exception Ex)
             {
@@ -744,7 +744,7 @@ namespace StudentDashboard.DTO
             try
             {
                 result = await objCPDataService.UpdateIndexTopicDetailsAsync(objTopicModel.m_llTopicId,objTopicModel.m_strTopicName,objTopicModel.m_strTopicDescription,
-                                                                  objTopicModel.m_strFilePath,(byte)objTopicModel.m_iFileUploadTypeId);
+                                                                  objTopicModel.m_strFilePath,(byte)objTopicModel.m_iFileUploadTypeId,objTopicModel.m_strFileAttachmentPath);
             }
             catch (Exception Ex)
             {
@@ -803,12 +803,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId, string ShareCode, string TinyUrl)
+        public async Task<bool> ActivateClassroom(long ClassroomId, string ShareCode, string TinyUrl,int ClassroomPublicType)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateClassroomAsync(ClassroomId, ShareCode, TinyUrl);
+                result = await objCPDataService.ActivateClassroomAsync(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType);
             }
             catch (Exception Ex)
             {
@@ -970,6 +970,7 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("TOPIC_NAME"),
                          dataRow.Field<string>("TOPIC_DESCRIPTION"),
                          dataRow.Field<string>("FILE_PATH_MAP_TO_SERVER"),
+                         dataRow.Field<string>("FILE_ATTACHMENT_PATH"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
                          dataRow.Field<DateTime>("ROw_UODATION_DATETIME").ToString("d MMM yyyy")
                          )).ToList();
@@ -999,7 +1000,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("TOPIC_NAME"),
                          dataRow.Field<string>("TOPIC_DESCRIPTION"),
                          dataRow.Field<string>("FILE_PATH_MAP_TO_SERVER"),
-                         dataRow.Field<bool?>("IS_COMPLETED")
+                         dataRow.Field<bool?>("IS_COMPLETED"),
+                         dataRow.Field<string>("FILE_ATTACHMENT_PATH")
                          )).ToList();
                 }
             }
@@ -2060,7 +2062,7 @@ namespace StudentDashboard.DTO
             try
             {
                 ClassRoomId = await objCPDataService.InsertNewClassRoomForInstructorAsync(objClassRoomModal.m_iInstrutcorId,
-                    objClassRoomModal.m_strClassRoomName, objClassRoomModal.m_strClassRoomDescription, objClassRoomModal.m_strBackGroundImageUrl);
+                    objClassRoomModal.m_strClassRoomName, objClassRoomModal.m_strClassRoomDescription, objClassRoomModal.m_strBackGroundImageUrl, objClassRoomModal.m_strClassroomMeetingName);
             }
             catch(Exception Ex)
             {
@@ -2172,7 +2174,7 @@ namespace StudentDashboard.DTO
                      dataRow => new ClassroomMeetingModal(
                          dataRow.Field<long>("MEETING_ID"),
                          dataRow.Field<DateTime>("MEETING_START_TIME").ToString("f"),
-                         dataRow.Field<DateTime?>("MEETING_CLOSE_TIME")==null?"Not closed": dataRow.Field<DateTime>("MEETING_CLOSE_TIME").ToString("f"),
+                         dataRow.Field<DateTime?>("MEETING_CLOSE_TIME")==null? Constants.CLASSROOM_MEETING_NOT_CLOSED_MESSAGE : dataRow.Field<DateTime>("MEETING_CLOSE_TIME").ToString("hh:mm tt"),
                          dataRow.Field<bool>("IS_ACTIVE"),
                          dataRow.Field<int>("NO_OF_PARTICIPANTS")
                          )).ToList();
@@ -2440,6 +2442,165 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<List<ClassroomBasicDetailsModal>> GetInstructorSearchResultForClassrom(int InstructorId,string SearchString)
+        {
+            List<ClassroomBasicDetailsModal> lsResponse = new List<ClassroomBasicDetailsModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetInstructorClassroomSearchDetailsAsync(InstructorId,SearchString);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomBasicDetailsModal(
+                         dataRow.Field<long>("CLASSROOM_ID"),
+                         dataRow.Field<string>("CLASSROOM_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
+                         dataRow.Field<string>("STATUS")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<bool> UpdateInstructorProfilePicture(string Url, int InstructorId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateInstructorProfilePictureAsync(InstructorId, Url);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> AddAttachmentToClassroom(ClassroomAttachmentRequest classroomAttachmentRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertClassroomAttachmentAsync(classroomAttachmentRequest.m_llClassroomId, classroomAttachmentRequest.m_strAttachmentName,
+                    classroomAttachmentRequest.m_strAttachmentDescription, classroomAttachmentRequest.m_strAttachmentUrl);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<ClassroomAttachmentDetailsResponse>> GetAllClassroomAttachments(long ClassroomId)
+        {
+            List<ClassroomAttachmentDetailsResponse> lsResponse = new List<ClassroomAttachmentDetailsResponse>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomAttachmentsAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomAttachmentDetailsResponse(
+                         dataRow.Field<long>("CLASSROOM_ATTACHMENT_ID"),
+                         dataRow.Field<string>("ATTACHMENT_NAME"),
+                         dataRow.Field<string>("ATTACHMENT_DESCRIPTION"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                          dataRow.Field<string>("ATTACMENT_URL")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<bool> DeleteClassroomAttachment(long AttachmentId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.DeleteClassroomAttachmentAsync(AttachmentId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertClassroomSchedule(long ClassroomId,string ClassroomScheduleObj)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertClassroomScheduleAsync(ClassroomId, ClassroomScheduleObj);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomSchedule(long ClassroomId, string ClassroomScheduleObj)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomScheduleAsync(ClassroomId, ClassroomScheduleObj);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<ClassroomScheduleDTO> GetClassroomScheduleDetails(long ClassroomId)
+        {
+            ClassroomScheduleDTO classroomScheduleDTO = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomScheduleAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    classroomScheduleDTO = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomScheduleDTO(
+                         dataRow.Field<string>("CLASSROOM_SCHEDULE_OBJ"),
+                         dataRow.Field<DateTime?>("CLASSROOM_SCHEDULE_LAST_UPDATION_TIME"),
+                         dataRow.Field<DateTime?>("CLASSROOM_SCHEDULE_SET_TIME")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return classroomScheduleDTO;
         }
     }
 }

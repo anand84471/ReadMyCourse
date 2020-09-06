@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Assignment Response";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
-    
+
 }
 @using StudentDashboard.HttpResponse;
 @model InstructorProfileDetailsModal
@@ -153,8 +153,8 @@ profile:hover .profile__group{
 }
 
 .page__container{
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 1px;
+  padding-right: 1px;
   margin: auto;
 }
 .topnav {
@@ -300,11 +300,16 @@ profile:hover .profile__group{
 	.floating-btn {
 		right: 10px;
 	}
+    .container-fluid
+    {
+        padding-left:0.2rem;
+        padding-right:0.2rem;
+    }
 }
 
 </style>
-<div class="container-fluid ">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="container-fluid "   >
+    <div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding-left:2px;padding-right:2px;">
         <h1 class="h4 mb-0 text-gray-800">Instructor profile</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -315,15 +320,23 @@ profile:hover .profile__group{
             </ol>
         </nav>
     </div>
-    <div class="row">
+    <div class="row" >
         <div class="page col-sm-12">
             <div class="page__container">
                 <article class="profile">
                     <header class="profile__header">
-                        <img src="~/Images/avatar-user.png" class="profile__avatar" alt="avatar of Stas Melnikov">
+                        @if (Model.m_strProfileUrl != null)
+                        {
+                            <img src="@Model.m_strProfileUrl" class="profile__avatar" alt="avatar of Stas Melnikov">
+                        }
+                        else
+                        {
+                            <img src="~/Images/avatar-user.png" class="profile__avatar" alt="avatar of Stas Melnikov">
+                        }
+                       
 
                         <h3 class="profile__name">@Model.m_strInstructorName</h3>
-                        <span class="profile__post">@Model.m_strDateOfJoining</span>
+                        <span class="profile__post">Joined since: @Model.m_strDateOfJoining</span>
                     </header>
 
                     <div class="profile__stats">
@@ -353,10 +366,23 @@ profile:hover .profile__group{
                         </div>*@
 
                     </div>
-                    <footer class="profile__socials">
-                        <button class="btn btn-primary btn-sm btn-block" style="width:50%;" onclick="joinInstructor()">follow</button>
-                        
-                    </footer>
+                    @{
+                        if (Model.m_bIsFollowing)
+                        {
+                            <footer class="profile__socials">
+                                <button class="btn btn-primary btn-sm btn-block" style="width:50%;" >following since: @Model.m_strDateOfJoining</button>
+
+                            </footer>
+                        }
+                        else
+                        {
+                            <footer class="profile__socials">
+                                <button class="btn btn-primary btn-sm btn-block" style="width:50%;" onclick="joinInstructor()">follow</button>
+
+                            </footer>
+                        }
+                    }
+                  
                     @*<footer class="profile__socials">
                         <a href="#0" class="profile__social">
                             <svg class="profile__social-icon"><use xlink:href="#twitter"></use></svg>

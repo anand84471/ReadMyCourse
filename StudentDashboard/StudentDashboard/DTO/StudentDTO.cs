@@ -292,7 +292,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("PIN_CODE"),
                          dataRow.Field<string>("GENDER"),
                          dataRow.Field<DateTime>("ROW_UPDATION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int?>("CITY_ID"),
+                         dataRow.Field<int?>("STATE_ID")
                          )).ToList()[0];
                 }
             }
@@ -312,7 +314,7 @@ namespace StudentDashboard.DTO
             {
                 result = await objCPDataService.UpdateStudentDetailsAsync(objStudentRegisterModal.m_strFirstName, objStudentRegisterModal.m_strLastName,
                             objStudentRegisterModal.m_strAddressLine1,objStudentRegisterModal.m_strAddressLine2,objStudentRegisterModal.m_strPinCode,
-                            objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_strGender);
+                            objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_iStateId,objStudentRegisterModal.m_strGender,objStudentRegisterModal.m_llStudentId);
 
             }
             catch (Exception Ex)
@@ -794,13 +796,13 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId)
+        public async Task<InstructorProfileDetailsModal> GetInstructorProfileDetails(int InstructorId,long StudentId)
         {
             InstructorProfileDetailsModal result = null;
             try
             {
 
-                DataSet ds = await objCPDataService.GetInstructorProfileDetailsAsync(InstructorId);
+                DataSet ds = await objCPDataService.GetInstructorProfileDetailsForStudentAsync(InstructorId, StudentId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     result = ds.Tables[0].AsEnumerable().Select(
@@ -811,7 +813,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_ASSIGNMENTS_CREATED"),
                          dataRow.Field<int>("NO_OF_TESTS_CREATED"),
                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
-                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED_THE_COURSE")
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED_THE_COURSE"),
+                         dataRow.Field<DateTime?>("FOLLOWING_DATE") == null ? null : dataRow.Field<DateTime>("FOLLOWING_DATE").ToString("d MMM yyyy"),
+                         dataRow.Field<string>("PROFILE_URL")
                          )).ToList()[0];
                 }
             }
@@ -863,12 +867,14 @@ namespace StudentDashboard.DTO
                 {
                     objClassRoomModal = ds.Tables[0].AsEnumerable().Select(
                      dataRow => new ClassRoomModal(
-                         dataRow.Field<long>("CLASSROOM_ID"),
-                         dataRow.Field<string>("CLASSROOM_NAME"),
+                          dataRow.Field<long>("CLASSROOM_ID"),
+                          dataRow.Field<string>("CLASSROOM_NAME"),
                           dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
-                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED").ToString(),
-                          dataRow.Field<bool?>("IS_MEETING_ACTIVE")
+                          dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
+                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED").ToString(),
+                          dataRow.Field<bool?>("IS_MEETING_ACTIVE"),
+                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
+                          dataRow.Field<string>("CLASSROOM_MEETING_NAME")
                          )).ToList()[0];
                 }
             }
@@ -946,7 +952,7 @@ namespace StudentDashboard.DTO
         }
         public async Task<JitsiMeetingModal> GetClassroomMeetingDetails(long ClassroomId)
         {
-            JitsiMeetingModal objJitsiMeetingModal = new JitsiMeetingModal();
+            JitsiMeetingModal objJitsiMeetingModal = null;
             try
             {
                 DataSet ds = await objCPDataService.GetMeetingDetailsOfClassroomAsync(ClassroomId);
@@ -959,6 +965,10 @@ namespace StudentDashboard.DTO
                           dataRow.Field<string>("MEETING_PASSWORD"),
                          dataRow.Field<string>("CLASSROOM_NAME")
                          )).ToList()[0];
+                }
+                if(objJitsiMeetingModal!=null)
+                {
+                    objJitsiMeetingModal.m_llClassroomId = ClassroomId;
                 }
             }
             catch (Exception Ex)
@@ -1011,7 +1021,35 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomMessageForInstructor(long ClassroomId,long StudentId)
+        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomLastMessagesForStudentAfterLast(long ClassroomId, long LastMessageId,long StudentId)
+        {
+            List<ClassroomStudentMessageModal> lsResponse = new List<ClassroomStudentMessageModal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomMessageAfterLastMessageAsync(ClassroomId,LastMessageId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomStudentMessageModal(
+                         dataRow.Field<string>("MESSAGE"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("f"),
+                         dataRow.Field<long>("MESSAGE_ID"),
+                         dataRow.Field<bool>("IS_INSTRUCTOR"),
+                         dataRow.Field<long?>("STUDENT_ID") != null && dataRow.Field<long?>("STUDENT_ID") == StudentId ? true : false
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
+        }
+        public async Task<List<ClassroomStudentMessageModal>> GetAllClassroomMessageForStudent(long ClassroomId,long StudentId)
         {
             List<ClassroomStudentMessageModal> lsResponse = new List<ClassroomStudentMessageModal>();
             try
@@ -1165,8 +1203,8 @@ namespace StudentDashboard.DTO
                      dataRow => new StudentClassroomHomeDetails(
                          ClassroomId,
                          dataRow.Field<int>("NO_OF_MEETINGS_JOINED"),
-                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED"),
-                         dataRow.Field<int>("NO_OF_TESTS_SUBMITTED")
+                         dataRow.Field<int>("NO_OF_TESTS_SUBMITTED"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED")
                          )).ToList()[0];
                 }
             }
@@ -1178,6 +1216,80 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return studentClassroomHomeDetails;
+        }
+        public async Task<bool> UpdateProfilePicture(StudentProfilePictureUpdtaeRequest objStudentProfilePictureUpdtaeRequest)
+        {
+            bool result = false;
+            try
+            {
+
+                result  = await objCPDataService.UpdateStudentProfilePictureAsync(objStudentProfilePictureUpdtaeRequest.m_llStudentId, objStudentProfilePictureUpdtaeRequest.m_strProfilePictureUrl);
+               
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<StudentRegisterModal> GetStudentBasicDetails(long StudentId)
+        {
+            StudentRegisterModal objStudentRegisterModal = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetStudentDetailsAsync(StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objStudentRegisterModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentRegisterModal(
+                         dataRow.Field<string>("FIRST_NAME"),
+                         dataRow.Field<string>("LAST_NAME"),
+                         dataRow.Field<string>("PROFILE_URL")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objStudentRegisterModal;
+        }
+        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(long LastClassroomId, int NoOfRecordsToBeFteched,
+            long StudentId,string QueryString)
+        {
+            List<GetPublicClassroomsResponse> lsResponse = new List<GetPublicClassroomsResponse>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetPublicClassroomDetailsForStudentAsync(LastClassroomId,
+                    StudentId, NoOfRecordsToBeFteched, QueryString);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetPublicClassroomsResponse(
+                         dataRow.Field<string>("CLASSROOM_NAME"),
+                         dataRow.Field<long>("CLASSROOM_ID"),
+                         dataRow.Field<DateTime>("ACTIVATION_DATETIME").ToString("f"),
+                         dataRow.Field<int>("NO_OF_ENROLLMENT"),
+                         dataRow.Field<long?>("ID"),
+                         dataRow.Field<DateTime?>("ROW_INSERTION_DATETIME") 
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsResponse;
         }
     }
 }

@@ -40,6 +40,8 @@ namespace StudentDashboard
         public static readonly string CONTENT_STATUS_INACTIVE = "in active";
         public static readonly string MEETING_STATUS_ACTIVE = "active";
         public static readonly string MEETING_STATUS_CLOSED = "closed";
+        public static readonly string CLASSROOM_MEETING_NOT_CLOSED_MESSAGE = "NA";
+        public static readonly string ACCESS_CODE_FOR_INTERNAL_ACCESS= "q96zSIeRwke2qflTV0kWRA";
 
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
@@ -108,7 +110,24 @@ namespace StudentDashboard
         {
             CLASSROOM=1
         }
-        
+        public enum AWSFileType
+        {
+            IMAGE=1,
+            VIDEO=2
+        }
+        public enum AWSFolderType
+        {
+            INSTRUCTOR=1,
+            STUDENT=2,
+            ADMIN=3
+        }
+       public enum FileUploadTypeId
+        {
+            IMAGE=1,
+            PDF=2,
+            VIDEO=3,
+            CUSTOM=4
+        }
 
     }
 }

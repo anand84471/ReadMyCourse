@@ -23,6 +23,13 @@ namespace StudentDashboard
         public static string _saltForSHA256Encryption;
         public static int _forgotPasswordExpiryTimeInMinutes;
         public static string _strApplicationBaseUrl;
+        public static string _strAmazonAwsAccessKey;
+        public static string _strAwsSecurityKey;
+        public static string _strAwsBucketName;
+        public static string _strAwsBucketFolderInstructor;
+        public static string _strAwsBucketFolderStudent;
+        public static string _strAwsFileUploadBaseUrl;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -42,6 +49,38 @@ namespace StudentDashboard
             if (_shouldStartSMSScheduler)
             {
                 StartSMSNotificationScheduler();
+            }
+        }
+        private void InitializeAwsConigurationData()
+        {
+
+            if (ConfigurationManager.AppSettings["AWSAccessKey"] != null)
+            {
+                _strAmazonAwsAccessKey = (ConfigurationManager.AppSettings["AWSAccessKey"]);
+            }
+
+            if (ConfigurationManager.AppSettings["AWSSecretKey"] != null)
+            {
+                _strAwsSecurityKey = (ConfigurationManager.AppSettings["AWSSecretKey"]);
+            }
+
+            if (ConfigurationManager.AppSettings["AWSS3BucketFolderNameForInstructor"] != null)
+            {
+                _strAwsBucketFolderInstructor = (ConfigurationManager.AppSettings["AWSS3BucketFolderNameForInstructor"]);
+            }
+
+            if (ConfigurationManager.AppSettings["AWSS3BucketFolderNameForStudent"] != null)
+            {
+                _strAwsBucketFolderStudent = (ConfigurationManager.AppSettings["AWSS3BucketFolderNameForStudent"]);
+            }
+
+            if (ConfigurationManager.AppSettings["AWSS3BucketName"] != null)
+            {
+                _strAwsBucketName = (ConfigurationManager.AppSettings["AWSS3BucketName"]);
+            }
+            if (ConfigurationManager.AppSettings["AWSFileBaseUrl"] != null)
+            {
+                _strAwsFileUploadBaseUrl = (ConfigurationManager.AppSettings["AWSFileBaseUrl"]);
             }
         }
         private void InitializeConfigurationData()
@@ -70,6 +109,7 @@ namespace StudentDashboard
             {
                 _strApplicationBaseUrl = (ConfigurationManager.AppSettings["APPLICATION_BASE_URL"].ToString());
             }
+            InitializeAwsConigurationData();
         }
         private void StartSMSNotificationScheduler()
         {

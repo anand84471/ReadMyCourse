@@ -25,11 +25,13 @@ namespace StudentDashboard.Models.Course
         public short m_iFileUploadTypeId { get; set; }
         [JsonIgnore]
         public byte? m_iFileUploadTypeIdNew { get; set; }
+        [JsonProperty("file_attachment_path")]
+        public string m_strFileAttachmentPath { get; set; }
         public TopicModel()
         {
 
         }
-        public TopicModel(long Id,string TopicName,string TopicDesciption,string FilePath,string CreationDate,string UpdationDate)
+        public TopicModel(long Id,string TopicName,string TopicDesciption,string FilePath,string FileAttchmentPath, string CreationDate,string UpdationDate)
         {
             this.m_strRowInsertionDateTime = CreationDate;
             this.m_strRowUpdationDateTime = UpdationDate;
@@ -37,6 +39,7 @@ namespace StudentDashboard.Models.Course
             this.m_strTopicName = TopicName;
             this.m_strTopicDescription = TopicDesciption;
             this.m_strFilePath = FilePath;
+            this.m_strFileAttachmentPath = FileAttchmentPath;
         }
     }
 }

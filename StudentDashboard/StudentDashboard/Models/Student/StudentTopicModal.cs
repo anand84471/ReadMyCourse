@@ -21,19 +21,22 @@ namespace StudentDashboard.Models.Student
         public short m_iFileUploadTypeId { get; set; }
         [JsonProperty("is_compelted")]
         public bool? m_IsCompleted;
+        [JsonProperty("file_attachment_path")]
+        public string m_strFileAttachmentPath { get; set; }
         [JsonIgnore]
         public byte? m_iFileUploadTypeIdNew { get; set; }
         public StudentTopicModal()
         {
 
         }
-        public StudentTopicModal(long Id, string TopicName, string TopicDesciption, string FilePath,bool? IsCompleted)
+        public StudentTopicModal(long Id, string TopicName, string TopicDesciption, string FilePath,bool? IsCompleted,string FileAttachmentPath)
         {
             this.m_llTopicId = Id;
             this.m_strTopicName = TopicName;
             this.m_strTopicDescription = TopicDesciption;
             this.m_strFilePath = FilePath;
             this.m_IsCompleted = IsCompleted;
+            this.m_strFileAttachmentPath = FileAttachmentPath;
         }
     }
 }

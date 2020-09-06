@@ -2,6 +2,7 @@
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
+using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
@@ -9,6 +10,7 @@ using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using static StudentDashboard.Constants;
 
 namespace StudentDashboard.API
 {
@@ -1125,6 +1128,149 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<InstructorFileUploadResponse> UploadImage()
+        {
+            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            try
+            {
+                long StudentIdInRequest = GetStudentIdInRequest();
+                if (StudentIdInRequest != -1)
+                {
+                    List<AwsFileUploadRequest> lsAwsFileUploadRequest = new List<AwsFileUploadRequest>();
+                    if (!Request.Content.IsMimeMultipartContent())
+                    {
+                        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    }
+                    string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Student/Images");
+
+                    var provider = new MultipartFileStreamProvider(rootpath);
+
+                    var task = await Request.Content.ReadAsMultipartAsync(provider).
+
+                        ContinueWith(t =>
+                        {
+                            if (t.IsCanceled || t.IsFaulted)
+                            {
+                                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                            }
+                            foreach (MultipartFileData item in provider.FileData)
+                            {
+                                try
+                                {
+                                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    string newfilename = StudentIdInRequest.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
+                                    File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
+                                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                                    string fileRelativePath = "~/Uploads/Student/Images/" + newfilename;
+                                    Uri filefullpath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                                    lsAwsFileUploadRequest.Add(new AwsFileUploadRequest(newfilename, fileRelativePath));
+                                }
+                                catch (Exception Ex)
+                                {
+                                    throw new Exception();
+                                }
+                            }
+
+                            return Request.CreateResponse(HttpStatusCode.Created);
+                        });
+                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.IMAGE);
+                    if (objResponse.m_strAwsLocation != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("ClassroomAttachments")]
+        public async Task<GetAllClassroomAttachmentResponse> GetAllClassroomAttachments(long ClassroomId)
+        {
+            GetAllClassroomAttachmentResponse objResponse = new GetAllClassroomAttachmentResponse();
+            try
+            {
+                long StudentIdInRequest = GetStudentIdInRequest();
+                if (StudentIdInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentIdInRequest,ClassroomId))
+                {
+                    objResponse.m_lsAttachments = await objHomeService.GetAllClassroomAttachments(ClassroomId);
+                    if (objResponse.m_lsAttachments != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("GetAllClassroomMessageAfterLast")]
+        public async Task<GetClassroomAllMessageResponseForStudent> GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId)
+        {
+            GetClassroomAllMessageResponseForStudent objResponse = new GetClassroomAllMessageResponseForStudent();
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId,ClassroomId))
+                {
+                    objResponse.m_lsGetClassroomAllMessageResponseForStudent = await objStudentService.GetAllClassroomLastMessagesForStudentAfterLast(ClassroomId, LastMessageId,StudentId);
+                    if (objResponse.m_lsGetClassroomAllMessageResponseForStudent != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("SearchClassroom")]
+        public async Task<SearchStudentPublicClassroomResponse> GetPublicClassroom(long LastClassroomId, string SearchString)
+        {
+            SearchStudentPublicClassroomResponse objResponse = new SearchStudentPublicClassroomResponse();
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if (StudentId != -1 )
+                {
+                    objResponse.m_lsGetPublicClassroomsResponse = await objStudentService.SearchClassroom(LastClassroomId, StudentId,SearchString);
+                    if (objResponse.m_lsGetPublicClassroomsResponse != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }  
+
+
 }
 

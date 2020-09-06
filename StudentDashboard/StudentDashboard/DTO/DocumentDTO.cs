@@ -315,5 +315,33 @@ namespace StudentDashboard.DTO
             }
             return objClassRoomModal;
         }
+        public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn, int NoOfRowsFetched, int SortingTypeId)
+        {
+            List<CourseDetailsModel> lsCourseDetailsModel = null;
+            try
+            {
+                DataSet ds = await objCPDataService.SearchForCourseForNotLoggedUserAsync(SearchString, MaxRowToReturn, NoOfRowsFetched, SortingTypeId,-1);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsCourseDetailsModel = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new CourseDetailsModel(
+                         dataRow.Field<long>("COURSE_ID"),
+                         dataRow.Field<string>("COURSE_NAME"),
+                         dataRow.Field<string>("COURSE_DESCRIPTION"),
+                         dataRow.Field<DateTime>("COURSE_ACTIVATION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
+                         dataRow.Field<string>("INSTRUCTOR_NAME")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsCourseDetailsModel;
+        }
     }
 }

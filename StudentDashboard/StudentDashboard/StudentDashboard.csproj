@@ -259,6 +259,7 @@
     <Compile Include="Controllers\AboutUsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountManagerController.cs" />
+    <Compile Include="Controllers\AndroidAppController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
     <Compile Include="Controllers\AuthServiceController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
@@ -266,13 +267,19 @@
     <Compile Include="Controllers\CreateMeetingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MobileController.cs" />
+    <Compile Include="Controllers\PrivacyController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\StudentApiController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="DTO\ClassroomScheduleDTO.cs" />
     <Compile Include="DTO\DocumentDTO.cs" />
     <Compile Include="DTO\HomeDTO.cs" />
+    <Compile Include="DTO\InstructorAcademicRecordDTO.cs" />
     <Compile Include="DTO\InstructorDTO.cs" />
     <Compile Include="DTO\SchoolDTO.cs" />
     <Compile Include="DTO\StudentDTO.cs" />
@@ -281,15 +288,21 @@
     </Compile>
     <Compile Include="HttpRequest\AssignmentQuestionResponse.cs" />
     <Compile Include="HttpRequest\AssignmentSubmissionRequest.cs" />
+    <Compile Include="HttpRequest\ClassroomAttachmentRequest.cs" />
     <Compile Include="HttpRequest\ContactUsApiRequest.cs" />
+    <Compile Include="HttpRequest\FileUploadTypeRequest.cs" />
     <Compile Include="HttpRequest\GetJoinedCourseRequest.cs" />
     <Compile Include="HttpRequest\GetStudentRequestDetailsModel.cs" />
     <Compile Include="HttpRequest\InsertCourseV2Request.cs" />
     <Compile Include="HttpRequest\InsertInstructorMessageToClassroom.cs" />
     <Compile Include="HttpRequest\InsertStudentMessageToClassroom.cs" />
+    <Compile Include="HttpRequest\InstructorAcademicRecordUpdateRequest.cs" />
+    <Compile Include="HttpRequest\InstructorFileUploadRequest.cs" />
     <Compile Include="HttpRequest\InstructorSearchRequest.cs" />
+    <Compile Include="HttpRequest\ProfileUploadRequest.cs" />
     <Compile Include="HttpRequest\SerchCourseRequest.cs" />
     <Compile Include="HttpRequest\StudentCourseDetailsRequestModel.cs" />
+    <Compile Include="HttpRequest\StudentProfilePictureUpdtaeRequest.cs" />
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
     <Compile Include="HttpResponse\AboutCourseResponse.cs" />
     <Compile Include="HttpResponse\AddAssgnmentResponse.cs" />
@@ -307,6 +320,8 @@
     <Compile Include="HttpResponse\BasicCourseDetails.cs" />
     <Compile Include="HttpResponse\BasicIndexDetails.cs" />
     <Compile Include="HttpResponse\BasicTestDetails.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomAttachmentDetailsResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\ClassroomBasicDetailsModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomDetailsResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomInsertResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomInstructorMessageModal.cs" />
@@ -314,6 +329,7 @@
     <Compile Include="HttpResponse\ClassRoom\ClassroomMeetingResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomStudentMessageModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomAssignmentResponse.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetAllClassroomAttachmentResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomForInstructorResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomMeetingResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetAllClassroomTestResponse.cs" />
@@ -323,6 +339,7 @@
     <Compile Include="HttpResponse\ClassRoom\GetAllStudentJoinedTomMeetingResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetClassroomAllMessageResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\GetClassroomAllMessageResponseForStudent.cs" />
+    <Compile Include="HttpResponse\ClassRoom\GetClassroomSheduleResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\StudentClassroomResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\StudentClassrromJoinModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\StudentMeetingJoinedResponse.cs" />
@@ -338,6 +355,7 @@
     <Compile Include="HttpResponse\GetCityResponse.cs" />
     <Compile Include="HttpResponse\GetCourseDetailsApiResponse.cs" />
     <Compile Include="HttpResponse\GetInstructorActivityResponse.cs" />
+    <Compile Include="HttpResponse\GetPublicClassroomsResponse.cs" />
     <Compile Include="HttpResponse\GetStateResponse.cs" />
     <Compile Include="HttpResponse\GetStudentResponseModel.cs" />
     <Compile Include="HttpResponse\GetTestDetailsResponseWithAccessCode.cs" />
@@ -346,6 +364,7 @@
     <Compile Include="HttpResponse\InsertCourseV2Response.cs" />
     <Compile Include="HttpResponse\InsertNewCourseResponse.cs" />
     <Compile Include="HttpResponse\InsertNewIndexResponse.cs" />
+    <Compile Include="HttpResponse\InstructorFileUploadResponse.cs" />
     <Compile Include="HttpResponse\InstructorProfileDetailsModal.cs" />
     <Compile Include="HttpResponse\InstructorSearchResponse.cs" />
     <Compile Include="HttpResponse\ObjectInfoDetailsResponse.cs" />
@@ -356,6 +375,7 @@
     <Compile Include="HttpResponse\SearchForAssignmentsApiResponse.cs" />
     <Compile Include="HttpResponse\SearchInstructorResponse.cs" />
     <Compile Include="HttpResponse\SearchInstructorResponseModal.cs" />
+    <Compile Include="HttpResponse\SearchStudentPublicClassroomResponse.cs" />
     <Compile Include="HttpResponse\SearchTestResponse.cs" />
     <Compile Include="HttpResponse\StudentJoinedCoursesResponse.cs" />
     <Compile Include="HttpResponse\StudentJoinedCoursesResponseModal.cs" />
@@ -374,7 +394,10 @@
     <Compile Include="Models\Alert\StudentAlertModal.cs" />
     <Compile Include="Models\AssignmentMcqModel.cs" />
     <Compile Include="Models\AssignmentSubjectiveModel.cs" />
+    <Compile Include="Models\AwsFileUploadRequest.cs" />
     <Compile Include="Models\Classroom\ClassroomAssignmentModal.cs" />
+    <Compile Include="Models\Classroom\ClassroomDayWiseScheduleModal.cs" />
+    <Compile Include="Models\Classroom\ClassroomScheduleDetails.cs" />
     <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
     <Compile Include="Models\Course\AssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\AssignmentModel.cs" />
@@ -391,6 +414,10 @@
     <Compile Include="Models\Course\TopicModel.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
+    <Compile Include="Models\Instructor\InstructorAcadmeicsPublicationModal.cs" />
+    <Compile Include="Models\Instructor\InstructorCertificateModal.cs" />
+    <Compile Include="Models\Instructor\InstructorConferencesAttendsModal.cs" />
+    <Compile Include="Models\Instructor\InstructorProjectsDetailsModal.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
     <Compile Include="Models\SchoolRegisterModel.cs" />
     <Compile Include="Models\StudentDetailsModel.cs" />
@@ -447,6 +474,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ActivityManager.cs" />
     <Compile Include="Utilities\MainLogger.cs" />
+    <Compile Include="Utilities\MasterUtilities.cs" />
     <Compile Include="Utilities\RazorPayPaymentIntegration.cs" />
     <Compile Include="Utilities\SHA256Encryption.cs" />
     <Compile Include="Models\Student\TestSubmissionModal.cs" />
@@ -456,11 +484,20 @@
     <Compile Include="ValidationHandler\InstructorLoginValidator.cs" />
     <Compile Include="ValidationHandler\StudentAccountRegisterValidator.cs" />
     <Compile Include="ValidationHandler\StudentLoginValidator.cs" />
+    <Compile Include="Vendors\AWS\Concrete\AWSImageUpload.cs" />
+    <Compile Include="Vendors\AWS\Concrete\AWSS3ServiceManagerLayer.cs" />
+    <Compile Include="Vendors\AWS\Concrete\AWSS3ServiceManagerMaster.cs" />
+    <Compile Include="Vendors\AWS\Concrete\AWSServiceManager.cs" />
+    <Compile Include="Vendors\AWS\Concrete\AWSVideoUpload.cs" />
+    <Compile Include="Vendors\AWS\Entity\AWSS3ServiceEntity.cs" />
+    <Compile Include="Vendors\AWS\Entity\AWSS3ServiceRequestEntity.cs" />
+    <Compile Include="Vendors\AWS\Entity\AWSServiceEntity.cs" />
     <Compile Include="Zoom\GenrateToke.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\css\custom-css-cp.css" />
     <Content Include="fonts\css\InstructorStyle.css" />
@@ -487,6 +524,7 @@
     <Content Include="Images\bg_3.jpg" />
     <Content Include="Images\bg_4.jpg" />
     <Content Include="Images\bg_5.jpg" />
+    <Content Include="Images\classroom-bg.png" />
     <Content Include="Images\contact-us.svg" />
     <Content Include="Images\content-search.svg" />
     <Content Include="Images\course-1.jpg" />
@@ -496,12 +534,19 @@
     <Content Include="Images\course-5.jpg" />
     <Content Include="Images\course-6.jpg" />
     <Content Include="Images\dept-5.jpg" />
+    <Content Include="Images\home-bg-login1.png" />
+    <Content Include="Images\home-bg-login12.png" />
+    <Content Include="Images\home-bg-login13.jpg" />
+    <Content Include="Images\home-lgin-back.jpg" />
+    <Content Include="Images\home-login-final.jpg" />
+    <Content Include="Images\home-login-final1.jpg" />
     <Content Include="Images\icon\favicon_io\android-chrome-192x192.png" />
     <Content Include="Images\icon\favicon_io\android-chrome-512x512.png" />
     <Content Include="Images\icon\favicon_io\apple-touch-icon.ico" />
     <Content Include="Images\icon\favicon_io\favicon-16x16.png" />
     <Content Include="Images\icon\favicon_io\favicon-32x32.png" />
     <Content Include="Images\icon\favicon_io\favicon.ico" />
+    <Content Include="Images\icon\favicon_io\site.webmanifest" />
     <Content Include="Images\image_1.jpg" />
     <Content Include="Images\image_2.jpg" />
     <Content Include="Images\image_3.jpg" />
@@ -517,6 +562,8 @@
     <Content Include="Images\search-gen.svg" />
     <Content Include="Images\site-logo-pro.png" />
     <Content Include="Images\site-logo-square.png" />
+    <Content Include="Images\site-logo-v2-full.png" />
+    <Content Include="Images\site-logo-v2.png" />
     <Content Include="Images\site-logo.jpg" />
     <Content Include="Images\site-logo.png" />
     <Content Include="Images\teacher.svg" />
@@ -569,7 +616,6 @@
     <Content Include="fonts\open-iconic\open-iconic.ttf" />
     <Content Include="fonts\open-iconic\open-iconic.woff" />
     <Content Include="AppSetting.config" />
-    <Content Include="Images\icon\favicon_io\site.webmanifest" />
     <None Include="Properties\PublishProfiles\ %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\.pubxml" />
@@ -580,6 +626,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -605,26 +652,13 @@
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.js" />
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Service References\CPDataService\CpDataService.disco" />
     <None Include="Service References\CPDataService\configuration91.svcinfo" />
     <None Include="Service References\CPDataService\configuration.svcinfo" />
-    <None Include="Service References\CPDataService\CpDataService1.wsdl" />
-    <None Include="Service References\CPDataService\CpDataService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService42.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CPDataService\CpDataService43.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\CPDataService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\CPDataService\CpDataService1.disco" />
     <Content Include="site-logo.ico" />
     <Content Include="Style\ajax-loader.gif" />
     <Content Include="Style\animate.css" />
@@ -632,6 +666,8 @@
     <Content Include="Style\bootstrap.min.css" />
     <Content Include="Style\bootstrap\bootstrap-grid.css" />
     <Content Include="Style\bootstrap\bootstrap-reboot.css" />
+    <Content Include="Style\bootstrap\bootstrap-theme.css" />
+    <Content Include="Style\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Style\css\bootstrap-grid.css" />
     <Content Include="Style\css\bootstrap-reboot.css" />
     <Content Include="Style\css\mixins\_text-hide.css" />
@@ -658,8 +694,12 @@
     <Content Include="Style\open-iconic\open-iconic.svg" />
     <Content Include="Style\owl.carousel.min.css" />
     <Content Include="Style\owl.theme.default.min.css" />
+    <Content Include="Style\readmycourse-css\bootstrap-datetimepicker.css" />
+    <Content Include="Style\readmycourse-css\bootstrap-datetimepicker.min.css" />
     <Content Include="Style\style.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -712,28 +752,7 @@
     <Content Include="Views\Instructor\Activity.cshtml" />
     <Content Include="Views\Instructor\ViewCourse.cshtml" />
     <Content Include="Views\Instructor\PreviewCourse.cshtml" />
-    <Content Include="Views\Student\Index.cshtml" />
-    <Content Include="Views\Student\Join.cshtml" />
     <Content Include="Views\Index.cshtml" />
-    <Content Include="Views\Student\Home.cshtml" />
-    <Content Include="Views\Student\Register.cshtml" />
-    <Content Include="Views\Student\RegistrationSuccessful.cshtml" />
-    <Content Include="Views\Student\Account.cshtml" />
-    <Content Include="Views\Student\EditAccount.cshtml" />
-    <Content Include="Views\Student\JoinNewCourse.cshtml" />
-    <Content Include="Views\Student\Instructors.cshtml" />
-    <Content Include="Views\Student\JoinCourse.cshtml" />
-    <Content Include="Views\Student\MyCourses.cshtml" />
-    <Content Include="Views\Student\JoinInstructor.cshtml" />
-    <Content Include="Views\Student\AssignmentSubmissions.cshtml" />
-    <Content Include="Views\Student\MyAssignments.cshtml" />
-    <Content Include="Views\Student\NewAssignment.cshtml" />
-    <Content Include="Views\Student\NewTest.cshtml" />
-    <Content Include="Views\Student\GiveAssignment.cshtml" />
-    <Content Include="Views\Student\StartTest.cshtml" />
-    <Content Include="Views\Student\AssignmentResponse.cshtml" />
-    <Content Include="Views\Student\TestSubmissions.cshtml" />
-    <Content Include="Views\Student\TestResponse.cshtml" />
     <Content Include="Views\Shared\_AboutLayout.cshtml" />
     <Content Include="Views\Shared\_MenuAbout.cshtml" />
     <Content Include="Style\.DS_Store" />
@@ -782,18 +801,14 @@
     <Content Include="Style\open-iconic\open-iconic.otf" />
     <Content Include="Style\open-iconic\open-iconic.ttf" />
     <Content Include="Style\open-iconic\open-iconic.woff" />
-    <Content Include="Views\Student\LearnCourse.cshtml" />
-    <Content Include="Views\Student\TeacherProfile.cshtml" />
     <Content Include="Views\Instructor\AssignmentSubmissions.cshtml" />
     <Content Include="Views\Instructor\TestSubmissions.cshtml" />
     <Content Include="Views\Instructor\StudentsJoined.cshtml" />
     <Content Include="Views\Instructor\TestResponse.cshtml" />
     <Content Include="Views\Instructor\AssignmentResponse.cshtml" />
     <Content Include="Views\Instructor\CreateInterativeCourse.cshtml" />
-    <Content Include="Views\Student\LearnCourseV2.cshtml" />
     <Content Include="Views\Instructor\Search.cshtml" />
     <Content Include="Views\Shared\__BackLayout.cshtml" />
-    <Content Include="Views\Student\ViewAssignment.cshtml" />
     <Content Include="Views\Assignment\Details.cshtml" />
     <Content Include="Views\Assignment\ViewResponse.cshtml" />
     <Content Include="Views\Assignment\StartAssignment.cshtml" />
@@ -801,6 +816,83 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Test\Details.cshtml" />
     <Content Include="Views\Test\StartTest.cshtml" />
+    <Content Include="Views\AuthService\Index.cshtml" />
+    <Content Include="Views\AboutUs\Index.cshtml" />
+    <Content Include="Views\Instructor\PasswordAuthRequest.cshtml" />
+    <Content Include="Views\Instructor\PasswordUpdatedSuccessfully.cshtml" />
+    <Content Include="Views\Course\Details.cshtml" />
+    <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\Instructor\CreateClassRoom.cshtml" />
+    <Content Include="Views\Instructor\Classrooms.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroom.cshtml" />
+    <Content Include="Views\Instructor\ClassroomDashboard.cshtml" />
+    <Content Include="Views\Instructor\StartMetting.cshtml" />
+    <Content Include="Views\Instructor\StartMeeting.cshtml" />
+    <Content Include="Views\Classroom\Details.cshtml" />
+    <Content Include="Views\CreateMeeting\Index.cshtml" />
+    <Content Include="Views\Shared\UnAuthorizedAccess.cshtml" />
+    <Content Include="Views\Instructor\ClassroomDashboardV2.cshtml" />
+    <Content Include="Views\Instructor\CreateClassroomAssignment.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroomAssignment.cshtml" />
+    <Content Include="Views\Instructor\CreateClassroomTest.cshtml" />
+    <Content Include="Views\Instructor\ViewClassroomTest.cshtml" />
+    <Content Include="Views\Student\Account.cshtml" />
+    <Content Include="Views\Student\AssignmentResponse.cshtml" />
+    <Content Include="Views\Student\AssignmentSubmissions.cshtml" />
+    <Content Include="Views\Student\ChangePassword.cshtml" />
+    <Content Include="Views\Student\Contact.cshtml" />
+    <Content Include="Views\Student\EditAccount.cshtml" />
+    <Content Include="Views\Student\ForgotPassword.cshtml" />
+    <Content Include="Views\Student\GiveAssignment.cshtml" />
+    <Content Include="Views\Student\Home.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\Instructors.cshtml" />
+    <Content Include="Views\Student\Join.cshtml" />
+    <Content Include="Views\Student\JoinClassroom.cshtml" />
+    <Content Include="Views\Student\JoinClassroomMeeting.cshtml" />
+    <Content Include="Views\Student\JoinCourse.cshtml" />
+    <Content Include="Views\Student\JoinInstructor.cshtml" />
+    <Content Include="Views\Student\JoinMeeting.cshtml" />
+    <Content Include="Views\Student\JoinNewClassroom.cshtml" />
+    <Content Include="Views\Student\JoinNewCourse.cshtml" />
+    <Content Include="Views\Student\LearnCourse.cshtml" />
+    <Content Include="Views\Student\LearnCourseV2.cshtml" />
+    <Content Include="Views\Student\MyAssignments.cshtml" />
+    <Content Include="Views\Student\MyClassrooms.cshtml" />
+    <Content Include="Views\Student\MyCourses.cshtml" />
+    <Content Include="Views\Student\NewAssignment.cshtml" />
+    <Content Include="Views\Student\NewTest.cshtml" />
+    <Content Include="Views\Student\PasswordAuthRequest.cshtml" />
+    <Content Include="Views\Student\PasswordUpdatedSuccessfully.cshtml" />
+    <Content Include="Views\Student\Register.cshtml" />
+    <Content Include="Views\Student\RegistrationSuccessful.cshtml" />
+    <Content Include="Views\Student\StartTest.cshtml" />
+    <Content Include="Views\Student\TeacherProfile.cshtml" />
+    <Content Include="Views\Student\TestResponse.cshtml" />
+    <Content Include="Views\Student\TestSubmissions.cshtml" />
+    <Content Include="Views\Student\ViewAssignment.cshtml" />
+    <Content Include="Views\Student\ViewClassroom.cshtml" />
+    <Content Include="Views\Instructor\StartTeaching.cshtml" />
+    <Content Include="Views\Student\Activity.cshtml" />
+    <Content Include="Views\Classroom\Index.cshtml" />
+    <Content Include="Views\AndroidApp\Index.cshtml" />
+    <Content Include="Views\Privacy\Index.cshtml" />
+    <Content Include="Views\TermsAndConditions\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Mobile\Index.cshtml" />
+    <None Include="Service References\CPDataService\CpDataService.wsdl" />
+    <None Include="Service References\CPDataService\CpDataService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CPDataService\CpDataService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.CompositeType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -852,37 +944,8 @@
     <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.ValidateStudentLoginResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Views\Student\PasswordAuthRequest.cshtml" />
-    <Content Include="Views\Student\ForgotPassword.cshtml" />
-    <Content Include="Views\Student\ChangePassword.cshtml" />
-    <Content Include="Views\Student\PasswordUpdatedSuccessfully.cshtml" />
-    <Content Include="Views\AuthService\Index.cshtml" />
-    <Content Include="Views\AboutUs\Index.cshtml" />
-    <Content Include="Views\Instructor\PasswordAuthRequest.cshtml" />
-    <Content Include="Views\Instructor\PasswordUpdatedSuccessfully.cshtml" />
-    <Content Include="Views\Course\Details.cshtml" />
-    <Content Include="Views\Course\Index.cshtml" />
-    <Content Include="Views\Student\Contact.cshtml" />
-    <Content Include="Views\Instructor\CreateClassRoom.cshtml" />
-    <Content Include="Views\Instructor\Classrooms.cshtml" />
-    <Content Include="Views\Instructor\ViewClassroom.cshtml" />
-    <Content Include="Views\Instructor\ClassroomDashboard.cshtml" />
-    <Content Include="Views\Instructor\StartMetting.cshtml" />
-    <Content Include="Views\Student\JoinMeeting.cshtml" />
-    <Content Include="Views\Instructor\StartMeeting.cshtml" />
-    <Content Include="Views\Classroom\Details.cshtml" />
-    <Content Include="Views\Student\JoinClassroom.cshtml" />
-    <Content Include="Views\Student\MyClassrooms.cshtml" />
-    <Content Include="Views\Student\ViewClassroom.cshtml" />
-    <Content Include="Views\Student\JoinClassroomMeeting.cshtml" />
-    <Content Include="Views\Student\JoinNewClassroom.cshtml" />
-    <Content Include="Views\CreateMeeting\Index.cshtml" />
-    <Content Include="Views\Shared\UnAuthorizedAccess.cshtml" />
-    <Content Include="Views\Instructor\ClassroomDashboardV2.cshtml" />
-    <Content Include="Views\Instructor\CreateClassroomAssignment.cshtml" />
-    <Content Include="Views\Instructor\ViewClassroomAssignment.cshtml" />
-    <Content Include="Views\Instructor\CreateClassroomTest.cshtml" />
-    <Content Include="Views\Instructor\ViewClassroomTest.cshtml" />
+    <Content Include="Views\Student\JoinPrivateClassroom.cshtml" />
+    <Content Include="Views\Student\PreviewClassroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />
@@ -892,9 +955,14 @@
     <Folder Include="Scripts\vendor\fontawesome-free\" />
     <Folder Include="Scripts\vendor\jquery-easing\" />
     <Folder Include="Scripts\vendor\jquery\" />
-    <Folder Include="Uploads\Images\" />
-    <Folder Include="Uploads\Pdfs\" />
-    <Folder Include="Uploads\Videos\" />
+    <Folder Include="Uploads\Instructor\Custom\" />
+    <Folder Include="Uploads\Instructor\Images\" />
+    <Folder Include="Uploads\Instructor\Pdfs\" />
+    <Folder Include="Uploads\Instructor\Videos\" />
+    <Folder Include="Uploads\Student\Images\" />
+    <Folder Include="Uploads\Student\Pdfs\" />
+    <Folder Include="Uploads\Student\Videos\" />
+    <Folder Include="Vendors\AWS\Abstract\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -908,10 +976,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\CPDataService\" />
+    <Analyzer Include="..\packages\AWSSDK.S3.3.3.111.21\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\AWSSDK.S3.3.3.111.21\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+    <WCFMetadataStorage Include="Service References\CPDataService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -934,7 +1002,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52322/</IISUrl>
+          <IISUrl>http://localhost:65310/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

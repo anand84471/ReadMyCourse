@@ -8,9 +8,10 @@ namespace StudentDashboard.Controllers
     public class HomeController : Controller
     {
         DocumentService objDocumentService=new DocumentService();
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            GetWebsiteHomeDetailsResponse objResponse = await objDocumentService.GetHomeDetails();
+            return View(objResponse);
         }
         
         public async Task<ActionResult> About()

@@ -88,14 +88,20 @@
                     </div>
 
                 </div>
-                @*<div class="card-img-top classroom-background">
+                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data" >
                     <i class="fa fa-download upload-icon" aria-hidden="true"></i>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Upload classroom back ground image</label>
-                        <button type="button" class="btn btn-primary">Upload</button>
-                        
+                        <input type="file" id="fileUpload" name="file"  accept="image/x-png,image/gif,image/jpeg"/>
+                        <button type="button" class="btn btn-primary" onclick="requestUpload()">Upload</button>
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                        </div>
+                        <div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">
+                            file uploaded successfully
+                        </div>
                     </div>
-                </div>*@ 
+                </form> 
                 <div class="alert alert-success" id="postsubmit" style="display:none" role="alert">
                     Classroom added successfully
                 </div>
@@ -104,38 +110,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-full-height modal-top" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header ">
-                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Assignment Details:</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-3">Name:</dt>
-                    <dd class="col-sm-9" id="previewAssignmentName">Assignment Name</dd>
-                    <dt class="col-sm-3">Description:</dt>
-                    <dd class="col-sm-9" id="previewAssignmentDescription" value="">Assignment Description</dd>
-                </dl>
-                <div id="previewOptions" onloadstart="fillQuestions()">
 
-                </div>
-            </div>
-            <!--Footer-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -154,9 +129,28 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
+<div class="modal fade" id="previewUploadModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Upload preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img class="image-popup img-fluid" id="imagePreview" alt="preview error"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="card border-danger modal-content">
+            
             <div class="modal-header">
                 <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -214,13 +208,17 @@
         var classRoomName = $("#classroomName").val();
         var classRoomDescription = $("#classroomDescription").val();
         var BackGroundUrl = $("#classroomBackGroundUrl").val();
+        if (backGroundImagePath == "")
+        {
+            backGroundImagePath = "../../Images/course-3.jpg";
+        }
         if(validateInputField(classroomName)&&validateInputField(classroomDescription))
         {
             var _data =
             {
                 "classroom_name": classRoomName,
                 "classroom_description": classRoomDescription,
-                "background_url": BackGroundUrl
+                "background_url": backGroundImagePath
             }
             $.ajax({
                 headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -269,5 +267,55 @@
     $("#imageUpload").change(function () {
         readURL(this);
     });
-   
+    var backGroundImagePath = "";
+    function requestUpload() {
+        document.getElementById("fileUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        var file = $('#fileUpload')[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("fileUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+                            $("#postUploadAlert").show();
+                            $("#postUploadAlert").append('<button type="button" class="btn btn-link" onclick="requestPreviewUpload()">View upload&rarr;</button>');
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadImage",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    backGroundImagePath = data.file_location;
+                    $("#imagePreview").attr("src", data.file_location);
+                }
+                else {
+                    $("#errorAlertMessageBody").text("test could not be deleted");
+                    $("#errorAlertHeader").modal('show');
+                }
+            }
+        });
+    }
+
+    function requestPreviewUpload()
+    {
+        $("#previewUploadModal").modal("show");
+    }
 </script>

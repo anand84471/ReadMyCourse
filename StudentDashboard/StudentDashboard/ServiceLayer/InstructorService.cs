@@ -1,5 +1,7 @@
-﻿using StudentDashboard.BusinessLayer;
+﻿using Newtonsoft.Json;
+using StudentDashboard.BusinessLayer;
 using StudentDashboard.DTO;
+using StudentDashboard.HttpRequest;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
@@ -166,6 +168,7 @@ namespace StudentDashboard.ServiceLayer
             {
                 objJitsiMeetingModal.m_strMeetingName = objInstructorBusinessLayer.GetRandomMeetingName();
                 objJitsiMeetingModal.m_strMeetingPassword = objInstructorBusinessLayer.GetRandomMeetingPassword();
+                objJitsiMeetingModal.m_strMeetingPassword = "";
                 result = await objInstructorDTO.InertNewMeetingToClassroom(objJitsiMeetingModal);
             }
             catch (Exception Ex)
@@ -218,6 +221,24 @@ namespace StudentDashboard.ServiceLayer
         public async Task<bool> DeleteClassroomAssignment(long ClassroomID, long AssignmentId)
         {
             return await objInstructorDTO.DeleteClassroomAssignment(ClassroomID, AssignmentId);
+        }
+        public async Task<InstructorRegisterModel> GetInstructorBasicDetails(int Id)
+        {
+            return await objInstructorDTO.GetInstructorBasicDetails(Id);
+        }
+        public async Task<bool> UpdateInstructorAcademicRecords(InstructorAcademicRecordUpdateRequest
+            instructorAcademicRecordUpdateRequest)
+        {
+            InstructorAcademicRecordDTO instructorAcademicRecordDTO = new InstructorAcademicRecordDTO();
+            instructorAcademicRecordDTO.m_iInstructorId = instructorAcademicRecordUpdateRequest.m_iInstructorId;
+            instructorAcademicRecordDTO.m_strLinkedIn = instructorAcademicRecordUpdateRequest.m_strLinkedIn;
+            instructorAcademicRecordDTO.m_strGoogleScholarId = instructorAcademicRecordUpdateRequest.m_strGoogleScholarId;
+            instructorAcademicRecordDTO.m_strLatestQualification = instructorAcademicRecordUpdateRequest.m_strLatestQualification;
+            instructorAcademicRecordDTO.m_strConferencesAttends = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorConferencesAttendsModal);
+            instructorAcademicRecordDTO.m_strProjectsDone = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorProjectsDetailsModal);
+            instructorAcademicRecordDTO.m_strAcademicPublications = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorAcadmeicsPublicationModal);
+            instructorAcademicRecordDTO.m_strCertificates = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorCertificateModal);
+            return await objInstructorDTO.UpdateInstructorAcademicRecord(instructorAcademicRecordDTO);
         }
     }
 }

@@ -50,11 +50,13 @@ namespace StudentDashboard.DTO
                       dataRow => new InstructorRegisterModel(
                           dataRow.Field<string>("INSTRUCTOR_FIRST_NAME"),
                           dataRow.Field<string>("INSTRUCTOR_LAST_NAME"),
-                          dataRow.Field<int>("ID")
+                          dataRow.Field<int>("ID"),
+                          dataRow.Field<string>("PROFILE_URL")
                           )).ToList();
                     if (lsRegisterModel.Count == 1)
                     {
                         objInstructorRegisterModel.m_iInstructorId = lsRegisterModel[0].m_iInstructorId;
+                        objInstructorRegisterModel.m_strProfilePictureUrl= lsRegisterModel[0].m_strProfilePictureUrl;
                         result = true;
                     }
                 }
@@ -124,7 +126,9 @@ namespace StudentDashboard.DTO
                           dataRow.Field<string>("GENDER"),
                           dataRow.Field<string>("SCHOOL_NAME"),
                           dataRow.Field<DateTime?>("LAST_UPDATED"),
-                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME")
+                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME"),
+                          dataRow.Field<int?>("CITY_ID"),
+                          dataRow.Field<int?>("STATE_ID")
                           )).ToList();
                     if (lsRegisterModel.Count == 1)
                     {
@@ -320,7 +324,7 @@ namespace StudentDashboard.DTO
                      dataRow => new ClassRoomModal(
                          dataRow.Field<long>("CLASSROOM_ID"),
                          dataRow.Field<string>("CLASSROOM_NAME"),
-                          dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
+                         dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
                          dataRow.Field<string>("CLASSROOM_STATUS"),
                          dataRow.Field<int>("NO_OF_POSTS"),
@@ -329,7 +333,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_ASSIGNMENTS"),
                          dataRow.Field<int>("NO_OF_TESTS"),
                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
-                         dataRow.Field<int>("NO_OF_MEETINGS")
+                         dataRow.Field<int>("NO_OF_MEETINGS"),
+                         dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
+                         dataRow.Field<string>("CLASSROOM_MEETING_NAME")
                          )).ToList()[0];
                 }
             }
@@ -357,6 +363,10 @@ namespace StudentDashboard.DTO
                           dataRow.Field<string>("MEETING_PASSWORD"),
                          dataRow.Field<string>("CLASSROOM_NAME")
                          )).ToList()[0];
+                }
+                if(objJitsiMeetingModal!=null)
+                {
+                    objJitsiMeetingModal.m_llClassroomId = ClassroomId;
                 }
             }
             catch (Exception Ex)
@@ -401,6 +411,64 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteClassroomAssignment", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<InstructorRegisterModel> GetInstructorBasicDetails(int Id)
+        {
+            InstructorRegisterModel objInstructorRegisterModel = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetInstructorDetailsAsync(Id);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    List<InstructorRegisterModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
+                      dataRow => new InstructorRegisterModel(
+                          dataRow.Field<string>("INSTRUCTOR_FIRST_NAME"),
+                          dataRow.Field<string>("INSTRUCTOR_LAST_NAME"),
+                          Id,
+                          dataRow.Field<string>("PROFILE_URL")
+                      
+                          )).ToList();
+                    if (lsRegisterModel.Count == 1)
+                    {
+                        objInstructorRegisterModel = lsRegisterModel[0];
+
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objInstructorRegisterModel;
+        }
+        public async Task<bool> UpdateInstructorAcademicRecord(InstructorAcademicRecordDTO instructorAcademicRecordDTO)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.UpdateInstructorAcademicRecordAsync(
+                    instructorAcademicRecordDTO.m_strCertificates, instructorAcademicRecordDTO.m_strAcademicPublications,
+                    instructorAcademicRecordDTO.m_strConferencesAttends,instructorAcademicRecordDTO.m_strLinkedIn,
+                    instructorAcademicRecordDTO.m_strGoogleScholarId,instructorAcademicRecordDTO.m_iInstructorId,
+                    instructorAcademicRecordDTO.m_strLatestQualification,instructorAcademicRecordDTO.m_strProjectsDone);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckTestAccess", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

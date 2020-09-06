@@ -1,4 +1,5 @@
-﻿using StudentDashboard.HttpResponse;
+﻿using StudentDashboard.HttpRequest;
+using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -170,6 +171,36 @@ namespace StudentDashboard.API
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("SearchCourse")]
+        [HttpPost]
+        public async Task<SearchCourseHttpResponse> SearchCourseForStudent([FromBody]SerchCourseRequest objSerchCourseRequest)
+        {
+            SearchCourseHttpResponse objResponse = new SearchCourseHttpResponse();
+            try
+            {
+
+                if (objSerchCourseRequest != null)
+                {
+                    objResponse.lsCourseDetailsModel = await objDocumentService.SearchForCourse(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
+                                      objSerchCourseRequest.m_iSortingId);
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                }
+                else
+                {
+                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
+                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

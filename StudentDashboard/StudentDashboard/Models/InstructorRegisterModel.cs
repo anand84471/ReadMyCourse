@@ -16,10 +16,10 @@ namespace StudentDashboard.Models
         public string m_strPhoneNo { get; set; }
         [JsonProperty("city")]
         public string m_strCity { get; set; }
-        public int m_iCityid { get; set; }
+        public int? m_iCityid { get; set; }
         [JsonProperty("state")]
         public string m_strState { get; set; }
-        public int m_iStateId { get; set; }
+        public int? m_iStateId { get; set; }
         [JsonProperty("pin_code")]
         public string m_strPineCode { get; set; }
         [JsonProperty("school_name")]
@@ -54,11 +54,17 @@ namespace StudentDashboard.Models
         public string m_strEmailVarificationGuid;
         [JsonIgnore]
         public string m_strPhoneNoVarificationGuid;
-        public InstructorRegisterModel(string FirstName, string LastName,int InstructorId)
+        public string m_strProfilePictureUrl;
+        public InstructorRegisterModel(string FirstName, string LastName,int InstructorId,string ProfileUrl)
         {
             this.m_strFirstName = FirstName;
             this.m_strLastName = LastName;
             this.m_iInstructorId = InstructorId;
+            this.m_strProfilePictureUrl = ProfileUrl;
+            if(this.m_strProfilePictureUrl==null|| this.m_strProfilePictureUrl=="")
+            {
+                this.m_strProfilePictureUrl = "../Images/avatar-user.png";
+            }
         }
         public InstructorRegisterModel(int CourseCreated, int AssignmentCreated, int TestCreated, int ActiveCourses,int NoOfStudentJoined)
         {
@@ -73,7 +79,8 @@ namespace StudentDashboard.Models
 
         }
         public InstructorRegisterModel(string FirstName, string LastName,string InstrcutorEmail,string InstructorPhoneNo,string AddressLine1,
-            string AddreessLine2,string CityName,string StateName,string PinCode,string Gender,string SchoolName,DateTime? LastUpdated,DateTime DateOfJoining)
+            string AddreessLine2,string CityName,string StateName,string PinCode,string Gender,string SchoolName,DateTime? LastUpdated,DateTime DateOfJoining,
+            int? CityId, int? StateId)
         {
             this.m_strFirstName = FirstName;
             this.m_strLastName = LastName;
@@ -88,7 +95,8 @@ namespace StudentDashboard.Models
             this.m_strGender = Gender;
             this.m_dtDateOfJoining = DateOfJoining;
             this.m_dtLastUpdated = LastUpdated;
-            
+            this.m_iCityid = CityId;
+            this.m_iStateId = StateId;
             if(this.m_strState==null)
             {
                 this.m_strFullAddress = "Not set";

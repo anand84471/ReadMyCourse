@@ -9,7 +9,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#" onclick="callHome()">
-                    <img width="60" height="60" src="../Images/site-logo.jpg" style="background-color:white" />
+                    <img width="60" height="60" src="../Images/site-logo-v2.png"  />
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -242,7 +242,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small font-weight-bold">@Session["instructor_user_name"].ToString()</span>
-                                <img class="img-profile rounded-circle" src="~/Images/avatar-user.png">
+                                <img class="img-profile rounded-circle" src="@Session["instructor_profile_picture_url"]"> 
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -253,6 +253,10 @@
                                 <button class="dropdown-item" id="editAccountPage">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Edit Account
+                                </button>
+                                <button class="dropdown-item" id="editProfilePicture" onclick="requestNewProfilePicture()">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Profile Picture
                                 </button>
                                 <button class="dropdown-item" id="activityLogPage">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -342,6 +346,43 @@
         </div>
     </div>
 </body>
+<div class="modal fade top" id="profilePictureUploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-top" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header ">
+                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Upload New Profile Picture</b></h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <form class="card-img-top classroom-background" action="../Instructor/UpdateProfilePictute" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <i class="fa fa-download upload-icon" aria-hidden="true"></i>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Upload New Image</label>
+                        <input type="file" id="fileUploadProfilePicture" name="file" accept="image/x-png,image/gif,image/jpeg" />
+                        <input type="url" id="fileUploadUrl" hidden name="url" />
+                        <button type="button" class="btn btn-primary" onclick="requestUploadProfile()">Upload</button>
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="ProfileUploadProgressBar"></div>
+                        </div>
+                        <div class="alert alert-success" id="postProfileUploadAlert" style="display:none" role="alert">
+                            profile picture added successfully
+                        </div>
+                        <input type="submit" value="submit" class="btn btn-primary" disabled id="profilePictureUploadSubmitButton">
+                    </div>
+                </form>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
 <script type="text/javascript"> 
     $('#contactPage').click(function () {
         callContact();
@@ -719,5 +760,59 @@
         $("#body").html("");
         $("#body-loader").show();
     }
+    function requestNewProfilePicture() {
+        $("#profilePictureUploadModal").modal('show');
+    }
+    function requestUploadProfile() {
+        document.getElementById("ProfileUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        var file = $('#fileUploadProfilePicture')[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("ProfileUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+                           
+                            
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadImage",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#fileUploadUrl").val(data.file_location);
+                    //profilePictureUploadSubmitButton
+                    $("#profilePictureUploadSubmitButton").prop("disabled", false);
+                    $("#postProfileUploadAlert").show();
+                   
+                }
+                else {
+               
+                }
+            }
+        });
+    }
+   
+  
 </script>
+
+  
 </html>

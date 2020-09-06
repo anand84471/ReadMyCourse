@@ -2,6 +2,8 @@
 using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
+using StudentDashboard.Models;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Security;
@@ -10,9 +12,15 @@ using StudentDashboard.Utilities;
 using StudentDashboard.Zoom;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using static StudentDashboard.Constants;
 
 namespace StudentDashboard.API
 {
@@ -1791,7 +1799,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activateclassroom")]
-        public async Task<APIDefaultResponse> ActivateClassroom(long id)
+        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
@@ -1799,7 +1807,7 @@ namespace StudentDashboard.API
                 int InstructorId = GetInstructorIdInRequest();
                 if (InstructorId!=-1||await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
                 {
-                    if (await objHomeService.ActivateClassroom(id))
+                    if (await objHomeService.ActivateClassroom(id, publicType))
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -2140,6 +2148,438 @@ namespace StudentDashboard.API
                     {
                         objResponse.SetSuccessResponse();
                     }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<InstructorFileUploadResponse> UploadImage()
+        {
+            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1)
+                {
+                    List<AwsFileUploadRequest> lsAwsFileUploadRequest = new List<AwsFileUploadRequest>();
+                    if (!Request.Content.IsMimeMultipartContent())
+                    {
+                        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    }
+                    string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Instructor/Images");
+
+                    var provider = new MultipartFileStreamProvider(rootpath);
+
+                    var task = await Request.Content.ReadAsMultipartAsync(provider).
+
+                        ContinueWith(t =>
+                        {
+                            if (t.IsCanceled || t.IsFaulted)
+                            {
+                                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                            }
+                            foreach (MultipartFileData item in provider.FileData)
+                            {
+                                try
+                                {
+                                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    string newfilename = InstructorId.ToString()+"_"+Guid.NewGuid() + Path.GetExtension(name);
+                                    File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
+                                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                                    string fileRelativePath = "~/Uploads/Instructor/Images/" + newfilename;
+                                    Uri filefullpath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                                    lsAwsFileUploadRequest.Add(new AwsFileUploadRequest(newfilename, fileRelativePath));
+                                }
+                                catch (Exception Ex)
+                                {
+                                    throw new Exception();
+                                }
+                            }
+
+                            return Request.CreateResponse(HttpStatusCode.Created);
+                        });
+                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.IMAGE);
+                    if (objResponse.m_strAwsLocation != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+
+        [HttpPost]
+        [Route("UploadVideo")]
+        public async Task<InstructorFileUploadResponse> UploadVideo()
+        {
+            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1)
+                {
+                    List<AwsFileUploadRequest> lsAwsFileUploadRequest = new List<AwsFileUploadRequest>();
+                    if (!Request.Content.IsMimeMultipartContent())
+                    {
+                        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    }
+                    string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Instructor/Videos");
+
+                    var provider = new MultipartFileStreamProvider(rootpath);
+
+                    var task = await Request.Content.ReadAsMultipartAsync(provider).
+
+                        ContinueWith(t =>
+                        {
+                            if (t.IsCanceled || t.IsFaulted)
+                            {
+                                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                            }
+                            foreach (MultipartFileData item in provider.FileData)
+                            {
+                                try
+                                {
+                                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    string newfilename = InstructorId.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
+                                    File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
+                                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                                    string fileRelativePath = "~/Uploads/Instructor/Videos/" + newfilename;
+                                    Uri filefullpath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                                    lsAwsFileUploadRequest.Add(new AwsFileUploadRequest(newfilename, fileRelativePath));
+                                }
+                                catch (Exception Ex)
+                                {
+                                    m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                                    m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                                    m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                                    MainLogger.Error(m_strLogMessage);
+                                }
+                            }
+
+                            return Request.CreateResponse(HttpStatusCode.Created);
+                        });
+                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.VIDEO);
+                    objResponse.SetSuccessResponse();
+                    
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UploadPdf")]
+        public async Task<InstructorFileUploadResponse> UploadPdf()
+        {
+            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1)
+                {
+                    List<AwsFileUploadRequest> lsAwsFileUploadRequest = new List<AwsFileUploadRequest>();
+                    if (!Request.Content.IsMimeMultipartContent())
+                    {
+                        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    }
+                    string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Instructor/Pdfs");
+
+                    var provider = new MultipartFileStreamProvider(rootpath);
+
+                    var task = await Request.Content.ReadAsMultipartAsync(provider).
+
+                        ContinueWith(t =>
+                        {
+                            if (t.IsCanceled || t.IsFaulted)
+                            {
+                                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                            }
+                            foreach (MultipartFileData item in provider.FileData)
+                            {
+                                try
+                                {
+                                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    string newfilename = InstructorId.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
+                                    File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
+                                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                                    string fileRelativePath = "~/Uploads/Instructor/Pdfs/" + newfilename;
+                                    Uri filefullpath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                                    lsAwsFileUploadRequest.Add(new AwsFileUploadRequest(newfilename, fileRelativePath));
+                                }
+                                catch (Exception Ex)
+                                {
+                                    m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                                    m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                                    m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                                    MainLogger.Error(m_strLogMessage);
+                                }
+                            }
+
+                            return Request.CreateResponse(HttpStatusCode.Created);
+                        });
+                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest,(int) FileUploadTypeId.PDF);
+                    objResponse.SetSuccessResponse();
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UpdateProfilePicture")]
+        public async Task<APIDefaultResponse> UpdateProfilePicture(ProfileUploadRequest objProfileUploadRequest)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && await objHomeService.UpdateInstructorProfilePicture(objProfileUploadRequest.m_strUrl,InstructorId))
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UploadFile")]
+        public async Task<InstructorFileUploadResponse> UploadFile()
+        {
+            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1)
+                {
+                    List<AwsFileUploadRequest> lsAwsFileUploadRequest = new List<AwsFileUploadRequest>();
+                    if (!Request.Content.IsMimeMultipartContent())
+                    {
+                        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    }
+                    string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Instructor/Custom");
+
+                    var provider = new MultipartFileStreamProvider(rootpath);
+
+                    var task = await Request.Content.ReadAsMultipartAsync(provider).
+
+                        ContinueWith(t =>
+                        {
+                            if (t.IsCanceled || t.IsFaulted)
+                            {
+                                Request.CreateErrorResponse(HttpStatusCode.InternalServerError, t.Exception);
+                            }
+                            foreach (MultipartFileData item in provider.FileData)
+                            {
+                                try
+                                {
+                                    string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    string newfilename = InstructorId.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
+                                    File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
+                                    Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
+                                    string fileRelativePath = "~/Uploads/Instructor/Custom/" + newfilename;
+                                    Uri filefullpath = new Uri(baseuri, VirtualPathUtility.ToAbsolute(fileRelativePath));
+                                    lsAwsFileUploadRequest.Add(new AwsFileUploadRequest(newfilename, fileRelativePath));
+                                }
+                                catch (Exception Ex)
+                                {
+                                    m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                                    m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UploadFile", Ex.ToString());
+                                    m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                                    MainLogger.Error(m_strLogMessage);
+                                }
+                            }
+                            return Request.CreateResponse(HttpStatusCode.Created);
+                        });
+                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.CUSTOM);
+                    //File.Delete(lsAwsFileUploadRequest[0].m_strFilePath);
+                    objResponse.SetSuccessResponse();
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("AddClassroomAttachment")]
+        public async Task<APIDefaultResponse> AddClassroomAttachment(ClassroomAttachmentRequest classroomAttachmentRequest)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && classroomAttachmentRequest!=null&&await objInstructorService.CheckClassroomAccess(classroomAttachmentRequest.m_llClassroomId,InstructorId))
+                {
+                    if(await objHomeDTO.AddAttachmentToClassroom(classroomAttachmentRequest))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                   
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("ClassroomAttachments")]
+        public async Task<GetAllClassroomAttachmentResponse> GetAllClassroomAttachments(long ClassroomId)
+        {
+            GetAllClassroomAttachmentResponse objResponse = new GetAllClassroomAttachmentResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
+                {
+                    objResponse.m_lsAttachments = await objHomeService.GetAllClassroomAttachments(ClassroomId);
+                    if (objResponse.m_lsAttachments != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("DeleteClassroomAttachment")]
+        public async Task<APIDefaultResponse> DeleteClassroomAttachment(long ClassroomId, long id)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
+                {
+                    if (await objHomeDTO.DeleteClassroomAttachment(id))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("InsertClassroomSchedule")]
+        public async Task<APIDefaultResponse> InsertClassroomSchedule(ClassroomScheduleDetails classroomScheduleDetails)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && classroomScheduleDetails!=null&& await objInstructorService.CheckClassroomAccess(classroomScheduleDetails.m_llClassroomId, InstructorId))
+                {
+                    if (await objHomeService.InsertClassroomSchedule(classroomScheduleDetails))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("GetClassroomTimeTable")]
+        public async Task<GetClassroomSheduleResponse> GetClassroomTimeTable(long ClassroomId)
+        {
+            GetClassroomSheduleResponse objResponse = new GetClassroomSheduleResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1  && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
+                {
+                    objResponse.classroomScheduleDetails = await objHomeService.GetClassroomSchedule(ClassroomId);
+                    if(objResponse.classroomScheduleDetails!=null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UpdateAcademicRecord")]
+        public async Task<APIDefaultResponse> GetClassroomTimeTable(InstructorAcademicRecordUpdateRequest request)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && await objInstructorService.UpdateInstructorAcademicRecords(request))
+                {
+                    objResponse.SetSuccessResponse();
                 }
             }
             catch (Exception Ex)

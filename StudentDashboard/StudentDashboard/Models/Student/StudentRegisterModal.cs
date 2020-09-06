@@ -25,20 +25,34 @@ namespace StudentDashboard.Models.Student
         public string m_strDateOfJoining { get; set; }
         public string m_strLastUpdated { get; set; }
         public string m_strFullAddress { get; set; }
-        public int m_iCityId { get; set; }
-        public int m_iStateId { get; set; }
+        public int? m_iCityId { get; set; }
+        public int? m_iStateId { get; set; }
         public string m_strToken { get; set; }
         public string m_strPhoneNoVarificationGuid { get; set; }
         public string m_strEmailVarificationGuid { get; set; }
 
         public string m_strPasswrodRecoveryAuthToken;
+        public string m_strProfileUrl;
+        
+        public StudentRegisterModal(string FirstName,string LastName,string ProfilePictureUrl)
+        {
+            this.m_strFirstName = FirstName;
+            this.m_strLastName = LastName;
+            this.m_strProfileUrl = ProfilePictureUrl;
+            if (this.m_strProfileUrl == null || this.m_strProfileUrl == "")
+            {
+                this.m_strProfileUrl = "../Images/avatar-user.png";
+            }
+        }
         public StudentRegisterModal()
         {
 
         }
 
         public StudentRegisterModal(string FirstName, string LastName, string InstrcutorEmail, string InstructorPhoneNo, string AddressLine1,
-            string AddreessLine2, string CityName, string StateName, string PinCode, string Gender, string LastUpdated, string DateOfJoining)
+            string AddreessLine2, string CityName, string StateName, string PinCode, string Gender, string LastUpdated, string DateOfJoining,
+            int? CityCode,int? StateCode
+            )
         {
             this.m_strFirstName = FirstName;
             this.m_strLastName = LastName;
@@ -61,6 +75,10 @@ namespace StudentDashboard.Models.Student
             {
                 this.m_strFullAddress = this.m_strAddressLine1 + ", " + this.m_strAddressLine2 + ", " + this.m_strCity + ", " + this.m_strState + ", pincode- " + this.m_strPinCode;
             }
+          
+            this.m_iCityId = CityCode==null?-1:CityCode;
+            this.m_iStateId = StateCode == null ? -1 : StateCode;
+
         }
 
     }
