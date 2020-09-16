@@ -22,6 +22,8 @@ namespace StudentDashboard.Models.Course
         public string m_strTestType { get; set; }
         [JsonProperty("no_of_submissions")]
         public int m_iNoOfSubmissions;
+        [JsonProperty("test_access_code")]
+        public string m_strTestAccessCode;
         public TestDetailsModel()
         {
 
@@ -68,6 +70,28 @@ namespace StudentDashboard.Models.Course
                     }
             }
             this.m_iNoOfSubmissions = NoOfSubmissions;
+        }
+        public TestDetailsModel(long Id, string Name, string TestDescription, string CreationDate, int NoOfQuestions, byte TestType,string AccessCode)
+        {
+            this.m_strTestName = Name;
+            this.m_strTestDescription = TestDescription;
+            this.m_iNoOfQuestions = NoOfQuestions;
+            this.m_llTestId = Id;
+            this.m_strCreationDate = CreationDate;
+            switch (TestType)
+            {
+                case (byte)Constants.TestQuestionType.MCQ:
+                    {
+                        this.m_strTestType = Constants.TEST_TYPE_MCQ;
+                        break;
+                    }
+                case (byte)Constants.TestQuestionType.SUBJECTIVE:
+                    {
+                        this.m_strTestType = Constants.TEST_TYPE_SUBJECTIVE;
+                        break;
+                    }
+            }
+            this.m_strTestAccessCode = AccessCode;
         }
     }
 }

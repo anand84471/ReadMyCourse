@@ -174,6 +174,12 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                 });
             }, false);
         })();
+        function initiliazeJoinNewClassroom()
+        {
+            lastClassroomIdFetched = 0;
+            searchForClassrooms();
+        }
+        onpageshow = initiliazeJoinNewClassroom();
         function requestStartAssignment() {
             $.ajax({
                 type: "POST",
@@ -229,9 +235,9 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                             if (classrooms[i].is_joined == false) {
                                 row = '<div class="card shadow classroom-assignemnts p-2">' +
                            '<h4 class="text-white font-weight-bold p2"><span ><i class="fa fa-bookmark"></i></span> ' + classrooms[i].classroom_name + '</h4>' +
-                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Added On: ' + classrooms[i].classroom_creation_date + '</h6>' +
+                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Created On: ' + classrooms[i].classroom_creation_date + '</h6>' +
                            '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-users"></i></span> No Of students joined: ' + classrooms[i].no_of_enrollments + '</h6>';
-                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Free </span><a class="ml-2 btn btn-sm btn-outline-light" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id +'">Join Now</a></h6>';
+                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Joining Fee: ' + classrooms[i].classroom_joining_fee + ' </span><a class="ml-2 btn btn-sm btn-outline-light" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Join Now</a></h6>';
                             }
                             else {
                                 row = '<div class="card shadow classroom-assignemnts-submitted p-2">' +

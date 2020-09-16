@@ -24,8 +24,10 @@ namespace StudentDashboard.HttpResponse
         public string m_strCourseAccessCode;
         [JsonProperty("indexes")]
         public List<CourseIndexDetails> m_lsIndexes { get; set; }
+        [JsonProperty("course_joining_fee")]
+        public int m_iCourseJoiningFee;
         public GetCourseDetailsApiResponse(string CourseName, string CourseDescription, string CourseCreationDate,string CourseUpdationDate,
-            string CourseStatus,string AccessCode,string TinyUrl )
+            string CourseStatus,string AccessCode,string TinyUrl ,int CourseJoingFee)
         {
             this.m_strCourseName = CourseName;
             this.m_strCourseDescription = CourseDescription;
@@ -34,6 +36,7 @@ namespace StudentDashboard.HttpResponse
             this.m_strCourseStatus = CourseStatus;
             this.m_strShareUrl = TinyUrl;
             this.m_strCourseAccessCode = AccessCode;
+            this.m_iCourseJoiningFee = CourseJoingFee;
         }
         public GetCourseDetailsApiResponse()
         {

@@ -2,6 +2,7 @@
     ViewBag.Title = "Join course";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
     .course-accordion {
         background-color: #eee;
@@ -117,8 +118,8 @@
                 <p class="lead  text-white" id="courseDescription">Course description</p>
                 <div>
                     <p class="text mr-3  text-white" id="courseCreationDate"><b>Creation date:</b> </p>
-                    <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="joinCourse()">enroll now</button></span>
-                   
+                    <h2 class="display-6 text-white font-weight-bold" id="courseJoiningFee" > 	&#x20B9 Joining Fee</h2>
+                    <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoursePayment()">enroll now</button></span>
                     <span><a class="btn btn-outline-light custom-green text-white font-weight-bold" id="goToCourse" style="display:none;" href="./MyCourses">Go to my courses<i class="ml-2 fa fa-arrow-right"></i></a></span>
                 </div>
             </div>
@@ -279,6 +280,7 @@
                     $("#courseName").text(data.course_name);
                     $("#courseDescription").text(data.course_description);
                     $("#courseCreationDate").html("<b>Creation date:</b>".concat(data.course_creation_date));
+                    $("#courseJoiningFee").html(data.course_joinin_fee_in_rupees);
                     var indexes = data.index_details;
                     //fill indexes in nav
                     $("#navBarIndexList").empty();
@@ -325,7 +327,7 @@
             }
         });
     }
-    function joinCourse() {
+    function joinCourse(razorPayResponse) {
         debugger;
       
         $.ajax({
@@ -333,14 +335,12 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            data: JSON.stringify(razorPayResponse),
             url: "/api/v1/Course/JoinCourse?CourseId=".concat("@ViewBag.id"),
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {
-                    $("#successModal").modal('show');
-                    $("#enrollNowButton").hide();
-                    $("#successbadge").show();
-                    $("#goToCourse").show();
+                    triggerCourseJoinSuccess();
                 }
                 else {
                     $("#failModal").modal('show');
@@ -350,5 +350,71 @@
         });
 
     }
-   
+    function requestCoursePayment() {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/JoinCoursePayNow?CourseId=".concat("@ViewBag.id"),
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    if (data.is_free_course && data.is_joined) {
+                        triggerClassroomSuccess();
+                    }
+                    else {
+                        createRazroPayPayemntRequest(data.payment_data);
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+    }
+    function createRazroPayPayemntRequest(data) {
+        var options = {
+            "key": data.key, // Enter the Key ID generated from the Dashboard
+            "amount": data.payment_data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": data.payment_data.currency,
+            "name": data.name,
+            "description": data.description,
+            "image": data.image,
+            "order_id": data.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                var razorPayOrder = {
+                    "razorpay_payment_id": response.razorpay_payment_id,
+                    "razorpay_order_id": response.razorpay_order_id,
+                    "razorpay_signature": response.razorpay_signature,
+                }
+                var pass = {
+                    "order_id": data.order_id,
+                    "course_id": "@ViewBag.id",
+                    "payment_response": razorPayOrder
+                }
+                joinCourse(pass);
+            },
+            "prefill": {
+                "name": "",
+                "email": "",
+                "contact": ""
+            },
+            "notes": {
+                "address": ""
+            },
+            "theme": {
+                "color": "#CE51F0"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function triggerCourseJoinSuccess() {
+        $("#successModal").modal('show');
+        $("#enrollNowButton").hide();
+        $("#successbadge").show();
+        $("#goToCourse").show();
+    }
 </script>

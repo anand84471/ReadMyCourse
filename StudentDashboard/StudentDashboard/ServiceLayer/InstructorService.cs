@@ -233,12 +233,12 @@ namespace StudentDashboard.ServiceLayer
             instructorAcademicRecordDTO.m_iInstructorId = instructorAcademicRecordUpdateRequest.m_iInstructorId;
             instructorAcademicRecordDTO.m_strLinkedIn = instructorAcademicRecordUpdateRequest.m_strLinkedIn;
             instructorAcademicRecordDTO.m_strGoogleScholarId = instructorAcademicRecordUpdateRequest.m_strGoogleScholarId;
-            instructorAcademicRecordDTO.m_strLatestQualification = instructorAcademicRecordUpdateRequest.m_strLatestQualification;
-            instructorAcademicRecordDTO.m_strConferencesAttends = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorConferencesAttendsModal);
-            instructorAcademicRecordDTO.m_strProjectsDone = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorProjectsDetailsModal);
-            instructorAcademicRecordDTO.m_strAcademicPublications = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorAcadmeicsPublicationModal);
-            instructorAcademicRecordDTO.m_strCertificates = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.m_lsInstructorCertificateModal);
+            instructorAcademicRecordDTO.m_strSchoolDetails = JsonConvert.SerializeObject(instructorAcademicRecordUpdateRequest.instructorSchoolDetailsModal);
             return await objInstructorDTO.UpdateInstructorAcademicRecord(instructorAcademicRecordDTO);
+        }
+        public async Task<bool> UpdateInstructorBio(int InstructorId, string IntructorBio)
+        {
+           return await objInstructorDTO.UpdateInstructorBio(InstructorId, IntructorBio);
         }
     }
 }

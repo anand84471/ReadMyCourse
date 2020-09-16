@@ -163,14 +163,14 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public  async Task<bool> ActivateCourse(long CourseId)
+        public  async Task<bool> ActivateCourse(ActivateCourseHttpRequest activateCourseHttpRequest)
         {
             bool result = false;
             try
             {
                 string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
-                string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForCourse(CourseId, ShareCode);
-                result = await objHomeDTO.ActivateCourse(CourseId, ShareCode, TinyUrl);
+                string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForCourse(activateCourseHttpRequest.m_llCourseId, ShareCode);
+                result = await objHomeDTO.ActivateCourse(activateCourseHttpRequest.m_llCourseId, ShareCode, TinyUrl, activateCourseHttpRequest.m_iCourseFee*100);
             }
             catch (Exception Ex)
             {
@@ -290,7 +290,7 @@ namespace StudentDashboard.ServiceLayer
                     objAboutCourseResponse = new AboutCourseResponse(objGetCourseDetailsApiResponse.m_strCourseName,objGetCourseDetailsApiResponse.m_strCourseDescription,
                                         objGetCourseDetailsApiResponse.m_strCourseCreationDate,objGetCourseDetailsApiResponse.m_strCourseUpdationDate,
                                         objGetCourseDetailsApiResponse.m_strCourseStatus,objGetCourseDetailsApiResponse.m_strShareUrl,
-                                        objGetCourseDetailsApiResponse.m_strCourseAccessCode);
+                                        objGetCourseDetailsApiResponse.m_strCourseAccessCode, objGetCourseDetailsApiResponse.m_iCourseJoiningFee);
                     foreach (var indexes in lsCourseIndexDetails)
                     {
                         objAboutCourseResponse.AddIndex(indexes.m_strIndexName, indexes.m_llIndexId);
@@ -1099,6 +1099,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return  objHomeDTO.GetInstructorIdByTestId(ref InstructorId, TestId);
         }
+        public bool GetInstructorIdByClassroomId(ref int InstructorId, long ClassroomId)
+        {
+            return objHomeDTO.GetInstructorIdByClassroomId(ref InstructorId, ClassroomId);
+        }
         public async Task<List<AssignmentDetailsModel>> SearchForAssignmentOfInstructor(string SearchString, int MaxRowToReturn, int InstructorId)
         {
             return await objHomeDTO.SearchForAssignmentOfInstructor( SearchString,  MaxRowToReturn,  InstructorId);
@@ -1136,14 +1140,14 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.GetAllClassroomForIsntrcutor(InstrucorId);
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId,int ClassroomPublicType)
+        public async Task<bool> ActivateClassroom(long ClassroomId,int ClassroomPublicType,int ClassroomJoiningFeeInRupees)
         {
             bool result = false;
             try
             {
                 string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
                 string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForClassroom(ClassroomId, ShareCode);
-                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType);
+                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType, ClassroomJoiningFeeInRupees*100);
             }
             catch (Exception Ex)
             {

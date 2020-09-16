@@ -1,20 +1,20 @@
-﻿using StudentDashboard.Utilities;
+﻿using StudentDashboard.Models.RazorPay;
+using StudentDashboard.Utilities;
 using StudentDashboard.Vendors.AWS.Concrete;
+using StudentDashboard.Vendors.RazorPay;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace StudentDashboard.BusinessLayer
 {
-    public class InstructorBusinessLayer
+    public  class InstructorBusinessLayer
     {
         StringBuilder m_strLogMessage;
         TinyUrlService objTinyUrlService;
         AWSS3ServiceManagerLayer objAWSS3ServiceManagerLayer;
+        RazorPayHelper razorPayHelper;
 
         public InstructorBusinessLayer()
         {
@@ -245,6 +245,42 @@ namespace StudentDashboard.BusinessLayer
         {
             return MasterUtilities.RemoveWhitespace(ClassroomName) + "_" + MasterUtilities.RemoveWhitespace(FileName);
         }
+        public RazorPayPaymentDataModal CreateRazorPaymentRequest(int AmountInPaise)
+        {
+            razorPayHelper = new RazorPayHelper();
+            RazorPayPaymentDataModal razorPayPaymentDataModal = new RazorPayPaymentDataModal();
+            razorPayPaymentDataModal.m_iAmountInPaise = AmountInPaise;
+            razorPayPaymentDataModal.m_strPaymentCaptureCode = "1";
+            razorPayPaymentDataModal.m_strOrderId = razorPayHelper.CreateOrder(razorPayPaymentDataModal);
+            return razorPayPaymentDataModal;
+        }
+        public bool ValidateRazorPayPaymentRequest(RazorPayPaymentResponseModal razorPayPaymentResponseModal)
+        {
+            string strGeneratedHash = HmacValidator.HmacSha256Digest(razorPayPaymentResponseModal.m_strOrderId+"|"+
+                razorPayPaymentResponseModal.m_strRazorPayPaymentId,MvcApplication._strRazorPaySecret);
+            bool result=false;
+            if (strGeneratedHash == razorPayPaymentResponseModal.m_strRazorPaySignature)
+            {
+                result = true;
+            }
+            return result;
+        }
+       
     }
+    public static class HmacValidator
+    {
+        public static string HmacSha256Digest(this string message, string secret)
+        {
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] keyBytes = encoding.GetBytes(secret);
+            byte[] messageBytes = encoding.GetBytes(message);
+            HMACSHA256 cryptographer = new HMACSHA256(keyBytes);
+
+            byte[] bytes = cryptographer.ComputeHash(messageBytes);
+
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
+    }
+
    
 }

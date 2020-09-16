@@ -2,13 +2,13 @@
     ViewBag.Title = "Join classroom";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style type="text/css">
     .classroom-background-container {
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
-
     .classroom-background-image {
         max-height: 300px;
         height: 300px;
@@ -108,7 +108,8 @@
 
                         <p class="text mr-3  text-white" id="classroomCreationDate"></p>
                         <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
-                        <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="joinClassroom()">Join now</button></span>
+                        <h4 class="text-white" id="classroomJoiningText">Joining Fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> </h4>
+                        <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestClassroomPayment()">Join now</button></span>
                         <span><a class="btn btn-outline-light custom-green text-white font-weight-bold" id="goToCourse" style="display:none;" href="./MyClassrooms">Go to my classroom<i class="ml-2 fa fa-arrow-right"></i></a></span>
                     </div>
 
@@ -196,7 +197,7 @@
                     var classroomDetails = data.classroom_details;
                     $("#classroomName").text(classroomDetails.classroom_name);
                     $("#classroomDescription").text(classroomDetails.classroom_description);
-
+                    $("#classroomJoiningFee").text(classroomDetails.classroom_joining_fee);
                     $("#classroomCreationDate").text("Creation date:" + classroomDetails.creation_date);
                     hideSpinner();
                 }
@@ -204,21 +205,91 @@
             }
         });
     }
-    function joinClassroom() {
+    function requestClassroomPayment()
+    {
         debugger;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/JoinClassroom?id=".concat("@ViewBag.id"),
+            url: "/api/v1/Course/JoinClassroomPayNow?ClassroomId=".concat("@ViewBag.id"),
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {
-                    $("#successModal").modal('show');
-                    $("#enrollNowButton").remove();
-                    $("#successbadge").show();
-                    $("#goToCourse").show();
+                    if (data.is_free_course && data.is_joined)
+                    {
+                        triggerClassroomSuccess();
+                    }
+                    else {
+                        createRazroPayPayemntRequest(data.payment_data);
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+    }
+    function createRazroPayPayemntRequest(data)
+    {
+    var options = {
+        "key": data.key, // Enter the Key ID generated from the Dashboard
+        "amount":data.payment_data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": data.payment_data.currency,
+        "name": data.name,
+        "description": data.description,
+        "image": data.image,
+        "order_id": data.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response) {
+            var razorPayOrder = {
+                "razorpay_payment_id": response.razorpay_payment_id,
+                "razorpay_order_id": response.razorpay_order_id,
+                "razorpay_signature": response.razorpay_signature,
+            }
+            var pass = {
+                "order_id": data.order_id,
+                "classroom_id":"@ViewBag.id",
+                "payment_response": razorPayOrder
+            }
+            joinClassroom(pass);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "7317553431"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#CE51F0"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    }
+    function triggerClassroomSuccess()
+    {
+        $("#successModal").modal('show');
+        $("#enrollNowButton").remove();
+        $("#successbadge").show();
+        $("#goToCourse").show();
+        $("#classroomJoiningText").remove();
+    }
+    function joinClassroom(razorPayResponse) {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(razorPayResponse),
+            url: "/api/v1/Course/JoinClassroom",
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    triggerClassroomSuccess();
                 }
                 else {
                     $("#failModal").modal('show');

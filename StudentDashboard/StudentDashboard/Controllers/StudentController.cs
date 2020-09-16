@@ -996,10 +996,14 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public ActionResult PreviewClassroom(long ClassroomId)
+        public async Task<ActionResult> PreviewClassroom(long ClassroomId)
         {
             try
             {
+                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
+                {
+                    Response.Redirect("./ViewClassroom?classroom_id=" + ClassroomId);
+                }
                 ViewBag.Id = ClassroomId;
                 return View();
             }

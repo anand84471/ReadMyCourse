@@ -29,7 +29,8 @@ namespace StudentDashboard
         public static string _strAwsBucketFolderInstructor;
         public static string _strAwsBucketFolderStudent;
         public static string _strAwsFileUploadBaseUrl;
-
+        public static string _strRazorPayKey;
+        public static string _strRazorPaySecret;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -51,6 +52,18 @@ namespace StudentDashboard
                 StartSMSNotificationScheduler();
             }
         }
+        private void InitializeRazorPayConigurationData()
+        {
+            if (ConfigurationManager.AppSettings["RazorPayKeyValue"] != null)
+            {
+                _strRazorPayKey = (ConfigurationManager.AppSettings["RazorPayKeyValue"]);
+            }
+            if (ConfigurationManager.AppSettings["RazorPaySecretValue"] != null)
+            {
+                _strRazorPaySecret = (ConfigurationManager.AppSettings["RazorPaySecretValue"]);
+            }
+        }
+
         private void InitializeAwsConigurationData()
         {
 
@@ -110,6 +123,7 @@ namespace StudentDashboard
                 _strApplicationBaseUrl = (ConfigurationManager.AppSettings["APPLICATION_BASE_URL"].ToString());
             }
             InitializeAwsConigurationData();
+            InitializeRazorPayConigurationData();
         }
         private void StartSMSNotificationScheduler()
         {

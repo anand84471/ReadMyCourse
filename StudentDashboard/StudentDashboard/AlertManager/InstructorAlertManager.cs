@@ -41,13 +41,18 @@ namespace StudentDashboard.AlertManager
                         AlertMessage = Constants.ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION;
                         break;
                     }
+                case (int)Constants.InstructorAlertType.CLASSROOM_JOIN:
+                    {
+                        AlertMessage = Constants.ALERT_INSTRUCTOR_NEW_CLASSROOM_JOIN;
+                        break;
+                    }
             }
             return AlertMessage;
            
         }
-        public void AddStudentJoinAlert(long StudentId,int InstructorId)
+        public async Task AddStudentJoinAlert(long StudentId,int InstructorId)
         {
-            objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.STUDNET_JOINED), (int)Constants.InstructorAlertType.STUDNET_JOINED,
+            await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.STUDNET_JOINED), (int)Constants.InstructorAlertType.STUDNET_JOINED,
                  StudentId,null);
         }
         public async Task<bool> AddCourseJoinAlert(long StudentId, long CourseId)
@@ -82,19 +87,35 @@ namespace StudentDashboard.AlertManager
             }
             return result;
         }
-        public void AddAssignmentSubmissionAlert(long StudentId, long AssignmentId)
+        public async Task AddAssignmentSubmissionAlert(long StudentId, long AssignmentId)
         {
             try
             {
                 int InstructorId = -1;
                 objHomeService.GetInstructorIdByAssignmentId(ref InstructorId, AssignmentId);
-                objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.ASSIGNMENT_SUBMISSION), (int)Constants.InstructorAlertType.ASSIGNMENT_SUBMISSION,
+                await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.ASSIGNMENT_SUBMISSION), (int)Constants.InstructorAlertType.ASSIGNMENT_SUBMISSION,
                      StudentId, AssignmentId);
             }
             catch
             {
 
             }
+        }
+        public async Task<bool> AddClassroomJoinAlert(long StudentId, long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                int InstructorId = -1;
+                objHomeService.GetInstructorIdByClassroomId(ref InstructorId, ClassroomId);
+                result = await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.CLASSROOM_JOIN), (int)Constants.InstructorAlertType.CLASSROOM_JOIN,
+                     StudentId, ClassroomId);
+            }
+            catch
+            {
+
+            }
+            return result;
         }
     }
 }

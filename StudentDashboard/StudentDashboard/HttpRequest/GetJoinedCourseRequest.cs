@@ -13,5 +13,7 @@ namespace StudentDashboard.HttpRequest
         [JsonIgnore]
         [JsonProperty("id")]
         public long m_llStudentGid;
+        [JsonProperty("last_fetched_id")]
+        public long m_llLastFetchedId;
     }
 }

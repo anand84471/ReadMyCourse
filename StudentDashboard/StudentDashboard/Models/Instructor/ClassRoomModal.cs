@@ -43,6 +43,9 @@ namespace StudentDashboard.Models.Instructor
         public int m_iNoOfMeetings;
         [JsonProperty("classroom_meeting_name")]
         public string m_strClassroomMeetingName;
+        [JsonProperty("classroom_joining_fee")]
+        public string m_strClassrooomJoiningFee;
+
         public ClassRoomModal()
         {
 
@@ -82,7 +85,7 @@ namespace StudentDashboard.Models.Instructor
             this.m_strClassroomMeetingName = MeetingName;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
-             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName)
+             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -92,6 +95,14 @@ namespace StudentDashboard.Models.Instructor
             this.m_bIsMeetingActive = IsMeetingActive;
             this.m_strBackGroundImageUrl = BackGroundImageUrl;
             this.m_strClassroomMeetingName = ClassroomMeetingName;
+            if (ClassroomJoiningFeeInPaise == 0)
+            {
+                this.m_strClassrooomJoiningFee = "free";
+            }
+            else
+            {
+                this.m_strClassrooomJoiningFee = "" + (ClassroomJoiningFeeInPaise / 100).ToString();
+            }
         }
     }
 }

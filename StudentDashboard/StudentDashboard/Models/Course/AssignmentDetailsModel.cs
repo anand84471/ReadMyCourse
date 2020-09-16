@@ -21,8 +21,10 @@ namespace StudentDashboard.Models.Course
         [JsonProperty("no_of_questions")]
         public int m_iNoOfQuestions { get; set; }
         [JsonProperty("no_of_submissions")]
-        public int m_iNoOfSubmissions { get; set; } 
-        public AssignmentDetailsModel(long Id,string Name,string Description,byte AssignmentType,string CreationDate,int NoOfMcqQuestions,int NoOfSubjectiveQuestions)
+        public int m_iNoOfSubmissions { get; set; }
+        [JsonProperty("access_code")]
+        public string m_strAccessCode { get; set; }
+        public AssignmentDetailsModel(long Id,string Name,string Description,byte AssignmentType,string CreationDate,int NoOfMcqQuestions,int NoOfSubjectiveQuestions,string AccessCode=null)
         {
             this.m_llAssignmentId = Id;
             this.m_strAssignmentName = Name;
@@ -43,6 +45,7 @@ namespace StudentDashboard.Models.Course
                     }
             }
             this.m_strCreationDate = CreationDate;
+            this.m_strAccessCode = AccessCode;
         }
         public AssignmentDetailsModel(long Id, string Name, string Description, byte AssignmentType, string CreationDate, int NoOfMcqQuestions, int NoOfSubjectiveQuestions,
             int NoOfSubmissions)
@@ -68,6 +71,7 @@ namespace StudentDashboard.Models.Course
             this.m_strCreationDate = CreationDate;
             this.m_iNoOfSubmissions = NoOfSubmissions;
         }
+       
 
     }
 }

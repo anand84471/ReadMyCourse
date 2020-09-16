@@ -684,7 +684,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<DateTime>("ROW_UPDATION_DETETIME").ToString("d MMM yyyy"),
                          dataRow.Field<string>("COURSE_STATUS_NAME"),
                          dataRow.Field<string>("ACCESS_CODE"),
-                         dataRow.Field<string>("TINY_SHARE_URL")
+                         dataRow.Field<string>("TINY_SHARE_URL"),
+                         dataRow.Field<int>("COURSE_JOINING_FEE")
                          )).ToList();
                 }
                 if(lsGetCourseDetailsApiResponse!=null&&lsGetCourseDetailsApiResponse.Count>0)
@@ -787,12 +788,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateCourse(long CourseId,string ShareCode,string TinyUrl)
+        public async Task<bool> ActivateCourse(long CourseId,string ShareCode,string TinyUrl,int CourseJoiningFeeInPaise)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateCourseAsync(CourseId, TinyUrl, ShareCode);
+                result = await objCPDataService.ActivateCourseAsync(CourseId, TinyUrl, ShareCode, CourseJoiningFeeInPaise);
             }
             catch (Exception Ex)
             {
@@ -803,12 +804,14 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId, string ShareCode, string TinyUrl,int ClassroomPublicType)
+        public async Task<bool> ActivateClassroom(long ClassroomId, string ShareCode, string TinyUrl,int ClassroomPublicType,
+            int ClassroomJoiningFeeInPaise)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateClassroomAsync(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType);
+                result = await objCPDataService.ActivateClassroomAsync(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType,
+                    ClassroomJoiningFeeInPaise);
             }
             catch (Exception Ex)
             {
@@ -1872,6 +1875,22 @@ namespace StudentDashboard.DTO
             try
             {
                 result = objCPDataService.GetInstructorIdByCourseId(CourseId,ref InstructorId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertNewAlertForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public bool GetInstructorIdByClassroomId(ref int InstructorId, long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = objCPDataService.GetInstructorIdByClassroomId(ClassroomId, ref InstructorId);
             }
             catch (Exception Ex)
             {

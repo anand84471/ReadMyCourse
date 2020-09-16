@@ -1071,12 +1071,18 @@
                 <h3>Please select classroom type</h3>
                 <h4 class="text-info" >Public: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPublic">Selected</span></h4>
                 <p>Public classroom will be public and any studnt can join. We incourage you to create public classroom to support student.</p>
-                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(2)">Slect this</button>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Set classroom joining fee</label>
+                    <div class="col-sm-4">
+                        <input onchange="validateAmount(this)" min="0" type="number"  name="courseName" class="form-control" id="classroomFee" placeholder="please set an amount in rupees as the fee of your classroom" value="0">
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(2)">Select this</button>
                 <h4 class="text-info">Private: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPrivate">Selected</span></h4>
                 <p>Private classroom will not appear to public and any studnt can join the classroom by Id and Accesscode.
                 If you are a private institution select this option.
                 </p>
-                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(1)">Slect this</button>
+                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(1)">Select this</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1277,12 +1283,13 @@
     }
     function activateClassroom() {
         debugger;
+        var classroomJoiningFee = $("#classroomFee").val();
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/activateclassroom?id=@Model.m_llClassRoomId&publicType=".concat(ClassroomPublicType),
+            url: "/api/v1/instructor/activateclassroom?id=@Model.m_llClassRoomId&publicType=".concat(ClassroomPublicType).concat("&ClassroomJoiningFee=").concat(classroomJoiningFee),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     location.reload();
@@ -2361,6 +2368,7 @@
         });
     }
     var ClassroomPublicType;
+    var classroomFee = 0;
     function activateClassroomChoose(option)
     {
         ClassroomPublicType = option;
@@ -2391,6 +2399,17 @@
         catch(ex)
         {
 
+        }
+    }
+    function validateAmount(id)
+    {
+        if ($(id).val() == "-")
+        {
+            $(id).val("");
+        }
+        if(parseInt( $(id).val())<0)
+        {
+            $(id).val("");
         }
     }
 </script>

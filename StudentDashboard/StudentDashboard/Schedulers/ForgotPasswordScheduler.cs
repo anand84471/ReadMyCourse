@@ -59,7 +59,7 @@ namespace StudentDashboard.Schedulers
             }
         }
         private  void PerformAction(object sender, ElapsedEventArgs e)
-        {
+       {
             objForgotPasswordSchedulerService.ProcessSmsNotifications();
         }
     }

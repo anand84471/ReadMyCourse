@@ -35,6 +35,7 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_COURSE_JOIN = "new course join";
         public static readonly string ALERT_INSTRUCTOR_NEW_ASSIGNMENT_SUBMISSION = "new assignment submission";
         public static readonly string ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION = "new test submission";
+        public static readonly string ALERT_INSTRUCTOR_NEW_CLASSROOM_JOIN = "new classroom join";
         public static readonly string MESSEGE_SENDER_CLASSROOM = "admin";
         public static readonly string CONTENT_STATUS_ACTIVE = "active";
         public static readonly string CONTENT_STATUS_INACTIVE = "in active";
@@ -42,6 +43,8 @@ namespace StudentDashboard
         public static readonly string MEETING_STATUS_CLOSED = "closed";
         public static readonly string CLASSROOM_MEETING_NOT_CLOSED_MESSAGE = "NA";
         public static readonly string ACCESS_CODE_FOR_INTERNAL_ACCESS= "q96zSIeRwke2qflTV0kWRA";
+        public static readonly string WEBSITE_LOGO_URL = "https://readmycourse.com/Images/site-logo-v2.png";
+        public static readonly string WEBSITE_NAME = "ReadMyCourse";
 
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
@@ -104,7 +107,8 @@ namespace StudentDashboard
             STUDNET_JOINED = 1,
             COURSE_JOINED = 2,
             ASSIGNMENT_SUBMISSION = 3,
-            TEST_SUBMISSION = 4
+            TEST_SUBMISSION = 4,
+            CLASSROOM_JOIN=7
         }
         public enum AssignentHostType
         {

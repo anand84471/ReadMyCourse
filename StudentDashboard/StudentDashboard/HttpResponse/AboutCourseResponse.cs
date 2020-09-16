@@ -38,12 +38,16 @@ namespace StudentDashboard.HttpResponse
         public List<BasicTestDetails> m_lsTestDetails { get; set; }
         [JsonProperty("index_details")]
         public List<BasicIndexDetails> m_lsIndexDetails { get; set; }
+        [JsonProperty("course_joining_fee")]
+        public int m_iCourseJoiningFee;
+        [JsonProperty("course_joinin_fee_in_rupees")]
+        public string m_strCourseJoiningFeeInRupees;
         public AboutCourseResponse():base()
         {
             
         }
         public AboutCourseResponse(string CourseName,string CourseDescription,String CourseCreationDate,string CourseUpdationDateTime,
-            string CourseStatus,string ShareUrl,string AccessCode)
+            string CourseStatus,string ShareUrl,string AccessCode,int CourseJoiningFeeInPaise)
         {
             this.m_strCourseName = CourseName;
             this.m_strCourseDescription = CourseDescription;
@@ -55,6 +59,15 @@ namespace StudentDashboard.HttpResponse
             m_lsIndexDetails = new List<BasicIndexDetails>();
             m_lsAssignmentDetails = new List<BasicAssignmentDetails>();
             m_lsTestDetails = new List<BasicTestDetails>();
+            this.m_iCourseJoiningFee = CourseJoiningFeeInPaise/100;
+            if(this.m_iCourseJoiningFee==0)
+            {
+                this.m_strCourseJoiningFeeInRupees = "&#x20B9 free";
+            }
+            else
+            {
+                this.m_strCourseJoiningFeeInRupees = "&#x20B9 "+this.m_iCourseJoiningFee.ToString();
+            }
         } 
         public void SetCounts()
         {

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StudentDashboard.Models.Instructor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,10 @@ namespace StudentDashboard.Models
         [JsonIgnore]
         public string m_strPhoneNoVarificationGuid;
         public string m_strProfilePictureUrl;
+        public string m_strLinkedInId;
+        public string m_strGoogleScholarId;
+        public string m_strInstructorBio;
+        public InstructorSchoolDetailsModal instructorSchoolDetailsModal;
         public InstructorRegisterModel(string FirstName, string LastName,int InstructorId,string ProfileUrl)
         {
             this.m_strFirstName = FirstName;
@@ -80,7 +85,7 @@ namespace StudentDashboard.Models
         }
         public InstructorRegisterModel(string FirstName, string LastName,string InstrcutorEmail,string InstructorPhoneNo,string AddressLine1,
             string AddreessLine2,string CityName,string StateName,string PinCode,string Gender,string SchoolName,DateTime? LastUpdated,DateTime DateOfJoining,
-            int? CityId, int? StateId)
+            int? CityId, int? StateId,string AcademicRecord,string LinkedInId,string GoogleScholarId,string InsructorShortBio)
         {
             this.m_strFirstName = FirstName;
             this.m_strLastName = LastName;
@@ -109,7 +114,11 @@ namespace StudentDashboard.Models
             {
                 this.m_dtLastUpdated = DateOfJoining;
             }
-            
+            this.instructorSchoolDetailsModal = JsonConvert.DeserializeObject<InstructorSchoolDetailsModal>(AcademicRecord);
+            this.m_strLinkedInId = LinkedInId;
+            this.m_strGoogleScholarId = GoogleScholarId;
+            this.m_strInstructorBio = InsructorShortBio;
+
         }
        
     }

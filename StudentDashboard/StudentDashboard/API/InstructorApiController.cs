@@ -427,16 +427,17 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activatecourse")]
-        public async Task<APIDefaultResponse> ActivateCourse(long id)
+        public async Task<APIDefaultResponse> ActivateCourse(ActivateCourseHttpRequest activateCourseHttpRequest)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId,id))
+                if(activateCourseHttpRequest!=null&&await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, activateCourseHttpRequest.m_llCourseId))
                 {
-                    if (await objHomeService.ActivateCourse(id))
+                    activateCourseHttpRequest.m_iInstructorId = InstructorId;
+                    if (await objHomeService.ActivateCourse(activateCourseHttpRequest))
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1799,7 +1800,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activateclassroom")]
-        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType)
+        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType,int ClassroomJoiningFee)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
@@ -1807,7 +1808,7 @@ namespace StudentDashboard.API
                 int InstructorId = GetInstructorIdInRequest();
                 if (InstructorId!=-1||await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
                 {
-                    if (await objHomeService.ActivateClassroom(id, publicType))
+                    if (await objHomeService.ActivateClassroom(id, publicType, ClassroomJoiningFee))
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -2571,15 +2572,46 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UpdateAcademicRecord")]
-        public async Task<APIDefaultResponse> GetClassroomTimeTable(InstructorAcademicRecordUpdateRequest request)
+        public async Task<APIDefaultResponse> UpdateInstructorAcademicRecords(InstructorAcademicRecordUpdateRequest request)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 && await objInstructorService.UpdateInstructorAcademicRecords(request))
+                if (InstructorId != -1)
                 {
-                    objResponse.SetSuccessResponse();
+                    request.m_iInstructorId = InstructorId;
+                    if (await objInstructorService.UpdateInstructorAcademicRecords(request))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                   
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("UpdateInstructorShortBio")]
+        public async Task<APIDefaultResponse> UpdateInstructorBio(InstructorBioUpdateHttpRequest request)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1&& request!=null)
+                {
+                    if (await objInstructorService.UpdateInstructorBio(InstructorId, request.m_strInstructorBio))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
                 }
             }
             catch (Exception Ex)

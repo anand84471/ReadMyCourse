@@ -20,9 +20,11 @@ namespace StudentDashboard.HttpResponse
         public bool m_IsJoined;
         [JsonProperty("joining_date")]
         public string m_strJoiningDate;
+        [JsonProperty("classroom_joining_fee")]
+        public string m_strClassrooomJoiningFee;
         public GetPublicClassroomsResponse(string classroomName,
             long classroomId,string creationDate,int noOfEnrollments,long? StudentJoinId,
-            DateTime? JoiningDate)
+            DateTime? JoiningDate,int ClassroomJoiningFeeInPaise)
         {
             this.m_strClasssroomName = classroomName;
             this.m_llClasssroomId = classroomId;
@@ -32,7 +34,14 @@ namespace StudentDashboard.HttpResponse
             {
                 m_IsJoined = true;
             }
-
+            if(ClassroomJoiningFeeInPaise==0)
+            {
+                this.m_strClassrooomJoiningFee = "free";
+            }
+            else
+            {
+                this.m_strClassrooomJoiningFee = "&#8377 "+(ClassroomJoiningFeeInPaise/100).ToString();
+            }
         }
     }
 }

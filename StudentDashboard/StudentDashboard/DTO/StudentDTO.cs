@@ -5,6 +5,7 @@ using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.RazorPay;
 using StudentDashboard.Models.Student;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -457,12 +458,12 @@ namespace StudentDashboard.DTO
             }
             return lsSearchInstructorResponseModal;
         }
-        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn,long LastFetchedId)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                DataSet ds = await objCPDataService.SearchForAssignmentAsync(SearchString, MaxRowToReturn);
+                DataSet ds = await objCPDataService.SearchForAssignmentAsync(SearchString, MaxRowToReturn,LastFetchedId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsAssignmentDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -504,12 +505,12 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn)
+        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn,long LastFetchedId)
         {
             List<TestDetailsModel> lsTestDetailsModel = null;
             try
             {
-                DataSet ds = await objCPDataService.SearchForTestAsync(SearchString, MaxRowToReturn);
+                DataSet ds = await objCPDataService.SearchForTestAsync(SearchString, MaxRowToReturn, LastFetchedId);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsTestDetailsModel = ds.Tables[0].AsEnumerable().Select(
@@ -874,7 +875,8 @@ namespace StudentDashboard.DTO
                           dataRow.Field<int>("NO_OF_STUDENTS_JOINED").ToString(),
                           dataRow.Field<bool?>("IS_MEETING_ACTIVE"),
                           dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
-                          dataRow.Field<string>("CLASSROOM_MEETING_NAME")
+                          dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
+                           dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE")
                          )).ToList()[0];
                 }
             }
@@ -1275,10 +1277,11 @@ namespace StudentDashboard.DTO
                      dataRow => new GetPublicClassroomsResponse(
                          dataRow.Field<string>("CLASSROOM_NAME"),
                          dataRow.Field<long>("CLASSROOM_ID"),
-                         dataRow.Field<DateTime>("ACTIVATION_DATETIME").ToString("f"),
+                         dataRow.Field<DateTime>("ACTIVATION_DATETIME").ToString("d MMM yyyy"),
                          dataRow.Field<int>("NO_OF_ENROLLMENT"),
                          dataRow.Field<long?>("ID"),
-                         dataRow.Field<DateTime?>("ROW_INSERTION_DATETIME") 
+                         dataRow.Field<DateTime?>("ROW_INSERTION_DATETIME") ,
+                         dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE")
                          )).ToList();
                 }
             }
@@ -1290,6 +1293,99 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsResponse;
+        }
+        public async Task<PaymentRequestDTO> GetClassroomPaymentInfo(long ClassroomId,long StudentId)
+        {
+            PaymentRequestDTO classroomPaymentRequestDTO = new PaymentRequestDTO();
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomPaymentDetailsAsync(ClassroomId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    classroomPaymentRequestDTO = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new PaymentRequestDTO(
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<string>("STUDENT_USER_ID"),
+                         dataRow.Field<string>("PHONENO"),
+                         dataRow.Field<int>("CLASSROOM_CHARGE")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return classroomPaymentRequestDTO;
+        }
+        public async Task<PaymentRequestDTO> GetCoursePaymentInfo(long CourseId, long StudentId)
+        {
+            PaymentRequestDTO classroomPaymentRequestDTO = new PaymentRequestDTO();
+            try
+            {
+                DataSet ds = await objCPDataService.GetCoursePaymentDetailsAsync(CourseId, StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    classroomPaymentRequestDTO = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new PaymentRequestDTO(
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<string>("STUDENT_USER_ID"),
+                         dataRow.Field<string>("PHONENO"),
+                         dataRow.Field<int>("COURSE_CHARGE")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return classroomPaymentRequestDTO;
+        }
+        public async Task<bool> InsertPaymentOrderRequest(RazorPayPaymentRequestModal razorPayPaymentRequestModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.CreatePaymentOrderAsync(razorPayPaymentRequestModal.m_strOrderId,
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strName,
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strEmail,
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strContact,
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise,
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strAddress);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertRazorPayPaymentResponse(RazorPayPaymentResponseModal razorPayPaymentResponseModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertRazorPayTxnDetailsAsync(
+                    razorPayPaymentResponseModal.m_strOrderId,
+                    razorPayPaymentResponseModal.m_strRazorPayPaymentId,
+                    razorPayPaymentResponseModal.m_strRazorPayOrderId,
+                    razorPayPaymentResponseModal.m_strRazorPaySignature);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

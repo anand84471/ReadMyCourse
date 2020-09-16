@@ -39,9 +39,9 @@ namespace StudentDashboard.API
             AboutCourseResponse objResonse = new AboutCourseResponse();
             try
             {
-                objResonse=await objHomeService.GetAboutCourse(id);
+                objResonse = await objHomeService.GetAboutCourse(id);
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AboutCourseResponse", Ex.ToString());
@@ -73,7 +73,7 @@ namespace StudentDashboard.API
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
@@ -90,7 +90,7 @@ namespace StudentDashboard.API
             try
             {
                 long StudentId = GetStudentIdInRequest();
-                if(StudentId!=-1)
+                if (StudentId != -1)
                 {
                     objResponse = await objHomeService.GetIndexProgressForStudent(IndexId, StudentId);
                     if (objResponse != null)
@@ -131,7 +131,7 @@ namespace StudentDashboard.API
         [HttpPost]
         public async Task<AssignmentModel> GetAssignmentDetails(long AssignmentId)
         {
-            AssignmentModel objResponse=null;
+            AssignmentModel objResponse = null;
             try
             {
                 objResponse = await objHomeService.GetAssignmentDetails(AssignmentId);
@@ -147,7 +147,7 @@ namespace StudentDashboard.API
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
@@ -193,7 +193,7 @@ namespace StudentDashboard.API
             try
             {
                 long StudentId = GetStudentIdInRequest();
-                if(StudentId!=-1)
+                if (StudentId != -1)
                 {
                     objResponse = await objHomeService.FetchStudentAssignmentProgress(StudentId, AssignmentId);
                     if (objResponse != null)
@@ -229,8 +229,8 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                     }
                 }
-                
-               
+
+
             }
             catch (Exception Ex)
             {
@@ -278,7 +278,7 @@ namespace StudentDashboard.API
             try
             {
                 long StudentIdInRequest = GetStudentIdInRequest();
-                if (StudentIdInRequest!=-1&&objRequest != null)
+                if (StudentIdInRequest != -1 && objRequest != null)
                 {
                     objRequest.m_llStudentId = StudentIdInRequest;
                     if (await objStudentService.AddQuestionAskForCourse(objRequest))
@@ -287,7 +287,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                     }
                 }
-               
+
             }
             catch (Exception Ex)
             {
@@ -300,16 +300,16 @@ namespace StudentDashboard.API
         }
         [Route("FetchQuestionAsked")]
         [HttpPost]
-        public async Task<AllQuestionAskedByStudentForCourse>FetchQuestionAsked(long CourseId)
+        public async Task<AllQuestionAskedByStudentForCourse> FetchQuestionAsked(long CourseId)
         {
             AllQuestionAskedByStudentForCourse objResponse = new AllQuestionAskedByStudentForCourse();
             try
             {
                 long StudentIdInRequest = GetStudentIdInRequest();
-                if (StudentIdInRequest != -1 )
+                if (StudentIdInRequest != -1)
                 {
                     objResponse.m_lsStudentCourseQuestionModal = await objStudentService.GetAllQuestionOfStudentCourse(StudentIdInRequest, CourseId);
-                    if(objResponse!=null)
+                    if (objResponse != null)
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -328,7 +328,7 @@ namespace StudentDashboard.API
         }
         [Route("SearchCourseForStudent")]
         [HttpPost]
-        public async Task< SearchCourseHttpResponse> SearchCourseForStudent([FromBody]SerchCourseRequest objSerchCourseRequest)
+        public async Task<SearchCourseHttpResponse> SearchCourseForStudent([FromBody]SerchCourseRequest objSerchCourseRequest)
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
@@ -344,7 +344,7 @@ namespace StudentDashboard.API
                 if (objSerchCourseRequest != null)
                 {
                     objSerchCourseRequest.m_llStudentId = StudentId;
-                    objResponse.lsCourseDetailsModel =await objStudentService.SearchForCourseForStudent(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
+                    objResponse.lsCourseDetailsModel = await objStudentService.SearchForCourseForStudent(objSerchCourseRequest.m_strKey, 10, objSerchCourseRequest.m_iNoOfRowsFetched,
                                       objSerchCourseRequest.m_iSortingId, objSerchCourseRequest.m_llStudentId);
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -367,18 +367,19 @@ namespace StudentDashboard.API
         [JwtAuthentication]
         [Route("JoinCourse")]
         [HttpPost]
-        public async Task<APIDefaultResponse> JoinCourse(long CourseId)
+        public async Task<APIDefaultResponse> JoinCourse(StudentCourseJoinRequest studentCourseJoinRequest)
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
-            long StudentId=-1;
-            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name,out StudentId);
+            long StudentId = -1;
+            long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (await objStudentService.JoinStudentToCourse(CourseId, StudentId))
+                studentCourseJoinRequest.m_llStudentId = StudentId;
+                if (await objStudentService.JoinStudentToCourse(studentCourseJoinRequest))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -408,7 +409,7 @@ namespace StudentDashboard.API
                     long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
@@ -454,12 +455,12 @@ namespace StudentDashboard.API
         [HttpPost]
         public async Task<APIDefaultResponse> MarkTopicFinished(long TopicId)
         {
-          
+
             long StudentId = GetStudentIdInRequest();
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (StudentId!=-1&&await objStudentService.InsertReadTopicByStudent(StudentId, TopicId))
+                if (StudentId != -1 && await objStudentService.InsertReadTopicByStudent(StudentId, TopicId))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -478,7 +479,7 @@ namespace StudentDashboard.API
         [HttpPost]
         public async Task<StudentJoinedCoursesResponse> GetJoinedCourses([FromBody] GetJoinedCourseRequest objGetJoinedCourseRequest)
         {
-            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated|| objGetJoinedCourseRequest==null)
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objGetJoinedCourseRequest == null)
             {
                 return null;
             }
@@ -488,11 +489,11 @@ namespace StudentDashboard.API
             try
             {
                 objGetJoinedCourseRequest.m_llStudentGid = StudentId;
-                objResponse.lsStudentJoinedCoursesResponseModal =await objStudentService.SerachForJoinedCourses(
-                    objGetJoinedCourseRequest.m_llStudentGid, objGetJoinedCourseRequest.m_strSearchString,Constants.MAX_ITEMS_TO_BE_RETURNED );
-                if (objResponse.lsStudentJoinedCoursesResponseModal!=null)
+                objResponse.lsStudentJoinedCoursesResponseModal = await objStudentService.SerachForJoinedCourses(
+                    objGetJoinedCourseRequest.m_llStudentGid, objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
+                if (objResponse.lsStudentJoinedCoursesResponseModal != null)
                 {
-                    
+
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                 }
@@ -526,7 +527,7 @@ namespace StudentDashboard.API
             try
             {
                 objGetJoinedCourseRequest.m_llStudentGid = StudentId;
-                objResponse.lsSearchInstructorResponseModal =await objStudentService.SearchForInstructor(
+                objResponse.lsSearchInstructorResponseModal = await objStudentService.SearchForInstructor(
                    objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
                 if (objResponse.lsSearchInstructorResponseModal != null)
                 {
@@ -596,7 +597,7 @@ namespace StudentDashboard.API
             SearchForAssignmentsApiResponse objResponse = new SearchForAssignmentsApiResponse();
             try
             {
-                objResponse.m_lsAssignments =await objStudentService.SearchForAssignment(objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED);
+                objResponse.m_lsAssignments = await objStudentService.SearchForAssignment(objGetJoinedCourseRequest.m_strSearchString, Constants.MAX_ITEMS_TO_BE_RETURNED, objGetJoinedCourseRequest.m_llLastFetchedId);
                 if (objResponse.m_lsAssignments != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -628,7 +629,7 @@ namespace StudentDashboard.API
             SearchForTestResponse objResponse = new SearchForTestResponse();
             try
             {
-                objResponse.m_lsTestDetailsModel = await objStudentService.SearchForTest(objGetJoinedCourseRequest.m_strSearchString, 10);
+                objResponse.m_lsTestDetailsModel = await objStudentService.SearchForTest(objGetJoinedCourseRequest.m_strSearchString, 10, objGetJoinedCourseRequest.m_llLastFetchedId);
                 if (objResponse.m_lsTestDetailsModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -653,7 +654,7 @@ namespace StudentDashboard.API
         [HttpPost]
         public async Task<AssignmentSubmissionOfStudnetResponse> GetAllAssignmentSubmissionForStudent()
         {
-            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated )
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
@@ -721,7 +722,7 @@ namespace StudentDashboard.API
         [HttpPost]
         public SubmitAssignmentResponse InsertAssignmentResponse([FromBody] AssignmentSubmissionRequest objAssignmentSubmissionRequest)
         {
-            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated|| objAssignmentSubmissionRequest == null)
+            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objAssignmentSubmissionRequest == null)
             {
                 return null;
             }
@@ -798,11 +799,11 @@ namespace StudentDashboard.API
             }
             long StudentId = -1;
             long.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out StudentId);
-            GetAssignmentSubssionDetials objResponse =null;
+            GetAssignmentSubssionDetials objResponse = null;
             try
             {
-                objResponse = await objStudentService.GetAssignmentResponse(id,StudentId);
-                if (objResponse!=null)
+                objResponse = await objStudentService.GetAssignmentResponse(id, StudentId);
+                if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -886,7 +887,7 @@ namespace StudentDashboard.API
         }
         [Route("JoinClassroom")]
         [HttpPost]
-        public async Task<APIDefaultResponse> JoinClassroom(long id)
+        public async Task<APIDefaultResponse> JoinClassroom(StudentClassroomJoinRequest request)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
@@ -894,11 +895,12 @@ namespace StudentDashboard.API
                 long StudentidInRequest = GetStudentIdInRequest();
                 if (StudentidInRequest != -1)
                 {
-                    if(await objStudentService.JoinClassroom(id,StudentidInRequest))
+                    request.m_llStudentId = StudentidInRequest;
+                    if (await objStudentService.JoinClassroom(request))
                     {
                         objResponse.SetSuccessResponse();
                     }
-                    
+
                 }
             }
             catch (Exception Ex)
@@ -946,7 +948,7 @@ namespace StudentDashboard.API
                 long StudentidInRequest = GetStudentIdInRequest();
                 if (StudentidInRequest != -1)
                 {
-                    
+
                     if (await objStudentService.JoinClassroomMeeting(MeetingId, StudentidInRequest))
                     {
                         objResponse.SetSuccessResponse();
@@ -970,7 +972,7 @@ namespace StudentDashboard.API
             try
             {
                 long StudentidInRequest = GetStudentIdInRequest();
-                if (StudentidInRequest != -1&&await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, insertStudentMessageToClassroom.m_llClassroomId))
+                if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, insertStudentMessageToClassroom.m_llClassroomId))
                 {
                     insertStudentMessageToClassroom.m_llStudentId = StudentidInRequest;
                     if (await objStudentService.InsertNewMessageToClassroomByStudent(insertStudentMessageToClassroom))
@@ -999,7 +1001,7 @@ namespace StudentDashboard.API
                 if (StudentidInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentidInRequest, ClassroomId))
                 {
                     objResponse.m_lsGetClassroomAllMessageResponseForStudent =
-                        await objStudentService.GetAllClassroomMessageForStudent(ClassroomId,StudentidInRequest
+                        await objStudentService.GetAllClassroomMessageForStudent(ClassroomId, StudentidInRequest
                         );
                     if (objResponse.m_lsGetClassroomAllMessageResponseForStudent != null)
                     {
@@ -1199,7 +1201,7 @@ namespace StudentDashboard.API
             try
             {
                 long StudentIdInRequest = GetStudentIdInRequest();
-                if (StudentIdInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentIdInRequest,ClassroomId))
+                if (StudentIdInRequest != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentIdInRequest, ClassroomId))
                 {
                     objResponse.m_lsAttachments = await objHomeService.GetAllClassroomAttachments(ClassroomId);
                     if (objResponse.m_lsAttachments != null)
@@ -1225,9 +1227,9 @@ namespace StudentDashboard.API
             try
             {
                 long StudentId = GetStudentIdInRequest();
-                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId,ClassroomId))
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, ClassroomId))
                 {
-                    objResponse.m_lsGetClassroomAllMessageResponseForStudent = await objStudentService.GetAllClassroomLastMessagesForStudentAfterLast(ClassroomId, LastMessageId,StudentId);
+                    objResponse.m_lsGetClassroomAllMessageResponseForStudent = await objStudentService.GetAllClassroomLastMessagesForStudentAfterLast(ClassroomId, LastMessageId, StudentId);
                     if (objResponse.m_lsGetClassroomAllMessageResponseForStudent != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -1251,9 +1253,9 @@ namespace StudentDashboard.API
             try
             {
                 long StudentId = GetStudentIdInRequest();
-                if (StudentId != -1 )
+                if (StudentId != -1)
                 {
-                    objResponse.m_lsGetPublicClassroomsResponse = await objStudentService.SearchClassroom(LastClassroomId, StudentId,SearchString);
+                    objResponse.m_lsGetPublicClassroomsResponse = await objStudentService.SearchClassroom(LastClassroomId, StudentId, SearchString);
                     if (objResponse.m_lsGetPublicClassroomsResponse != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -1269,8 +1271,64 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
-    }  
+        [HttpPost]
+        [Route("JoinClassroomPayNow")]
+        public async Task<ClassroomAcceptPaymentResponse> CreatePaymentRequestForClassroomJoin(long ClassroomId)
+        {
+            ClassroomAcceptPaymentResponse objResponse = new ClassroomAcceptPaymentResponse();
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if (StudentId != -1)
+                {
+                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetClassroomPaymentData(ClassroomId, StudentId);
+                    if (objResponse.razorPayPaymentRequestModal != null)
+                    {
+                        objResponse.m_bIsJoined = objResponse.razorPayPaymentRequestModal.m_bIsJoined;
+                        objResponse.m_bIsFreeCourse = objResponse.razorPayPaymentRequestModal.m_bIsFreeCourse;
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [HttpPost]
+        [Route("JoinCoursePayNow")]
+        public async Task<CourseAcceptPaymentResponse> CreatePaymentRequestForCourse(long CourseId)
+        {
+            CourseAcceptPaymentResponse objResponse = new CourseAcceptPaymentResponse();
+            try
+            {
+                long StudentId = GetStudentIdInRequest();
+                if (StudentId != -1)
+                {
+                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetCoursePaymentData(CourseId, StudentId);
+                    if (objResponse.razorPayPaymentRequestModal != null)
+                    {
+                        objResponse.m_bIsJoined = objResponse.razorPayPaymentRequestModal.m_bIsJoined;
+                        objResponse.m_bIsFreeCourse = objResponse.razorPayPaymentRequestModal.m_bIsFreeCourse;
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
 
+    }
 
 }
 

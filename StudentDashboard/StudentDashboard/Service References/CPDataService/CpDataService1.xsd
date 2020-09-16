@@ -357,21 +357,47 @@
   <xs:element name="UpdateInstructorAcademicRecord">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="Certificates" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="Publications" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="Conferences" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="LinkedInId" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="GoogleScholarId" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
-        <xs:element minOccurs="0" name="LatestQualification" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="m_strProjects" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="SchoolDetails" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateInstructorAcademicRecordResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateInstructorAcademicRecordResult" nillable="true">
+        <xs:element minOccurs="0" name="UpdateInstructorAcademicRecordResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateInstructorBio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
+        <xs:element minOccurs="0" name="InstructoBioData" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateInstructorBioResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateInstructorBioResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClassroomPaymentDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClassroomPaymentDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetClassroomPaymentDetailsResult" nillable="true">
           <xs:complexType>
             <xs:annotation>
               <xs:appinfo>
@@ -387,18 +413,86 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateInstructorBio">
+  <xs:element name="CreatePaymentOrder">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
-        <xs:element minOccurs="0" name="InstructoBioData" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="OrederId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CustomerEmail" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CustomerPhoneNo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="AmountInPaise" type="xs:int" />
+        <xs:element minOccurs="0" name="CustomerAddress" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateInstructorBioResponse">
+  <xs:element name="CreatePaymentOrderResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateInstructorBioResult" nillable="true">
+        <xs:element minOccurs="0" name="CreatePaymentOrderResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertRazorPayTxnDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="OrederId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="RazorPayPaymentId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="RazorPayOderId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="RazorPaySignature" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertRazorPayTxnDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InsertRazorPayTxnDetailsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstructorIdByClassroomId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInstructorIdByClassroomIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetInstructorIdByClassroomIdResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCoursePrice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CourseId" type="xs:long" />
+        <xs:element minOccurs="0" name="CoursePrice" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCoursePriceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetCoursePriceResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="CoursePrice" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCoursePaymentDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CourseId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCoursePaymentDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetCoursePaymentDetailsResult" nillable="true">
           <xs:complexType>
             <xs:annotation>
               <xs:appinfo>
@@ -1157,6 +1251,7 @@
         <xs:element minOccurs="0" name="ShareCode" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ShareUrl" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ClassroomPublicType" type="xs:int" />
+        <xs:element minOccurs="0" name="ClassroomJoiningAmountInPaise" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -2148,6 +2243,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="SerachString" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="MaxRowToReturn" type="xs:int" />
+        <xs:element minOccurs="0" name="LastFetchedId" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -2175,6 +2271,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="SerachString" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="MaxRowToReturn" type="xs:int" />
+        <xs:element minOccurs="0" name="LastFetchedId" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -3896,6 +3993,7 @@
         <xs:element minOccurs="0" name="CourseId" type="xs:long" />
         <xs:element minOccurs="0" name="ShareUrl" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="AccessCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CourseJoiningFeeInPaise" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

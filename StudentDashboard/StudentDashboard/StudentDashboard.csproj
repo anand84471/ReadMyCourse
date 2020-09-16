@@ -101,12 +101,16 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.6.0\lib\net45\Microsoft.IdentityModel.Tokens.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Razorpay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Razorpay.3.0.0\lib\net45\Razorpay.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -276,6 +280,7 @@
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="DTO\PaymentRequestDTO.cs" />
     <Compile Include="DTO\ClassroomScheduleDTO.cs" />
     <Compile Include="DTO\DocumentDTO.cs" />
     <Compile Include="DTO\HomeDTO.cs" />
@@ -286,10 +291,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpRequest\ActivateCourseHttpRequest.cs" />
     <Compile Include="HttpRequest\AssignmentQuestionResponse.cs" />
     <Compile Include="HttpRequest\AssignmentSubmissionRequest.cs" />
     <Compile Include="HttpRequest\ClassroomAttachmentRequest.cs" />
     <Compile Include="HttpRequest\ContactUsApiRequest.cs" />
+    <Compile Include="HttpRequest\ContentSearchRequest.cs" />
     <Compile Include="HttpRequest\FileUploadTypeRequest.cs" />
     <Compile Include="HttpRequest\GetJoinedCourseRequest.cs" />
     <Compile Include="HttpRequest\GetStudentRequestDetailsModel.cs" />
@@ -297,11 +304,14 @@
     <Compile Include="HttpRequest\InsertInstructorMessageToClassroom.cs" />
     <Compile Include="HttpRequest\InsertStudentMessageToClassroom.cs" />
     <Compile Include="HttpRequest\InstructorAcademicRecordUpdateRequest.cs" />
+    <Compile Include="HttpRequest\InstructorBioUpdateHttpRequest.cs" />
     <Compile Include="HttpRequest\InstructorFileUploadRequest.cs" />
     <Compile Include="HttpRequest\InstructorSearchRequest.cs" />
     <Compile Include="HttpRequest\ProfileUploadRequest.cs" />
     <Compile Include="HttpRequest\SerchCourseRequest.cs" />
+    <Compile Include="HttpRequest\StudentClassroomJoinRequest.cs" />
     <Compile Include="HttpRequest\StudentCourseDetailsRequestModel.cs" />
+    <Compile Include="HttpRequest\StudentCourseJoinRequest.cs" />
     <Compile Include="HttpRequest\StudentProfilePictureUpdtaeRequest.cs" />
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
     <Compile Include="HttpResponse\AboutCourseResponse.cs" />
@@ -320,6 +330,7 @@
     <Compile Include="HttpResponse\BasicCourseDetails.cs" />
     <Compile Include="HttpResponse\BasicIndexDetails.cs" />
     <Compile Include="HttpResponse\BasicTestDetails.cs" />
+    <Compile Include="HttpResponse\ClassroomAcceptPaymentResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomAttachmentDetailsResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomBasicDetailsModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomDetailsResponse.cs" />
@@ -343,6 +354,7 @@
     <Compile Include="HttpResponse\ClassRoom\StudentClassroomResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\StudentClassrromJoinModal.cs" />
     <Compile Include="HttpResponse\ClassRoom\StudentMeetingJoinedResponse.cs" />
+    <Compile Include="HttpResponse\CourseAcceptPaymentResponse.cs" />
     <Compile Include="HttpResponse\CourseDetailsModel.cs" />
     <Compile Include="HttpResponse\CourseIndexDetails.cs" />
     <Compile Include="HttpResponse\CourseJoinedResponse.cs" />
@@ -418,7 +430,12 @@
     <Compile Include="Models\Instructor\InstructorCertificateModal.cs" />
     <Compile Include="Models\Instructor\InstructorConferencesAttendsModal.cs" />
     <Compile Include="Models\Instructor\InstructorProjectsDetailsModal.cs" />
+    <Compile Include="Models\Instructor\InstructorSchoolDetailsModal.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
+    <Compile Include="Models\RazorPay\RazorPayCustomerData.cs" />
+    <Compile Include="Models\RazorPay\RazorPayPaymentDataModal.cs" />
+    <Compile Include="Models\RazorPay\RazorPayPaymentRequestModal.cs" />
+    <Compile Include="Models\RazorPay\RazorPayPaymentResponseModal.cs" />
     <Compile Include="Models\SchoolRegisterModel.cs" />
     <Compile Include="Models\StudentDetailsModel.cs" />
     <Compile Include="HttpRequest\UserLoginRequest.cs" />
@@ -465,6 +482,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ServiceLayer\classroomPaymentRequestDTO.cs" />
     <Compile Include="ServiceLayer\DocumentService.cs" />
     <Compile Include="ServiceLayer\HomeService.cs" />
     <Compile Include="ServiceLayer\InstructorService.cs" />
@@ -473,6 +491,7 @@
     <Compile Include="ServiceLayer\StudentService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ActivityManager.cs" />
+    <Compile Include="Utilities\ImageCompressionUtil.cs" />
     <Compile Include="Utilities\MainLogger.cs" />
     <Compile Include="Utilities\MasterUtilities.cs" />
     <Compile Include="Utilities\RazorPayPaymentIntegration.cs" />
@@ -492,6 +511,7 @@
     <Compile Include="Vendors\AWS\Entity\AWSS3ServiceEntity.cs" />
     <Compile Include="Vendors\AWS\Entity\AWSS3ServiceRequestEntity.cs" />
     <Compile Include="Vendors\AWS\Entity\AWSServiceEntity.cs" />
+    <Compile Include="Vendors\RazorPay\RazorPayHelper.cs" />
     <Compile Include="Zoom\GenrateToke.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -946,6 +966,13 @@
     </Content>
     <Content Include="Views\Student\JoinPrivateClassroom.cshtml" />
     <Content Include="Views\Student\PreviewClassroom.cshtml" />
+    <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.GetInstructorIdByClassroomIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.GetCoursePriceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Views\Assignment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

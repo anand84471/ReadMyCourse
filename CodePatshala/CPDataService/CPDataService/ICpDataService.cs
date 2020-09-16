@@ -81,7 +81,7 @@ namespace CPDataService
         [OperationContract]
         bool UpdateCourseDetails(long CourseId, string CourseDescription);
         [OperationContract]
-        bool ActivateCourse(long CourseId, string ShareUrl, string AccessCode);
+        bool ActivateCourse(long CourseId, string ShareUrl, string AccessCode, int CourseJoiningFeeInPaise);
         [OperationContract]
         bool DeleteCourse(long CourseId);
         [OperationContract]
@@ -189,9 +189,9 @@ namespace CPDataService
         [OperationContract]
         bool UpdateStudentPassword(long StudentId, string OldHashedPassword, string NewHashedPassword);
         [OperationContract]
-        DataSet SearchForTest(string SerachString, int MaxRowToReturn);
+        DataSet SearchForTest(string SerachString, int MaxRowToReturn, long LastFetchedId);
         [OperationContract]
-        DataSet SearchForAssignment(string SerachString, int MaxRowToReturn);
+        DataSet SearchForAssignment(string SerachString, int MaxRowToReturn, long LastFetchedId);
         [OperationContract]
         DataSet SearchForInstructor(string SerachString, int MaxRowToReturn);
         [OperationContract]
@@ -350,7 +350,7 @@ namespace CPDataService
         [OperationContract]
         DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
         [OperationContract]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise);
         [OperationContract]
         DataSet GetClasroomDetails(long ClassRoomId);
         [OperationContract]
@@ -443,11 +443,25 @@ namespace CPDataService
         [OperationContract]
         DataSet GetInstructorAcademicRecords(int InstructorId);
         [OperationContract]
-        DataSet UpdateInstructorAcademicRecord(string Certificates,
-            string Publications, string Conferences, string LinkedInId, string GoogleScholarId,
-            int InstructorId, string LatestQualification, string m_strProjects);
+        bool UpdateInstructorAcademicRecord(
+            string LinkedInId, string GoogleScholarId,
+            int InstructorId, string SchoolDetails);
         [OperationContract]
-        DataSet UpdateInstructorBio(int InstructorId, string InstructoBioData);
+        bool UpdateInstructorBio(int InstructorId, string InstructoBioData);
+        [OperationContract]
+        DataSet GetClassroomPaymentDetails(long ClassroomId, long StudentId);
+        [OperationContract]
+        bool CreatePaymentOrder(string OrederId, string CustomerName, string CustomerEmail, string CustomerPhoneNo,
+            int AmountInPaise, string CustomerAddress);
+        [OperationContract]
+        bool InsertRazorPayTxnDetails(string OrederId, string RazorPayPaymentId, string RazorPayOderId, string RazorPaySignature);
+        [OperationContract]
+        bool GetInstructorIdByClassroomId(long ClassroomId, ref int InstructorId);
+        [OperationContract]
+        bool GetCoursePrice(long CourseId, ref int CoursePrice);
+        [OperationContract]
+
+        DataSet GetCoursePaymentDetails(long CourseId, long StudentId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

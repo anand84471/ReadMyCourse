@@ -233,6 +233,31 @@
                 </div>
     </div>
 </div>
+<div class="modal fade" id="courseActivateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Activate course</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-info">Please enter the course joining fee</h3>
+                  <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-6 col-form-label text-warning">Set course joining fee</label>
+                    <div class="col-sm-4">
+                        <input onchange="validateAmount(this)" min="0" type="number" name="courseName" class="form-control" id="courseFee" placeholder="please set an amount in rupees as the fee of your course" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"  id="activateClassroomButton" onclick="activateCourse()">Activate Now</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="editMcqAssignmentQuestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -792,7 +817,7 @@
         if(currentTopicVideoAwsPath=="")
         {
             currentTopicVideoAwsPath=$("#bc_topicAddUrl").val();
-            
+
         }
         if (currentTopicAttachmentAwsPath=="")
         {
@@ -1434,10 +1459,7 @@
         $("#confirmDeletButtonForCourse").attr("onclick", "deleteCourse()");
     }
     function requestActivateCourse() {
-        $("#confirmDelete").modal('dispose');
-        $("#confirmDeletButtonForCourse").attr("onclick", "activateCourse()");
-        $("#confirmMessage").text("Are you sure to want to activate the course");
-        $("#confirmDelete").modal('show');
+        $("#courseActivateModal").modal('show');
     }
     function deleteCourse() {
         $.ajax({
@@ -1460,16 +1482,22 @@
     }
     function activateCourse() {
         debugger;
+        var _data = {
+            "course_id":@ViewBag.CourseId,
+            "course_fee":$("#courseFee").val()
+        }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/activatecourse?id=@ViewBag.CourseId",
+            data:JSON.stringify(_data),
+            url: "/api/v1/instructor/activatecourse?id",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("course activate successfully");
                     $("#successDelete").modal('show');
+                    location.reload();
                 }
                 else {
                     $("#errorAlertMessageBody").text("course could not be activated");
@@ -1546,6 +1574,9 @@
                             + '<dt class="col-sm-3">Estimeted time for course</dt><dd class="col-sm-9">' + data.test_count + '</dd>'
                             + '<dt class="col-sm-3">Course description</dt><dd class="col-sm-9">' + data.course_description + '</dd>'
                             + '<dt class="col-sm-3">Course Status</dt><dd class="col-sm-9" id="courseStatus">' + data.course_status + '</dd>'
+                            + '<dt class="col-sm-3">Course Fee</dt><dd class="col-sm-9 text-primary">' + data.course_joining_fee + '</dd>'
+                            + '<dt class="col-sm-3">Course description</dt><dd class="col-sm-9">' + data.course_description + '</dd>'
+                            
                             + '</dl>';
                     $("#courseBody").html(aboutCourseDetails);
                     $("#courseName").text(data.course_name);
@@ -1668,6 +1699,14 @@
 
     function requestPreviewUploadedAttachment() {
         $("#previewPdfModal").modal("show");
+    }
+    function validateAmount(id) {
+        if ($(id).val() == "-") {
+            $(id).val("");
+        }
+        if (parseInt($(id).val()) < 0) {
+            $(id).val("");
+        }
     }
     function requestPdfUpload() {
         document.getElementById("fileAttachmentUploadProgressBar").style.width = "0%";

@@ -8,6 +8,7 @@ using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.RazorPay;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using StudentDashboard.Views.Student;
@@ -251,15 +252,21 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public async Task<bool> JoinStudentToCourse(long CourseId, long StudentId)
+        public async Task<bool> JoinStudentToCourse(StudentCourseJoinRequest studentCourseJoinRequest)
         {
             bool result = false;
             try
             {
-                result =await objStudentDTO.JoinStudentToCourse(CourseId, StudentId);
+                studentCourseJoinRequest.razorPayPaymentResponseModal.m_strOrderId = studentCourseJoinRequest.m_strOrderId;
+                if (objInstructorBusinessLayer.ValidateRazorPayPaymentRequest(studentCourseJoinRequest.razorPayPaymentResponseModal))
+                {
+                    result = await objStudentDTO.JoinStudentToCourse(studentCourseJoinRequest.m_llCourseId,
+                   studentCourseJoinRequest.m_llStudentId);
+                }
                 if(result)
                 {
-                    objInstructorAlertManager.AddCourseJoinAlert(StudentId, CourseId);
+                    await objInstructorAlertManager.AddCourseJoinAlert(studentCourseJoinRequest.m_llStudentId,
+                        studentCourseJoinRequest.m_llCourseId);
                 }
             }
             catch (Exception Ex)
@@ -356,12 +363,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsSearchInstructorResponseModal;
         }
-        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn)
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(string SearchString, int MaxRowToReturn,long LastFecthedId)
         {
             List<AssignmentDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                lsAssignmentDetailsModel = await objStudentDTO.SearchForAssignment(SearchString, MaxRowToReturn);
+                lsAssignmentDetailsModel = await objStudentDTO.SearchForAssignment(SearchString, MaxRowToReturn, LastFecthedId);
             }
             catch (Exception Ex)
             {
@@ -372,12 +379,12 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsAssignmentDetailsModel;
         }
-        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn)
+        public async Task<List<TestDetailsModel>> SearchForTest(string SearchString, int MaxRowToReturn,long LastFetchedId)
         {
             List<TestDetailsModel> lsAssignmentDetailsModel = null;
             try
             {
-                lsAssignmentDetailsModel = await objStudentDTO.SearchForTest(SearchString, MaxRowToReturn);
+                lsAssignmentDetailsModel = await objStudentDTO.SearchForTest(SearchString, MaxRowToReturn, LastFetchedId);
             }
             catch (Exception Ex)
             {
@@ -596,9 +603,19 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
         }
-        public async Task<bool> JoinClassroom(long ClassroomId, long StudentId)
+        public async Task<bool> JoinClassroom(StudentClassroomJoinRequest studentClassroomJoinRequest)
         {
-            return await objStudentDTO.JoinClassroom(ClassroomId, StudentId);
+            bool result = false;
+            studentClassroomJoinRequest.razorPayPaymentResponseModal.m_strOrderId = studentClassroomJoinRequest.m_strOrderId;
+            if (objInstructorBusinessLayer.ValidateRazorPayPaymentRequest(studentClassroomJoinRequest.razorPayPaymentResponseModal))
+            {
+                result= await objStudentDTO.JoinClassroom(studentClassroomJoinRequest.m_llClassroomId,
+                    studentClassroomJoinRequest.m_llStudentId);
+                await objStudentDTO.InsertRazorPayPaymentResponse(studentClassroomJoinRequest.razorPayPaymentResponseModal);
+                await objInstructorAlertManager.AddClassroomJoinAlert(studentClassroomJoinRequest.m_llStudentId,
+                    studentClassroomJoinRequest.m_llClassroomId);
+            }
+            return result;
         }
         public async Task<bool> JoinClassroomMeeting(long MeetingId, long StudentId)
         {
@@ -679,6 +696,76 @@ namespace StudentDashboard.ServiceLayer
                 QueryString = "";
             }
             return await objStudentDTO.SearchClassroom(LastClassroomId,10, StudentId, QueryString);
+        }
+        public async Task<RazorPayPaymentRequestModal> GetClassroomPaymentData(long ClassroomId, long StudentId)
+        {
+            RazorPayPaymentRequestModal razorPayPaymentRequestModal = null;
+            PaymentRequestDTO classroomPaymentRequestDTO = await objStudentDTO.GetClassroomPaymentInfo(ClassroomId, StudentId);
+            if (classroomPaymentRequestDTO != null)
+            {
+                razorPayPaymentRequestModal = new RazorPayPaymentRequestModal();
+                if (classroomPaymentRequestDTO.m_iClassroomPayment == 0)
+                {
+                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinClassroom(ClassroomId, StudentId);
+                    razorPayPaymentRequestModal.m_bIsFreeCourse = true;
+                }
+                else
+                {
+                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(classroomPaymentRequestDTO.m_iClassroomPayment);
+                    razorPayPaymentRequestModal.m_strOrderId = razorPayPaymentDataModal.m_strOrderId;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal = new RazorPayPaymentDataModal();
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_strCurrency = razorPayPaymentDataModal.m_strCurrency;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise = classroomPaymentRequestDTO.m_iClassroomPayment;
+                    razorPayPaymentRequestModal.m_strLogoUrl = Constants.WEBSITE_LOGO_URL;
+                    razorPayPaymentRequestModal.m_strRazorPayKey = MvcApplication._strRazorPayKey;
+                    razorPayPaymentRequestModal.m_strSiteName = Constants.WEBSITE_NAME;
+                    razorPayPaymentRequestModal.razorPayCustomerData = new RazorPayCustomerData();
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strContact = classroomPaymentRequestDTO.m_strCustomerPhoneNo;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strEmail = classroomPaymentRequestDTO.m_strCutomerEmail;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strName = classroomPaymentRequestDTO.m_strCustomerName;
+                    if (!await objStudentDTO.InsertPaymentOrderRequest(razorPayPaymentRequestModal))
+                    {
+                        razorPayPaymentRequestModal = null;
+                    }
+                }
+
+            }
+            return razorPayPaymentRequestModal;
+        }
+        public async Task<RazorPayPaymentRequestModal> GetCoursePaymentData(long CourseId,long StudentId)
+        {
+            RazorPayPaymentRequestModal razorPayPaymentRequestModal = null;
+            PaymentRequestDTO paymentRequestDTO = await objStudentDTO.GetCoursePaymentInfo(CourseId, StudentId);
+            if (paymentRequestDTO!=null)
+            {
+                razorPayPaymentRequestModal = new RazorPayPaymentRequestModal();
+                if (paymentRequestDTO.m_iClassroomPayment==0)
+                {
+                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinStudentToCourse(CourseId, StudentId);
+                    razorPayPaymentRequestModal.m_bIsFreeCourse = true;
+                }
+                else
+                {
+                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(paymentRequestDTO.m_iClassroomPayment);
+                    razorPayPaymentRequestModal.m_strOrderId = razorPayPaymentDataModal.m_strOrderId;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal = new RazorPayPaymentDataModal();
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_strCurrency = razorPayPaymentDataModal.m_strCurrency;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise = paymentRequestDTO.m_iClassroomPayment;
+                    razorPayPaymentRequestModal.m_strLogoUrl = Constants.WEBSITE_LOGO_URL;
+                    razorPayPaymentRequestModal.m_strRazorPayKey = MvcApplication._strRazorPayKey;
+                    razorPayPaymentRequestModal.m_strSiteName =Constants.WEBSITE_NAME;
+                    razorPayPaymentRequestModal.razorPayCustomerData = new RazorPayCustomerData();
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strContact = paymentRequestDTO.m_strCustomerPhoneNo;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strEmail = paymentRequestDTO.m_strCutomerEmail;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strName = paymentRequestDTO.m_strCustomerName;
+                    if (!await objStudentDTO.InsertPaymentOrderRequest(razorPayPaymentRequestModal))
+                    {
+                        razorPayPaymentRequestModal = null;
+                    }
+                }
+               
+            }
+            return razorPayPaymentRequestModal;
         }
     }
 }

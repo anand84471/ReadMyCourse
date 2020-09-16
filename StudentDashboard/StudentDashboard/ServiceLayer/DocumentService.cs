@@ -1,5 +1,7 @@
 ﻿using StudentDashboard.DTO;
+using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Utilities;
 using System;
@@ -88,6 +90,14 @@ namespace StudentDashboard.ServiceLayer
         public async Task<List<CourseDetailsModel>> SearchForCourse(string SearchString, int MaxRowToReturn, int NoOfRowsFetched, int SortingTypeId)
         {
             return await objDocumentDTO.SearchForCourse(SearchString,MaxRowToReturn,NoOfRowsFetched,SortingTypeId);
+        }
+        public async Task<List<TestDetailsModel>> SearchForTest(ContentSearchRequest contentSearchRequest)
+        {
+            return await objDocumentDTO.SearchForTest(contentSearchRequest.m_strSearchString, 10, contentSearchRequest.m_llLastFetchedContentId);
+        }
+        public async Task<List<AssignmentDetailsModel>> SearchForAssignment(ContentSearchRequest contentSearchRequest)
+        {
+            return await objDocumentDTO.SearchForAssignment(contentSearchRequest.m_strSearchString, 10, contentSearchRequest.m_llLastFetchedContentId);
         }
     }
 }

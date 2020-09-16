@@ -116,6 +116,42 @@
   <wsdl:message name="ICpDataService_UpdateInstructorBio_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateInstructorBioResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomPaymentDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomPaymentDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomPaymentDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomPaymentDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CreatePaymentOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePaymentOrder" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CreatePaymentOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreatePaymentOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertRazorPayTxnDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertRazorPayTxnDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertRazorPayTxnDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertRazorPayTxnDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorIdByClassroomId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorIdByClassroomId" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorIdByClassroomId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorIdByClassroomIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetCoursePrice_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoursePrice" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetCoursePrice_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoursePriceResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetCoursePaymentDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoursePaymentDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetCoursePaymentDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCoursePaymentDetailsResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -1341,6 +1377,30 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateInstructorBio" message="tns:ICpDataService_UpdateInstructorBio_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateInstructorBioResponse" message="tns:ICpDataService_UpdateInstructorBio_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetClassroomPaymentDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomPaymentDetails" message="tns:ICpDataService_GetClassroomPaymentDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomPaymentDetailsResponse" message="tns:ICpDataService_GetClassroomPaymentDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreatePaymentOrder">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CreatePaymentOrder" message="tns:ICpDataService_CreatePaymentOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CreatePaymentOrderResponse" message="tns:ICpDataService_CreatePaymentOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertRazorPayTxnDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertRazorPayTxnDetails" message="tns:ICpDataService_InsertRazorPayTxnDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertRazorPayTxnDetailsResponse" message="tns:ICpDataService_InsertRazorPayTxnDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorIdByClassroomId">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorIdByClassroomId" message="tns:ICpDataService_GetInstructorIdByClassroomId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorIdByClassroomIdResponse" message="tns:ICpDataService_GetInstructorIdByClassroomId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCoursePrice">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePrice" message="tns:ICpDataService_GetCoursePrice_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePriceResponse" message="tns:ICpDataService_GetCoursePrice_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCoursePaymentDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePaymentDetails" message="tns:ICpDataService_GetCoursePaymentDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePaymentDetailsResponse" message="tns:ICpDataService_GetCoursePaymentDetails_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -2267,6 +2327,60 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateInstructorBio">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateInstructorBio" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomPaymentDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomPaymentDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePaymentOrder">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CreatePaymentOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertRazorPayTxnDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertRazorPayTxnDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorIdByClassroomId">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorIdByClassroomId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCoursePrice">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetCoursePrice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCoursePaymentDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetCoursePaymentDetails" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
