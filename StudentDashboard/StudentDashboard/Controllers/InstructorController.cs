@@ -84,6 +84,17 @@ namespace StudentDashboard.Controllers
         {
             return PartialView();
         }
+        [HttpGet]
+        public async Task<PartialViewResult> MyEarnings()
+        {
+
+            InstrucorEarningDetailsModal instrucorEarningDetailsModal = await objInstructorService.GetInstructorEarningDetails((int)Session["instructor_id"]);
+            if (instrucorEarningDetailsModal == null)
+            {
+                 instrucorEarningDetailsModal = new InstrucorEarningDetailsModal();
+            }
+            return PartialView(instrucorEarningDetailsModal);
+        }
         [AllowAnonymous]
         [HttpGet] 
         public ActionResult Join()
@@ -1162,5 +1173,21 @@ namespace StudentDashboard.Controllers
             }
             return View(ViewName);
         }
+        [HttpGet]
+        public ActionResult CreateTestSeries()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult ViewAllTestSeries()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult ViewTestSeries(long Id)
+        {
+            return View();
+        }
+
     }
 }

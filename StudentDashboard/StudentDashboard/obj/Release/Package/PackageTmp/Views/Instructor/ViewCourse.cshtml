@@ -7,8 +7,22 @@
     {
          background-image: linear-gradient(to right, rgba(51, 91, 255), rgba(51, 80, 210));
     }
+    @@media only screen and (max-width: 600px) {
+        .container-fluid {
+            padding:0.1rem;
+        }
+         #container-course-body {
+            padding:0.1rem;
+        }
+         h1,display-4{
+             font-size:1rem;
+         }
+          .display-4{
+             font-size:2rem;
+         }
+    }
 </style>
-<div class="container-fluid pl-3">
+<div class="container-fluid" id="container-course-body">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">View Course Details</h1>
         <nav aria-label="breadcrumb">
@@ -22,7 +36,7 @@
     <!-- Course section -->
     <div class="card shadow mb-0 ">
             <div class="jumbotron custom-blue">
-                <h1 class="display-4 text-white" id="courseName">Course Name</h1>
+                <h1 class="display-4 text-white" id="courseName"><i class="fa fa-book" aria-hidden="true"></i> Course Name</h1>
                 <h4 class="custom-blue text-gray-200" id="courseDescription">Course description</h4>
                 <hr class="my-4">
                 <div class="row ml-2">
@@ -65,18 +79,7 @@
                            
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Action
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestUpdateCourseDetails()" id="editCourseButton">Edit Cousre Details</a>
-                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestActivateCourse()" id="activateCourseButton">Activate</a>
-                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestDeleteCourse()" id="deleteCourseButton">Delete</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#courseBody"  role="button" onclick="callHome()">Exit</a>
-                        </div>
-                    </li>
+                   
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Add
@@ -85,6 +88,18 @@
                             <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewAssignment()">Assignment</a>
                             <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewTest()">Test</a>
                             <a class="dropdown-item" href="#courseBody"  role="button" onclick="requestAddNewIndex()">Index</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            More
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#courseBody" role="button" onclick="requestUpdateCourseDetails()" id="editCourseButton">Edit Cousre Details</a>
+                            <a class="dropdown-item" href="#courseBody" role="button" onclick="requestActivateCourse()" id="activateCourseButton">Activate</a>
+                            <a class="dropdown-item" href="#courseBody" role="button" onclick="requestDeleteCourse()" id="deleteCourseButton">Delete</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#courseBody" role="button" onclick="callHome()">Exit</a>
                         </div>
                     </li>
                     @*<li class="nav-item">
@@ -190,7 +205,7 @@
                                 <div class="form-group">
                                     <input type="file" id="fileVideoUpload" accept="video/*" />
                                     <input type="text" name="fileVideoUploadPath" readonly hidden />
-                                    <button type="button" class="btn btn-primary" onclick="requestUpload()"><i class="fa fa-download upload-icon" aria-hidden="true"></i>Upload</button>
+                                    <button type="button" class="btn btn-primary" onclick="requestUpload()"><i class="fa fa-upload upload-icon" aria-hidden="true"></i>Upload</button>
                                     <div class="progress progress-sm mr-2">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
                                     </div>
@@ -212,7 +227,7 @@
                                
                                 <div class="form-group">
                                     <input type="file" id="fileAttachmentUpload" accept="application/pdf,application/vnd.ms-excel"/>
-                                    <button type="button" class="btn btn-primary" onclick="requestPdfUpload()"><i class="fa fa-download upload-icon" aria-hidden="true"></i>Upload</button>
+                                    <button type="button" class="btn btn-primary" onclick="requestPdfUpload()"><i class="fa fa-upload upload-icon" aria-hidden="true"></i>Upload</button>
                                     <div class="progress progress-sm mr-2">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileAttachmentUploadProgressBar"></div>
                                     </div>
@@ -502,10 +517,11 @@
                     currentIndexDescription = data.index_description;
                     var topicHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
-                                   + '<h6 class="m-0 font-weight-bold text-primary">Index Details</h6>'
+                                   + '<h6 class="m-0 font-weight-bold text-primary">Index Details <span><button class="btn btn-sm btn-outline-danger" onclick=requestAddTopic(' + id + ')><i class="fa fa-plus"></i> Add topic</button></span></h6>'
+                                  +''
                                     + '<div class="dropdown no-arrow">'
                                         + '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-                                           + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
+                                           + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-primary"></i>'
                                         + '</a>'
                                         + '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">'
                                             + '<a class="dropdown-item" href="#courseBody" onclick=requestEditIndex(' + id + ')>Edit Index Details</a>'
@@ -518,7 +534,8 @@
                     topicHtml += '<dl class="row ml-3">'
                            + '<dt class="col-sm-3">Index name</dt><dd class="col-sm-9">' + data.index_name + '</dd>'
                            + '<dt class="col-sm-3">Index description</dt><dd class="col-sm-9">' + data.index_description + '</dd>'
-                           + '</dl>';
+                           + '</dl>'
+                    +'<span><button class="btn btn-sm btn-outline-danger" onclick="requestEditIndex(' + id + ')"><i class="fa fa-pencil" aria-hidden="true"></i> Edit details</button></span>';
                     if (topicDetails != null) {
                         topicHtml += ' <div class="accordion ml-2 mr-2" id="accordionExample"><h2 class="mb-0 ml-2">Topics</h2>';
                         for (var i = 0; i < topicDetails.length; i++) {
@@ -1062,7 +1079,8 @@
                     currentAssignmentDescription = data.assignment_description;
                     var assignmentHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                 + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
-                                    + '<h6 class="m-0 font-weight-bold text-primary">Assignment Details</h6>'
+                                    + '<h6 class="m-0 font-weight-bold text-primary">Assignment Details <span><button class="btn btn-sm btn-outline-danger" onclick=requestAddMcqQuestion(' + id + ')><i class="fa fa-plus"></i> Add question</button></span></h6>'
+
                                      + '<div class="dropdown no-arrow">'
                                          + '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                                             + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
@@ -1159,7 +1177,7 @@
                     testDescription = data.test_description;
                     var assignmentHtml = '<div class="card shadow mb-4 border-bottom-primary">'
                                 + '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">'
-                                    + '<h6 class="m-0 font-weight-bold text-primary">Test Details</h6>'
+                                    + '<h6 class="m-0 font-weight-bold text-primary">Test Details <span><button class="btn btn-sm btn-outline-danger" onclick=requestAddMcqTestQuestion(' + id + ')><i class="fa fa-plus"></i> Add question</button></span></h6>'
                                      + '<div class="dropdown no-arrow">'
                                          + '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                                             + '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>'
@@ -1606,7 +1624,9 @@
                     }
                     else {
                         $("#navBarAssignmentList").append('<a class="dropdown-item" href="#courseBody" role="button">no assignment found</a>');
+
                     }
+                    
                     //fill tests in nav
                     var test_details = data.test_details;
                     $("#navBarTestList").empty();

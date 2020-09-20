@@ -426,9 +426,12 @@
     <Compile Include="Models\Course\TopicModel.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
+    <Compile Include="Models\Instructor\InstrucorEarningDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorAcadmeicsPublicationModal.cs" />
     <Compile Include="Models\Instructor\InstructorCertificateModal.cs" />
+    <Compile Include="Models\Instructor\InstructorClassroomEarningModal.cs" />
     <Compile Include="Models\Instructor\InstructorConferencesAttendsModal.cs" />
+    <Compile Include="Models\Instructor\InstructorCourseEarningDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorProjectsDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorSchoolDetailsModal.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
@@ -973,6 +976,8 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Views\Assignment\Index.cshtml" />
+    <Content Include="Views\Instructor\MyEarnings.cshtml" />
+    <Content Include="Views\Classroom\JoinNewClassroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

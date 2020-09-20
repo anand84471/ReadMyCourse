@@ -139,26 +139,19 @@
 
                     for (var i = 0; i < tests.length;i++)
                     {
-                        if (tests[i].test_name.length > 15) {
-                            tests[i].test_name = tests[i].test_name.substring(0, 15) + "...";
-                        }
-                        if (tests[i].test_description.length > 28) {
-                            tests[i].test_description = tests[i].test_description.substring(0, 28) + "...";
-                        }
+                        
                         lastTestIdFetched = tests[i].test_id;
                        var rows=('<div class="col-xl-4 col-md-6 mb-4">'
-                    + '<div class="card border-primary  ml-2 mr-2 mb-2">'
-                    + '<div class="card-header custom-green">'
-                    + '<h4 class="font-weight-bold"><a>' + tests[i].test_name + '</a></h4>'
+                    + '<div class="card ml-2 mr-2 mb-2">'
+                    + '<div class="card-header bg-secondary">'
+                    + '<h5 class="font-weight-bold text-white"><i class="fa fa-pencil-square" aria-hidden="true"> </i>  ' + tests[i].test_name + '</h5>'
                     +'</div>'
                     +'<div class="card-body text-center">'
-
-                        + '<h6 class="custom-color-desc font-weight-bold">' + tests[i].test_description + '</h6>'
-                         + '<h6 class="text-mutated font-weight-bold">' + tests[i].creation_date + ' | FREE</h6>'
-                         + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Submissions:</b> ' + tests[i].no_of_submissions + '</p>'
-                          //+ ' <p class="text mr-3"><b>Author:</b> ' + tests[i].instructor_name + '</p>'
+                        + '<h6 class="custom-color-desc font-weight-bold"><i class="fa fa-info-circle" aria-hidden="true"></i> ' + tests[i].test_description + '</h6>'
+                        + '<h6 class="text-info font-weight-bold"><i class="fa fa-calendar" aria-hidden="true"></i> ' + tests[i].creation_date + ' | <span class="h3 text-white badge badge-pill badge-success">Free</span></h6>'
+                        + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Submissions:</b> ' + tests[i].no_of_submissions + '</p>'
                         +'<ul class="list-unstyled list-inline rating mb-0">'
-                            + '<li class="list-inline-item mr-0"><a  class="btn lg btn-primary custom-join-button"  href="Test/Details?id=' + tests[i].test_id + '&access_code=' + tests[i].test_access_code + '">Prcitce Now</a></li>'
+                        + '<li class="list-inline-item mr-0"><a  class="btn lg btn-primary custom-join-button"  href="Test/Details?id=' + tests[i].test_id + '&access_code=' + tests[i].test_access_code + '">Practice Now</a></li>'
                         +'</ul>'
                     +'</div>'
                 +'</div>'

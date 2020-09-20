@@ -462,6 +462,12 @@ namespace CPDataService
         [OperationContract]
 
         DataSet GetCoursePaymentDetails(long CourseId, long StudentId);
+        [OperationContract]
+        DataSet GetInstructorEarnings(int InstructorId);
+        [OperationContract]
+        DataSet GetMonthwiseInstructorClassroomEarning(int InstructorId);
+        [OperationContract]
+        DataSet GetMonthwiseInstructorCourseEarning(int InstructorId);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

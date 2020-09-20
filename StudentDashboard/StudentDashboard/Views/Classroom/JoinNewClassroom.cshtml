@@ -45,8 +45,8 @@
 
 <div class="container-fluid" id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 ml-5">Join new course</h1>
-       
+        <h1 class="h3 mb-0 text-gray-800 ml-5">Join new Classroom</h1>
+
     </div>
     <nav class="container-fluid">
         @*<a href="./Home" class="btn navbar-item text-white">
@@ -62,9 +62,9 @@
                 @*<option value="php">Price high to low</option>
                     <option value="plh">Price low to high</option>*@
             </select>
-            <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for course..." aria-label="Search">
+            <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for classroom..." aria-label="Search">
             <div class="input-group-append">
-                <button class="btn btn-primary" onclick="showCourses()" type="button">
+                <button class="btn btn-primary" onclick="showClassrooms()" type="button">
                     <i class="icon-search"></i>
                 </button>
             </div>
@@ -77,11 +77,11 @@
         </div>
         <div class="col p-1">
             <div class="alert alert-danger p-2 m-3" role="alert" style="display:none" id="noCoursesFound">
-                <h4 class="alert-heading">No Courses found.</h4>
+                <h4 class="alert-heading">No classroom found.</h4>
             </div>
             <div class="row pl-1" id="coursesContainer">
                 <div class="text-center container-fluid">
-                    <h1 class="text-center center">Search for courses</h1>
+                    <h1 class="text-center center">Search for classrooms</h1>
                     <img src="~/Images/content-search.svg" class="img-fluid" style="width:300px;height:300px;" />
                 </div>
             </div>
@@ -179,7 +179,10 @@
 
                     for (var i = 0; i < courses.length;i++)
                     {
-                        
+
+                        if (courses[i].course_description.length > 50) {
+                            courses[i].course_description = courses[i].course_description.substring(0, 50) + "...";
+                        }
                        var rows=('<div class="col-xl-4 col-md-6 mb-4">'
                     + '<div class="card   ml-2 mr-2 mb-2">'
                     + '<div class="card-header custom-green">'
@@ -187,7 +190,7 @@
                     +'</div>'
                     +'<div class="card-body text-center">'
 
-                        + '<h6 class="custom-color-desc font-weight-bold">' + courses[i].course_description + '</h6>'
+                        + '<pre class="custom-color-desc font-weight-bold ">' + courses[i].course_description + '</pe>'
                          + '<h6 class="text-mutated font-weight-bold">' + courses[i].course_activation_date + ' | FREE</h6>'
                          + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Created by:</b> ' + courses[i].instructor_name + '</p>'
@@ -211,7 +214,6 @@
         debugger
         var _data =
             {
-
                 "key": $("#courseSearchBox").val(),
                 "no_of_rows_fetched": noOfCourseFetched,
                 "sorting_id": $("#inlineFormCustomSelect").val()
@@ -237,14 +239,18 @@
 
                     var rows='';
                     for (var i = 0; i < courses.length; i++) {
-                        
+                        if (courses[i].course_name.length > 15) {
+                            courses[i].course_name = courses[i].course_name.substring(0, 15) + "...";
+                        }
+                        if (courses[i].course_description.length > 28) {
+                            courses[i].course_description = courses[i].course_description.substring(0, 28) + "...";
+                        }
                         var rows = ('<div class="col-xl-4 col-md-6 mb-4">'
                      + '<div class="card   ml-2 mr-2 mb-2">'
                      + '<div class="card-header custom-green">'
                      + '<h4 class="font-weight-bold"><a>' + courses[i].course_name + '</a></h4>'
                      + '</div>'
                      + '<div class="card-body text-center">'
-
                          + '<h6 class="custom-color-desc font-weight-bold">' + courses[i].course_description + '</h6>'
                           + '<h6 class="text-mutated font-weight-bold">' + courses[i].course_activation_date + ' | FREE</h6>'
                          + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
@@ -258,9 +264,7 @@
              + '</div>');
                         coursesContainer.append(rows);
                     }
-
                 }
-
             }
         });
     }
@@ -270,14 +274,12 @@
         $(buttonid).disabled = true;
         debugger;
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: "/api/v1/instructor/getcoursedetails?CourseId=".concat(Id),
             success: function (data) {
                 debugger;
-
                 $(buttonid).find(":first-child").remove();
                 if (data != null && data.response_code == 1) {
                     $("#courseDescription").text(data.course_description);
@@ -285,7 +287,6 @@
                     $("#insertDate").text(data.course_creation_date);
                     $("#indexes").text(data.indexes.length);
                     $('#fullHeightModalRight').modal('show');
-
                     var assignments = 0;
                     var tests = 0;
                     $("#indexContainer").empty();
@@ -296,7 +297,6 @@
                                + '<span class="badge badge-primary badge-pill">Topics</span>'
                                + '<span class="badge badge-primary badge-pill">Assignments</span>'
                                + '<span class="badge badge-primary badge-pill">Tests</span>'
-
                            + '</li>'
                            );
                     }

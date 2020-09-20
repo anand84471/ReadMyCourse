@@ -8156,5 +8156,107 @@ namespace CPDataService
             }
             return sDS;
         }
+        public DataSet GetInstructorEarnings(int InstructorId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetInstructorEarnings";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetInstructorTotalEarning", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@iInstructorId", SqlDbType.BigInt).Value = InstructorId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public DataSet GetMonthwiseInstructorClassroomEarning(int InstructorId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetMonthwisInstructorClassroomEarning";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetInstructorClassroomEarningYearWise", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@iInstructorId", SqlDbType.BigInt).Value = InstructorId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public DataSet GetMonthwiseInstructorCourseEarning(int InstructorId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetMonthwiseInstructorCourseEarning";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetInstructorCourseEarningYearWise", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@iInstructorId", SqlDbType.BigInt).Value = InstructorId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
     }
 }

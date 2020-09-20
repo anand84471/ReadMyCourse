@@ -33,5 +33,9 @@ namespace StudentDashboard.Controllers
             }
             return PartialView();
         }
+        public ActionResult JoinNewClassroom()
+        {
+            return View();
+        }
     }
 }

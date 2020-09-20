@@ -240,5 +240,15 @@ namespace StudentDashboard.ServiceLayer
         {
            return await objInstructorDTO.UpdateInstructorBio(InstructorId, IntructorBio);
         }
+        public async Task<InstrucorEarningDetailsModal> GetInstructorEarningDetails(int InstructorId)
+        {
+            InstrucorEarningDetailsModal instrucorEarningDetailsModal = await objInstructorDTO.GetInstructorEarningDetails(InstructorId);
+            if(instrucorEarningDetailsModal!=null)
+            {
+                instrucorEarningDetailsModal.m_lsInstructorClassroomEarningModal = await objInstructorDTO.GetInstructorClassroomEarning(InstructorId);
+                instrucorEarningDetailsModal.m_lsInstructorCourseEarningDetailsModal = await objInstructorDTO.GetInstructorCourseEarning(InstructorId);
+            }
+            return instrucorEarningDetailsModal;
+        }
     }
 }

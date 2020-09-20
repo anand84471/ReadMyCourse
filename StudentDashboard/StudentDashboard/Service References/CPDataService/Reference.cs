@@ -224,6 +224,24 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetCoursePaymentDetails", ReplyAction="http://tempuri.org/ICpDataService/GetCoursePaymentDetailsResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetCoursePaymentDetailsAsync(long CourseId, long StudentId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorEarnings", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorEarningsResponse")]
+        System.Data.DataSet GetInstructorEarnings(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorEarnings", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorEarningsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorEarningsAsync(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarning", ReplyAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarningResponse")]
+        System.Data.DataSet GetMonthwiseInstructorClassroomEarning(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarning", ReplyAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarningResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorClassroomEarningAsync(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning", ReplyAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarningResponse")]
+        System.Data.DataSet GetMonthwiseInstructorCourseEarning(int InstructorId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning", ReplyAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarningResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorCourseEarningAsync(int InstructorId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -2540,6 +2558,30 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetCoursePaymentDetailsAsync(long CourseId, long StudentId) {
             return base.Channel.GetCoursePaymentDetailsAsync(CourseId, StudentId);
+        }
+        
+        public System.Data.DataSet GetInstructorEarnings(int InstructorId) {
+            return base.Channel.GetInstructorEarnings(InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorEarningsAsync(int InstructorId) {
+            return base.Channel.GetInstructorEarningsAsync(InstructorId);
+        }
+        
+        public System.Data.DataSet GetMonthwiseInstructorClassroomEarning(int InstructorId) {
+            return base.Channel.GetMonthwiseInstructorClassroomEarning(InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorClassroomEarningAsync(int InstructorId) {
+            return base.Channel.GetMonthwiseInstructorClassroomEarningAsync(InstructorId);
+        }
+        
+        public System.Data.DataSet GetMonthwiseInstructorCourseEarning(int InstructorId) {
+            return base.Channel.GetMonthwiseInstructorCourseEarning(InstructorId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorCourseEarningAsync(int InstructorId) {
+            return base.Channel.GetMonthwiseInstructorCourseEarningAsync(InstructorId);
         }
         
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {

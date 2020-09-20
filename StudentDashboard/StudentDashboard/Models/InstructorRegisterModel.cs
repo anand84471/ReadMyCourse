@@ -114,7 +114,14 @@ namespace StudentDashboard.Models
             {
                 this.m_dtLastUpdated = DateOfJoining;
             }
-            this.instructorSchoolDetailsModal = JsonConvert.DeserializeObject<InstructorSchoolDetailsModal>(AcademicRecord);
+            if (AcademicRecord != null)
+            {
+                this.instructorSchoolDetailsModal = JsonConvert.DeserializeObject<InstructorSchoolDetailsModal>(AcademicRecord);
+            }
+            else
+            {
+                this.instructorSchoolDetailsModal = new InstructorSchoolDetailsModal();
+            }
             this.m_strLinkedInId = LinkedInId;
             this.m_strGoogleScholarId = GoogleScholarId;
             this.m_strInstructorBio = InsructorShortBio;

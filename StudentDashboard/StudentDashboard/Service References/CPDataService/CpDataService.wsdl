@@ -152,6 +152,24 @@
   <wsdl:message name="ICpDataService_GetCoursePaymentDetails_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCoursePaymentDetailsResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorEarnings_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorEarnings" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorEarnings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorEarningsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetMonthwiseInstructorClassroomEarning_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMonthwiseInstructorClassroomEarning" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetMonthwiseInstructorClassroomEarning_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMonthwiseInstructorClassroomEarningResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetMonthwiseInstructorCourseEarning_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMonthwiseInstructorCourseEarning" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetMonthwiseInstructorCourseEarning_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMonthwiseInstructorCourseEarningResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -1401,6 +1419,18 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePaymentDetails" message="tns:ICpDataService_GetCoursePaymentDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetCoursePaymentDetailsResponse" message="tns:ICpDataService_GetCoursePaymentDetails_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetInstructorEarnings">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorEarnings" message="tns:ICpDataService_GetInstructorEarnings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorEarningsResponse" message="tns:ICpDataService_GetInstructorEarnings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMonthwiseInstructorClassroomEarning">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarning" message="tns:ICpDataService_GetMonthwiseInstructorClassroomEarning_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarningResponse" message="tns:ICpDataService_GetMonthwiseInstructorClassroomEarning_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMonthwiseInstructorCourseEarning">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning" message="tns:ICpDataService_GetMonthwiseInstructorCourseEarning_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarningResponse" message="tns:ICpDataService_GetMonthwiseInstructorCourseEarning_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -2381,6 +2411,33 @@
     </wsdl:operation>
     <wsdl:operation name="GetCoursePaymentDetails">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetCoursePaymentDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorEarnings">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorEarnings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMonthwiseInstructorClassroomEarning">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorClassroomEarning" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMonthwiseInstructorCourseEarning">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

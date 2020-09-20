@@ -14,10 +14,10 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" onclick="callHome()">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Teacher Dashboard</span>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="callMyEarning()">
+                    <i class="fa fa-inr" aria-hidden="true"></i>
+                    <span class="">My Earnings</span>
                 </a>
             </li>
             <!-- Divider -->
@@ -674,6 +674,19 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Home");
+            }
+        });
+    }
+    function callMyEarning() {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("MyEarnings", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "MyEarnings" }, "", "MyEarnings");
             }
         });
     }

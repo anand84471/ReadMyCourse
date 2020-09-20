@@ -490,5 +490,80 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<InstrucorEarningDetailsModal> GetInstructorEarningDetails(int InstructorId)
+        {
+            InstrucorEarningDetailsModal objResponse = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetInstructorEarningsAsync(InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new InstrucorEarningDetailsModal(
+                         dataRow.Field<int>("TOTAL_CLASSROOM_EARNING_IN_PAISE"),
+                         dataRow.Field<int>("TOTAL_COURSE_EARNING_IN_PAISE")
+                         )).ToList()[0];
+                }
+              
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        public async Task<List<InstructorClassroomEarningModal>> GetInstructorClassroomEarning(int InstructorId)
+        {
+            List<InstructorClassroomEarningModal> objResponse = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetMonthwiseInstructorClassroomEarningAsync(InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new InstructorClassroomEarningModal(
+                         dataRow.Field<string>("MONTH_NAME"),
+                         dataRow.Field<int>("EARNING_IN_PAISE")
+                         )).ToList();
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        public async Task<List<InstructorCourseEarningDetailsModal>> GetInstructorCourseEarning(int InstructorId)
+        {
+            List<InstructorCourseEarningDetailsModal> objResponse = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetMonthwiseInstructorCourseEarningAsync(InstructorId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new InstructorCourseEarningDetailsModal(
+                         dataRow.Field<string>("MONTH_NAME"),
+                         dataRow.Field<int>("EARNING_IN_PAISE")
+                         )).ToList();
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }
 }
