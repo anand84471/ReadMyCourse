@@ -44,9 +44,9 @@ namespace StudentDashboard.API
             int InstructorId = -1;
             int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
             InsertNewCourseResponse objInsertNewCourseResponse = new InsertNewCourseResponse();
-            if(objCourseModel==null)
+            if (objCourseModel == null)
             {
-               
+
                 objInsertNewCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                 objInsertNewCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
             }
@@ -93,7 +93,7 @@ namespace StudentDashboard.API
             InsertNewIndexResponse objInsertNewIndexResponse = new InsertNewIndexResponse();
             try
             {
-                if(objIndexModel==null)
+                if (objIndexModel == null)
                 {
                     objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                     objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
@@ -102,7 +102,7 @@ namespace StudentDashboard.API
                 {
                     int InstructorId = -1;
                     int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                    if (InstructorId!=-1&&await objHomeDTO.CheckCourseIdExistsForInstrcutor(InstructorId, objIndexModel.m_llCourseId))
+                    if (InstructorId != -1 && await objHomeDTO.CheckCourseIdExistsForInstrcutor(InstructorId, objIndexModel.m_llCourseId))
                     {
                         if (objHomeDTO.InsertNewIndex(objIndexModel))
                         {
@@ -112,10 +112,10 @@ namespace StudentDashboard.API
                             objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                         }
                     }
-                   
+
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
@@ -124,7 +124,7 @@ namespace StudentDashboard.API
             }
             return objInsertNewIndexResponse;
         }
-        
+
         [Route("addtopic")]
         public async Task<InsertNewIndexResponse> InsertTopics([FromBody] IndexModel objIndexModel)
         {
@@ -144,7 +144,7 @@ namespace StudentDashboard.API
                 {
                     int InstructorId = -1;
                     int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                    if(InstructorId!=-1&&await objHomeDTO.CheckIndexIdExistsForInstrcutor(InstructorId,objIndexModel.m_llIndexId))
+                    if (InstructorId != -1 && await objHomeDTO.CheckIndexIdExistsForInstrcutor(InstructorId, objIndexModel.m_llIndexId))
                     {
                         if (await objHomeService.InsertTopics(objIndexModel))
                         {
@@ -152,7 +152,7 @@ namespace StudentDashboard.API
                             objInsertNewIndexResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                             objInsertNewIndexResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                         }
-                    }   
+                    }
                 }
             }
             catch (Exception Ex)
@@ -170,7 +170,7 @@ namespace StudentDashboard.API
             AddAssgnmentResponse objAddAssgnmentResponse = new AddAssgnmentResponse();
             try
             {
-                if(await objHomeService.InsertAssignment(objAssignmentModel))
+                if (await objHomeService.InsertAssignment(objAssignmentModel))
                 {
                     objAddAssgnmentResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objAddAssgnmentResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -181,7 +181,7 @@ namespace StudentDashboard.API
                     objAddAssgnmentResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertNewAssignment", Ex.ToString());
@@ -247,7 +247,7 @@ namespace StudentDashboard.API
                     objAddTestResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 objAddTestResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                 objAddTestResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
@@ -328,7 +328,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("courses")]
-        public async Task< GetAllCourseDetailsForInstructorResponseModel> GetAllCoursesOfInstructor()
+        public async Task<GetAllCourseDetailsForInstructorResponseModel> GetAllCoursesOfInstructor()
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
@@ -351,7 +351,7 @@ namespace StudentDashboard.API
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllCoursesOfInstructor", Ex.ToString());
@@ -368,7 +368,7 @@ namespace StudentDashboard.API
             try
             {
                 objResponse = await objHomeService.GetCourseDetails(CourseId);
-                if (objResponse!=null)
+                if (objResponse != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -379,7 +379,7 @@ namespace StudentDashboard.API
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
@@ -414,7 +414,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -434,7 +434,7 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(activateCourseHttpRequest!=null&&await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, activateCourseHttpRequest.m_llCourseId))
+                if (activateCourseHttpRequest != null && await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, activateCourseHttpRequest.m_llCourseId))
                 {
                     activateCourseHttpRequest.m_iInstructorId = InstructorId;
                     if (await objHomeService.ActivateCourse(activateCourseHttpRequest))
@@ -509,7 +509,7 @@ namespace StudentDashboard.API
             try
             {
 
-                objResponse.m_lsTestDetailsModel =await objHomeService.GetInstructorTestDetails(InstructorId);
+                objResponse.m_lsTestDetailsModel = await objHomeService.GetInstructorTestDetails(InstructorId);
                 if (objResponse.m_lsTestDetailsModel != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
@@ -532,7 +532,7 @@ namespace StudentDashboard.API
         }
         [Route("AssignmentSubmissionDetails")]
         [HttpPost]
-        public async Task<GetAssignmentSubssionDetials> GetAssignmentSubmissionDetails(long id,long StudentId)
+        public async Task<GetAssignmentSubssionDetials> GetAssignmentSubmissionDetails(long id, long StudentId)
         {
             GetAssignmentSubssionDetials objResponse = null;
             try
@@ -573,7 +573,7 @@ namespace StudentDashboard.API
             try
             {
                 objResponse.m_lsActivityDetails = await objHomeService.GetInstructorActivityDetails(InstructorId);
-                if (objResponse.m_lsActivityDetails!=null)
+                if (objResponse.m_lsActivityDetails != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -584,7 +584,7 @@ namespace StudentDashboard.API
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                 }
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorActivityResponse", Ex.ToString());
@@ -816,13 +816,13 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteMcqQuestion")]
-        public async Task<APIDefaultResponse> DeleteMcqAssignmentQuestion(long id,long AssignmentId)
+        public async Task<APIDefaultResponse> DeleteMcqAssignmentQuestion(long id, long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(InstructorIdInRequest!=-1&&await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest, AssignmentId))
+                if (InstructorIdInRequest != -1 && await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest, AssignmentId))
                 {
                     if (await objHomeService.DeleteMcqAssignmentQuestion(id))
                     {
@@ -903,7 +903,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(InstructorIdInRequest!=-1&&McqQuestion != null&& await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest,McqQuestion.m_llAssignmentId))
+                if (InstructorIdInRequest != -1 && McqQuestion != null && await objHomeService.CheckAssignmentIdExistsForInstrcutor(InstructorIdInRequest, McqQuestion.m_llAssignmentId))
                 {
                     if (await objHomeService.InsertNewMcqAssignmentQuestion(McqQuestion))
                     {
@@ -928,7 +928,7 @@ namespace StudentDashboard.API
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objContactUsApiRequest != null&& await objHomeService.InserContatUsRequest(objContactUsApiRequest))
+                if (objContactUsApiRequest != null && await objHomeService.InserContatUsRequest(objContactUsApiRequest))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -957,7 +957,7 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(objTopicModel!=null&&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objTopicModel.m_llIndexId))
+                if (objTopicModel != null && await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objTopicModel.m_llIndexId))
                 {
                     if (await objHomeService.DeleteIndexTopic(objTopicModel.m_llTopicId))
                     {
@@ -970,7 +970,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-               
+
             }
             catch (Exception Ex)
             {
@@ -1017,7 +1017,7 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(objTopicModel != null&&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objTopicModel.m_llIndexId))
+                if (objTopicModel != null && await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objTopicModel.m_llIndexId))
                 {
                     if (await objHomeService.UpdateIndexTopic(objTopicModel))
                     {
@@ -1030,7 +1030,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -1050,9 +1050,9 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(objIndexModel != null &&await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objIndexModel.m_llIndexId))
+                if (objIndexModel != null && await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objIndexModel.m_llIndexId))
                 {
-                    if ( await objHomeService.UpdateCourseIndex(objIndexModel))
+                    if (await objHomeService.UpdateCourseIndex(objIndexModel))
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1063,7 +1063,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -1083,7 +1083,7 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,id))
+                if (await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, id))
                 {
                     if (await objHomeService.DeleteIndex(id))
                     {
@@ -1096,7 +1096,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -1116,7 +1116,7 @@ namespace StudentDashboard.API
             {
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(objCourse!=null&&await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId,objCourse.m_llCourseid))
+                if (objCourse != null && await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, objCourse.m_llCourseid))
                 {
                     if (await objHomeService.UpdateFullCourseDetails(objCourse))
                     {
@@ -1129,7 +1129,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -1153,7 +1153,7 @@ namespace StudentDashboard.API
                 }
                 int InstructorId = -1;
                 int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-                if(await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId,objTopic.m_llIndexId))
+                if (await objHomeService.CheckIndexIdExistsForInstrcutor(InstructorId, objTopic.m_llIndexId))
                 {
                     if (objTopic != null && await objHomeService.InsertNewTopic(objTopic))
                     {
@@ -1166,7 +1166,7 @@ namespace StudentDashboard.API
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -1185,7 +1185,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(objTestDetails!=null&& InstructorIdInRequest!=-1&&
+                if (objTestDetails != null && InstructorIdInRequest != -1 &&
                     await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest, objTestDetails.m_llTestId))
                 {
                     if (objTestDetails != null && await objHomeService.UpdateTestDetails(objTestDetails))
@@ -1212,7 +1212,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(objTestModel!=null&& InstructorIdInRequest!=-1&&await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest,objTestModel.m_llTestId))
+                if (objTestModel != null && InstructorIdInRequest != -1 && await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest, objTestModel.m_llTestId))
                 {
                     if (await objHomeService.InsertNewMcqQuestion(objTestModel))
                     {
@@ -1238,7 +1238,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(objTestModel!=null&&InstructorIdInRequest!=-1&&await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest,objTestModel.m_llTestId))
+                if (objTestModel != null && InstructorIdInRequest != -1 && await objHomeService.CheckTestIdExistsForInstrcutor(InstructorIdInRequest, objTestModel.m_llTestId))
                 {
                     if (await objHomeService.UpdateMcqTestQuestion(objTestModel))
                     {
@@ -1264,7 +1264,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if (objAssignmentModel != null && InstructorIdInRequest != -1 && 
+                if (objAssignmentModel != null && InstructorIdInRequest != -1 &&
                     await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorIdInRequest, objAssignmentModel.m_llCourseId))
                 {
                     objAssignmentModel.m_iInstructorId = InstructorIdInRequest;
@@ -1333,7 +1333,7 @@ namespace StudentDashboard.API
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
                     }
-                }    
+                }
             }
             catch (Exception Ex)
             {
@@ -1352,7 +1352,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(objAssignmentModel!=null&& InstructorIdInRequest!=-1)
+                if (objAssignmentModel != null && InstructorIdInRequest != -1)
                 {
                     if (await objHomeService.UpdateAssignmentDetails(objAssignmentModel))
                     {
@@ -1486,7 +1486,7 @@ namespace StudentDashboard.API
             try
             {
                 objResponse.m_lsAssignmentSubmissionResponseModal = await objHomeService.GetAllSubmissionsOfAnAssignment(AssignmentId);
-                if (objResponse.m_lsAssignmentSubmissionResponseModal!=null)
+                if (objResponse.m_lsAssignmentSubmissionResponseModal != null)
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1544,7 +1544,7 @@ namespace StudentDashboard.API
             }
             int InstructorId = -1;
             int.TryParse(ControllerContext.RequestContext.Principal.Identity.Name, out InstructorId);
-            
+
             CourseJoinedResponse objResponse = new CourseJoinedResponse();
             try
             {
@@ -1576,7 +1576,7 @@ namespace StudentDashboard.API
             InsertCourseV2Response objResponse = new InsertCourseV2Response();
             try
             {
-                if (objInsertCourseV2Request!=null&&objHomeService.InsertNewCourseV2(objInsertCourseV2Request))
+                if (objInsertCourseV2Request != null && objHomeService.InsertNewCourseV2(objInsertCourseV2Request))
                 {
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                     objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
@@ -1596,7 +1596,7 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
-       
+
         [HttpPost]
         [Route("GetAllAlert")]
         public async Task<GetAllAlertForInstructorResponse> GetAllAlertForInstructor()
@@ -1638,8 +1638,8 @@ namespace StudentDashboard.API
             InstructorSearchResponse objResponse = new InstructorSearchResponse();
             try
             {
-               
-                if (objInstructorSearchRequest != null&& GetInstructorIdInRequest()!=-1)
+
+                if (objInstructorSearchRequest != null && GetInstructorIdInRequest() != -1)
                 {
                     objInstructorSearchRequest.m_iInstructorId = GetInstructorIdInRequest();
                     objResponse = await objHomeService.GetInstructorSearchDetails(objInstructorSearchRequest);
@@ -1666,7 +1666,7 @@ namespace StudentDashboard.API
         }
         [Route("TestSubmissionDetails")]
         [HttpPost]
-        public async Task<GetTestSubmissionDetailsResponse> GetTestSubmissionDetails(long id,long StudentId)
+        public async Task<GetTestSubmissionDetailsResponse> GetTestSubmissionDetails(long id, long StudentId)
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
@@ -1706,11 +1706,11 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
-                if(InstructorIdInRequest!=-1&& objClassRoomModal != null)
+                if (InstructorIdInRequest != -1 && objClassRoomModal != null)
                 {
                     objClassRoomModal.m_iInstrutcorId = InstructorIdInRequest;
                     objClassRoomModal.m_llClassRoomId = await objHomeService.InsertNewClassroom(objClassRoomModal);
-                    if(objClassRoomModal.m_llClassRoomId!=-1)
+                    if (objClassRoomModal.m_llClassRoomId != -1)
                     {
                         objResponse.m_llClassroomId = objClassRoomModal.m_llClassRoomId;
                         objResponse.SetSuccessResponse();
@@ -1735,10 +1735,10 @@ namespace StudentDashboard.API
             {
                 int InstructorIdInRequest = GetInstructorIdInRequest();
                 if (InstructorIdInRequest != -1 && objClassroomPostModal != null)
-                { 
+                {
                     if (await objHomeService.InsertNewPostToClassroom(objClassroomPostModal))
                     {
-                        
+
                         objResponse.SetSuccessResponse();
                     }
                 }
@@ -1764,7 +1764,7 @@ namespace StudentDashboard.API
                 {
 
                     objResponse.m_lsClassRoomModal = await objHomeService.GetAllClassroomForIsntrcutor(InstructorIdInRequest);
-                    if(objResponse.m_lsClassRoomModal != null)
+                    if (objResponse.m_lsClassRoomModal != null)
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -1782,7 +1782,7 @@ namespace StudentDashboard.API
 
         [Route("getzoomtoken")]
         [HttpPost]
-        public async Task<string> GenateToken(string meeting_no,string role)
+        public async Task<string> GenateToken(string meeting_no, string role)
         {
             string secret = "";
             try
@@ -1800,13 +1800,13 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activateclassroom")]
-        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType,int ClassroomJoiningFee)
+        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType, int ClassroomJoiningFee)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId!=-1||await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
+                if (InstructorId != -1 || await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
                 {
                     if (await objHomeService.ActivateClassroom(id, publicType, ClassroomJoiningFee))
                     {
@@ -1860,10 +1860,10 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 )
+                if (InstructorId != -1)
                 {
                     objResponse.m_lsClassroomMeetingModal = await objHomeService.GetAllMeetingForClassroom(ClassroomId);
-                    if(objResponse.m_lsClassroomMeetingModal!=null)
+                    if (objResponse.m_lsClassroomMeetingModal != null)
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -1906,7 +1906,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllStudentsJoinedToMeeting")]
-        public async Task<GetAllStudentJoinedTomMeetingResponse> GetAllStudentJoinedToMeeting(long MeetingId,long ClassroomId)
+        public async Task<GetAllStudentJoinedTomMeetingResponse> GetAllStudentJoinedToMeeting(long MeetingId, long ClassroomId)
         {
             GetAllStudentJoinedTomMeetingResponse objResponse = new GetAllStudentJoinedTomMeetingResponse();
             try
@@ -1914,7 +1914,7 @@ namespace StudentDashboard.API
                 int InstructorId = GetInstructorIdInRequest();
                 if (InstructorId != -1)
                 {
-                    objResponse.m_lsStudnetJoinedToMeeting = await objHomeService.GetAllStudentsJoinedToMeetingResponse(MeetingId,ClassroomId);
+                    objResponse.m_lsStudnetJoinedToMeeting = await objHomeService.GetAllStudentsJoinedToMeetingResponse(MeetingId, ClassroomId);
                     if (objResponse.m_lsStudnetJoinedToMeeting != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -1938,13 +1938,13 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (insertInstructorMessageToClassroom!=null&&InstructorId != -1&&await objInstructorService.CheckClassroomAccess(insertInstructorMessageToClassroom.m_llClassroomId,InstructorId))
+                if (insertInstructorMessageToClassroom != null && InstructorId != -1 && await objInstructorService.CheckClassroomAccess(insertInstructorMessageToClassroom.m_llClassroomId, InstructorId))
                 {
-                    if(await objHomeService.InsertNewMessageToClassroom(insertInstructorMessageToClassroom))
+                    if (await objHomeService.InsertNewMessageToClassroom(insertInstructorMessageToClassroom))
                     {
                         objResponse.SetSuccessResponse();
                     }
-                   
+
                 }
             }
             catch (Exception Ex)
@@ -1964,9 +1964,9 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1&& await objInstructorService.CheckClassroomAccess(ClassroomId,InstructorId))
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
                 {
-                    objResponse.m_lsClassroomInstructorMessageModal = await objHomeService.GetAllClassroomMessageForInstructor( ClassroomId);
+                    objResponse.m_lsClassroomInstructorMessageModal = await objHomeService.GetAllClassroomMessageForInstructor(ClassroomId);
                     if (objResponse.m_lsClassroomInstructorMessageModal != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -1984,7 +1984,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("GetAllClassroomMessageAfterLast")]
-        public async Task<GetClassroomAllMessageResponse> GetAllClassroomMessageAfterLastMessage(long ClassroomId,long LastMessageId)
+        public async Task<GetClassroomAllMessageResponse> GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId)
         {
             GetClassroomAllMessageResponse objResponse = new GetClassroomAllMessageResponse();
             try
@@ -2018,7 +2018,7 @@ namespace StudentDashboard.API
                 int InstructorId = GetInstructorIdInRequest();
                 if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
                 {
-                    if( await objHomeService.DeleteClassroom(ClassroomId))
+                    if (await objHomeService.DeleteClassroom(ClassroomId))
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -2086,7 +2086,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("DeleteClassroomAssignment")]
-        public async Task<APIDefaultResponse> UpdateClassroomDetails(long ClassroomId,long AssignmentId)
+        public async Task<APIDefaultResponse> UpdateClassroomDetails(long ClassroomId, long AssignmentId)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
@@ -2192,7 +2192,7 @@ namespace StudentDashboard.API
                                 try
                                 {
                                     string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
-                                    string newfilename = InstructorId.ToString()+"_"+Guid.NewGuid() + Path.GetExtension(name);
+                                    string newfilename = InstructorId.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
                                     File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
                                     Uri baseuri = new Uri(Request.RequestUri.AbsoluteUri.Replace(Request.RequestUri.PathAndQuery, string.Empty));
                                     string fileRelativePath = "~/Uploads/Instructor/Images/" + newfilename;
@@ -2207,7 +2207,7 @@ namespace StudentDashboard.API
 
                             return Request.CreateResponse(HttpStatusCode.Created);
                         });
-                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.IMAGE);
+                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.IMAGE);
                     if (objResponse.m_strAwsLocation != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -2274,9 +2274,9 @@ namespace StudentDashboard.API
 
                             return Request.CreateResponse(HttpStatusCode.Created);
                         });
-                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.VIDEO);
+                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.VIDEO);
                     objResponse.SetSuccessResponse();
-                    
+
                 }
 
             }
@@ -2339,7 +2339,7 @@ namespace StudentDashboard.API
 
                             return Request.CreateResponse(HttpStatusCode.Created);
                         });
-                    objResponse.m_strAwsLocation=await objHomeService.UploadFiles(lsAwsFileUploadRequest,(int) FileUploadTypeId.PDF);
+                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.PDF);
                     objResponse.SetSuccessResponse();
                 }
 
@@ -2361,7 +2361,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 && await objHomeService.UpdateInstructorProfilePicture(objProfileUploadRequest.m_strUrl,InstructorId))
+                if (InstructorId != -1 && await objHomeService.UpdateInstructorProfilePicture(objProfileUploadRequest.m_strUrl, InstructorId))
                 {
                     objResponse.SetSuccessResponse();
                 }
@@ -2447,13 +2447,13 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 && classroomAttachmentRequest!=null&&await objInstructorService.CheckClassroomAccess(classroomAttachmentRequest.m_llClassroomId,InstructorId))
+                if (InstructorId != -1 && classroomAttachmentRequest != null && await objInstructorService.CheckClassroomAccess(classroomAttachmentRequest.m_llClassroomId, InstructorId))
                 {
-                    if(await objHomeDTO.AddAttachmentToClassroom(classroomAttachmentRequest))
+                    if (await objHomeDTO.AddAttachmentToClassroom(classroomAttachmentRequest))
                     {
                         objResponse.SetSuccessResponse();
                     }
-                   
+
                 }
             }
             catch (Exception Ex)
@@ -2525,7 +2525,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 && classroomScheduleDetails!=null&& await objInstructorService.CheckClassroomAccess(classroomScheduleDetails.m_llClassroomId, InstructorId))
+                if (InstructorId != -1 && classroomScheduleDetails != null && await objInstructorService.CheckClassroomAccess(classroomScheduleDetails.m_llClassroomId, InstructorId))
                 {
                     if (await objHomeService.InsertClassroomSchedule(classroomScheduleDetails))
                     {
@@ -2551,10 +2551,10 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1  && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
                 {
                     objResponse.classroomScheduleDetails = await objHomeService.GetClassroomSchedule(ClassroomId);
-                    if(objResponse.classroomScheduleDetails!=null)
+                    if (objResponse.classroomScheduleDetails != null)
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -2585,7 +2585,7 @@ namespace StudentDashboard.API
                     {
                         objResponse.SetSuccessResponse();
                     }
-                   
+
                 }
             }
             catch (Exception Ex)
@@ -2605,7 +2605,7 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1&& request!=null)
+                if (InstructorId != -1 && request != null)
                 {
                     if (await objInstructorService.UpdateInstructorBio(InstructorId, request.m_strInstructorBio))
                     {
@@ -2622,6 +2622,50 @@ namespace StudentDashboard.API
                 MainLogger.Error(m_strLogMessage);
             }
             return objResponse;
+        }
+        [HttpPost]
+        [Route("AddNewTestSeries")]
+        public AddeNewTestSeriesResponse AddNewtestSeries(InsertTestSeriesRequest request)
+        {
+            AddeNewTestSeriesResponse objResponse = new AddeNewTestSeriesResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1 && request != null)
+                {
+                    objResponse.m_llTestSeriesId = objInstructorService.AddNewTestSeries(request);
+                    if (objResponse.m_llTestSeriesId != -1)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("FetchAboutCourse")]
+        [HttpPost]
+        public async Task<AboutCourseResponse> FetchAboutCourse(long id)
+        {
+            AboutCourseResponse objResonse = new AboutCourseResponse();
+            try
+            {
+                objResonse = await objHomeService.GetAboutCourse(id);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AboutCourseResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
         }
     }
 }

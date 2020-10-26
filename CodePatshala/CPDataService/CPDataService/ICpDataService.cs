@@ -468,6 +468,32 @@ namespace CPDataService
         DataSet GetMonthwiseInstructorClassroomEarning(int InstructorId);
         [OperationContract]
         DataSet GetMonthwiseInstructorCourseEarning(int InstructorId);
+        [OperationContract]
+        bool InsertNewTestSeries(int InstructorId, string TestSeriesName, string TestSeriesDescription, string TestSeriesImage,
+            ref long TestSeriesId);
+        [OperationContract]
+        bool InsertNewTestToTestSeries(long TestSeriesId, long TestId);
+        [OperationContract]
+        bool DeletTestFromTestSeries(long TestSeriesContentId);
+        [OperationContract]
+        DataSet GetTestSearchResultForStudent(long StudentId, string SearchString, int MaxRowToFetch, long LastFetchedId);
+        [OperationContract]
+        bool AddNewTestAnonymousTestSubmission(long TestId, string TestAccessCode);
+        [OperationContract]
+        bool UpdateClassroomSyllabus(long ClassroomId, string ClassroomSyallabus);
+        [OperationContract]
+        DataSet GetClassroomsForHomePage();
+        [OperationContract]
+        DataSet GetClassRoomDetailsForStudent(long ClassRoomId);
+        [OperationContract]
+        bool InsertEmailSubscriber(string EmailId);
+        [OperationContract]
+        bool InsertStudentAlert(int AlertTypeId, long StudentId, string TargetUrl);
+        [OperationContract]
+        DataSet GetStudentRecentCourseJoin(long StudentId);
+        [OperationContract]
+        DataSet GetStudentRecentLiveClassJoin(long StudentId);
+
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

@@ -132,6 +132,12 @@ namespace StudentDashboard
             VIDEO=3,
             CUSTOM=4
         }
-
+        public enum FilterTypeId
+        {
+            DATE_OF_CREATION_ASCENDING=1,
+            DATE_OF_CREATION_DESCENDING=2,
+            POPULARITY=3,
+            RATING=4
+        }
     }
 }

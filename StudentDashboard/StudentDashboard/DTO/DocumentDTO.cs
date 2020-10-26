@@ -1,6 +1,9 @@
 ﻿using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Document;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Models.Utils;
 using StudentDashboard.Utilities;
 using System;
@@ -401,6 +404,81 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsAssignmentDetailsModel;
+        }
+        public async Task<List<ClassroomBasicDetailsModalForHome>> GetClasroomsForHomePage()
+        {
+            List<ClassroomBasicDetailsModalForHome> lsClassroomBasicDetailsModal = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomsForHomePageAsync();
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsClassroomBasicDetailsModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomBasicDetailsModalForHome(
+                         dataRow.Field<long>("CLASSROOM_ID"),
+                         dataRow.Field<string>("CLASSROOM_NAME"),
+                         dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
+                         dataRow.Field<string>("BACK_GROUND_IMAGE_PATH")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsClassroomBasicDetailsModal;
+        }
+        public async Task<ClassroomJoinDetailsModal> GetClassroomDetailsForStudentJoin(long ClassroomId)
+        {
+            ClassroomJoinDetailsModal objClassRoomModal = new ClassroomJoinDetailsModal();
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassRoomDetailsForStudentAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objClassRoomModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomJoinDetailsModal(
+                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS"),
+                         dataRow.Field<int>("NO_OF_MEETINGS"),
+                          dataRow.Field<int>("NO_OF_TESTS"),
+                          dataRow.Field<int>("NO_OF_ATTACHENTS"),
+                          dataRow.Field<string>("CLASSROOM_NAME"),
+                          dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
+                          dataRow.Field<DateTime>("ACTIVATION_DATETIME"),
+                           dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
+                           dataRow.Field<string>("BACK_GROUND_IMAGE_PATH")
+                         )).ToList()[0];
+                }
+                objClassRoomModal.m_llClassroomId = ClassroomId;
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objClassRoomModal;
+        }
+        public async Task<bool> InsertNewSubscribe(string EmailId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertEmailSubscriberAsync(EmailId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateStudentPhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

@@ -45,11 +45,8 @@
 
 <div class="container-fluid" id="addNewCourseContainer">
     
-    <nav class="container-fluid">
-        @*<a href="./Home" class="btn navbar-item text-white">
-                <i class="fa fa-arrow-left"></i>
-            </a>*@
-        <div class="input-group ">
+    <nav class="container-fluid col-sm-5 mt-2">
+        <div class="input-group col-sm-12">
             <select class="input-group-prepend " style="width:70px" id="inlineFormCustomSelect">
                 <option selected value="1">Filter...</option>
                 <option value="1">Date of creation ascending</option>
@@ -123,9 +120,10 @@
                 if (data != null && data.response_code == 1 && data.test_details != null) {
                     var tests= data.test_details;
                     var coursesContainer = $("#testsContainer");
+                    coursesContainer.empty();
                     if (shouldempty)
                     {
-                        coursesContainer.empty();
+                       
                         lastTestIdFetched = 0;
                     }
                     $("#searcBoxImage").remove();
@@ -162,6 +160,7 @@
                 else {
                     $("#noTestsFound").show();
                 }
+                window.scrollTo(0, 0);
             }
         });
     }

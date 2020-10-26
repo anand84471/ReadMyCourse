@@ -30,16 +30,11 @@ namespace StudentDashboard.Utilities
             using (Bitmap bmp1 = new Bitmap(SoucePath))
             {
                 ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-
                 System.Drawing.Imaging.Encoder QualityEncoder = System.Drawing.Imaging.Encoder.Quality;
-
                 EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
                 EncoderParameter myEncoderParameter = new EncoderParameter(QualityEncoder, quality);
-
                 myEncoderParameters.Param[0] = myEncoderParameter;
                 bmp1.Save(DestPath, jpgEncoder, myEncoderParameters);
-
             }
         }
     }

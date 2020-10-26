@@ -242,6 +242,79 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning", ReplyAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarningResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorCourseEarningAsync(int InstructorId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTestSeries", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTestSeriesResponse")]
+        StudentDashboard.CPDataService.InsertNewTestSeriesResponse InsertNewTestSeries(StudentDashboard.CPDataService.InsertNewTestSeriesRequest request);
+        
+        // CODEGEN: Generating message contract since the operation has multiple return values.
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTestSeries", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTestSeriesResponse")]
+        System.Threading.Tasks.Task<StudentDashboard.CPDataService.InsertNewTestSeriesResponse> InsertNewTestSeriesAsync(StudentDashboard.CPDataService.InsertNewTestSeriesRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTestToTestSeries", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTestToTestSeriesResponse")]
+        bool InsertNewTestToTestSeries(long TestSeriesId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewTestToTestSeries", ReplyAction="http://tempuri.org/ICpDataService/InsertNewTestToTestSeriesResponse")]
+        System.Threading.Tasks.Task<bool> InsertNewTestToTestSeriesAsync(long TestSeriesId, long TestId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeletTestFromTestSeries", ReplyAction="http://tempuri.org/ICpDataService/DeletTestFromTestSeriesResponse")]
+        bool DeletTestFromTestSeries(long TestSeriesContentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeletTestFromTestSeries", ReplyAction="http://tempuri.org/ICpDataService/DeletTestFromTestSeriesResponse")]
+        System.Threading.Tasks.Task<bool> DeletTestFromTestSeriesAsync(long TestSeriesContentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestSearchResultForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetTestSearchResultForStudentResponse")]
+        System.Data.DataSet GetTestSearchResultForStudent(long StudentId, string SearchString, int MaxRowToFetch, long LastFetchedId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetTestSearchResultForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetTestSearchResultForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetTestSearchResultForStudentAsync(long StudentId, string SearchString, int MaxRowToFetch, long LastFetchedId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmission", ReplyAction="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmissionResponse")]
+        bool AddNewTestAnonymousTestSubmission(long TestId, string TestAccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmission", ReplyAction="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmissionResponse")]
+        System.Threading.Tasks.Task<bool> AddNewTestAnonymousTestSubmissionAsync(long TestId, string TestAccessCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomSyllabus", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomSyllabusResponse")]
+        bool UpdateClassroomSyllabus(long ClassroomId, string ClassroomSyallabus);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomSyllabus", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomSyllabusResponse")]
+        System.Threading.Tasks.Task<bool> UpdateClassroomSyllabusAsync(long ClassroomId, string ClassroomSyallabus);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomsForHomePage", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomsForHomePageResponse")]
+        System.Data.DataSet GetClassroomsForHomePage();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomsForHomePage", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomsForHomePageResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomsForHomePageAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudentResponse")]
+        System.Data.DataSet GetClassRoomDetailsForStudent(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassRoomDetailsForStudentAsync(long ClassRoomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertEmailSubscriber", ReplyAction="http://tempuri.org/ICpDataService/InsertEmailSubscriberResponse")]
+        bool InsertEmailSubscriber(string EmailId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertEmailSubscriber", ReplyAction="http://tempuri.org/ICpDataService/InsertEmailSubscriberResponse")]
+        System.Threading.Tasks.Task<bool> InsertEmailSubscriberAsync(string EmailId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertStudentAlert", ReplyAction="http://tempuri.org/ICpDataService/InsertStudentAlertResponse")]
+        bool InsertStudentAlert(int AlertTypeId, long StudentId, string TargetUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertStudentAlert", ReplyAction="http://tempuri.org/ICpDataService/InsertStudentAlertResponse")]
+        System.Threading.Tasks.Task<bool> InsertStudentAlertAsync(int AlertTypeId, long StudentId, string TargetUrl);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoin", ReplyAction="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoinResponse")]
+        System.Data.DataSet GetStudentRecentCourseJoin(long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoin", ReplyAction="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoinResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentRecentCourseJoinAsync(long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin", ReplyAction="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoinResponse")]
+        System.Data.DataSet GetStudentRecentLiveClassJoin(long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin", ReplyAction="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoinResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentRecentLiveClassJoinAsync(long StudentId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -1519,6 +1592,58 @@ namespace StudentDashboard.CPDataService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="InsertNewTestSeries", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class InsertNewTestSeriesRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public int InstructorId;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        public string TestSeriesName;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
+        public string TestSeriesDescription;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
+        public string TestSeriesImage;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
+        public long TestSeriesId;
+        
+        public InsertNewTestSeriesRequest() {
+        }
+        
+        public InsertNewTestSeriesRequest(int InstructorId, string TestSeriesName, string TestSeriesDescription, string TestSeriesImage, long TestSeriesId) {
+            this.InstructorId = InstructorId;
+            this.TestSeriesName = TestSeriesName;
+            this.TestSeriesDescription = TestSeriesDescription;
+            this.TestSeriesImage = TestSeriesImage;
+            this.TestSeriesId = TestSeriesId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="InsertNewTestSeriesResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class InsertNewTestSeriesResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public bool InsertNewTestSeriesResult;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        public long TestSeriesId;
+        
+        public InsertNewTestSeriesResponse() {
+        }
+        
+        public InsertNewTestSeriesResponse(bool InsertNewTestSeriesResult, long TestSeriesId) {
+            this.InsertNewTestSeriesResult = InsertNewTestSeriesResult;
+            this.TestSeriesId = TestSeriesId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ValidateStudentLogin", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ValidateStudentLoginRequest {
         
@@ -2582,6 +2707,115 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetMonthwiseInstructorCourseEarningAsync(int InstructorId) {
             return base.Channel.GetMonthwiseInstructorCourseEarningAsync(InstructorId);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        StudentDashboard.CPDataService.InsertNewTestSeriesResponse StudentDashboard.CPDataService.ICpDataService.InsertNewTestSeries(StudentDashboard.CPDataService.InsertNewTestSeriesRequest request) {
+            return base.Channel.InsertNewTestSeries(request);
+        }
+        
+        public bool InsertNewTestSeries(int InstructorId, string TestSeriesName, string TestSeriesDescription, string TestSeriesImage, ref long TestSeriesId) {
+            StudentDashboard.CPDataService.InsertNewTestSeriesRequest inValue = new StudentDashboard.CPDataService.InsertNewTestSeriesRequest();
+            inValue.InstructorId = InstructorId;
+            inValue.TestSeriesName = TestSeriesName;
+            inValue.TestSeriesDescription = TestSeriesDescription;
+            inValue.TestSeriesImage = TestSeriesImage;
+            inValue.TestSeriesId = TestSeriesId;
+            StudentDashboard.CPDataService.InsertNewTestSeriesResponse retVal = ((StudentDashboard.CPDataService.ICpDataService)(this)).InsertNewTestSeries(inValue);
+            TestSeriesId = retVal.TestSeriesId;
+            return retVal.InsertNewTestSeriesResult;
+        }
+        
+        public System.Threading.Tasks.Task<StudentDashboard.CPDataService.InsertNewTestSeriesResponse> InsertNewTestSeriesAsync(StudentDashboard.CPDataService.InsertNewTestSeriesRequest request) {
+            return base.Channel.InsertNewTestSeriesAsync(request);
+        }
+        
+        public bool InsertNewTestToTestSeries(long TestSeriesId, long TestId) {
+            return base.Channel.InsertNewTestToTestSeries(TestSeriesId, TestId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertNewTestToTestSeriesAsync(long TestSeriesId, long TestId) {
+            return base.Channel.InsertNewTestToTestSeriesAsync(TestSeriesId, TestId);
+        }
+        
+        public bool DeletTestFromTestSeries(long TestSeriesContentId) {
+            return base.Channel.DeletTestFromTestSeries(TestSeriesContentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeletTestFromTestSeriesAsync(long TestSeriesContentId) {
+            return base.Channel.DeletTestFromTestSeriesAsync(TestSeriesContentId);
+        }
+        
+        public System.Data.DataSet GetTestSearchResultForStudent(long StudentId, string SearchString, int MaxRowToFetch, long LastFetchedId) {
+            return base.Channel.GetTestSearchResultForStudent(StudentId, SearchString, MaxRowToFetch, LastFetchedId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetTestSearchResultForStudentAsync(long StudentId, string SearchString, int MaxRowToFetch, long LastFetchedId) {
+            return base.Channel.GetTestSearchResultForStudentAsync(StudentId, SearchString, MaxRowToFetch, LastFetchedId);
+        }
+        
+        public bool AddNewTestAnonymousTestSubmission(long TestId, string TestAccessCode) {
+            return base.Channel.AddNewTestAnonymousTestSubmission(TestId, TestAccessCode);
+        }
+        
+        public System.Threading.Tasks.Task<bool> AddNewTestAnonymousTestSubmissionAsync(long TestId, string TestAccessCode) {
+            return base.Channel.AddNewTestAnonymousTestSubmissionAsync(TestId, TestAccessCode);
+        }
+        
+        public bool UpdateClassroomSyllabus(long ClassroomId, string ClassroomSyallabus) {
+            return base.Channel.UpdateClassroomSyllabus(ClassroomId, ClassroomSyallabus);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateClassroomSyllabusAsync(long ClassroomId, string ClassroomSyallabus) {
+            return base.Channel.UpdateClassroomSyllabusAsync(ClassroomId, ClassroomSyallabus);
+        }
+        
+        public System.Data.DataSet GetClassroomsForHomePage() {
+            return base.Channel.GetClassroomsForHomePage();
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomsForHomePageAsync() {
+            return base.Channel.GetClassroomsForHomePageAsync();
+        }
+        
+        public System.Data.DataSet GetClassRoomDetailsForStudent(long ClassRoomId) {
+            return base.Channel.GetClassRoomDetailsForStudent(ClassRoomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassRoomDetailsForStudentAsync(long ClassRoomId) {
+            return base.Channel.GetClassRoomDetailsForStudentAsync(ClassRoomId);
+        }
+        
+        public bool InsertEmailSubscriber(string EmailId) {
+            return base.Channel.InsertEmailSubscriber(EmailId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertEmailSubscriberAsync(string EmailId) {
+            return base.Channel.InsertEmailSubscriberAsync(EmailId);
+        }
+        
+        public bool InsertStudentAlert(int AlertTypeId, long StudentId, string TargetUrl) {
+            return base.Channel.InsertStudentAlert(AlertTypeId, StudentId, TargetUrl);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertStudentAlertAsync(int AlertTypeId, long StudentId, string TargetUrl) {
+            return base.Channel.InsertStudentAlertAsync(AlertTypeId, StudentId, TargetUrl);
+        }
+        
+        public System.Data.DataSet GetStudentRecentCourseJoin(long StudentId) {
+            return base.Channel.GetStudentRecentCourseJoin(StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentRecentCourseJoinAsync(long StudentId) {
+            return base.Channel.GetStudentRecentCourseJoinAsync(StudentId);
+        }
+        
+        public System.Data.DataSet GetStudentRecentLiveClassJoin(long StudentId) {
+            return base.Channel.GetStudentRecentLiveClassJoin(StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentRecentLiveClassJoinAsync(long StudentId) {
+            return base.Channel.GetStudentRecentLiveClassJoinAsync(StudentId);
         }
         
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {

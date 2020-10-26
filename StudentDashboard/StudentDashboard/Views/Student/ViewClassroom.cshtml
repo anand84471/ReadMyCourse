@@ -211,44 +211,44 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto classroom-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#navHome" onclick="showHomeDetails()">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link active" href="#navHome" onclick="showHomeDetails()"><span class="fa fa-home"></span> Home <span class="sr-only">(current)</span></a>
                     </li>
                     @*<li class="nav-item">
                         <a class="nav-link" href="#navPreviousMeetings" onclick="showTeachingSessions()">Teaching Sessions <span class="sr-only">(current)</span></a>
                     </li>*@
                     <li class="nav-item">
-                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()">Messages</a>
+                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Messages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#navClassroomAttachments" onclick="getAllClassroomAttachments()">Study Materials</a>
+                        <a class="nav-link" href="#navClassroomAttachments" onclick="getAllClassroomAttachments()"><span class="fa fa-book"></span> Study Materials</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Assignments
+                            <span class="fa fa-pencil-square "></span> Assignments
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#navPractiveNewAssignment" onclick="viewAllClassroomAssignment()">Practice new assignment</a>
-                            <a class="dropdown-item" href="#navAllAssignmentSubmissions" onclick="viewAllClassroomAssignmentSubmissions()">View all submissions</a>
+                            <a class="dropdown-item" href="#navPractiveNewAssignment" onclick="viewAllClassroomAssignment()"><span class="fa fa-pencil"></span> Practice new assignment</a>
+                            <a class="dropdown-item" href="#navAllAssignmentSubmissions" onclick="viewAllClassroomAssignmentSubmissions()"><span class="fa fa-bars"></span> View all submissions</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Tests
+                            <span class="fa fa-pencil-square "></span> Tests
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#navAllClassroomTests"  onclick="viewAllClassroomTest()">Give new test</a>
-                            <a class="dropdown-item" href="#navAllClassroomTestSubmissions" onclick="viewAllClassroomTestSubmissions()">View all submissions</a>
+                            <a class="dropdown-item" href="#navAllClassroomTests"  onclick="viewAllClassroomTest()"><span class="fa fa-pencil"></span>  Submit new test</a>
+                            <a class="dropdown-item" href="#navAllClassroomTestSubmissions" onclick="viewAllClassroomTestSubmissions()"><span class="fa fa-bars"></span>  View all submissions</a>
                         </div>
                     </li>
                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Actions
+                            <span class="fa fa-cogs"></span> Actions
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" onclick="callHome()">Exit classroom</a>
+                            <a class="dropdown-item" href="#" onclick="callHome()"><span class="fa fa-sign-out"></span>  Exit classroom</a>
                         </div>
                     </li>
                 </ul>
@@ -322,28 +322,27 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                             <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iNoOfTestSubmitted</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-pen fa-2x text-primary"></i>
+                            <i class="fas fa-tasks fa-2x text-primary"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        @*Pending Requests Card Example
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Students joined</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-users fa-2x text-primary"></i>
-                            </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Projects completed</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-line-chart fa-2x text-primary"></i>
                         </div>
                     </div>
                 </div>
-            </div>*@
+            </div>
+        </div>
     </div>
 
     <div class="col-lg-12 mb-2" id="classroomMeetingStartSection">
@@ -377,7 +376,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         <div class="ui-input-container">
 
                             <label class="ui-form-input-container">
-                                <textarea class="ui-form-input" id="classroomMessage" placeholder="Message"></textarea>
+                                <textarea class="ui-form-input" id="classroomMessage" placeholder="Start asking doubts"></textarea>
                             </label>
                             <button type="button" onclick="callSubmitMessage(this)" class="btn btn-primary btn-sm">submit</button>
                         </div>
@@ -552,6 +551,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     function hideSpinner() {
         $("#spinner").fadeOut();
     }
+    
     //----------------Index Section-------------------------------------
 
     var indexDetails = [];
@@ -576,15 +576,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     $("#classroomDescription").text(classroomDetails.classroom_description);
                     if (classroomDetails.is_meeting_active) {
                         $("#isMeetingActive").text("Live class started");
+                        $("#meetingJoinLink").show();
                     }
                     else {
-                        $("#isMeetingActive").text("Live class is currently closed");
+                        $("#isMeetingActive").text("Live class is not started.");
+                        
+                        $("#meetingJoinLink").remove();
                     }
                     if (classroomDetails.background_url != null && classroomDetails.background_url != "")
                     {
                         $('#backgroundUrl').css('background-image', 'url(' + classroomDetails.background_url + ')');
                     }
-                    $("#classroomCreationDate").text("Joining date:" + classroomDetails.creation_date);
+                    $("#classroomCreationDate").text("Joined since:" + classroomDetails.creation_date);
                     classroomMeetingName = classroomDetails.classroom_meeting_name;
                     hideSpinner();
                 }

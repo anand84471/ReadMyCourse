@@ -8,6 +8,7 @@ namespace StudentDashboard.Models.Student
     public class StudentRegisterModal
     {
         public string m_strFirstName { get; set; }
+        public long m_llClassroomId { get; set; }
         public string m_strLastName { get; set; }
         public string m_strAddressLine1 { get; set; }
         public string m_strAddressLine2 { get; set; }

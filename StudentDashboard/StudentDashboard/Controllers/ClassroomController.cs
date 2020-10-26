@@ -1,4 +1,5 @@
-﻿using StudentDashboard.ServiceLayer;
+﻿using StudentDashboard.Models.Student;
+using StudentDashboard.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,21 +18,25 @@ namespace StudentDashboard.Controllers
         {
             return View();
         }
+       
         [HttpGet]
         public async Task<ActionResult> Details(long id, string access_code)
         {
-            if(await objDocumentService.CheckClassroomAccess(id,access_code))
+            ClassroomJoinDetailsModal classroomJoinDetailsModal;
+            if (await objDocumentService.CheckClassroomAccess(id,access_code))
             {
                 if (Session["user_id"] != null)
                 {
-
-                    Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id+"&&access_code="+access_code);
+                    Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + id+"&&access_code="+access_code);
                 }
-                ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/JoinClassroom?id=" + id+ "&&access_code=" + access_code;
+                classroomJoinDetailsModal = await objDocumentService.GetClassroomDetailsForStudentJoin(id);
+                ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + id+ "&&access_code=" + access_code;
                 ViewBag.Id = id;
-                return PartialView();
+                return View(classroomJoinDetailsModal);
             }
-            return PartialView();
+            classroomJoinDetailsModal = await objDocumentService.GetClassroomDetailsForStudentJoin(id);
+            ViewBag.Id = id;
+            return View(classroomJoinDetailsModal);
         }
         public ActionResult JoinNewClassroom()
         {

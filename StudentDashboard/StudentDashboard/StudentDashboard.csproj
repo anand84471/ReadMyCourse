@@ -258,6 +258,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BusinessLayer\InstructorBusinessLayer.cs" />
+    <Compile Include="BusinessLayer\LiveClassBusinessLayer.cs" />
     <Compile Include="BusinessLayer\StudentBusinessLayer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AboutUsController.cs" />
@@ -271,6 +272,8 @@
     <Compile Include="Controllers\CreateMeetingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
+    <Compile Include="Controllers\InstructorDetailsController.cs" />
+    <Compile Include="Controllers\JoinLiveClassController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MobileController.cs" />
@@ -278,6 +281,7 @@
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\StudentApiController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\StudentDetailsController.cs" />
     <Compile Include="Controllers\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DTO\PaymentRequestDTO.cs" />
@@ -297,12 +301,14 @@
     <Compile Include="HttpRequest\ClassroomAttachmentRequest.cs" />
     <Compile Include="HttpRequest\ContactUsApiRequest.cs" />
     <Compile Include="HttpRequest\ContentSearchRequest.cs" />
+    <Compile Include="HttpRequest\Document\AddEmailSubscriberRequest.cs" />
     <Compile Include="HttpRequest\FileUploadTypeRequest.cs" />
     <Compile Include="HttpRequest\GetJoinedCourseRequest.cs" />
     <Compile Include="HttpRequest\GetStudentRequestDetailsModel.cs" />
     <Compile Include="HttpRequest\InsertCourseV2Request.cs" />
     <Compile Include="HttpRequest\InsertInstructorMessageToClassroom.cs" />
     <Compile Include="HttpRequest\InsertStudentMessageToClassroom.cs" />
+    <Compile Include="HttpRequest\InsertTestSeriesRequest.cs" />
     <Compile Include="HttpRequest\InstructorAcademicRecordUpdateRequest.cs" />
     <Compile Include="HttpRequest\InstructorBioUpdateHttpRequest.cs" />
     <Compile Include="HttpRequest\InstructorFileUploadRequest.cs" />
@@ -316,6 +322,7 @@
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
     <Compile Include="HttpResponse\AboutCourseResponse.cs" />
     <Compile Include="HttpResponse\AddAssgnmentResponse.cs" />
+    <Compile Include="HttpResponse\AddeNewTestSeriesResponse.cs" />
     <Compile Include="HttpResponse\AddTestResponse.cs" />
     <Compile Include="HttpResponse\AllInstructorAssignmentsApiResponse.cs" />
     <Compile Include="HttpResponse\AllInstructorTestsApiResponse.cs" />
@@ -359,6 +366,7 @@
     <Compile Include="HttpResponse\CourseIndexDetails.cs" />
     <Compile Include="HttpResponse\CourseJoinedResponse.cs" />
     <Compile Include="HttpResponse\CoursesJoinedResponseModal.cs" />
+    <Compile Include="HttpResponse\Document\GetClassroomsForHomePageResponse.cs" />
     <Compile Include="HttpResponse\FileUploadResponse.cs" />
     <Compile Include="HttpResponse\GetAllAlertForInstructorResponse.cs" />
     <Compile Include="HttpResponse\GetAllCourseDetailsForInstructorResponseModel.cs" />
@@ -371,6 +379,7 @@
     <Compile Include="HttpResponse\GetStateResponse.cs" />
     <Compile Include="HttpResponse\GetStudentResponseModel.cs" />
     <Compile Include="HttpResponse\GetTestDetailsResponseWithAccessCode.cs" />
+    <Compile Include="HttpResponse\GetTestResultsForStudentResponse.cs" />
     <Compile Include="HttpResponse\GetTestSubmissionDetailsResponse.cs" />
     <Compile Include="HttpResponse\GetWebsiteHomeDetailsResponse.cs" />
     <Compile Include="HttpResponse\InsertCourseV2Response.cs" />
@@ -397,6 +406,7 @@
     <Compile Include="Interfaces\IInstructorApiService.cs" />
     <Compile Include="JsonSerializableObject\AssignmentSubmissionResponseJsonSerializable.cs" />
     <Compile Include="JsonSerializableObject\TestSubmissionResponseJsonSerializable.cs" />
+    <Compile Include="Models\Account\SignInWithGoogleProfileDetails.cs" />
     <Compile Include="Models\ActivityModal.cs" />
     <Compile Include="Models\Address\CityModel.cs" />
     <Compile Include="Models\Address\CountryModel.cs" />
@@ -424,6 +434,7 @@
     <Compile Include="Models\Course\TestDetailsModel.cs" />
     <Compile Include="Models\Course\TestModel.cs" />
     <Compile Include="Models\Course\TopicModel.cs" />
+    <Compile Include="Models\Document\ClassroomBasicDetailsModalForHome.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
     <Compile Include="Models\Instructor\InstrucorEarningDetailsModal.cs" />
@@ -434,6 +445,7 @@
     <Compile Include="Models\Instructor\InstructorCourseEarningDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorProjectsDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorSchoolDetailsModal.cs" />
+    <Compile Include="Models\Instructor\InstructorTestSeriesModal.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
     <Compile Include="Models\RazorPay\RazorPayCustomerData.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentDataModal.cs" />
@@ -449,9 +461,12 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\Student\AssignmentAccessModal.cs" />
+    <Compile Include="Models\Student\ClassroomJoinDetailsModal.cs" />
     <Compile Include="Models\Student\CourseAccessModal.cs" />
     <Compile Include="Models\Student\StudentAssignmentProgressModal.cs" />
     <Compile Include="Models\Student\StudentBasicAssignmentDettails.cs" />
+    <Compile Include="Models\Student\StudentBasicClassroomDetails.cs" />
+    <Compile Include="Models\Student\StudentBasicCourseDetails.cs" />
     <Compile Include="Models\Student\StudentBasicIndexDetails.cs" />
     <Compile Include="Models\Student\StudentBasicTestDetails.cs" />
     <Compile Include="Models\Student\StudentClassroomAssignmentModal.cs" />
@@ -463,7 +478,11 @@
     <Compile Include="Models\Student\StudentHomeModal.cs" />
     <Compile Include="Models\Student\StudentIndexModal.cs" />
     <Compile Include="Models\Student\StudentRegisterModal.cs" />
+    <Compile Include="Models\Student\StudentSearchRequestModal.cs" />
+    <Compile Include="Models\Student\StudentSearchResponse.cs" />
     <Compile Include="Models\Student\StudentTestProgressModal.cs" />
+    <Compile Include="Models\Student\StudentTestSearchRequest.cs" />
+    <Compile Include="Models\Student\StudentTestSearchResultModal.cs" />
     <Compile Include="Models\Student\StudentTopicModal.cs" />
     <Compile Include="Models\Student\StudentUpdatePasswordRequestModal.cs" />
     <Compile Include="Models\Student\TestAccessModal.cs" />
@@ -478,6 +497,7 @@
     <Compile Include="Security\Instrcutor\InstructorAuthorizationController.cs" />
     <Compile Include="Security\JwtAuthenticationAttribute.cs" />
     <Compile Include="Security\JwtManager.cs" />
+    <Compile Include="Security\SignInWithGoogleValidator.cs" />
     <Compile Include="Security\Student\StudentAuthenticationFilter.cs" />
     <Compile Include="Security\UserProvider.cs" />
     <Compile Include="Service References\CPDataService\Reference.cs">
@@ -557,6 +577,7 @@
     <Content Include="Images\course-5.jpg" />
     <Content Include="Images\course-6.jpg" />
     <Content Include="Images\dept-5.jpg" />
+    <Content Include="Images\google-play-logo.png" />
     <Content Include="Images\home-bg-login1.png" />
     <Content Include="Images\home-bg-login12.png" />
     <Content Include="Images\home-bg-login13.jpg" />
@@ -570,6 +591,9 @@
     <Content Include="Images\icon\favicon_io\favicon-32x32.png" />
     <Content Include="Images\icon\favicon_io\favicon.ico" />
     <Content Include="Images\icon\favicon_io\site.webmanifest" />
+    <Content Include="Images\icon\web_icons\bulb.png" />
+    <Content Include="Images\iit-indore-logo.png" />
+    <Content Include="Images\iit_mandi_logo.png" />
     <Content Include="Images\image_1.jpg" />
     <Content Include="Images\image_2.jpg" />
     <Content Include="Images\image_3.jpg" />
@@ -580,6 +604,7 @@
     <Content Include="Images\jitsi-meeting.jpg" />
     <Content Include="Images\loader.svg" />
     <Content Include="Images\loc.png" />
+    <Content Include="Images\mnnit-allahabad-logo.png" />
     <Content Include="Images\people-search.svg" />
     <Content Include="Images\register_bg.jpg" />
     <Content Include="Images\search-gen.svg" />
@@ -591,6 +616,12 @@
     <Content Include="Images\site-logo.png" />
     <Content Include="Images\teacher.svg" />
     <Content Include="Images\teaching-logo.svg" />
+    <Content Include="Images\team-anand.jpg" />
+    <Content Include="Images\team-anand.png" />
+    <Content Include="Images\team-farhan-2.jpg" />
+    <Content Include="Images\team-farhan.jpg" />
+    <Content Include="Images\team-farhan.png" />
+    <Content Include="Images\team-simran.jpg" />
     <Content Include="Scripts\AboutScripts\aos.js" />
     <Content Include="Scripts\AboutScripts\bootstrap.min.js" />
     <Content Include="Scripts\AboutScripts\google-map.js" />
@@ -978,6 +1009,20 @@
     <Content Include="Views\Assignment\Index.cshtml" />
     <Content Include="Views\Instructor\MyEarnings.cshtml" />
     <Content Include="Views\Classroom\JoinNewClassroom.cshtml" />
+    <Content Include="Views\Instructor\CreateTestSeries.cshtml" />
+    <Content Include="Views\Instructor\ViewAllTestSeries.cshtml" />
+    <Content Include="Views\Instructor\ViewTestSeries.cshtml" />
+    <Content Include="Service References\CPDataService\StudentDashboard.CPDataService.InsertNewTestSeriesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Views\Student\FetchTests.cshtml" />
+    <Content Include="Views\Instructor\PreviewAssignment.cshtml" />
+    <Content Include="Views\Instructor\PreviewTest.cshtml" />
+    <Content Include="Views\JoinLiveClass\index.cshtml" />
+    <Content Include="Views\InstructorDetails\Index.cshtml" />
+    <Content Include="Views\InstructorDetails\Details.cshtml" />
+    <Content Include="Views\JoinLiveClass\Details.cshtml" />
+    <Content Include="Views\Student\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />
@@ -995,6 +1040,7 @@
     <Folder Include="Uploads\Student\Pdfs\" />
     <Folder Include="Uploads\Student\Videos\" />
     <Folder Include="Vendors\AWS\Abstract\" />
+    <Folder Include="Views\StudentDetails\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

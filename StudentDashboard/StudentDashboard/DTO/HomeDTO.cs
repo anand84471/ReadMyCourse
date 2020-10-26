@@ -2621,6 +2621,31 @@ namespace StudentDashboard.DTO
             }
             return classroomScheduleDTO;
         }
+        //public bool GetClassroomScheduleDetails(string TestSeriesName,string TestSeriesDescription,ref long ClassroomId)
+        //{
+        //    ClassroomScheduleDTO classroomScheduleDTO = null;
+        //    try
+        //    {
+        //        DataSet ds = await objCPDataService.InsertNewTestSeriesAsync(ClassroomId);
+        //        if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            classroomScheduleDTO = ds.Tables[0].AsEnumerable().Select(
+        //             dataRow => new ClassroomScheduleDTO(
+        //                 dataRow.Field<string>("CLASSROOM_SCHEDULE_OBJ"),
+        //                 dataRow.Field<DateTime?>("CLASSROOM_SCHEDULE_LAST_UPDATION_TIME"),
+        //                 dataRow.Field<DateTime?>("CLASSROOM_SCHEDULE_SET_TIME")
+        //                 )).ToList()[0];
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return classroomScheduleDTO;
+        //}
     }
 }
  

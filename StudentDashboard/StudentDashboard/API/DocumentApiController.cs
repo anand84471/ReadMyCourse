@@ -1,5 +1,7 @@
 ﻿using StudentDashboard.HttpRequest;
+using StudentDashboard.HttpRequest.Document;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.HttpResponse.Document;
 using StudentDashboard.Models.Course;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -254,5 +256,49 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("FetchClassroomsForHomePage")]
+        [HttpPost]
+        public async Task<GetClassroomsForHomePageResponse> GetCLassroomsForHomePage()
+        {
+            GetClassroomsForHomePageResponse objResponse = new GetClassroomsForHomePageResponse();
+            try
+            {
+                objResponse.m_lsClassroomBasicDetailsModal = await objDocumentService.GetClasroomsForHomePage();
+                if(objResponse!=null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("Subscribe")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> Subscribe([FromBody]AddEmailSubscriberRequest request)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                if (request != null&& await objDocumentService.InsertNewSubscriber(request))
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+
     }
 }

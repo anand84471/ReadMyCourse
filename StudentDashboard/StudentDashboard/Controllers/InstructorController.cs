@@ -27,7 +27,8 @@ namespace StudentDashboard.Controllers
         StringBuilder m_strLogMessage=new StringBuilder();
         InstructorService objInstructorService = new InstructorService();
         HomeService objHomeService = new HomeService();
-      
+        DocumentService objDocumentService = new DocumentService();
+
         [AllowAnonymous]
         public ActionResult Index(string return_url = null)
         {
@@ -854,6 +855,7 @@ namespace StudentDashboard.Controllers
             string strCurrentMethodName = "PreviewCourse";
             try
             {
+                ViewBag.CourseId = id;
                 return PartialView();
             }
             catch(Exception Ex)
@@ -1172,6 +1174,36 @@ namespace StudentDashboard.Controllers
                 ViewName = "Error";
             }
             return View(ViewName);
+        }
+        [HttpGet]
+        public async Task<ActionResult> PreviewAssignment(long id, string access_code)
+        {
+
+            if (access_code == null || await objDocumentService.CheckAssignmentAccess(id, access_code))
+            {
+                ViewBag.id = id;
+                ViewBag.AccessCode = access_code;
+            }
+            else
+            {
+                return Redirect("Home");
+            }
+            return PartialView();
+        }
+        [HttpGet]
+        public async Task<ActionResult> PreviewTest(long id, string access_code)
+        {
+
+            if (access_code == null || await objDocumentService.CheckTestAccess(id, access_code))
+            {
+                ViewBag.id = id;
+                ViewBag.AccessCode = access_code;
+            }
+            else
+            {
+                return Redirect("Home");
+            }
+            return PartialView();
         }
         [HttpGet]
         public ActionResult CreateTestSeries()

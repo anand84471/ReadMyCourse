@@ -170,6 +170,78 @@
   <wsdl:message name="ICpDataService_GetMonthwiseInstructorCourseEarning_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMonthwiseInstructorCourseEarningResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertNewTestSeries_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertNewTestSeries" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertNewTestSeries_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertNewTestSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertNewTestToTestSeries_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertNewTestToTestSeries" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertNewTestToTestSeries_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertNewTestToTestSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeletTestFromTestSeries_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeletTestFromTestSeries" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_DeletTestFromTestSeries_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeletTestFromTestSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetTestSearchResultForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestSearchResultForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetTestSearchResultForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTestSearchResultForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewTestAnonymousTestSubmission_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewTestAnonymousTestSubmission" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_AddNewTestAnonymousTestSubmission_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewTestAnonymousTestSubmissionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomSyllabus_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomSyllabus" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomSyllabus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomSyllabusResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomsForHomePage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomsForHomePage" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomsForHomePage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomsForHomePageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassRoomDetailsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassRoomDetailsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassRoomDetailsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassRoomDetailsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertEmailSubscriber_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertEmailSubscriber" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertEmailSubscriber_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertEmailSubscriberResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertStudentAlert_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertStudentAlert" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertStudentAlert_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertStudentAlertResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentRecentCourseJoin_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentRecentCourseJoin" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentRecentCourseJoin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentRecentCourseJoinResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentRecentLiveClassJoin_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentRecentLiveClassJoin" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentRecentLiveClassJoin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentRecentLiveClassJoinResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -1431,6 +1503,54 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning" message="tns:ICpDataService_GetMonthwiseInstructorCourseEarning_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarningResponse" message="tns:ICpDataService_GetMonthwiseInstructorCourseEarning_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="InsertNewTestSeries">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertNewTestSeries" message="tns:ICpDataService_InsertNewTestSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertNewTestSeriesResponse" message="tns:ICpDataService_InsertNewTestSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertNewTestToTestSeries">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertNewTestToTestSeries" message="tns:ICpDataService_InsertNewTestToTestSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertNewTestToTestSeriesResponse" message="tns:ICpDataService_InsertNewTestToTestSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeletTestFromTestSeries">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/DeletTestFromTestSeries" message="tns:ICpDataService_DeletTestFromTestSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/DeletTestFromTestSeriesResponse" message="tns:ICpDataService_DeletTestFromTestSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTestSearchResultForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetTestSearchResultForStudent" message="tns:ICpDataService_GetTestSearchResultForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetTestSearchResultForStudentResponse" message="tns:ICpDataService_GetTestSearchResultForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNewTestAnonymousTestSubmission">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmission" message="tns:ICpDataService_AddNewTestAnonymousTestSubmission_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmissionResponse" message="tns:ICpDataService_AddNewTestAnonymousTestSubmission_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomSyllabus">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomSyllabus" message="tns:ICpDataService_UpdateClassroomSyllabus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomSyllabusResponse" message="tns:ICpDataService_UpdateClassroomSyllabus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomsForHomePage">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomsForHomePage" message="tns:ICpDataService_GetClassroomsForHomePage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomsForHomePageResponse" message="tns:ICpDataService_GetClassroomsForHomePage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClassRoomDetailsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudent" message="tns:ICpDataService_GetClassRoomDetailsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudentResponse" message="tns:ICpDataService_GetClassRoomDetailsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertEmailSubscriber">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertEmailSubscriber" message="tns:ICpDataService_InsertEmailSubscriber_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertEmailSubscriberResponse" message="tns:ICpDataService_InsertEmailSubscriber_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertStudentAlert">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertStudentAlert" message="tns:ICpDataService_InsertStudentAlert_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertStudentAlertResponse" message="tns:ICpDataService_InsertStudentAlert_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentRecentCourseJoin">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoin" message="tns:ICpDataService_GetStudentRecentCourseJoin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoinResponse" message="tns:ICpDataService_GetStudentRecentCourseJoin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentRecentLiveClassJoin">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin" message="tns:ICpDataService_GetStudentRecentLiveClassJoin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoinResponse" message="tns:ICpDataService_GetStudentRecentLiveClassJoin_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -2438,6 +2558,114 @@
     </wsdl:operation>
     <wsdl:operation name="GetMonthwiseInstructorCourseEarning">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetMonthwiseInstructorCourseEarning" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertNewTestSeries">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertNewTestSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertNewTestToTestSeries">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertNewTestToTestSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletTestFromTestSeries">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/DeletTestFromTestSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTestSearchResultForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetTestSearchResultForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNewTestAnonymousTestSubmission">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/AddNewTestAnonymousTestSubmission" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomSyllabus">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomSyllabus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomsForHomePage">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomsForHomePage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassRoomDetailsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassRoomDetailsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertEmailSubscriber">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertEmailSubscriber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertStudentAlert">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertStudentAlert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentRecentCourseJoin">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentRecentCourseJoin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentRecentLiveClassJoin">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

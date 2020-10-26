@@ -13,6 +13,37 @@
     </div>
     <!-- Content Row -->
     <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Live classes joined</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iLiveClassesJoined</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-play-circle fa-2x text-gray-300"></i>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Courses Joined</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iCoursesJoined</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2 ">
@@ -44,11 +75,11 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Assignments Done</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iAssignmentsSubmitted</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Instructors joined</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iInstructorsJoined</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-pen fa-2x text-gray-300"></i>
+                            <i class="fas fa-user fa-2x text-gray-300"></i>
                         </div>
 
                     </div>
@@ -56,93 +87,96 @@
             </div>
         </div>
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tests Done</div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Model.m_iTestSubmitted</div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Courses Joined</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iCoursesJoined</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4 text-center border-bottom-success ">
+            <div class="card shadow mb-4 border-bottom-success ">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">About Us</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">My live classes</h6>
                 </div>
                 <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid mt-1 mb-1" style="width: 25rem;" src="~/Images/site-logo-v2-full.png" alt="">
-                    </div>
-                    <p class="card-text font-weight-bold">Our Vision</p>
-                    <p class="mb-0">
-                        Covid-19 pandemic made students restricted  at their homes, We are providing an online classroom for  students and teachers to complete their syllabus, assignments, class test and examinations.
-                        We aim to provide a simple and easy accessibility for students and teachers to interact and complete their lessons timely.
-                    </p>
-                    <p class="card-text font-weight-bold mt-2 mb-0">Founders</p>
-                    <p class="mb-2">Farhan Anjum, Anand Kumar</p>
-                    <a target="_blank" rel="nofollow" href="https://www.readmycourse.com/">Know more about ReadMyCourse &rarr;</a>
+                    @if (Model.m_lsClassrooms != null)
+                    {
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Classroom Name</th>
+                                    <th scope="col">Joining Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var classrooms in Model.m_lsClassrooms)
+                                {
+                                    <tr>
+                                        <td class="font-weight-bolder p-2"><span class="fa fa-2x text-primary fa-play-circle p-2"></span><a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId">@classrooms.m_strClassroomName</a></td>
+                                        <td>@classrooms.m_strClassroomJoiningDate</td>
+                                    </tr>
+                                }
+                                
+                            </tbody>
+                        </table>
+                        <a class="btn  btn-outline-primary font-weight-bolder text-center" href="./MyClassrooms">explore more</a>
+                    }
+                    else
+                    {
+                        <div class="text-center" >
+                            <h4 class="text-gray-500 text-info">You have not joined any live classes.</h4>
+                            <a class="btn btn-outline-primary text-center p-2 m-2" href="./JoinNewClassroom">Join free live class</a>
+                            
+                            <img class="img" src="~/Images/live_class_join.svg" style="max-height:300px" />
+                        </div>
+
+                    }
                 </div>
             </div>
-
-
-        @*</div>
+        </div>
         <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4 text-center border-bottom-success">
+            <div class="card shadow mb-4 border-bottom-success ">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Welcome to Read My Course</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">My courses</h6>
                 </div>
                 <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="~/Images/teaching-logo.svg" alt="">
+                   @if (Model.m_lsCourses != null)
+                   {
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Course Name</th>
+                                <th scope="col">Joining Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var courses in Model.m_lsCourses)
+                            {
+                                <tr>
+                                    <td class="font-weight-bolder p-2"><span class="fa fa-2x fa-book p-2 text-primary"></span><a href="./LearnCourse?id=@courses.m_llCourseId">@courses.m_strCourseName</a></td>
+                                    <td>@courses.m_strJoiningDate</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <a class="btn  btn-outline-primary font-weight-bolder text-center" href="./MyCourses">explore more</a>
+                   }
+                   else
+                   {
+                    <div class="text-center" style="max-height:400px">
+                        <h4 class="text-gray-500 text-info">You have not joined any course.</h4>
+                        <a class="btn btn-outline-primary text-center p-2 m-2" href="./JoinNewCourse">Join free course</a>
+                        <img class="img" src="~/Images/join_course.svg" style="max-height:300px" />
                     </div>
-                    <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
-                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
+
+                   }
                 </div>
             </div>
-
-
-        </div>*@
-        
+        </div>
     </div>
-   
-</div>
 <script type="text/javascript">
-    
     (function () {
         'use strict';
         window.localStorage.setItem('jwttoken', "@ViewBag.Token");
     })();
-    
 </script>
-<!-- /.container-fluid -->

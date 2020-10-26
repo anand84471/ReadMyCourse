@@ -42,7 +42,51 @@
         background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
     }
 </style>
+<section class="ftco-section ftco-no-pt ftc-no-pb site-back-ground-image img" style="background-image: url(../Images/site-background.png);background-repeat:no-repeat;">
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center mb-1 pb-2 pt-sm-2">
+            <div class="col-md-8 text-center heading-section heading-section-black ftco-animate">
+                <h2 class="mb-1 hero-wrap bread">Learn <img class="img-profile" src="~/Images/live.gif" style="height:40px;width:100px;" /><span> from top instructors</span> </h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="o-hidden border-0  my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 mb-2">
+                                @*<div class="embed-responsive embed-responsive-16by9">
+                                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/pOPTEVX9uzk" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture;controls;" allowfullscreen controls></iframe>
+                                    </div>*@
 
+                            </div>
+                            <div class="col-lg-6 mb-2 mt-5" data-stellar-background-ratio="0.5">
+                                <div class="p-5">
+                                    <form method="post" class="needs-validation" action="/Student/ValidateLogin" autocomplete="off" novalidate>
+                                        <a href="./Instructor" class="btn btn-primary btn-user btn-block">
+                                            Continue as Instructor
+                                        </a>
+
+                                        <hr>
+                                        <a href="./Student" class="btn btn-primary btn-user btn-block">
+                                            Continue as Student
+                                        </a>
+                                        <hr>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
 <div class="container-fluid" id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800 ml-5">Join new course</h1>
@@ -189,8 +233,7 @@
                     + '<h4 class="font-weight-bold"><a>' + courses[i].course_name + '</a></h4>'
                     +'</div>'
                     +'<div class="card-body text-center">'
-
-                        + '<pre class="custom-color-desc font-weight-bold ">' + courses[i].course_description + '</pe>'
+                        + '<p class="custom-color-desc font-weight-bold ">' + courses[i].course_description + '</p>'
                          + '<h6 class="text-mutated font-weight-bold">' + courses[i].course_activation_date + ' | FREE</h6>'
                          + ' <p class="text mr-3"><i class="fa fa-users mr-2"></i><b>Students Joined:</b> ' + courses[i].no_of_students_joined + '</p>'
                           + ' <p class="text mr-3"><b>Created by:</b> ' + courses[i].instructor_name + '</p>'

@@ -37,11 +37,11 @@
     <div class="card shadow mb-0 ">
             <div class="jumbotron custom-blue">
                 <h1 class="display-4 text-white" id="courseName"><i class="fa fa-book" aria-hidden="true"></i> Course Name</h1>
-                <h4 class="custom-blue text-gray-200" id="courseDescription">Course description</h4>
                 <hr class="my-4">
                 <div class="row ml-2">
                     <p class="text mr-3 text-gray-100" id="courseCreationDate"><b>Creation date:</b></p>
                     <p class="text text-gray-100" id="courseUpdationDate"><b>Updation date:</b> </p>
+                    <button class="btn btn-sm btn-danger ml-2" onclick="callPreviewCourse(@ViewBag.CourseId)">Preview Course</button>
                 </div>
             </div>
         <!--Course nav bar-->
@@ -1535,10 +1535,10 @@
     }
     var testName;
     var testDescription;
-    function UpdateCourseDetails(CourseId) {
+    function UpdateCourseDetails() {
         debugger
         var _data = {
-            "course_id": CourseId,
+            "course_id": "@ViewBag.CourseId",
             "course_name": $("#ab-topicName").val(),
             "course_description": $("#ab_topicDescription").val(),
         }
@@ -1590,11 +1590,10 @@
                             + '<dt class="col-sm-3">No of Tests</dt><dd class="col-sm-9">' + data.test_count + '</dd>'
                             + '<dt class="col-sm-3">No of Topics</dt><dd class="col-sm-9">' + data.topic_count + '</dd>'
                             + '<dt class="col-sm-3">Estimeted time for course</dt><dd class="col-sm-9">' + data.test_count + '</dd>'
-                            + '<dt class="col-sm-3">Course description</dt><dd class="col-sm-9">' + data.course_description + '</dd>'
                             + '<dt class="col-sm-3">Course Status</dt><dd class="col-sm-9" id="courseStatus">' + data.course_status + '</dd>'
                             + '<dt class="col-sm-3">Course Fee</dt><dd class="col-sm-9 text-primary">' + data.course_joining_fee + '</dd>'
                             + '<dt class="col-sm-3">Course description</dt><dd class="col-sm-9">' + data.course_description + '</dd>'
-                            
+
                             + '</dl>';
                     $("#courseBody").html(aboutCourseDetails);
                     $("#courseName").text(data.course_name);
@@ -1626,7 +1625,7 @@
                         $("#navBarAssignmentList").append('<a class="dropdown-item" href="#courseBody" role="button">no assignment found</a>');
 
                     }
-                    
+
                     //fill tests in nav
                     var test_details = data.test_details;
                     $("#navBarTestList").empty();

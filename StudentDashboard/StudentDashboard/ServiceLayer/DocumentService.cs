@@ -1,8 +1,12 @@
-﻿using StudentDashboard.DTO;
+﻿using StudentDashboard.BusinessLayer;
+using StudentDashboard.DTO;
 using StudentDashboard.HttpRequest;
+using StudentDashboard.HttpRequest.Document;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Document;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
@@ -99,5 +103,23 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentDTO.SearchForAssignment(contentSearchRequest.m_strSearchString, 10, contentSearchRequest.m_llLastFetchedContentId);
         }
+        public async Task<List<ClassroomBasicDetailsModalForHome>> GetClasroomsForHomePage()
+        {
+            return await objDocumentDTO.GetClasroomsForHomePage();
+        }
+        public async Task<ClassroomJoinDetailsModal> GetClassroomDetailsForStudentJoin(long ClassroomId)
+        {
+            return await objDocumentDTO.GetClassroomDetailsForStudentJoin(ClassroomId);
+        }
+        public async Task<ClassroomJoinDetailsModal> GetLiveClassDetailsForStudent(string ClassroomSku)
+        {
+            LiveClassBusinessLayer objLiveClassBusinessLayer = new LiveClassBusinessLayer();
+            return await objDocumentDTO.GetClassroomDetailsForStudentJoin(objLiveClassBusinessLayer.GetClassroomIdFromSku(ClassroomSku));
+        }
+        public async Task<bool> InsertNewSubscriber(AddEmailSubscriberRequest addEmailSubscriberRequest)
+        {
+            return await objDocumentDTO.InsertNewSubscribe(addEmailSubscriberRequest.m_strEmailAddress);
+        }
+
     }
 }

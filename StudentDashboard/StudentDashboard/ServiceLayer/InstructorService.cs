@@ -250,5 +250,9 @@ namespace StudentDashboard.ServiceLayer
             }
             return instrucorEarningDetailsModal;
         }
+        public long AddNewTestSeries(InsertTestSeriesRequest insertTestSeriesRequest)
+        {
+            return  objInstructorDTO.AddNewTestSeries(insertTestSeriesRequest);
+        }
     }
 }

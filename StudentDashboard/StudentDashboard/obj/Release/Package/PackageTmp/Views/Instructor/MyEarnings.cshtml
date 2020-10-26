@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Home";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
 }
@@ -13,10 +12,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#" onclick="callHome()">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">My Earnings</li>
-                @*<li class="breadcrumb-item active" >Data</li>*@
             </ol>
         </nav>
-        @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>*@
     </div>
     <!-- Content Row -->
     <div class="row">
@@ -88,12 +85,13 @@
                 <div class="card-body">
                         <div class="chart-bar">
                             <canvas id="classroomEarningChart"></canvas>
+                            <h1 style="display:none" id="noClassroomEarningMsg">No data</h1>
                         </div>
                         <hr>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-6 mb-4" >
             <div class="card shadow mb-4 text-center border-bottom-success ">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Course Earning Overview</h6>
@@ -101,6 +99,7 @@
                 <div class="card-body">
                     <div class="chart-bar">
                         <canvas id="courseEarningChart"></canvas>
+                        <h1 style="display:none" id="noCourseEarningMsg">No data</h1>
                     </div>
                     <hr>
                 </div>
@@ -109,26 +108,10 @@
     </div>
 </div>
 <script>
-    //activeCourses
-    (function () {
-        debugger
-        'use strict';
-        window.localStorage.setItem('access_token', "@ViewBag.Token");
-        //window.onpageshow=setCourseProgress();
-
-        //activeCoursesProgress
-    })();
-    
-</script>
-
-<script>
     // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
+
 
     function number_format(number, decimals, dec_point, thousands_sep) {
-        // *     example: number_format(1234.56, 2, ',', ' ');
-        // *     return: '1 234,56'
         number = (number + '').replace(',', '').replace(' ', '');
         var n = !isFinite(+number) ? 0 : +number,
           prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
@@ -139,7 +122,6 @@
               var k = Math.pow(10, prec);
               return '' + Math.round(n * k) / k;
           };
-        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
         s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
         if (s[0].length > 3) {
             s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
@@ -150,27 +132,49 @@
         }
         return s.join(dec);
     }
-
-    // Bar Chart Example
-
     var earnings = [];
     var courseEarning = [];
     var months = [];
     var model = '@Html.Raw(Json.Encode(Model))';
     var data = JSON.parse(model);
-    
-    for (var i = 0; i < data.m_lsInstructorClassroomEarningModal.length; i++)
-    {
-        earnings.push(parseInt(data.m_lsInstructorClassroomEarningModal[i].m_iEarning));
-        months.push(data.m_lsInstructorClassroomEarningModal[i].m_strMonthName)
-        courseEarning.push(parseInt(data.m_lsInstructorCourseEarningDetailsModal[i].m_iEarning));
+    if(data.m_lsInstructorClassroomEarningModal!=null){
+        for (var i = 0; i < data.m_lsInstructorClassroomEarningModal.length; i++)
+        {
+            earnings.push(parseInt(data.m_lsInstructorClassroomEarningModal[i].m_iEarning));
+            months.push(data.m_lsInstructorClassroomEarningModal[i].m_strMonthName)
+        }
     }
+    if (data.m_lsInstructorClassroomEarningModal != null) {
+        if (data.m_lsInstructorCourseEarningDetailsModal != null) {
+            for (var i = 0; i < data.m_lsInstructorCourseEarningDetailsModal.length; i++) {
+                courseEarning.push(parseInt(data.m_lsInstructorCourseEarningDetailsModal[i].m_iEarning));
+            }
+        }
+    }
+    else {
+        if (data.m_lsInstructorCourseEarningDetailsModal != null) {
+            for (var i = 0; i < data.m_lsInstructorCourseEarningDetailsModal.length; i++) {
+                courseEarning.push(parseInt(data.m_lsInstructorCourseEarningDetailsModal[i].m_iEarning));
+                months.push(data.m_lsInstructorCourseEarningDetailsModal[i].m_strMonthName);
+            }
+        }
+    }
+    
     var max_of_array = Math.max.apply(Math, earnings);
-    max_of_array = max_of_array * 2 - max_of_array * 2 % 100;
+    max_of_array = max_of_array * 2;
     var max_of_course = Math.max.apply(Math, courseEarning);
-    max_of_course = max_of_course * 2 ;
+    max_of_course = max_of_course * 2;
+    
     var ctx = document.getElementById("classroomEarningChart");
     var ctx2 = document.getElementById("courseEarningChart");
+    if (courseEarning.length == 0) {
+        ctx.style.display = "none";
+        $("#noCourseEarningMsg").show();
+    }
+    if (earnings.length == 0) {
+        ctx2.style.display = "none";
+        $("#noClassroomEarningMsg").show();
+    }
     var courseEarningChart = new Chart(ctx2, {
         type: 'bar',
         data: {

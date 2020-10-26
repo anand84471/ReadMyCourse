@@ -141,14 +141,17 @@
                                             + '</div>'
                                         
                                             + '<div id="testQuestionContainer"></div>'
+                                            + '<h6 class="text-info" id="noOfTestQuestionsAdded">No of questions :0</h6>'
                                             + '<button type="button" class="btn btn-outline-primary  btn-block" onclick="addNewTestQuestion()">Add Question</button>'
                                              + '<button id="submitTestButton" style="display:none" type="button" class="btn btn-primary  btn-block" onclick="submitTest()">Submit</button>'
                                            
                             + '</form>'
+                          
           );
     }
     function addNewMcqTestQuestion() {
         totalNoOfQuestions++;
+        $("#noOfTestQuestionsAdded").text("No of questions :".concat(totalNoOfQuestions));
             document.getElementById("testQuestionContainer").insertAdjacentHTML("beforeend",
                 
                  '<div class="assignment-mcq-section">'
@@ -319,6 +322,7 @@
         function removeDiv(elem) {
             $(elem).parent('div').remove();
             totalNoOfQuestions--;
+            $("#noOfTestQuestionsAdded").text("No of questions :".concat(totalNoOfQuestions));
             if (totalNoOfQuestions == 0) {
                 $("#selectTestTypeId").prop("disabled", false);
             }

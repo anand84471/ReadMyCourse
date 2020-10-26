@@ -101,6 +101,71 @@ namespace StudentDashboard.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
+        public async Task<ActionResult> RegisterLiveClass(FormCollection collection)
+        {
+            try
+            {
+                StudentRegisterModal objRegiserModel = new StudentRegisterModal();
+                objRegiserModel.m_strFirstName = collection["firstName"];
+                objRegiserModel.m_strLastName = collection["lastName"];
+                objRegiserModel.m_strPassword = collection["password"];
+                objRegiserModel.m_strEmail = collection["email"];
+                objRegiserModel.m_strUserId = objRegiserModel.m_strEmail;
+                objRegiserModel.m_strPhoneNo = collection["phoneNo"];
+                objRegiserModel.m_llClassroomId = long.Parse(collection["classroom_id"]);
+                long ClassroomId = objRegiserModel.m_llClassroomId;
+                var objDynamicRoutingAPIRequestValidator = new StudentAccountRegisterValidator();
+                {
+                    var result = await objDynamicRoutingAPIRequestValidator.ValidateAsync(objRegiserModel);
+                    if (result.IsValid)
+                    {
+                        if (await objStudentService.RegisterNewStudent(objRegiserModel))
+                        {
+                            objRegiserModel.m_strUserId = objRegiserModel.m_strEmail;
+                            if (objStudentService.ValidateLogin(objRegiserModel))
+                            {
+                                ViewBag.Token = JwtManager.GenerateToken(objRegiserModel.m_strUserId);
+                                ViewBag.InstructorUserName = objRegiserModel.m_strUserId;
+                                ViewBag.IsLoggedIn = true;
+                                Session["student_email"] = objRegiserModel.m_strUserId;
+                                Session["user_id"] = objRegiserModel.m_llStudentId;
+                                objRegiserModel = await objStudentService.GetStudentBasicDetails(objRegiserModel.m_llStudentId);
+                                Session["student_profile_picture_url"] = objRegiserModel.m_strProfileUrl;
+                                if(await objStudentService.RegisterStudentFreeToClassroom(ClassroomId, (long)Session["user_id"]))
+                                {
+                                    Response.Redirect("~/Student/ViewClassroom?classroom_id=" + ClassroomId);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.IsRegistered = false;
+                        }
+                    }
+                    else
+                    {
+                        StringBuilder m_strStringBuilder = new StringBuilder();
+                        foreach (var failure in result.Errors)
+                        {
+                            m_strStringBuilder.Append("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                        }
+                        ViewBag.ErrorMessage = m_strStringBuilder.ToString();
+                    }
+                }
+                return View("Join");
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "Register", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return View("Error");
+            }
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<ActionResult> ValidateLogin(FormCollection collection,string return_url=null)
         {
             string strCurrentMethodName = "Register";
@@ -865,18 +930,18 @@ namespace StudentDashboard.Controllers
         [HttpGet]
         public async Task<ActionResult> JoinClassroomMeeting(long ClassroomId)
         {
+            JitsiMeetingModal objJitsiMeetingModal=null;
             try
             {
-                JitsiMeetingModal objJitsiMeetingModal = await objStudentService.GetClassroomMeetingDetails(ClassroomId);
-                //if(objJitsiMeetingModal.m_strMeetingName==null||objJitsiMeetingModal.m_strMeetingName==null)
-                //{
-                //    return RedirectToAction("Home");
-                //}
-                //else
-                //{
-                //    Response.Redirect("./JoinClassroomMeetingByMobile?ClassroomName=" + objJitsiMeetingModal.m_strMeetingTopic
-                //   + "&meetingName=" + objJitsiMeetingModal.m_strMeetingName + "&Password=" + objJitsiMeetingModal.m_strMeetingPassword);
-                //}
+                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
+                {
+                    objJitsiMeetingModal = await objStudentService.GetClassroomMeetingDetails(ClassroomId);
+                    return View(objJitsiMeetingModal);
+                }
+                else
+                {
+                    Response.Redirect("Home");
+                }
                 return View(objJitsiMeetingModal);
             }
             catch (Exception Ex)
@@ -914,7 +979,9 @@ namespace StudentDashboard.Controllers
                 {
                     ViewBag.Id = id;
                 }
-                return View();
+                ClassroomJoinDetailsModal classroomJoinDetailsModal = await objStudentService.GetClassroomDetailsForStudentJoin(id);
+                ViewBag.Id = id;
+                return View(classroomJoinDetailsModal);
             }
             catch (Exception Ex)
             {
@@ -961,6 +1028,7 @@ namespace StudentDashboard.Controllers
             }
 
         }
+        
         [HttpGet]
         public ActionResult JoinNewClassroom()
         {
@@ -1004,8 +1072,9 @@ namespace StudentDashboard.Controllers
                 {
                     Response.Redirect("./ViewClassroom?classroom_id=" + ClassroomId);
                 }
+                ClassroomJoinDetailsModal classroomJoinDetailsModal = await objStudentService.GetClassroomDetailsForStudentJoin(ClassroomId);
                 ViewBag.Id = ClassroomId;
-                return View();
+                return View(classroomJoinDetailsModal);
             }
             catch (Exception Ex)
             {
@@ -1060,6 +1129,44 @@ namespace StudentDashboard.Controllers
                 return PartialView("Errors");
             }
 
+        }
+        [HttpGet]
+        public PartialViewResult FetchTests()
+        {
+            string strCurrentMethodName = "FetchTests";
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Errors");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> Search(string q)
+        {
+            try
+            {
+                StudentSearchRequestModal objSearchRequest = new StudentSearchRequestModal();
+                objSearchRequest.m_strQueryString = q;
+                objSearchRequest.m_llStudentId = (long)Session["user_id"];
+                StudentSearchResponse studentSearchResponse = await objStudentService.GetStudentSearchResult(objSearchRequest);
+                return View(studentSearchResponse);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "Register", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return View("Error");
+            }
+            //return View("UnAuthorizedAccess.cshtml");
         }
     }
 }

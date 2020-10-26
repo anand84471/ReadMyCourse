@@ -370,7 +370,7 @@ profile:hover .profile__group{
                         if (Model.m_bIsFollowing)
                         {
                             <footer class="profile__socials">
-                                <button class="btn btn-primary btn-sm btn-block" style="width:50%;" >following since: @Model.m_strDateOfJoining</button>
+                                <button class="btn btn-primary btn-sm btn-block" style="width:80%" >following since: @Model.m_strDateOfFollowing</button>
 
                             </footer>
                         }
@@ -431,7 +431,15 @@ profile:hover .profile__group{
                                         <div class="course">
                                             <div class="course-preview">
                                                 <h6>@course.m_dtCourseCreationDate</h6>
-                                                <h5>@course.m_strCourseName</h5>
+                                                @if (course.m_strCourseName.Length > 20)
+                                                {
+                                                    <h5>@course.m_strCourseName.Substring(0,20) ...</h5>
+                                                }
+                                                else
+                                                {
+                                                    <h5>@course.m_strCourseName</h5>
+                                                }
+
                                                 <div class="form-inline">
                                                     <h5><span><i class="fa fa-users p-2"></i></span>@course.m_iTotalNoOfStudentsJoined</h5>
                                                     <div class="nav-divider"></div>
@@ -493,6 +501,45 @@ profile:hover .profile__group{
         <!--/.Content-->
     </div>
 </div> 
+<!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-success" id="exampleModalLongTitle">Success </h5>
+                <button onclick="location.reload();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Successfully started following to this instructor
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-warning" id="exampleModalLongTitle">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Instructor could not be followed
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     function getCourseDetails(Id) {
         debugger;
@@ -510,7 +557,6 @@ profile:hover .profile__group{
                     $("#insertDate").text(data.course_creation_date);
                     $("#indexes").text(data.indexes.length);
                     $('#fullHeightModalRight').modal('show');
-
                     var assignments = 0;
                     var tests = 0;
                     $("#indexContainer").empty();
@@ -521,11 +567,9 @@ profile:hover .profile__group{
                                + '<span class="badge badge-primary badge-pill">Topics</span>'
                                + '<span class="badge badge-primary badge-pill">Assignments</span>'
                                + '<span class="badge badge-primary badge-pill">Tests</span>'
-
                            + '</li>'
                            );
                     }
-
                     for (var i = 0; i < data.indexes.length; i++) {
                         var x = 0; y = 0;
                         if (data.indexes[i].assignment_name != null && data.indexes[i].assignment_name != "") {
@@ -536,7 +580,6 @@ profile:hover .profile__group{
                             y++;
                             tests++;
                         }
-
                         $("#indexContainer").append(
                             '<li class="list-group-item justify-content-between">'
                                 + data.indexes[i].index_name
@@ -568,6 +611,7 @@ profile:hover .profile__group{
             if (data != null && data.response_code == 1) {
                 $("#successModal").modal('show');
                 $("#infoMessageSuccess").text('joined to instructor successfully');
+                
             }
             else {
                 $("#failModal").modal('show');

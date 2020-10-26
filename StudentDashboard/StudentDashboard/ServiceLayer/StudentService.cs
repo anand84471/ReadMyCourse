@@ -48,7 +48,7 @@ namespace StudentDashboard.ServiceLayer
             {
                 string EncryptedPassword = SHA256Encryption.ComputeSha256Hash(objStudentRegisterModal.m_strPassword);
                 objStudentRegisterModal.m_strHashedPassword = EncryptedPassword;
-                result = await objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
+                //result = await objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
                 objStudentRegisterModal.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
                 objStudentRegisterModal.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
                 if (await objStudentDTO.RegisterNewStudent(objStudentRegisterModal))
@@ -561,6 +561,11 @@ namespace StudentDashboard.ServiceLayer
             try
             {
                 objStudentHomeModal = await objStudentDTO.GetStudentHomeDetails(StudentId);
+                if(objStudentHomeModal!=null)
+                {
+                    objStudentHomeModal.m_lsClassrooms = await objStudentDTO.GetStudentHomeClassroomDetails(StudentId);
+                    objStudentHomeModal.m_lsCourses = await objStudentDTO.GetStudentHomeCoursesDetails(StudentId);
+                }
             }
             catch (Exception Ex)
             {
@@ -767,5 +772,39 @@ namespace StudentDashboard.ServiceLayer
             }
             return razorPayPaymentRequestModal;
         }
+        public async Task<List<StudentTestSearchResultModal>> GetFreeTestsForStudent(StudentTestSearchRequest studentTestSearchRequest)
+        {
+           studentTestSearchRequest.m_iNoOfRowsToBeFetched = 10;
+           return await objStudentDTO.GetFreeTestsForStudent(studentTestSearchRequest);
+        }
+        public async Task<ClassroomJoinDetailsModal> GetClassroomDetailsForStudentJoin(long ClassroomId)
+        {
+            return await objStudentDTO.GetClassroomDetailsForStudentJoin(ClassroomId);
+        }
+        public async Task<bool> RegisterStudentFreeToClassroom(long ClassroomId,long StudentId)
+        {
+            return await objStudentDTO.JoinClassroom(ClassroomId, StudentId);
+        }
+        public async Task<StudentSearchResponse> GetStudentSearchResult(StudentSearchRequestModal studentSearchRequestModal)
+        {
+            StudentSearchResponse studentSearchResponse = new StudentSearchResponse();
+            try
+            {
+                
+                studentSearchResponse.m_lsCourses = await objStudentDTO.SearchForCourse(studentSearchRequestModal.m_strQueryString, 10,0, (int)Constants.FilterTypeId.DATE_OF_CREATION_DESCENDING);
+                studentSearchResponse.m_lsLiveClasses = await objStudentDTO.SearchClassroom(0,10, studentSearchRequestModal.m_llStudentId, studentSearchRequestModal.m_strQueryString);
+                studentSearchResponse.m_lsTest = await objStudentDTO.SearchForTest(studentSearchRequestModal.m_strQueryString, 10, 0);
+                studentSearchResponse.m_lsInstructors= await objStudentDTO.SearchForInstructor(studentSearchRequestModal.m_strQueryString, 10);
+
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentSearchResult", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return studentSearchResponse;
+        } 
     }
 }

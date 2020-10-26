@@ -85,7 +85,7 @@ namespace StudentDashboard.Models.Instructor
             this.m_strClassroomMeetingName = MeetingName;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
-             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise)
+             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise )
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;

@@ -30,6 +30,8 @@ namespace StudentDashboard.HttpResponse
         public int m_iNoOfFollowers { get; set; }
         [JsonProperty("courses")]
         public List<CourseDetailsModel> m_lsCourses { get; set; }
+        [JsonProperty("date_of_following")]
+        public string m_strDateOfFollowing;
         public InstructorProfileDetailsModal(string InstructorName,string InstructorJoinDate,int NoOfCoursesCreated,int NoOfAssignmentsCreted,
             int NoOfTestsCreated,int StudentsJoined,int StudnetsJoinedToCourse,string FollowingDate,string ProfileUrl)
         {
@@ -40,7 +42,8 @@ namespace StudentDashboard.HttpResponse
             this.m_iNoOfTestsCreated = NoOfTestsCreated;
             this.m_iNoOfFollowers = StudentsJoined;
             this.m_iNoOfCourseJoin = StudnetsJoinedToCourse;
-            if(FollowingDate!=null)
+            this.m_strDateOfFollowing = FollowingDate;
+            if (FollowingDate!=null)
             {
                 this.m_bIsFollowing = true;
             }

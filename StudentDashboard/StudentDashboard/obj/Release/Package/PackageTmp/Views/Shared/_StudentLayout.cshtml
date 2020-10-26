@@ -8,14 +8,14 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#" onclick="callHome()">
-                <img width="60" height="60" src="../Images/site-logo-v2.png"  />
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"  href="./Home">
+                <img width="60" height="60" src="~/Images/site-logo-v2.png"  />
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="#" onclick="callHome()">
+                <a class="nav-link" href="./Home">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Student Dashboard</span>
                 </a>
@@ -29,16 +29,18 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                    <i class="fas fa-fw fa-university"></i>
-                    <span>Classroom</span>
+                    <i class="fas fa-fw fa-play-circle"></i>
+                    <span>Live classes</span>
                 </a>
                 <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">ReadMyCourse Classroom</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callMyClassrooms()">My classrooms</a>
-                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewClassroom()">Join new classroom</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewPrivateClassroom()">Join private classroom</a>
+                        <h6 class="collapse-header">Live classes</h6>
+                        @*<a class="collapse-item font-weight-bold" href="/MyClassrooms" onclick="callMyClassrooms()">My Live Classrooms</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewClassroom()">Join new Live Classroom</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewPrivateClassroom()">Join private classroom</a>*@
+                        <a class="collapse-item font-weight-bold" href="./MyClassrooms">My Live Classrooms</a>
+                        <a class="collapse-item font-weight-bold" href="./JoinNewClassroom">Join new Live Classroom</a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewPrivateClassroom()">Join private classroom</a>*@
                     </div>
                 </div>
             </li>
@@ -50,8 +52,10 @@
                 <div id="collapseTwo" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Courses for you</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callMyCourses()">My Courses</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewCourse()" >Join New Course</a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callMyCourses()">My Courses</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewCourse()" >Join New Course</a>*@
+                        <a class="collapse-item font-weight-bold" href="./MyCourses">My Courses</a>
+                        <a class="collapse-item font-weight-bold" href="./JoinNewCourse" onclick="callJoinNewCourse()">Join New Course</a>
                     </div>
                 </div>
             </li>
@@ -65,9 +69,10 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Assignments:</h6>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callMyAssignments()">My Assignments</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callAssignmentSubmissions()">View Submissions</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callNewAssignment()">Give new assignment</a>
-                        
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callAssignmentSubmissions()">View Submissions</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callNewAssignment()">Give new assignment</a>*@
+                        <a class="collapse-item font-weight-bold" href="./AssignmentSubmissions">View Submissions</a>
+                        <a class="collapse-item font-weight-bold" href="./NewAssignment">Give new assignment</a>
                     </div>
                 </div>
             </li>
@@ -80,8 +85,11 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tests:</h6>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callMyTests()">My Tests</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callTestSubmissions()">View Submissions</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callNewTest()">Give new Test</a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callTestSubmissions()">View Submissions</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callFetchNewTest()">Give new Test</a>*@
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callNewTest()">Search test by Id</a>*@
+                        <a class="collapse-item font-weight-bold" href="./TestSubmissions">View Submissions</a>
+                        <a class="collapse-item font-weight-bold" href="./FetchTests">Give new Test</a>
                     </div>
                 </div>
             </li>
@@ -93,8 +101,10 @@
                 <div id="testUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Instructors:</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllInstructors()">Joined Instructors</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewInstructor()">Join New Instructor</a>
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callViewAllInstructors()">Joined Instructors</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="callJoinNewInstructor()">Join New Instructor</a>*@
+                        <a class="collapse-item font-weight-bold" href="./Instructors">Joined Instructors</a>
+                        <a class="collapse-item font-weight-bold" href="./JoinInstructor">Join New Instructor</a>
                     </div>
                 </div>
             </li>
@@ -118,11 +128,11 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form  class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="Search">
                         <div class="input-group" id="sera">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" name="q" class="form-control bg-light border-0 small" placeholder="Search for live classes, courses, and instructors..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" data-toggle="#myInput">
+                                <button class="btn btn-primary" type="submit" data-toggle="#myInput">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -139,16 +149,18 @@
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group" id="sera">
+                                        <input type="text" name="q" class="form-control bg-light border-0 small" placeholder="Search for live classes, courses, and instructors..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
+                                            <button class="btn btn-primary" type="submit" data-toggle="#myInput">
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
+
                                     </div>
 
                                 </form>
+                               
                             </div>
                         </li>
                         <li class="nav-item dropdown no-arrow mx-1">
@@ -189,7 +201,7 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <button class="dropdown-item" id="profilePage">
+                                @*<button class="dropdown-item" id="profilePage">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </button>
@@ -208,7 +220,28 @@
                                 <button id="contactPage" class="dropdown-item">
                                     <i class="fas fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Contact
+                                </button>*@
+                                <a class="dropdown-item btn" href="./Account">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item btn" href="./EditAccount">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Edit Account
+                                </a>
+                                <button class="dropdown-item" id="editProfilePicture" onclick="requestNewProfilePicture()">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Profile Picture
                                 </button>
+                                <a class="dropdown-item" href="./Activity">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <a  class="dropdown-item" href="./Contact">
+                                    <i class="fas fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Contact
+                                </a>
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="./Logout" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -262,7 +295,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Select "Logout" to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="./Logout">Logout</a>
@@ -330,7 +363,115 @@
         'use strict';
 
     })();
-    
+    var lastMethodStack = [];
+    function callLastMethod(currentMethod)
+    {
+        debugger
+        if (lastMethodStack != null && lastMethodStack.length > 0) {
+            var lastMethod = lastMethodStack.pop();
+            lastMethodStack.push(currentMethod);
+            callMethodByName(lastMethod);
+        }
+        else {
+            lastMethodStack.push(currentMethod);
+            callHome();
+        }
+        
+    }
+    function callMethodByName(strMethodName)
+    {
+        debugger
+        switch (strMethodName) {
+            case "callContact":
+                {
+                    callContact(); break;
+                }
+            case "callActivity":
+                {
+                    callActivity(); break;
+                }
+            case "callEditAccount":
+                {
+                    callEditAccount(); break;
+                }
+            case "callAccount":
+                {
+                    callAccount(); break;
+                }
+            case "callMyAssignments":
+                {
+                    callMyAssignments(); break;
+                }
+            case "callAssignmentSubmissions":
+                {
+                    callAssignmentSubmissions(); break;
+                }
+            case "callTestSubmissions":
+                {
+                    callTestSubmissions(); break;
+                }
+            case "callNewAssignment":
+                {
+                    callNewAssignment(); break;
+                }
+            case "callFetchNewTest":
+                {
+                    callFetchNewTest(); break;
+                }
+            case "callNewTest":
+                {
+                    callNewTest(); break;
+                }
+            case "callJoinNewCourse":
+                {
+                    callJoinNewCourse(); break;
+                }
+            case "callMyCourses":
+                {
+                    callMyCourses(); break;
+                }
+            case "callJoinNewInstructor":
+                {
+                    callJoinNewInstructor(); break;
+                }
+            case "callViewAllInstructors":
+                {
+                    callViewAllInstructors(); break;
+                }
+            case "callCreateNewTest":
+                {
+                    callCreateNewTest(); break;
+                }
+            case "callCreateNewAssignment":
+                {
+                    callCreateNewAssignment(); break;
+                }
+            case "callJoinNewClassroom":
+                {
+                    callJoinNewClassroom(); break;
+                }
+            case "callMyClassrooms":
+                {
+                    callMyClassrooms(); break;
+                }
+            case "callViewAllCourse":
+                {
+                    callViewAllCourse(); break;
+                }
+            case "callViewAllTest":
+                {
+                    callViewAllTest(); break;
+                }
+            case "callViewAllAssignment":
+                {
+                    callViewAllAssignment(); break;
+                }
+            case "callHome":
+                {
+                    callHome(); break;
+                }
+        }
+    }
     function callContact() {
         //accordionSidebar
         $('#accordionSidebar').addClass("toggled");
@@ -342,6 +483,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Contact Us" }, "", "Contact");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callContact");
+                //};
             }
         });
     }
@@ -356,6 +500,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Activity" }, "", "Activity");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callActivity");
+                //};
             }
         });
     }
@@ -370,6 +517,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Account" }, "", "EditAccount");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callEditAccount");
+                //};
             }
         });
     }
@@ -383,6 +533,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Account" }, "", "Account");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callAccount");
+                //};
             }
         });
     }
@@ -396,6 +549,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "MyAssignments" }, "", "MyAssignments");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callMyAssignments");
+                //};
             }
         });
     }
@@ -409,6 +565,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Account" }, "", "AssignmentSubmissions");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callAssignmentSubmissions");
+                //};
             }
         });
     }
@@ -422,6 +581,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Account" }, "", "TestSubmissions");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callTestSubmissions");
+                //};
             }
         });
     }
@@ -435,6 +597,26 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "NewAssignment");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callNewAssignment");
+                //};
+            }
+        });
+    }
+    function callFetchNewTest()
+    {
+        $('#accordionSidebar').addClass("toggled");
+        startSpinner();
+        $.ajax({
+            url: '@Url.Action("FetchTests", "Student")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "Home" }, "", "FetchTests");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callFetchNewTest");
+                //};
             }
         });
     }
@@ -448,6 +630,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "NewTest");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callNewTest");
+                //};
             }
         });
     }
@@ -461,6 +646,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "JoinNewCourse");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callJoinNewCourse");
+                //};
             }
         });
     }
@@ -475,6 +663,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "MyCourses");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callMyCourses");
+                //};
             }
         });
     }
@@ -488,6 +679,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Home" }, "", "JoinInstructor");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callJoinNewInstructor");
+                //};
             }
         });
     }
@@ -501,6 +695,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "Home" }, "", "Instructors");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callViewAllInstructors");
+                //};
             }
         });
     }
@@ -514,6 +711,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateTest");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callCreateNewTest");
+                //};
             }
         });
     }
@@ -527,6 +727,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateAssignment");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callCreateNewAssignment");
+                //};
             }
         });
     }
@@ -540,6 +743,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "JoinNewClassroom");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callJoinNewClassroom");
+                //};
             }
         });
     }
@@ -553,6 +759,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "JoinPrivateClassroom");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callJoinNewPrivateClassroom");
+                //};
             }
         });
     }
@@ -566,6 +775,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "MyClassrooms" }, "", "MyClassrooms");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callMyClassrooms");
+                //};
             }
         });
     }
@@ -579,6 +791,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Courses");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callViewAllCourse");
+                //};
             }
         });
     }
@@ -592,6 +807,10 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Tests");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callViewAllTest");
+                //};
+
             }
         });
     }
@@ -605,6 +824,9 @@
                 $("#body").html(data);
                 stopSpinner();
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Assignments");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callViewAllAssignment");
+                //};
             }
         });
     }
@@ -619,6 +841,9 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "Home");
+                //window.onpopstate = function (event) {
+                //    callLastMethod("callHome");
+                //};
             }
         });
     }

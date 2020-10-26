@@ -278,7 +278,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public async Task<AboutCourseResponse> GetAboutCourse(int CourseId)
+        public async Task<AboutCourseResponse> GetAboutCourse(long CourseId)
         {
             AboutCourseResponse objAboutCourseResponse = new AboutCourseResponse();
             try
@@ -318,46 +318,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return objAboutCourseResponse;
         }
-        //public async Task<StudentCourseModal> GetStudentCourseProgress(long CourseId,long StudentId)
-        //{
-        //    StudentCourseModal objAboutCourseResponse = new StudentCourseModal();
-        //    try
-        //    {
-        //        GetCourseDetailsApiResponse objGetCourseDetailsApiResponse = await objHomeDTO.GetCourseDetails(CourseId);
-        //        List<CourseIndexDetails> lsCourseIndexDetails = await objHomeDTO.GetCourseIndexDetails(CourseId);
-        //        if (lsCourseIndexDetails != null && objGetCourseDetailsApiResponse != null)
-        //        {
-        //            objAboutCourseResponse = new StudentCourseModal(objGetCourseDetailsApiResponse.m_strCourseName, objGetCourseDetailsApiResponse.m_strCourseDescription,
-                                        
-        //                                objGetCourseDetailsApiResponse.m_strCourseStatus, objGetCourseDetailsApiResponse.m_strShareUrl,
-        //                                objGetCourseDetailsApiResponse.m_strCourseAccessCode);
-        //            foreach (var indexes in lsCourseIndexDetails)
-        //            {
-        //                objAboutCourseResponse.AddIndex(indexes.m_strIndexName, indexes.m_llIndexId);
-        //                if (indexes.m_llAssignmentId != null) { objAboutCourseResponse.AddAssignment(indexes.m_strAssignmentName, indexes.m_llAssignmentId); }
-        //                if (indexes.m_llTestId != null) { objAboutCourseResponse.AddTest(indexes.m_strTestName, indexes.m_llTestId); }
-        //                objAboutCourseResponse.IncremetTopicCount(indexes.m_iTotalNoOfTopic);
-        //            }
-        //            List<BasicAssignmentDetails> lsAssignmentDetails = await GetAssignmentForCourse(CourseId);
-        //            if (lsAssignmentDetails != null && lsAssignmentDetails.Count > 0) { objAboutCourseResponse.m_lsAssignmentDetails.AddRange(lsAssignmentDetails); }
-        //            List<BasicTestDetails> lsBasicTestDetails = await GetTestOfCourse(CourseId);
-        //            if (lsBasicTestDetails != null && lsBasicTestDetails.Count > 0) { objAboutCourseResponse.m_lsTestDetails.AddRange(lsBasicTestDetails); }
-        //            objAboutCourseResponse.SetCounts();
-        //            objAboutCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-        //            objAboutCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
-        //        }
-
-
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertTopics", Ex.ToString());
-        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-        //        MainLogger.Error(m_strLogMessage);
-        //    }
-        //    return objAboutCourseResponse;
-        //}
+       
         public async Task<IndexModel> GetIndexDetails(int id)
         {
             IndexModel objIndexModel = null;
@@ -1360,6 +1321,10 @@ namespace StudentDashboard.ServiceLayer
                         break;
                     }
             }
+            foreach (var files in lsAwsFileUploadRequest)
+            {
+                DeleteFileFromServer(files.m_strFilePath);
+            }
             return awsFilePath;
         }
         public async Task<List<ClassroomBasicDetailsModal>> GetInstructorSearchResultForClassrom(int InstructorId, string SearchString)
@@ -1403,6 +1368,21 @@ namespace StudentDashboard.ServiceLayer
                 classroomScheduleDetails.m_strClassroomScheduleUpdationTime = classroomScheduleDTO.m_dtClassroomScheduleUpdationTime.ToString();
             }
             return classroomScheduleDetails;
+        }
+        private void DeleteFileFromServer(string FilePath)
+        {
+            if (System.IO.File.Exists(FilePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(FilePath);
+                }
+                catch (System.IO.IOException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return;
+                }
+            }
         }
     }
 

@@ -80,7 +80,8 @@
                         <h6 class="collapse-header">Tests:</h6>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewTest()">Create new Test</a>
                         <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllTest()">View all tests</a>
-                       
+                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCeateNewTestSeries()">Create new test series</a>
+                        <a class="collapse-item font-weight-bold" href="#" onclick="CallViewAllTestSeries()">View all test series</a>*@
                     </div>
                 </div>
             </li>
@@ -591,6 +592,21 @@
             }
         });
     }
+    function callPreviewTest(id) {
+        startSpinner();
+        $.ajax({
+            data: {
+                id: id
+            },
+            url: '@Url.Action("PreviewTest", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "PreviewTest?id=".concat(id));
+            }
+        });
+    }
     function callViewAssignment(id) {
         startSpinner();
         $.ajax({
@@ -677,6 +693,32 @@
             }
         });
     }
+    function callCeateNewTestSeries() {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("CreateTestSeries", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "CreateNewTestSeries" }, "", "CreateTestSeries");
+            }
+        });
+    }
+    function callViewAllTestSeries() {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("ViewAllTestSeries", "Instructor")',
+            type: 'GET',
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "ViewAllTestSeries" }, "", "ViewAllTestSeries");
+            }
+        });
+    }
     function callMyEarning() {
         startSpinner();
         $('#accordionSidebar').addClass("toggled");
@@ -686,7 +728,7 @@
             success: function (data) {
                 stopSpinner();
                 $("#body").html(data);
-                window.history.pushState({ "html": data, "pageTitle": "MyEarnings" }, "", "MyEarnings");
+                window.history.pushState({ "html": data, "pageTitle": "Home" }, "", "MyEarnings");
             }
         });
     }
@@ -701,6 +743,22 @@
                 stopSpinner();
                 $("#body").html(data);
                 window.history.pushState({ "html": data, "pageTitle": "EditAccount" }, "", "CreateInterativeCourse");
+            }
+        });
+    }
+    function callPreviewCourse(id) {
+        startSpinner();
+        $('#accordionSidebar').addClass("toggled");
+        $.ajax({
+            url: '@Url.Action("PreviewCourse", "Instructor")',
+            type: 'GET',
+            data:{
+                id:id
+            },
+            success: function (data) {
+                stopSpinner();
+                $("#body").html(data);
+                window.history.pushState({ "html": data, "pageTitle": "PreviewCourse" }, "", "PreviewCourse?id=".concat(id));
             }
         });
     }

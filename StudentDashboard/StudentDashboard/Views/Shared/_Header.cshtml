@@ -3,10 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @if (ViewBag.Title != null)
+    {
+        <title>@ViewBag.Title</title>
+    }
+    else
+    {
+        <title>ReadMyCourse : Where knowledge has no boundaries.</title>
+    }
+    @if (ViewBag.Description != null)
+    {
+        <meta name="description" content="@ViewBag.Description">
+    }
+    else
+    {
+        <meta name="description" content="Learn Python, Data Science, MATLAB and Various free courses. Learn live from top instructors.">
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>ReadMyCourse : Online learning for everyone.</title>
+    <meta name="author" content="ReadMyCourse Admin">
     <!-- Custom fonts for this template-->
     <link href="../../Scripts/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../../Scripts/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
