@@ -217,10 +217,13 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         <a class="nav-link" href="#navPreviousMeetings" onclick="showTeachingSessions()">Teaching Sessions <span class="sr-only">(current)</span></a>
                     </li>*@
                     <li class="nav-item">
-                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Messages</a>
+                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Discussions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#navClassroomAttachments" onclick="getAllClassroomAttachments()"><span class="fa fa-book"></span> Study Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#navClassroomLiveClass" onclick="getAllClassroomLiveClasses()"><span class="fa fa-play-circle"></span> Live classes</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -252,10 +255,6 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         </div>
                     </li>
                 </ul>
-                @*<form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>*@
             </div>
         </nav>
     </div>
@@ -464,6 +463,33 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                             <tbody id="tableBodyClassroomAttachments"></tbody>
                         </table>
 
+                    </div>
+                    <div id="spinnerClassroomAttachments" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="card-body" id="footerAllStudyMaterials" style="display:none">
+                        <h6 class="card-title"> No study materials found</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-2" id="navClassroomLiveClass" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Live classes</div>
+                <div class="card-body">
+                    <div class="table-responsive ">
+                        <table id="tableClassroomAttachments" class="table-responsive table-hover" style="display:none">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="p-2">Topic Name</th>
+                                    <th class="p-2">Start Time</th>
+                                    <th class="p-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBodyClassroomAttachments"></tbody>
+                        </table>
                     </div>
                     <div id="spinnerClassroomAttachments" class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">

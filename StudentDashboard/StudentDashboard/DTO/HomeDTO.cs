@@ -2488,12 +2488,14 @@ namespace StudentDashboard.DTO
             }
             return lsResponse;
         }
-        public async Task<bool> UpdateInstructorProfilePicture(string Url, int InstructorId)
+        public async Task<bool> UpdateInstructorProfilePicture(InstructorProfileChangeRequest instructorProfileChangeRequest )
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.UpdateInstructorProfilePictureAsync(InstructorId, Url);
+                result = await objCPDataService.UpdateInstructorProfilePictureAsync(instructorProfileChangeRequest.m_iInstructorId, instructorProfileChangeRequest.imageUploadDetailsModal.m_strOriginalFileUrl,
+                    instructorProfileChangeRequest.imageUploadDetailsModal.m_strMediumSizeUrl,
+                    instructorProfileChangeRequest.imageUploadDetailsModal.m_strSmallSizeUrl);
             }
             catch (Exception Ex)
             {

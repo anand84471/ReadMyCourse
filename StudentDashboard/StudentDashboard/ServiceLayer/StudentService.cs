@@ -48,7 +48,7 @@ namespace StudentDashboard.ServiceLayer
             {
                 string EncryptedPassword = SHA256Encryption.ComputeSha256Hash(objStudentRegisterModal.m_strPassword);
                 objStudentRegisterModal.m_strHashedPassword = EncryptedPassword;
-                //result = await objStudentDTO.RegisterNewStudent(objStudentRegisterModal);
+                objStudentRegisterModal.m_strPhoneNo = objStudentRegisterModal.m_strCountryCode + objStudentRegisterModal.m_strPhoneNo;
                 objStudentRegisterModal.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
                 objStudentRegisterModal.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
                 if (await objStudentDTO.RegisterNewStudent(objStudentRegisterModal))
@@ -56,7 +56,7 @@ namespace StudentDashboard.ServiceLayer
                     result = true;
                     var SmsVarificationLink = objInstructorBusinessLayer.GetLinkForSmsVarification(objStudentRegisterModal.m_strEmailVarificationGuid,
                         objStudentRegisterModal.m_strEmail, Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_STUDENT);
-                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, objStudentRegisterModal.m_strPhoneNo);
                 }
             }
             catch (Exception Ex)
@@ -67,7 +67,6 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
-
         }
         public async Task<string> InsertPasswordRecovery(string StudentUserId)
         {
@@ -86,7 +85,6 @@ namespace StudentDashboard.ServiceLayer
                         await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
                     }
                 }
-                
             }
             catch (Exception Ex)
             {
@@ -670,7 +668,7 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.GetStudentClassroomHomeDetails(ClassroomId, StudentId);
         }
-        public async Task<bool> UpdateProfilePicture(StudentProfilePictureUpdtaeRequest objStudentProfilePictureUpdtaeRequest)
+        public async Task<bool> UpdateProfilePicture(StudentProfileChangeRequest objStudentProfilePictureUpdtaeRequest)
         {
             bool result = false;
             try

@@ -16,6 +16,12 @@ namespace StudentDashboard
         public static readonly int MAX_ITEMS_TO_BE_RETURNED = 10;
         public static readonly int SMS_VERIFICATION_LINK_TYPE_ID_FOR_INSTRUCTOR = 1;
         public static readonly int SMS_VERIFICATION_LINK_TYPE_ID_FOR_STUDENT = 2;
+        public static readonly int PROFILE_THUMBNAIL_SIZE = 100;
+        public static readonly int COURSE_THUMBNAIL_HEIGHT = 200;
+        public static readonly int COURSE_THUMBNAIL_WIDTH = 200;
+        public static readonly int CLASSROOM_THUMBNAIL_WIDTH = 200;
+        public static readonly int CLASSROOM_THUMBNAIL_HEIGHT = 200;
+        
         public const int COURSE_STATUS_ACTIVE=2;
         public const int COURSE_STATUs_DELETED = 3;
         public const int COURSE_STATUs_CREATED = 1;
@@ -40,11 +46,13 @@ namespace StudentDashboard
         public static readonly string CONTENT_STATUS_ACTIVE = "active";
         public static readonly string CONTENT_STATUS_INACTIVE = "in active";
         public static readonly string MEETING_STATUS_ACTIVE = "active";
+        public static readonly string CLASSROOM_DEFAULT_IMAGE = "../../Images/course-3.jpg";
         public static readonly string MEETING_STATUS_CLOSED = "closed";
         public static readonly string CLASSROOM_MEETING_NOT_CLOSED_MESSAGE = "NA";
         public static readonly string ACCESS_CODE_FOR_INTERNAL_ACCESS= "q96zSIeRwke2qflTV0kWRA";
         public static readonly string WEBSITE_LOGO_URL = "https://readmycourse.com/Images/site-logo-v2.png";
         public static readonly string WEBSITE_NAME = "ReadMyCourse";
+      
 
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
@@ -139,5 +147,17 @@ namespace StudentDashboard
             POPULARITY=3,
             RATING=4
         }
+        public enum AWSImageFileUploadTypeIds
+        {
+            CONCRETE=1,
+            RESIZED=2,
+            COMPRESSED=3
+        }
+        public enum FilePathTypeId
+        {
+            ABSOLUTE_PATH=1,
+            WRT_SERVER=2
+        }
+        
     }
 }

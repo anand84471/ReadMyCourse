@@ -1,5 +1,6 @@
 ﻿using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
+using StudentDashboard.Models;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
@@ -63,6 +64,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strPassword = collection["password"];
                 objRegiserModel.m_strEmail = collection["email"];
                 objRegiserModel.m_strPhoneNo = collection["phoneNo"];
+                objRegiserModel.m_strCountryCode = collection["countryCode"];
                 var objDynamicRoutingAPIRequestValidator = new StudentAccountRegisterValidator();
                 {
                     var result=await objDynamicRoutingAPIRequestValidator.ValidateAsync(objRegiserModel);
@@ -237,7 +239,7 @@ namespace StudentDashboard.Controllers
         public async Task<ActionResult> ResetPassword(FormCollection collection)
         {
             string strCurrentMethodName = "ResetPassword";
-            string ViewName = "";
+            string ViewName = "ForgotPassword";
             try
             {
                 StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
@@ -247,6 +249,10 @@ namespace StudentDashboard.Controllers
                 {
                     string sid = objStudentRegisterModal.m_strUserId;
                     return RedirectToAction("PasswordAuthRequest",new { sid, token });
+                }
+                else
+                {
+                    ViewBag.Message = "User Id does not exist";
                 }
             }
             catch (Exception Ex)
@@ -556,7 +562,7 @@ namespace StudentDashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RequestTestAccess(FormCollection collection)
         {
-            string strCurrentMethodName = "Register";
+            string strCurrentMethodName = "RequestTestAccess";
             ViewBag.IsAccessError = true;
             try
             {
@@ -1093,12 +1099,17 @@ namespace StudentDashboard.Controllers
             string ViewName = "Home";
             try
             {
-                StudentProfilePictureUpdtaeRequest objStudentProfilePictureUpdtaeRequest = new StudentProfilePictureUpdtaeRequest();
-                objStudentProfilePictureUpdtaeRequest.m_strProfilePictureUrl = collection["url"];
-                objStudentProfilePictureUpdtaeRequest.m_llStudentId = (long)Session["user_id"];
-                if (await objStudentService.UpdateProfilePicture(objStudentProfilePictureUpdtaeRequest))
+                StudentProfileChangeRequest studentProfileChangeRequest = new StudentProfileChangeRequest();
+                studentProfileChangeRequest.m_llStudentId = (long)Session["user_id"];
+                studentProfileChangeRequest.imageUploadDetailsModal = new ImageUploadDetailsModal
                 {
-                    Session["student_profile_picture_url"] = objStudentProfilePictureUpdtaeRequest.m_strProfilePictureUrl;
+                    m_strOriginalFileUrl = collection["url"],
+                    m_strMediumSizeUrl = collection["medium_size_url"],
+                    m_strSmallSizeUrl = collection["small_size_url"]
+                };
+                if (await objStudentService.UpdateProfilePicture(studentProfileChangeRequest))
+                {
+                    Session["student_profile_picture_url"] = studentProfileChangeRequest.imageUploadDetailsModal.m_strSmallSizeUrl;
                     return RedirectToAction("Home");
                 }
             }

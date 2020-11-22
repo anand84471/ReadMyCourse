@@ -27,6 +27,7 @@ namespace StudentDashboard.Models.Student
         public string m_strLastUpdated { get; set; }
         public string m_strFullAddress { get; set; }
         public int? m_iCityId { get; set; }
+        public string m_strCountryCode { get; set; }
         public int? m_iStateId { get; set; }
         public string m_strToken { get; set; }
         public string m_strPhoneNoVarificationGuid { get; set; }

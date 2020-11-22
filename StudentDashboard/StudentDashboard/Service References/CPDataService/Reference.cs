@@ -91,16 +91,16 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomSearchDetailsAsync(int InstructorId, string SearchString);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorProfilePictureResponse")]
-        bool UpdateInstructorProfilePicture(int InstructorId, string Url);
+        bool UpdateInstructorProfilePicture(int InstructorId, string Url, string MediumSizeUrl, string SmallSizeUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateInstructorProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateInstructorProfilePictureResponse")]
-        System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url);
+        System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url, string MediumSizeUrl, string SmallSizeUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentProfilePictureResponse")]
-        bool UpdateStudentProfilePicture(long StudentId, string Url);
+        bool UpdateStudentProfilePicture(long StudentId, string OriginalFile, string SmallThumbnailUrl, string MediumThumbnailUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateStudentProfilePicture", ReplyAction="http://tempuri.org/ICpDataService/UpdateStudentProfilePictureResponse")]
-        System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string Url);
+        System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string OriginalFile, string SmallThumbnailUrl, string MediumThumbnailUrl);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsResponse")]
         System.Data.DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId);
@@ -2489,20 +2489,20 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetInstructorClassroomSearchDetailsAsync(InstructorId, SearchString);
         }
         
-        public bool UpdateInstructorProfilePicture(int InstructorId, string Url) {
-            return base.Channel.UpdateInstructorProfilePicture(InstructorId, Url);
+        public bool UpdateInstructorProfilePicture(int InstructorId, string Url, string MediumSizeUrl, string SmallSizeUrl) {
+            return base.Channel.UpdateInstructorProfilePicture(InstructorId, Url, MediumSizeUrl, SmallSizeUrl);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url) {
-            return base.Channel.UpdateInstructorProfilePictureAsync(InstructorId, Url);
+        public System.Threading.Tasks.Task<bool> UpdateInstructorProfilePictureAsync(int InstructorId, string Url, string MediumSizeUrl, string SmallSizeUrl) {
+            return base.Channel.UpdateInstructorProfilePictureAsync(InstructorId, Url, MediumSizeUrl, SmallSizeUrl);
         }
         
-        public bool UpdateStudentProfilePicture(long StudentId, string Url) {
-            return base.Channel.UpdateStudentProfilePicture(StudentId, Url);
+        public bool UpdateStudentProfilePicture(long StudentId, string OriginalFile, string SmallThumbnailUrl, string MediumThumbnailUrl) {
+            return base.Channel.UpdateStudentProfilePicture(StudentId, OriginalFile, SmallThumbnailUrl, MediumThumbnailUrl);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string Url) {
-            return base.Channel.UpdateStudentProfilePictureAsync(StudentId, Url);
+        public System.Threading.Tasks.Task<bool> UpdateStudentProfilePictureAsync(long StudentId, string OriginalFile, string SmallThumbnailUrl, string MediumThumbnailUrl) {
+            return base.Channel.UpdateStudentProfilePictureAsync(StudentId, OriginalFile, SmallThumbnailUrl, MediumThumbnailUrl);
         }
         
         public System.Data.DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId) {

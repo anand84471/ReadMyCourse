@@ -1,4 +1,5 @@
-﻿using StudentDashboard.Models;
+﻿using StudentDashboard.HttpRequest;
+using StudentDashboard.Models;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
@@ -221,7 +222,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strPassword = collection["password"];
                 objRegiserModel.m_strEmail = collection["email"];
                 objRegiserModel.m_strPhoneNo = collection["phoneNo"];
-               
+                objRegiserModel.m_strCountryCode = collection["countryCode"];
                 var objInstructorAccountRegisterValidator = new InstructorAccountRegisterValidator();
                 {
                     var ValidationResult = await objInstructorAccountRegisterValidator.ValidateAsync(objRegiserModel);
@@ -251,7 +252,7 @@ namespace StudentDashboard.Controllers
                     }
                 }
                
-                return View();
+                return View("Join");
             }
             catch (Exception Ex)
             {
@@ -266,7 +267,7 @@ namespace StudentDashboard.Controllers
         public async Task<ActionResult> ValidateLogin(FormCollection collection, string return_url = null)
         {
             string strCurrentMethodName = "Register";
-            string ViewName = "";
+            string ViewName = "RegistrationSuccessful";
             try
             {
                 InstructorRegisterModel objInstructorRegiserModel = new InstructorRegisterModel();
@@ -313,6 +314,7 @@ namespace StudentDashboard.Controllers
                             m_strStringBuilder.Append("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                         }
                         ViewBag.ErrorMessage = m_strStringBuilder.ToString();
+                        ViewBag.IsLoggedIn = false;
                     }
                 }
             }
@@ -333,7 +335,7 @@ namespace StudentDashboard.Controllers
         public async Task<ActionResult> ResetPassword(FormCollection collection)
         {
             string strCurrentMethodName = "ResetPassword";
-            string ViewName = "";
+            string ViewName = "ForgotPassword";
             try
             {
                 InstructorRegisterModel objInstructorRegisterModel = new InstructorRegisterModel();
@@ -343,6 +345,10 @@ namespace StudentDashboard.Controllers
                 {
                     string sid = objInstructorRegisterModel.m_strEmail;
                     return RedirectToAction("PasswordAuthRequest", new { sid, token });
+                }
+                else
+                {
+                    ViewBag.Message = "User Id doesn't exists";
                 }
             }
             catch (Exception Ex)
@@ -1156,11 +1162,17 @@ namespace StudentDashboard.Controllers
             string ViewName = "Home";
             try
             {
-                string  url = collection["url"];
-                if (await objHomeService.UpdateInstructorProfilePicture(url,(int)Session["instructor_id"]))
+                InstructorProfileChangeRequest instructorProfileChangeRequest = new InstructorProfileChangeRequest();
+                instructorProfileChangeRequest.m_iInstructorId= (int)Session["instructor_id"];
+                instructorProfileChangeRequest.imageUploadDetailsModal = new ImageUploadDetailsModal {
+                    m_strOriginalFileUrl= collection["url"],
+                    m_strMediumSizeUrl= collection["medium_size_url"],
+                    m_strSmallSizeUrl=collection["small_size_url"]
+                };
+                if (await objHomeService.UpdateInstructorProfilePicture(instructorProfileChangeRequest))
                 {
                     InstructorRegisterModel objInstructorRegisterModel = new InstructorRegisterModel();
-                    objInstructorRegisterModel = await objInstructorService.GetInstructorBasicDetails((int)Session["instructor_id"]);
+                    objInstructorRegisterModel = await objInstructorService.GetInstructorBasicDetails(instructorProfileChangeRequest.m_iInstructorId);
                     Session["instructor_profile_picture_url"] = objInstructorRegisterModel.m_strProfilePictureUrl;
                     return RedirectToAction("Home");
                 }

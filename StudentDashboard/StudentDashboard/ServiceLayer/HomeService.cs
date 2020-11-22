@@ -9,6 +9,7 @@ using StudentDashboard.Models;
 using StudentDashboard.Models.Alert;
 using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Files;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
@@ -1293,6 +1294,7 @@ namespace StudentDashboard.ServiceLayer
                         foreach (var files in lsAwsFileUploadRequest)
                         {
                             awsFilePath=await objInstructorBusinessLayer.UploadImageAsync(files.m_strFileName, files.m_strFilePath);
+
                         }
                         break;
                     }
@@ -1327,13 +1329,48 @@ namespace StudentDashboard.ServiceLayer
             }
             return awsFilePath;
         }
+        public async Task<ImageUploadMasterResponse> GenerateThumbnails(List<AwsFileUploadRequest> lsAwsFileUploadRequest)
+        {
+            ImageUploadMasterResponse imageUploadMasterResponse = new ImageUploadMasterResponse();
+            ImageCompressionUtilities imageCompressionUtilities = new ImageCompressionUtilities();
+            FileModal fileModal = null;
+            foreach (var files in lsAwsFileUploadRequest)
+            {
+                imageUploadMasterResponse.m_strRawImagePathUrl= await objInstructorBusinessLayer.UploadImageAsync(files.m_strFileName, files.m_strFilePath);
+                fileModal = imageCompressionUtilities.ResizeToProfileThumbnail(files.m_strFilePath);
+                imageUploadMasterResponse.m_str50pxThumbnailUrl = await objInstructorBusinessLayer.UploadImageFileCompressedAsync(fileModal.m_strFileName, fileModal.m_strFilePath);
+                DeleteFileFromServer(fileModal.m_strFilePath);
+                fileModal = imageCompressionUtilities.ResizeToCourseThumbnail(files.m_strFilePath);
+                imageUploadMasterResponse.m_str250pxThumb = await objInstructorBusinessLayer.UploadImageFileCompressedAsync(fileModal.m_strFileName, fileModal.m_strFilePath);
+                DeleteFileFromServer(fileModal.m_strFilePath);
+                DeleteFileFromServer(MasterUtilities.GetPhysicalPath(files.m_strFilePath));
+            }
+            return imageUploadMasterResponse;
+        }
+        public void DeleteFilesFromServer(List<AwsFileUploadRequest> lsAwsFileUploadRequest)
+        {
+            try
+            {
+                foreach (var files in lsAwsFileUploadRequest)
+                {
+                    DeleteFileFromServer(files.m_strFilePath);
+                }
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "DeleteFilesFromServer", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+        }
         public async Task<List<ClassroomBasicDetailsModal>> GetInstructorSearchResultForClassrom(int InstructorId, string SearchString)
         {
             return await objHomeDTO.GetInstructorSearchResultForClassrom(InstructorId, SearchString);
         }
-        public async Task<bool> UpdateInstructorProfilePicture(string Url, int InstructorId)
+        public async Task<bool> UpdateInstructorProfilePicture(InstructorProfileChangeRequest instructorProfileChangeRequest)
         {
-            return await objHomeDTO.UpdateInstructorProfilePicture(Url, InstructorId);
+            return await objHomeDTO.UpdateInstructorProfilePicture(instructorProfileChangeRequest);
         }
         public async Task<bool> AddAttachmentToClassroom(ClassroomAttachmentRequest classroomAttachmentRequest)
         {

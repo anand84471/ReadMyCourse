@@ -10,5 +10,6 @@ namespace StudentDashboard.HttpRequest
     {
         [JsonProperty("url")]
         public string m_strUrl;
+       
     }
 }

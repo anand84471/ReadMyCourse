@@ -40,11 +40,18 @@ namespace StudentDashboard.Utilities
                                                 | SecurityProtocolType.Tls11
                                                 | SecurityProtocolType.Tls12
                                                 | SecurityProtocolType.Ssl3;
-            var message = MessageResource.Create(
-           body: Message,
-           from: new Twilio.Types.PhoneNumber(_phoneNoOfSender),
-           to: new Twilio.Types.PhoneNumber(PhoneNo));
-           var result= message.Sid;
+            try
+            {
+                var message = MessageResource.Create(
+                body: Message,
+                from: new Twilio.Types.PhoneNumber(_phoneNoOfSender),
+                to: new Twilio.Types.PhoneNumber(PhoneNo));
+                var result = message.Sid;
+            }
+            catch(Exception Ex)
+            {
+
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -13,5 +14,45 @@ namespace StudentDashboard.Utilities
                 .Where(c => !Char.IsWhiteSpace(c))
                 .ToArray());
         }
+        public static FileInfo GetFileInfo(string FilePath, int FilePathType)
+        {
+            FileInfo fiLeInfo = null;
+            switch (FilePathType)
+            {
+                case (int)Constants.FilePathTypeId.ABSOLUTE_PATH:
+                    {
+                        fiLeInfo = new FileInfo(FilePath);
+                        break;
+                    }
+                case (int)Constants.FilePathTypeId.WRT_SERVER:
+                    {
+                        FilePath = HttpContext.Current.Server.MapPath(FilePath);
+                        fiLeInfo = new FileInfo(FilePath);
+                        break;
+                    }
+            }
+            return fiLeInfo;
+        }
+        public static string GetFileExtensionName(string FilePath,int FilePathType)
+        {
+            return GetFileInfo(FilePath, FilePathType).Extension;
+        }
+        public static string GetFileName(string FilePath, int FilePathType)
+        {
+            return GetFileInfo(FilePath, FilePathType).Name;
+        }
+        public static string GetDirectoryOfFile(string FilePath, int FilePathType)
+        {
+            return GetFileInfo(FilePath, FilePathType).DirectoryName;
+        }
+        public static string GetPhysicalPath(string path)
+        {
+            if (Path.IsPathRooted(path))
+            {
+                return path;
+            }
+            return HttpContext.Current.Server.MapPath(path);
+        }
+         
     }
 }

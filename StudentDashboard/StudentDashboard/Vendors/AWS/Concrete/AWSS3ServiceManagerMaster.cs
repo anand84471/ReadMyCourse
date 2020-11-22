@@ -1,6 +1,7 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
+using StudentDashboard.Utilities;
 using StudentDashboard.Vendors.AWS.Entity;
 using System;
 using System.Collections.Generic;
@@ -36,11 +37,15 @@ namespace StudentDashboard.Vendors.AWS
             string awsFilePath = null;
             try
             {
-                filePath = HttpContext.Current.Server.MapPath(filePath);
-                await fileTransferUtility.UploadAsync(filePath, this._aWSS3ServiceEntity.GetBucketName()+"/" +
-                    MvcApplication._strAwsBucketFolderInstructor+"/Images/Concrete");
-                awsFilePath = getAwsUrl( 
-                    MvcApplication._strAwsBucketFolderInstructor + "/Images/Concrete/"+ FileName);
+               
+                filePath = MasterUtilities.GetPhysicalPath(filePath);
+                if(filePath!=null)
+                {
+                    await fileTransferUtility.UploadAsync(filePath, this._aWSS3ServiceEntity.GetBucketName() + "/" +
+                   MvcApplication._strAwsBucketFolderInstructor + "/Images/Concrete");
+                    awsFilePath = getAwsUrl(
+                        MvcApplication._strAwsBucketFolderInstructor + "/Images/Concrete/" + FileName);
+                }
             }
             catch(Exception Ex)
             {
@@ -141,6 +146,40 @@ namespace StudentDashboard.Vendors.AWS
             {
                 Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
             }
+        }
+        public async Task<string> TaskCompressedImageFileAsync(string filePath, string FileName)
+        {
+            string awsFilePath = null;
+            try
+            {
+                filePath = MasterUtilities.GetPhysicalPath(filePath);
+                await fileTransferUtility.UploadAsync(filePath, this._aWSS3ServiceEntity.GetBucketName() + "/" +
+                    MvcApplication._strAwsBucketFolderInstructor + "/Images/Compressed");
+                awsFilePath = getAwsUrl(
+                    MvcApplication._strAwsBucketFolderInstructor + "/Images/Compressed/" + FileName);
+            }
+            catch (Exception Ex)
+            {
+
+            }
+            return awsFilePath;
+        }
+        public async Task<string> TaskResizedImageFileAsync(string filePath, string FileName)
+        {
+            string awsFilePath = null;
+            try
+            {
+                filePath = HttpContext.Current.Server.MapPath(filePath);
+                await fileTransferUtility.UploadAsync(filePath, this._aWSS3ServiceEntity.GetBucketName() + "/" +
+                    MvcApplication._strAwsBucketFolderInstructor + "/Images/Resized");
+                awsFilePath = getAwsUrl(
+                    MvcApplication._strAwsBucketFolderInstructor + "/Images/Resized/" + FileName);
+            }
+            catch (Exception Ex)
+            {
+
+            }
+            return awsFilePath;
         }
     }
 }

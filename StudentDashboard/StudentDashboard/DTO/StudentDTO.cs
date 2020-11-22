@@ -1219,20 +1219,21 @@ namespace StudentDashboard.DTO
             }
             return studentClassroomHomeDetails;
         }
-        public async Task<bool> UpdateProfilePicture(StudentProfilePictureUpdtaeRequest objStudentProfilePictureUpdtaeRequest)
+        public async Task<bool> UpdateProfilePicture(StudentProfileChangeRequest objStudentProfilePictureUpdtaeRequest)
         {
             bool result = false;
             try
             {
-
-                result  = await objCPDataService.UpdateStudentProfilePictureAsync(objStudentProfilePictureUpdtaeRequest.m_llStudentId, objStudentProfilePictureUpdtaeRequest.m_strProfilePictureUrl);
-               
-
+                result  = await objCPDataService.UpdateStudentProfilePictureAsync(objStudentProfilePictureUpdtaeRequest.m_llStudentId, 
+                    objStudentProfilePictureUpdtaeRequest.imageUploadDetailsModal.m_strOriginalFileUrl,
+                    objStudentProfilePictureUpdtaeRequest.imageUploadDetailsModal.m_strSmallSizeUrl,
+                    objStudentProfilePictureUpdtaeRequest.imageUploadDetailsModal.m_strMediumSizeUrl
+                    );
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateProfilePicture", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

@@ -1,6 +1,7 @@
 ﻿using StudentDashboard.Models.RazorPay;
 using StudentDashboard.Utilities;
 using StudentDashboard.Vendors.AWS.Concrete;
+using StudentDashboard.Vendors.MagicDotNetDataCompression;
 using StudentDashboard.Vendors.RazorPay;
 using System;
 using System.Security.Cryptography;
@@ -15,7 +16,7 @@ namespace StudentDashboard.BusinessLayer
         TinyUrlService objTinyUrlService;
         AWSS3ServiceManagerLayer objAWSS3ServiceManagerLayer;
         RazorPayHelper razorPayHelper;
-
+        ImageCompressionUtilities imageCompressionUtilities;
         public InstructorBusinessLayer()
         {
             objTinyUrlService = new TinyUrlService();
@@ -172,7 +173,7 @@ namespace StudentDashboard.BusinessLayer
             }
             return result;
         }
-     
+        
         public async Task<string> UploadImageAsync(string FileName, string FilePath)
         {
             string awsFilePath = null;
@@ -190,12 +191,30 @@ namespace StudentDashboard.BusinessLayer
             return awsFilePath;
             
         }
+        public async Task<string> UploadImageFileCompressedAsync(string FileName, string FilePath)
+        {
+            string awsFilePath = null;
+            try
+            {
+                awsFilePath = await objAWSS3ServiceManagerLayer.UploadImageFileCompressedAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTinyUrlForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return awsFilePath;
+
+        }
         public async Task<string> UploadVideoAsync(string FileName, string FilePath)
         {
             string awsFilePath = null;
             try
             {
                 awsFilePath = await objAWSS3ServiceManagerLayer.UploadVideoFileAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
+                
             }
             catch (Exception Ex)
             {
@@ -229,6 +248,7 @@ namespace StudentDashboard.BusinessLayer
             string awsFilePath = null;
             try
             {
+
                 awsFilePath = await objAWSS3ServiceManagerLayer.UploaddCustomeFileAsync(FileName, FilePath, (int)Constants.AWSFolderType.INSTRUCTOR);
             }
             catch (Exception Ex)
@@ -281,6 +301,4 @@ namespace StudentDashboard.BusinessLayer
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
     }
-
-   
 }

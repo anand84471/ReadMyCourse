@@ -24,6 +24,7 @@ namespace StudentDashboard.ServiceLayer
         InstructorBusinessLayer objInstructorBusinessLayer;
         SMSServiceManager objSMSServiceManager;
         StringBuilder m_strLogMessage;
+        ImageCompressionUtilities imageCompressionUtilities;
         public InstructorService()
         {
             objInstructorDTO = new InstructorDTO();
@@ -41,12 +42,13 @@ namespace StudentDashboard.ServiceLayer
                 objInstructorRegisterModel.m_strPassword = EncryptedPassword;
                 objInstructorRegisterModel.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
                 objInstructorRegisterModel.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
+                objInstructorRegisterModel.m_strPhoneNo = objInstructorRegisterModel.m_strCountryCode+objInstructorRegisterModel.m_strPhoneNo;
                 if(await objInstructorDTO.RegisterNewInstructor(objInstructorRegisterModel))
                 {
                     result = true;
                     var SmsVarificationLink =objInstructorBusinessLayer.GetLinkForSmsVarification(objInstructorRegisterModel.m_strEmailVarificationGuid,
                         objInstructorRegisterModel.m_strEmail,Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_INSTRUCTOR);
-                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, "+91"+objInstructorRegisterModel.m_strPhoneNo);
+                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink,objInstructorRegisterModel.m_strPhoneNo);
                 }
 
             }
@@ -254,5 +256,6 @@ namespace StudentDashboard.ServiceLayer
         {
             return  objInstructorDTO.AddNewTestSeries(insertTestSeriesRequest);
         }
+       
     }
 }

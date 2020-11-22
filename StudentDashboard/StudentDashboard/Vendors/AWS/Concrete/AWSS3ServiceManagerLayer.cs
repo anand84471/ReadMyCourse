@@ -29,6 +29,14 @@ namespace StudentDashboard.Vendors.AWS.Concrete
         {
             return await _aWSS3ServiceManagerMaster.TaskCustomFileAsync(FilePath, fileKeyName);
         }
+        public async Task<string> UploadImageFileCompressedAsync(string fileKeyName, string FilePath, int ClientRequsetType)
+        {
+            return await _aWSS3ServiceManagerMaster.TaskCompressedImageFileAsync(FilePath, fileKeyName);
+        }
+        public async Task<string> UploadResizedFileCompressedAsync(string fileKeyName, string FilePath, int ClientRequsetType)
+        {
+            return await _aWSS3ServiceManagerMaster.TaskResizedImageFileAsync(FilePath, fileKeyName);
+        }
 
     }
 }

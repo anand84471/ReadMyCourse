@@ -7371,7 +7371,8 @@ namespace CPDataService
             }
             return sDS;
         }
-        public bool UpdateInstructorProfilePicture(int InstructorId, string Url)
+        public bool UpdateInstructorProfilePicture(int InstructorId, string Url,string MediumSizeUrl,
+            string SmallSizeUrl)
         {
             bool result = false;
             string strCurrentMethodName = "UpdateInstructorProfilePicture";
@@ -7382,6 +7383,8 @@ namespace CPDataService
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
                 m_command.Parameters.Add("@strPrfileUrl", SqlDbType.VarChar,250).Value = Url;
                 m_command.Parameters.Add("@iInstructorId", SqlDbType.Int).Value = InstructorId;
+                m_command.Parameters.Add("@strMediumSizeProfileUrl", SqlDbType.VarChar, 250).Value = MediumSizeUrl;
+                m_command.Parameters.Add("@strSmallSizeProfileUrl", SqlDbType.VarChar, 250).Value = SmallSizeUrl;
                 m_con.Open();
                 result = m_command.ExecuteNonQuery() > 0;
             }
@@ -7405,7 +7408,8 @@ namespace CPDataService
             }
             return result;
         }
-        public bool UpdateStudentProfilePicture(long StudentId, string Url)
+        public bool UpdateStudentProfilePicture(long StudentId, string OriginalFile,string SmallThumbnailUrl,
+            string MediumThumbnailUrl)
         {
             bool result = false;
             string strCurrentMethodName = "UpdateInstructorProfilePicture";
@@ -7414,8 +7418,10 @@ namespace CPDataService
                 InitDB();
                 m_command = new SqlCommand("Cp_spUpdateStudentProfilePicture", m_con);
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
-                m_command.Parameters.Add("@strProfilePictureUrl", SqlDbType.VarChar, 250).Value = Url;
+                m_command.Parameters.Add("@strProfilePictureUrl", SqlDbType.VarChar, 250).Value = OriginalFile;
                 m_command.Parameters.Add("@llStudentId", SqlDbType.BigInt).Value = StudentId;
+                m_command.Parameters.Add("@strProfilePictureSmallUrl", SqlDbType.VarChar, 250).Value = SmallThumbnailUrl;
+                m_command.Parameters.Add("@strPrfoilePictureMediumUrl", SqlDbType.VarChar, 250).Value = MediumThumbnailUrl;
                 m_con.Open();
                 result = m_command.ExecuteNonQuery() > 0;
             }

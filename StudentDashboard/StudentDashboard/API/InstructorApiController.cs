@@ -2162,9 +2162,9 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("UploadImage")]
-        public async Task<InstructorFileUploadResponse> UploadImage()
+        public async Task<ImageUploadMasterResponse> UploadImage()
         {
-            InstructorFileUploadResponse objResponse = new InstructorFileUploadResponse();
+            ImageUploadMasterResponse objResponse = new ImageUploadMasterResponse();
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
@@ -2207,8 +2207,8 @@ namespace StudentDashboard.API
 
                             return Request.CreateResponse(HttpStatusCode.Created);
                         });
-                    objResponse.m_strAwsLocation = await objHomeService.UploadFiles(lsAwsFileUploadRequest, (int)FileUploadTypeId.IMAGE);
-                    if (objResponse.m_strAwsLocation != null)
+                    objResponse = await objHomeService.GenerateThumbnails(lsAwsFileUploadRequest);
+                    if (objResponse != null)
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -2361,10 +2361,10 @@ namespace StudentDashboard.API
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 && await objHomeService.UpdateInstructorProfilePicture(objProfileUploadRequest.m_strUrl, InstructorId))
-                {
-                    objResponse.SetSuccessResponse();
-                }
+                //if (InstructorId != -1 && await objHomeService.UpdateInstructorProfilePicture(objProfileUploadRequest.m_strUrl, InstructorId))
+                //{
+                //    objResponse.SetSuccessResponse();
+                //}
             }
             catch (Exception Ex)
             {

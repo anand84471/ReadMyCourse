@@ -56,6 +56,14 @@
       <HintPath>..\packages\FluentValidation.8.6.2\lib\net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.22.2.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.22.2.1\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=5.2.1.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET.Core.5.2.1\lib\net40\Magick.NET.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -111,6 +119,14 @@
     </Reference>
     <Reference Include="Razorpay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Razorpay.3.0.0\lib\net45\Razorpay.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid, Version=9.21.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\SendGrid.9.21.0\lib\net452\SendGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StarkbankEcdsa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\starkbank-ecdsa.1.2.0\lib\net452\StarkbankEcdsa.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -312,13 +328,14 @@
     <Compile Include="HttpRequest\InstructorAcademicRecordUpdateRequest.cs" />
     <Compile Include="HttpRequest\InstructorBioUpdateHttpRequest.cs" />
     <Compile Include="HttpRequest\InstructorFileUploadRequest.cs" />
+    <Compile Include="HttpRequest\InstructorProfileChangeRequest.cs" />
     <Compile Include="HttpRequest\InstructorSearchRequest.cs" />
     <Compile Include="HttpRequest\ProfileUploadRequest.cs" />
     <Compile Include="HttpRequest\SerchCourseRequest.cs" />
     <Compile Include="HttpRequest\StudentClassroomJoinRequest.cs" />
     <Compile Include="HttpRequest\StudentCourseDetailsRequestModel.cs" />
     <Compile Include="HttpRequest\StudentCourseJoinRequest.cs" />
-    <Compile Include="HttpRequest\StudentProfilePictureUpdtaeRequest.cs" />
+    <Compile Include="HttpRequest\StudentProfileChangeRequest.cs" />
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
     <Compile Include="HttpResponse\AboutCourseResponse.cs" />
     <Compile Include="HttpResponse\AddAssgnmentResponse.cs" />
@@ -382,6 +399,7 @@
     <Compile Include="HttpResponse\GetTestResultsForStudentResponse.cs" />
     <Compile Include="HttpResponse\GetTestSubmissionDetailsResponse.cs" />
     <Compile Include="HttpResponse\GetWebsiteHomeDetailsResponse.cs" />
+    <Compile Include="HttpResponse\ImageUploadMasterResponse.cs" />
     <Compile Include="HttpResponse\InsertCourseV2Response.cs" />
     <Compile Include="HttpResponse\InsertNewCourseResponse.cs" />
     <Compile Include="HttpResponse\InsertNewIndexResponse.cs" />
@@ -420,6 +438,7 @@
     <Compile Include="Models\Classroom\ClassroomAssignmentModal.cs" />
     <Compile Include="Models\Classroom\ClassroomDayWiseScheduleModal.cs" />
     <Compile Include="Models\Classroom\ClassroomScheduleDetails.cs" />
+    <Compile Include="Models\Classroom\ClassroomSyllabusDetailsModal.cs" />
     <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
     <Compile Include="Models\Course\AssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\AssignmentModel.cs" />
@@ -435,6 +454,8 @@
     <Compile Include="Models\Course\TestModel.cs" />
     <Compile Include="Models\Course\TopicModel.cs" />
     <Compile Include="Models\Document\ClassroomBasicDetailsModalForHome.cs" />
+    <Compile Include="Models\Files\FileModal.cs" />
+    <Compile Include="Models\ImageUploadDetailsModal.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
     <Compile Include="Models\Instructor\InstrucorEarningDetailsModal.cs" />
@@ -452,6 +473,7 @@
     <Compile Include="Models\RazorPay\RazorPayPaymentRequestModal.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentResponseModal.cs" />
     <Compile Include="Models\SchoolRegisterModel.cs" />
+    <Compile Include="Models\SmsModal\MasterSmsModal.cs" />
     <Compile Include="Models\StudentDetailsModel.cs" />
     <Compile Include="HttpRequest\UserLoginRequest.cs" />
     <Compile Include="HttpRequest\UserRegisterRequest.cs" />
@@ -514,7 +536,7 @@
     <Compile Include="ServiceLayer\StudentService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ActivityManager.cs" />
-    <Compile Include="Utilities\ImageCompressionUtil.cs" />
+    <Compile Include="Utilities\ImageCompressionUtilities.cs" />
     <Compile Include="Utilities\MainLogger.cs" />
     <Compile Include="Utilities\MasterUtilities.cs" />
     <Compile Include="Utilities\RazorPayPaymentIntegration.cs" />
@@ -534,7 +556,9 @@
     <Compile Include="Vendors\AWS\Entity\AWSS3ServiceEntity.cs" />
     <Compile Include="Vendors\AWS\Entity\AWSS3ServiceRequestEntity.cs" />
     <Compile Include="Vendors\AWS\Entity\AWSServiceEntity.cs" />
+    <Compile Include="Vendors\MagicDotNetDataCompression\MagicDotNetDataCompressionService.cs" />
     <Compile Include="Vendors\RazorPay\RazorPayHelper.cs" />
+    <Compile Include="Vendors\SendGrid\SendEmailUsingSendGrid.cs" />
     <Compile Include="Zoom\GenrateToke.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -555,6 +579,10 @@
     <Content Include="fonts\ionicons\css\ionicons.min.css" />
     <Content Include="fonts\ionicons\fonts\ionicons.svg" />
     <Content Include="fonts\open-iconic\open-iconic.svg" />
+    <Content Include="fonts\vendors\img\flags%402x.png" />
+    <Content Include="fonts\vendors\img\flags.png" />
+    <Content Include="fonts\vendors\intl-tel-input-master\intlTelInput.css" />
+    <Content Include="fonts\vendors\intl-tel-input-master\intlTelInput.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\.DS_Store" />
@@ -669,7 +697,9 @@
     <Content Include="fonts\open-iconic\open-iconic.otf" />
     <Content Include="fonts\open-iconic\open-iconic.ttf" />
     <Content Include="fonts\open-iconic\open-iconic.woff" />
-    <Content Include="AppSetting.config" />
+    <Content Include="AppSetting.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\ %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\.pubxml" />
@@ -705,6 +735,13 @@
     <Content Include="Scripts\vendor\datatables\dataTables.bootstrap4.min.js" />
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.js" />
     <Content Include="Scripts\vendor\datatables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\data.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\data.min.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\intlTelInput-jquery.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\intlTelInput-jquery.min.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\intlTelInput.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\intlTelInput.min.js" />
+    <Content Include="Scripts\vendor\intl-tel-input-master\utils.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Service References\CPDataService\CpDataService.disco" />
     <None Include="Service References\CPDataService\configuration91.svcinfo" />

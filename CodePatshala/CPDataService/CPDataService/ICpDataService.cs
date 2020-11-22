@@ -414,9 +414,11 @@ namespace CPDataService
         [OperationContract]
         DataSet GetInstructorClassroomSearchDetails(int InstructorId, string SearchString);
         [OperationContract]
-        bool UpdateInstructorProfilePicture(int InstructorId, string Url);
+        bool UpdateInstructorProfilePicture(int InstructorId, string Url, string MediumSizeUrl,
+            string SmallSizeUrl);
         [OperationContract]
-        bool UpdateStudentProfilePicture(long StudentId, string Url);
+        bool UpdateStudentProfilePicture(long StudentId, string OriginalFile, string SmallThumbnailUrl,
+            string MediumThumbnailUrl);
         [OperationContract]
         DataSet GetClassroomMeetingDetails(long ClassroomId, long MeetingId);
         [OperationContract]

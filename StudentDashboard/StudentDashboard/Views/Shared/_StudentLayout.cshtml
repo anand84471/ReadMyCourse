@@ -321,7 +321,10 @@
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Upload New Image</label>
                         <input type="file" id="fileUploadProfilePicture" name="file" accept="image/x-png,image/gif,image/jpeg" />
+                       
                         <input type="url" id="fileUploadUrl" hidden name="url" />
+                        <input type="url" id="mediumSizeImageUrl" hidden name="medium_size_url" />
+                        <input type="url" id="smallSizeImageUrl" hidden name="small_size_url" />
                         <button type="button" class="btn btn-primary" onclick="requestUploadProfile()">Upload</button>
                         <div class="progress progress-sm mr-2">
                             <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="ProfileUploadProgressBar"></div>
@@ -898,6 +901,8 @@
                 if (data != null && data.response_code == 1) {
                     profilePictureUrl = data.file_location;
                     $("#fileUploadUrl").val(data.file_location);
+                    $("#mediumSizeImageUrl").val(data.medium_size_icon_url);
+                    $("#smallSizeImageUrl").val(data.small_size_icon_url);
                     //profilePictureUploadSubmitButton
                     $("#profilePictureUploadSubmitButton").prop("disabled", false);
                     $("#postProfileUploadAlert").show();

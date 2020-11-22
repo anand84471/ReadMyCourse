@@ -25,6 +25,7 @@ namespace StudentDashboard.Models
         public string m_strPineCode { get; set; }
         [JsonProperty("school_name")]
         public string m_strSchoolName { get; set; }
+        public string m_strCountryCode { get; set; }
         public int m_iSchoolId { get; set; }
         [JsonProperty("address_line_1")]
         public string m_strAddressLine1 { get; set; }

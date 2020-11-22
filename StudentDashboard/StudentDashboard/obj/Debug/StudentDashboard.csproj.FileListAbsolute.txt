@@ -286,3 +286,11 @@ D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.S3.pdb
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\AWSSDK.S3.xml
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\obj\Debug\StudentDashboard.csprojResolveAssemblyReference.cache
 D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Razorpay.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\SendGrid.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\StarkbankEcdsa.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\SendGrid.pdb
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\SendGrid.xml
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Magick.NET-Q16-AnyCPU.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Magick.NET.Core.dll
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Magick.NET-Q16-AnyCPU.xml
+D:\ReadMyCourse\StudentDashboard\StudentDashboard\bin\Magick.NET.Core.xml

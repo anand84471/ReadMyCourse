@@ -31,6 +31,9 @@ namespace StudentDashboard
         public static string _strAwsFileUploadBaseUrl;
         public static string _strRazorPayKey;
         public static string _strRazorPaySecret;
+        public static string _strSendGridEmailApiKey;
+        public static string _strSendGridEmailSenderName;
+        public static string _strSendGridEmailSenerEmail;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -124,6 +127,13 @@ namespace StudentDashboard
             }
             InitializeAwsConigurationData();
             InitializeRazorPayConigurationData();
+        }
+        private void InitializeEmailServiceConfigurationData()
+        {
+            if (ConfigurationManager.AppSettings["SendgridApiKey"] != null)
+            {
+                _strSendGridEmailApiKey = (ConfigurationManager.AppSettings["SendgridApiKey"].ToString());
+            }
         }
         private void StartSMSNotificationScheduler()
         {

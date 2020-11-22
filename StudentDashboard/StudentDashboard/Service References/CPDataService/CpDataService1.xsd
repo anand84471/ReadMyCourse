@@ -60,6 +60,8 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
         <xs:element minOccurs="0" name="Url" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="MediumSizeUrl" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="SmallSizeUrl" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -74,7 +76,9 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="StudentId" type="xs:long" />
-        <xs:element minOccurs="0" name="Url" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="OriginalFile" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="SmallThumbnailUrl" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="MediumThumbnailUrl" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

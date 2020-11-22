@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StudentDashboard.Models.Classroom;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,9 +23,10 @@ namespace StudentDashboard.Models.Student
         public int m_iClassroomCharge;
         public string m_strClassroomCharge;
         public string m_strClassroomBackgroundImage;
+        public ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal;
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined,int NoOfAssignments,int NoOfLiveClassess,
             int NoOfTests,int NoOfStudyMaterials,string ClassroomName,string ClassroomDescription,DateTime ClassroomStartDate,
-            int ClassroomChargeInPaise,string ClassroomImage
+            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus
             )
         {
             this.m_iNoOfAssignments = NoOfAssignments;
@@ -66,12 +69,17 @@ namespace StudentDashboard.Models.Student
             }
             if(ClassroomImage==null)
             {
-                this.m_strClassroomBackgroundImage = "../../Images/course-3.jpg";
+                this.m_strClassroomBackgroundImage = Constants.CLASSROOM_DEFAULT_IMAGE;
             }
             else
             {
                 this.m_strClassroomBackgroundImage = ClassroomImage;
             }
+            if(ClassroomSyllabus!=null)
+            {
+                classroomSyllabusDetailsModal= JsonConvert.DeserializeObject<ClassroomSyllabusDetailsModal>(ClassroomSyllabus);
+            }
+
         }
         public ClassroomJoinDetailsModal()
         {
