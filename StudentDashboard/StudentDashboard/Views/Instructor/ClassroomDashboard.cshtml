@@ -224,7 +224,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Tests
+                                <span class="fa fa-clock-o"></span> Tests
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="CreateClassroomTest?id=@Model.m_llClassRoomId"><span class="fa fa-plus-circle"></span>  Add new test</a>
@@ -233,7 +233,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Study Materials
+                                <span class="fa fa-paperclip"></span> Study Materials
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#navAddnewAttachment" onclick="viewAddNewAttachment()"><span class="fa fa-plus-circle"></span> Add new study material</a>
@@ -242,7 +242,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
+                                <span class="fa fa-cogs"></span> Settings 
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#navUpdateDetails" onclick="showUpdateMeeting()"><span class="fa fa-cog"></span> Update Details</a>
@@ -764,10 +764,10 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>S.No.</th>
-                                    <th class="p-2">Start time</th>
-                                    <th class="p-2">Close time</th>
-                                    <th>Students joined</th>
-
+                                    <th class="pr-2">Start time</th>
+                                    <th class="pr-2">Close time</th>
+                                    <th class="pr-2">Students joined</th>
+                                    <th class="pr-2">Edit video</th>
                                 </tr>
                             </thead>
 
@@ -822,7 +822,7 @@
                                 </div>
                             </div>
                             <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
-                                <i class="fa fa-download upload-icon" aria-hidden="true"></i>
+                                <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
                                 <div class="form-group">
                                     <label for="exampleFormControlFile1">Upload attachment</label>
                                     <input type="file" id="studyMaterialUpload" name="file" accept="*" />
@@ -1067,28 +1067,58 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height:500px;overflow-y:scroll;">
                 <h3>Please select classroom type</h3>
-                <h4 class="text-info" >Public: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPublic">Selected</span></h4>
+                <h4 class="text-info">Public: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPublic">Selected</span><button class="btn btn-outline-primary ml-2" onclick="activateClassroomChoose(2)">Select this</button></h4>
                 <p>Public classroom will be public and any studnt can join. We incourage you to create public classroom to support student.</p>
+
+                <h4 class="text-info">Private: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPrivate">Selected</span><button class="btn btn-outline-primary ml-2" onclick="activateClassroomChoose(1)">Select this</button></h4>
+                <p>
+                    Private classroom will not appear to public and any studnt can join the classroom by Id and access code.
+                    If you are a private institution select this option.
+                </p>
+               
+                <hr />  
+                <h5 class="font-weight-bolder">Classroom settings</h5>
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-6 col-form-label">Set classroom joining fee</label>
                     <div class="col-sm-4">
-                        <input onchange="validateAmount(this)" min="0" type="number"  name="courseName" class="form-control" id="classroomFee" placeholder="please set an amount in rupees as the fee of your classroom" value="0">
+                        <input  min="0" type="number" name="courseName" class="form-control" id="classroomFee" placeholder="please set an amount in rupees as the fee of your classroom" value="0">
                     </div>
                 </div>
-                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(2)">Select this</button>
-                <h4 class="text-info">Private: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPrivate">Selected</span></h4>
-                <p>Private classroom will not appear to public and any studnt can join the classroom by Id and Accesscode.
-                If you are a private institution select this option.
-                </p>
-                <button class="btn btn-outline-primary" onclick="activateClassroomChoose(1)">Select this</button>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Please enter classroom start date</label>
+                    <div class="col-sm-6">
+                        <input  type="date" class="form-control" id="classroomStartDate" placeholder="please enter classroom start date" >
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-6 col-form-label">Start time:</label>
+                        <div class="col-sm-6">
+                            <input type="time" class="form-control" id="classroomDailyStartTime" placeholder="please enter classroom start date" >
+                        </div>
+                    </div>
+                    
+                </div>
+                <h6 class="font-weight-bolder">Please select classroom </h6>
+                <div class="row col-sm-12">
+                <button onclick="setDate(this,'monday')" class="btn btn-sm btn-outline-primary col-2">Monday</button>
+                <button onclick="setDate(this,'tuesday')"  class="btn btn-sm btn-outline-primary col-2">Tuesday</button>
+                <button onclick="setDate(this,'wednesday')"  class="btn btn-sm btn-outline-primary col-3">Wednesday</button>
+                <button onclick="setDate(this,'thursday')"  class="btn btn-sm btn-outline-primary col-3">Thursday</button>
+                    <button onclick="setDate(this,'friday')"  class="btn btn-sm btn-outline-primary col-2">Friday</button>
+                    <button onclick="setDate(this,'saturday')"  class="btn btn-sm btn-outline-primary col-2">Saturday</button>
+                    <button onclick="setDate(this,'sunday')"  class="btn btn-sm btn-outline-primary col-2">Sunday</button>
+                </div>
+                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" disabled id="activateClassroomButton" onclick="activateClassroom()">Activate Now</button>
             </div>
-        </div>
+        </div>    
     </div>
 </div>
 <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
@@ -1281,15 +1311,27 @@
     {
         $("#classroomActivateModal").modal("show");
     }
+    function getClassroomWeekDaysSchedule(){
+
+    }
     function activateClassroom() {
         debugger;
         var classroomJoiningFee = $("#classroomFee").val();
+        var _data = {
+            "classroom_id": "@Model.m_llClassRoomId",
+            "classroom_joining_fee": classroomJoiningFee,
+            "classroom_start_date": $("#classroomStartDate").val(),
+            "classroom_start_time": $("#classroomDailyStartTime").val(),
+            "classroom_weekday_schedule": getSelectedDates(),
+            "public_type": ClassroomPublicType
+        }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/activateclassroom?id=@Model.m_llClassRoomId&publicType=".concat(ClassroomPublicType).concat("&ClassroomJoiningFee=").concat(classroomJoiningFee),
+            data:JSON.stringify(_data),
+            url: "/api/v1/instructor/activateclassroom",
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     location.reload();
@@ -1330,10 +1372,10 @@
                     $('#tableBody').empty();
                     for (var i = 0; i < meetings.length; i++) {
                         sNo++;
-                        var rows = '<tr><td scope="row" ><button type="button" class="btn btn-link font-weight-bold" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + sNo + '</button></td>'
-                        + '<td>' + meetings[i].meeting_start_time + '</td><td>' + meetings[i].meeting_finish_time + '</td>'
-                         + '<td><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
-
+                        var rows = '<tr><td class="pr-2"><i class="fa fa-4x fa-play-circle"></i></td></td>'
+                        + '<td class="pr-2">' + meetings[i].meeting_start_time + '</td><td class="pr-2">' + meetings[i].meeting_finish_time + '</td>'
+                        + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
+                        +''
                         +'</tr>';
                         $('#tableBody').append(rows);
                         $("#spinner").remove();
@@ -2411,5 +2453,46 @@
         {
             $(id).val("");
         }
+    }
+    $(function () {
+        $('#classroomStartDate').prop('min', function () {
+            return new Date().toJSON().split('T')[0];
+        });
+        $('#classroomStartDate').prop('value', function () {
+            return new Date().toJSON().split('T')[0];
+        });
+        $('#classroomDailyStartTime').prop('value', function () {
+            return new Date().toJSON().split('T')[0];
+        });
+       
+    });
+    var selectedDates = {
+        "monday": 0,
+        "tuesday": 0,
+        "wednesday": 0,
+        "thursday": 0,
+        "friday": 0,
+        "saturday": 0,
+        "sunday":0
+    };
+    
+    function setDate(id,date)
+    {
+        if ($(id).hasClass("btn-primary"))
+        {
+            $(id).removeClass("btn-primary");
+            $(id).addClass("btn-outline-primary");
+        } else {
+            $(id).addClass("btn-primary");
+            $(id).removeClass("btn-outline-primary");
+        }
+        selectedDates[date] = selectedDates[date] == 0 ? 1 : 0;
+        //alert(selectedDates[date])
+    }
+    function getSelectedDates()
+    {
+        return ""+selectedDates["monday"]+
+            selectedDates["tuesday"] + selectedDates["wednesday"] + selectedDates["thursday"] +
+            selectedDates["friday"] + selectedDates["saturday"] + selectedDates["sunday"];
     }
 </script>

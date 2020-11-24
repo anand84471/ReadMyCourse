@@ -311,6 +311,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpRequest\ActivateClassroomRequest.cs" />
     <Compile Include="HttpRequest\ActivateCourseHttpRequest.cs" />
     <Compile Include="HttpRequest\AssignmentQuestionResponse.cs" />
     <Compile Include="HttpRequest\AssignmentSubmissionRequest.cs" />

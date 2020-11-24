@@ -1102,14 +1102,17 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.GetAllClassroomForIsntrcutor(InstrucorId);
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId,int ClassroomPublicType,int ClassroomJoiningFeeInRupees)
+        public async Task<bool> ActivateClassroom(ActivateClassroomRequest activateClassroomRequest)
         {
             bool result = false;
             try
             {
-                string ShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
-                string TinyUrl = await objInstructorBusinessLayer.GetTinyUrlForClassroom(ClassroomId, ShareCode);
-                result = await objHomeDTO.ActivateClassroom(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType, ClassroomJoiningFeeInRupees*100);
+
+                activateClassroomRequest.m_strClassroomShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
+                activateClassroomRequest.m_strTinyUrl  = await objInstructorBusinessLayer.GetTinyUrlForClassroom(activateClassroomRequest.m_llClassroomId,
+                    activateClassroomRequest.m_strClassroomShareCode);
+                activateClassroomRequest.m_iClassroomJoiningFee = activateClassroomRequest.m_iClassroomJoiningFee * 100;
+                result = await objHomeDTO.ActivateClassroom(activateClassroomRequest);
             }
             catch (Exception Ex)
             {

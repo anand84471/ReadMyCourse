@@ -1498,6 +1498,8 @@
         <xs:element minOccurs="0" name="ClassRoomDescription" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="BackGroundImageUrl" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ClassroomMeetingName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ThumbnailSmall" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ThumbnailMedium" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1573,6 +1575,8 @@
         <xs:element minOccurs="0" name="ShareUrl" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ClassroomPublicType" type="xs:int" />
         <xs:element minOccurs="0" name="ClassroomJoiningAmountInPaise" type="xs:int" />
+        <xs:element minOccurs="0" name="StartTime" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ArrayOpeningDays" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -3930,6 +3934,9 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="CourseName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="CourseDescription" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CourseImageUrl" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CourseThumbnailSmall" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CoursethumbnailMedium" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="InstructorId" type="xs:int" />
         <xs:element minOccurs="0" name="CourseId" type="xs:long" />
       </xs:sequence>

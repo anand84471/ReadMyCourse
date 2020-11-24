@@ -27,6 +27,8 @@ namespace StudentDashboard.Models.Course
         [JsonProperty("indexes")]
         public List<IndexModel> m_lsIndexes { get; set; }
         public int m_iTotalNoOdIndexes { get; set; }
+        [JsonProperty("course_image_details")]
+        public ImageUploadDetailsModal imageUploadDetailsModal;
         public  CourseModel()
         {
 

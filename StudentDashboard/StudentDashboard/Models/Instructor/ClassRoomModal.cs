@@ -45,7 +45,8 @@ namespace StudentDashboard.Models.Instructor
         public string m_strClassroomMeetingName;
         [JsonProperty("classroom_joining_fee")]
         public string m_strClassrooomJoiningFee;
-
+        [JsonProperty("classroom_image_details")]
+        public ImageUploadDetailsModal imageUploadDetailsModal;
         public ClassRoomModal()
         {
 

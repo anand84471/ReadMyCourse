@@ -40,7 +40,8 @@ namespace CPDataService
         [OperationContract]
         DataSet ValidateSchoolLoginDetails(string Email, string Password);
         [OperationContract]
-        bool InsertNewCourse(string CourseName, string CourseDescription, int InstructorId, ref long CourseId);
+        bool InsertNewCourse(string CourseName, string CourseDescription,
+            string CourseImageUrl, string CourseThumbnailSmall, string CoursethumbnailMedium, int InstructorId, ref long CourseId);
         [OperationContract]
         bool InertNewCourseIndex(string IndexName, string IndexDescription, long CourseId, ref long IndexId);
         [OperationContract]
@@ -342,7 +343,7 @@ namespace CPDataService
         DataSet GetAllClassRoomForInstrcutor(int InstrcutorId);
         [OperationContract]
         long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl,
-            string ClassroomMeetingName);
+            string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium);
         [OperationContract]
         bool InertNewPostToClassroom(long ClassroomId, string Post);
         [OperationContract]
@@ -350,7 +351,8 @@ namespace CPDataService
         [OperationContract]
         DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
         [OperationContract]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl,
+            int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays);
         [OperationContract]
         DataSet GetClasroomDetails(long ClassRoomId);
         [OperationContract]

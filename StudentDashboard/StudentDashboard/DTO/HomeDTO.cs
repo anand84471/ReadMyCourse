@@ -177,6 +177,9 @@ namespace StudentDashboard.DTO
             {
                 long CourseId = 0;
                 result = objCPDataService.InsertNewCourse(objCourseModel.m_strCourseName, objCourseModel.m_strCourseDescription,
+                               objCourseModel.imageUploadDetailsModal.m_strOriginalFileUrl,
+                               objCourseModel.imageUploadDetailsModal.m_strSmallSizeUrl,
+                               objCourseModel.imageUploadDetailsModal.m_strMediumSizeUrl,
                                                        objCourseModel.m_iInstructorId, ref CourseId);
                 if (CourseId!=-1)
                 {
@@ -804,14 +807,15 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<bool> ActivateClassroom(long ClassroomId, string ShareCode, string TinyUrl,int ClassroomPublicType,
-            int ClassroomJoiningFeeInPaise)
+        public async Task<bool> ActivateClassroom(ActivateClassroomRequest activateClassroomRequest)
         {
             bool result = false;
             try
             {
-                result = await objCPDataService.ActivateClassroomAsync(ClassroomId, ShareCode, TinyUrl, ClassroomPublicType,
-                    ClassroomJoiningFeeInPaise);
+                result = await objCPDataService.ActivateClassroomAsync(activateClassroomRequest.m_llClassroomId,
+                    activateClassroomRequest.m_strClassroomShareCode,activateClassroomRequest.m_strTinyUrl,
+                    activateClassroomRequest.m_bPublicType,activateClassroomRequest.m_iClassroomJoiningFee,
+                    activateClassroomRequest.m_strClassroomStartTime,activateClassroomRequest.m_strClassroomBitwiseSchedule);
             }
             catch (Exception Ex)
             {
@@ -2081,7 +2085,11 @@ namespace StudentDashboard.DTO
             try
             {
                 ClassRoomId = await objCPDataService.InsertNewClassRoomForInstructorAsync(objClassRoomModal.m_iInstrutcorId,
-                    objClassRoomModal.m_strClassRoomName, objClassRoomModal.m_strClassRoomDescription, objClassRoomModal.m_strBackGroundImageUrl, objClassRoomModal.m_strClassroomMeetingName);
+                    objClassRoomModal.m_strClassRoomName, objClassRoomModal.m_strClassRoomDescription,
+                    objClassRoomModal.imageUploadDetailsModal.m_strOriginalFileUrl, 
+                    objClassRoomModal.m_strClassroomMeetingName,
+                    objClassRoomModal.imageUploadDetailsModal.m_strSmallSizeUrl,
+                    objClassRoomModal.imageUploadDetailsModal.m_strMediumSizeUrl);
             }
             catch(Exception Ex)
             {

@@ -2,6 +2,28 @@
     ViewBag.Title = "Create Course";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
 }
+<style type="text/css">
+    .classroom-background {
+        padding-top: 10px;
+        align-items: center;
+        overflow-y: no-display;
+        background: #f8f8f8;
+        margin-bottom: 10px;
+        text-align: center;
+        border: 3px solid #eee;
+        box-shadow: 2px;
+        border-radius: 8px;
+    }
+
+        .classroom-background:hover {
+            border: 2px solid red;
+        }
+
+    .upload-icon {
+        font-size: 72px;
+        align-items: center;
+    }
+</style>
 <div class="container-fluid" id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Course</h1>
@@ -61,6 +83,20 @@
                     <div class="col-sm-8">
                         <textarea type="text" onchange="validateInputField(this)" placeholder="Enter course description" id="courseDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
                     </div>
+                    <form class="card-img-top m-2  classroom-background" method="post" enctype="multipart/form-data">
+                        <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Upload classroom back ground image</label>
+                            <input type="file" id="fileUpload" name="file" accept="image/x-png,image/gif,image/jpeg" />
+                            <button type="button" class="btn btn-primary" onclick="requestUpload()">Upload</button>
+                            <div class="progress progress-sm mr-2">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                            </div>
+                            <div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">
+                                file uploaded successfully
+                            </div>
+                        </div>
+                    </form> 
                     <div class="alert alert-success" id="postsubmit" style="display:none" role="alert">
                         course added successfully
                     </div>
@@ -137,10 +173,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <video class="video-fluid embed-responsive embed-responsive-16by9" controls id="imagePreview" >
-                    
-                </video>
-               
+                <img class="img-fluid" controls id="imagePreview" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -149,7 +182,7 @@
     </div>
 </div>
 <div class="modal fade" id="invalidSubmittion" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="card border-danger modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
@@ -158,10 +191,10 @@
                 </button>
             </div>
             <div class="modal-body text-danger">
-                <h3 id="courseIdGenerated">Some of the fields are empty</h3>
+                <h5 id="course-creation-failed-msg">Some of the fields are empty</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -551,14 +584,20 @@
         debugger;
         if ($("#courseName").hasClass("is-invalid") || $("#courseDescription").hasClass("is-invalid") || $("#courseDescription").val() == "" || $("#courseName").val()=="")
         {
-            $("#invalidSubmittion").modal('show');
+            $("#course-creation-failed-msg").text("OOPS! Some of the fields are empty.");
+            $("#invalidSubmittion").modal("show");
             return;
         }
         var _data =
             {
                 "name":$("#courseName").val(),
                 "description":$("#courseDescription").val(),
-                "instructor_id":$("#instructorId").val()
+                "instructor_id": $("#instructorId").val(),
+                "course_image_details": {
+                    "small_size_url":smallIconUrl,
+                    "original_url":backGroundImagePath,
+                    "medium_size_url": mediumSizeIconUrl
+                    }
             }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -582,7 +621,9 @@
                     //$("#courseMenuButton").show();
                 }
                 else {
+                    $("#course-creation-failed-msg").text("OOPS! Some error has occured while creating course.");
                     $("#invalidSubmittion").modal("show");
+                    
                 }
             }
         });
@@ -1060,6 +1101,63 @@
                 }
                 else {
                     $("#postUploadAlert").append('<button type="button" class="btn btn-link" onclick="requestPreviewUpload()">File uploading failed</button>');
+                }
+            }
+        });
+    }
+
+    function requestPreviewUpload() {
+        $("#previewUploadModal").modal("show");
+    }
+</script>
+
+<script type="text/javascript"> 
+    var smallIconUrl;
+    var mediumSizeIconUrl;
+    var backGroundImagePath;
+    function requestUpload() {
+        document.getElementById("fileUploadProgressBar").style.width = "0%";
+        debugger
+        var data = new FormData();
+        var file = $('#fileUpload')[0];
+        data.append('file', file.files[0]);
+        $.ajax({
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        document.getElementById("fileUploadProgressBar").style.width = percentComplete + "%";
+                        if (percentComplete === 100) {
+                            $("#postUploadAlert").show();
+                            $("#postUploadAlert").append('<button type="button" class="btn btn-link" onclick="requestPreviewUpload()">View upload&rarr;</button>');
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            data: data,
+            url: "/api/v1/instructor/UploadImage",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    backGroundImagePath = data.file_location;
+                    smallIconUrl = data.small_size_icon_url;
+                    mediumSizeIconUrl = data.medium_size_icon_url;
+                    $("#imagePreview").attr("src", data.file_location);
+                }
+                else {
+                    $("#errorAlertMessageBody").text("test could not be deleted");
+                    $("#errorAlertHeader").modal('show');
                 }
             }
         });

@@ -704,7 +704,8 @@ namespace CPDataService
         }
         //Cp_spInsertNewSchoolDetails
 
-        public bool InsertNewCourse(string CourseName, string CourseDescription, int InstructorId,ref long CourseId)
+        public bool InsertNewCourse(string CourseName, string CourseDescription, 
+            string CourseImageUrl,string CourseThumbnailSmall,string CoursethumbnailMedium,int InstructorId,ref long CourseId)
         {
             bool result = false;
             string strCurrentMethodName = "InertNewCourse";
@@ -717,6 +718,30 @@ namespace CPDataService
                 m_command.Parameters.Add("@strCousreDescription", SqlDbType.VarChar, 500).Value = CourseDescription;
                 m_command.Parameters.Add("@iInstructorId", SqlDbType.Int).Value = InstructorId;
                 m_command.Parameters.Add("@llCourseId", SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                if(CourseImageUrl==null)
+                {
+                    m_command.Parameters.Add("@strCourseImageUrl", SqlDbType.VarChar, 250).Value = DBNull.Value;
+                }
+                else
+                {
+                    m_command.Parameters.Add("@strCourseImageUrl", SqlDbType.VarChar, 250).Value = CourseImageUrl;
+                }
+                if(CourseThumbnailSmall==null)
+                {
+                    m_command.Parameters.Add("@strCourseThumbnailSmall", SqlDbType.VarChar, 250).Value = DBNull.Value;
+                }
+                else
+                {
+                    m_command.Parameters.Add("@strCourseThumbnailSmall", SqlDbType.VarChar, 250).Value = CourseThumbnailSmall;
+                }
+                if(CoursethumbnailMedium==null)
+                {
+                    m_command.Parameters.Add("@strCourseThumbnailMedium", SqlDbType.VarChar, 250).Value = DBNull.Value;
+                }
+                else
+                {
+                    m_command.Parameters.Add("@strCourseThumbnailMedium", SqlDbType.VarChar, 250).Value = CoursethumbnailMedium;
+                }
                 m_con.Open();
                 if (m_command.ExecuteNonQuery() > 0)
                 {
@@ -6038,7 +6063,7 @@ namespace CPDataService
             return result;
         }
         public long InsertNewClassRoomForInstructor(int InstrcuctorId,string ClassRoomName,string ClassRoomDescription,string BackGroundImageUrl,
-            string ClassroomMeetingName)
+            string ClassroomMeetingName,string ThumbnailSmall,string ThumbnailMedium)
         {
             long result = -1;
             string strCurrentMethodName = "InsertNewClassRoomForInstructor";
@@ -6057,6 +6082,22 @@ namespace CPDataService
                 else
                 {
                     m_command.Parameters.Add("@strBackGroundImagePath", SqlDbType.VarChar, 250).Value = DBNull.Value;
+                }
+                if (ThumbnailSmall != null)
+                {
+                    m_command.Parameters.Add("@strSmallIconPath", SqlDbType.VarChar, 250).Value = ThumbnailSmall;
+                }
+                else
+                {
+                    m_command.Parameters.Add("@strSmallIconPath", SqlDbType.VarChar, 250).Value = DBNull.Value;
+                }
+                if (ThumbnailSmall != null)
+                {
+                    m_command.Parameters.Add("@strMediumIconPath", SqlDbType.VarChar, 250).Value = ThumbnailMedium;
+                }
+                else
+                {
+                    m_command.Parameters.Add("@strMediumIconPath", SqlDbType.VarChar, 250).Value = DBNull.Value;
                 }
                 m_command.Parameters.Add("@strClassroomMeetingName", SqlDbType.VarChar, 200).Value = ClassroomMeetingName;
                 m_command.Parameters.Add("@strClassRoomDescription", SqlDbType.NVarChar, 1000).Value = ClassRoomDescription;
@@ -6257,7 +6298,8 @@ namespace CPDataService
             }
             return sDS;
         }
-        public bool ActivateClassroom(long ClassroomId,string ShareCode,string ShareUrl,int ClassroomPublicType,int ClassroomJoiningAmountInPaise)
+        public bool ActivateClassroom(long ClassroomId,string ShareCode,string ShareUrl,
+            int ClassroomPublicType,int ClassroomJoiningAmountInPaise, string StartTime,string ArrayOpeningDays)
         {
             bool result = false;
             string strCurrentMethodName = "ActivateClassroom";
@@ -6271,6 +6313,8 @@ namespace CPDataService
                 m_command.Parameters.Add("@strShareCode", SqlDbType.VarChar, 10).Value = ShareCode;
                 m_command.Parameters.Add("@iClassroomPublicType", SqlDbType.Int).Value = ClassroomPublicType;
                 m_command.Parameters.Add("@iClassroomChangeInPaise", SqlDbType.Int).Value = ClassroomJoiningAmountInPaise;
+                m_command.Parameters.Add("@strClassroomWeekDaysSchedule", SqlDbType.VarChar, 10).Value = ArrayOpeningDays;
+                m_command.Parameters.Add("@strClassroomStartTime", SqlDbType.VarChar, 10).Value = StartTime;
                 m_con.Open();
                 result = m_command.ExecuteNonQuery() > 0;
             }

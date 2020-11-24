@@ -516,10 +516,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassRoomForInstrcutorAsync(int InstrcutorId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
-        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName);
+        long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructor", ReplyAction="http://tempuri.org/ICpDataService/InsertNewClassRoomForInstructorResponse")]
-        System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName);
+        System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InertNewPostToClassroom", ReplyAction="http://tempuri.org/ICpDataService/InertNewPostToClassroomResponse")]
         bool InertNewPostToClassroom(long ClassroomId, string Post);
@@ -540,10 +540,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetMeetingDetailsOfClassroomAsync(long ClassRoomId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise);
+        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClasroomDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClasroomDetailsResponse")]
         System.Data.DataSet GetClasroomDetails(long ClassRoomId);
@@ -2090,17 +2090,29 @@ namespace StudentDashboard.CPDataService {
         public string CourseDescription;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int InstructorId;
+        public string CourseImageUrl;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
+        public string CourseThumbnailSmall;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
+        public string CoursethumbnailMedium;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=5)]
+        public int InstructorId;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=6)]
         public long CourseId;
         
         public InsertNewCourseRequest() {
         }
         
-        public InsertNewCourseRequest(string CourseName, string CourseDescription, int InstructorId, long CourseId) {
+        public InsertNewCourseRequest(string CourseName, string CourseDescription, string CourseImageUrl, string CourseThumbnailSmall, string CoursethumbnailMedium, int InstructorId, long CourseId) {
             this.CourseName = CourseName;
             this.CourseDescription = CourseDescription;
+            this.CourseImageUrl = CourseImageUrl;
+            this.CourseThumbnailSmall = CourseThumbnailSmall;
+            this.CoursethumbnailMedium = CoursethumbnailMedium;
             this.InstructorId = InstructorId;
             this.CourseId = CourseId;
         }
@@ -3058,12 +3070,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllClassRoomForInstrcutorAsync(InstrcutorId);
         }
         
-        public long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName) {
-            return base.Channel.InsertNewClassRoomForInstructor(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName);
+        public long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium) {
+            return base.Channel.InsertNewClassRoomForInstructor(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName, ThumbnailSmall, ThumbnailMedium);
         }
         
-        public System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName) {
-            return base.Channel.InsertNewClassRoomForInstructorAsync(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName);
+        public System.Threading.Tasks.Task<long> InsertNewClassRoomForInstructorAsync(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl, string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium) {
+            return base.Channel.InsertNewClassRoomForInstructorAsync(InstrcuctorId, ClassRoomName, ClassRoomDescription, BackGroundImageUrl, ClassroomMeetingName, ThumbnailSmall, ThumbnailMedium);
         }
         
         public bool InertNewPostToClassroom(long ClassroomId, string Post) {
@@ -3090,12 +3102,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetMeetingDetailsOfClassroomAsync(ClassRoomId);
         }
         
-        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise) {
-            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise);
+        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays) {
+            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise) {
-            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise);
+        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays) {
+            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays);
         }
         
         public System.Data.DataSet GetClasroomDetails(long ClassRoomId) {
@@ -4052,10 +4064,13 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.InsertNewCourse(request);
         }
         
-        public bool InsertNewCourse(string CourseName, string CourseDescription, int InstructorId, ref long CourseId) {
+        public bool InsertNewCourse(string CourseName, string CourseDescription, string CourseImageUrl, string CourseThumbnailSmall, string CoursethumbnailMedium, int InstructorId, ref long CourseId) {
             StudentDashboard.CPDataService.InsertNewCourseRequest inValue = new StudentDashboard.CPDataService.InsertNewCourseRequest();
             inValue.CourseName = CourseName;
             inValue.CourseDescription = CourseDescription;
+            inValue.CourseImageUrl = CourseImageUrl;
+            inValue.CourseThumbnailSmall = CourseThumbnailSmall;
+            inValue.CoursethumbnailMedium = CoursethumbnailMedium;
             inValue.InstructorId = InstructorId;
             inValue.CourseId = CourseId;
             StudentDashboard.CPDataService.InsertNewCourseResponse retVal = ((StudentDashboard.CPDataService.ICpDataService)(this)).InsertNewCourse(inValue);

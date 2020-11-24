@@ -46,7 +46,6 @@ namespace StudentDashboard.API
             InsertNewCourseResponse objInsertNewCourseResponse = new InsertNewCourseResponse();
             if (objCourseModel == null)
             {
-
                 objInsertNewCourseResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
                 objInsertNewCourseResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
             }
@@ -1800,15 +1799,15 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("activateclassroom")]
-        public async Task<APIDefaultResponse> ActivateClassroom(long id, int publicType, int ClassroomJoiningFee)
+        public async Task<APIDefaultResponse> ActivateClassroom(ActivateClassroomRequest activateClassroomRequest)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
                 int InstructorId = GetInstructorIdInRequest();
-                if (InstructorId != -1 || await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, id))
+                if (InstructorId != -1 || await objHomeService.CheckCourseIdExistsForInstrcutor(InstructorId, activateClassroomRequest.m_llClassroomId))
                 {
-                    if (await objHomeService.ActivateClassroom(id, publicType, ClassroomJoiningFee))
+                    if (await objHomeService.ActivateClassroom(activateClassroomRequest))
                     {
                         objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
                         objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
