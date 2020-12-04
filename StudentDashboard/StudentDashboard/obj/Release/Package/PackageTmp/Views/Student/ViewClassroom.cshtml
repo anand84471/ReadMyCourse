@@ -217,10 +217,13 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         <a class="nav-link" href="#navPreviousMeetings" onclick="showTeachingSessions()">Teaching Sessions <span class="sr-only">(current)</span></a>
                     </li>*@
                     <li class="nav-item">
-                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Messages</a>
+                        <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Discussions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#navClassroomAttachments" onclick="getAllClassroomAttachments()"><span class="fa fa-book"></span> Study Materials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-play-circle"></span> Live classes</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -252,10 +255,6 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         </div>
                     </li>
                 </ul>
-                @*<form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>*@
             </div>
         </nav>
     </div>
@@ -476,6 +475,138 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                 </div>
             </div>
         </div>
+        <div class="row col-lg-12 mb-2" id="navPreviousClasses" style="display:none">
+            <div class="col-lg-8 mb-1">
+                <div class="card shadow-lg">
+                    <h4 id="no-video-data-present" class="p-2 text-center align-items-center">No video file present</h4>
+
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <h4 id="no-data-present" class="text-center">No data present in the topic</h4>
+                        <iframe id="video-url" class="embed-responsive-item" src="" allowfullscreen style="display:none;"></iframe>
+                    </div>
+                    <h4 class="text-center font-weight-bolder p-1" id="topic-name"></h4>
+                    @*<div class="card-footer">
+                        <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
+                            </li>
+                        </ul>
+                        <hr />
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
+                                    <div class="col-sm-8">
+                                        <input onchange="validateInputField(this)" type="text" class="form-control" id="liveClassTopicName" placeholder="give your lecture a name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Notes</label>
+                                    <div class="col-sm-8">
+                                        <textarea type="text" onchange="validateInputField(this)" placeholder="share some notes related to class" id="liveClassNotes" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Edit video url or upload new</label>
+                                    <div class="col-sm-8">
+                                        <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="liveClassVideoUrl" placeholder="Enter attachment url">
+                                    </div>
+                                </div>
+                                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                                    <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlFile1">Upload attachment</label>
+                                        <input type="file" id="studyMaterialUpload" name="file" accept="*" />
+                                        <button type="button" class="btn btn-primary" onclick="updateClassroomMeetingDetails()">Upload</button>
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                        </div>
+                                        <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
+                                            file uploaded successfully
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
+                                    Updated Sucessfully
+                                </div>
+                                <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
+                                    Can not be
+                                </div>
+                                <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
+                            </div>
+                            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="card col-lg-4  border-primary">
+                <div class="card-header">Live classes <span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous class</a></span></div>
+                <div class="card-body">
+                    <div class="table-responsive table-hover">
+                        <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
+
+
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                        
+                    </div>
+                    <div id="spinner" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="text-center" id="footer" style="display:none">
+                        <div class="card-body">
+                            <h6 class="card-title"> Live class not started.</h6>
+                            <div id="assignmentContainer" class="assignmentContainer"></div>
+
+                        </div>
+                        <div class="card-footer text-muted">
+                            Thank you!
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-lg-12 mb-2" id="navClassroomLiveClass" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Live classes</div>
+                <div class="card-body">
+                    <div class="table-responsive ">
+                        <table id="tableClassroomAttachments" class="table-responsive table-hover" style="display:none">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="p-2">Topic Name</th>
+                                    <th class="p-2">Start Time</th>
+                                    <th class="p-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBodyClassroomAttachments"></tbody>
+                        </table>
+                    </div>
+                    <div id="spinnerClassroomAttachments" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="card-body" id="footerAllStudyMaterials" style="display:none">
+                        <h6 class="card-title"> No study materials found</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-12 mb-2" id="navAllClassroomTestSubmissions" style="display:none">
             <div class="card shadow-lg border-primary">
                 <div class="card-header">View test submissions</div>
@@ -551,7 +682,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     function hideSpinner() {
         $("#spinner").fadeOut();
     }
-    
+
     //----------------Index Section-------------------------------------
 
     var indexDetails = [];
@@ -580,7 +711,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     }
                     else {
                         $("#isMeetingActive").text("Live class is not started.");
-                        
+
                         $("#meetingJoinLink").remove();
                     }
                     if (classroomDetails.background_url != null && classroomDetails.background_url != "")
@@ -761,6 +892,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         $("#navAllClassroomTests").hide();
         $("#navAllClassroomTestSubmissions").hide();
         $("#navClassroomAttachments").hide();
+        $("#navPreviousClasses").hide();
 
     }
     function showClassroomMessages()
@@ -868,6 +1000,46 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             }
         });
     }
+    function getAllLiveClassMeetingDetailsForStudent() {
+
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/FetchAllLiveClassMeetingDetailForStudent?ClassroomId=@ViewBag.Id",
+            success: function (data) {
+
+                if (data != null && data.response_code == 1) {
+                    var meetings = data.meetings;
+                    var isJoined = "absent";
+                    $('#tableBody').empty();
+                    var sNo = 0;
+                    for (var i = 0; i < meetings.length; i++) {
+                        sNo++;
+                        isJoined = "absent";
+                        if (meetings[i].student_join_id != null) {
+                            isJoined = "present";
+                        }
+                        var rows = '<tr><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                        + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].date + '</td>'
+                        + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + isJoined + '</button></td>'
+                        + ''
+                        + '</tr>';
+                        $('#tableBody').append(rows);
+                        $("#spinner").remove();
+                        $("#coursesTable").show();
+                    }
+                    $("#startPreviousMeeting").fadeIn();
+                    $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=@ViewBag.Id");
+                }
+                else {
+                    $("#footer").show();
+                    $("#spinner").remove();
+                }
+            }
+        });
+    }
     function viewAllClassroomTest() {
         hideAllClssroomDetails();
         $("#navAllClassroomTests").show();
@@ -911,6 +1083,14 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             }
         });
     }
+    function viewAllPreviousLiveClasses()
+    {
+        hideAllClssroomDetails();
+        $("#navPreviousClasses").show();
+        getAllLiveClassMeetingDetailsForStudent();
+
+    }
+
     function viewAllClassroomTestSubmissions() {
         hideAllClssroomDetails();
         $("#navAllClassroomTestSubmissions").show();
@@ -995,6 +1175,45 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         catch (ex) {
 
         }
+    }
+    function showClassroomMeetingContent(meetingId) {
+        var _data =
+           {
+               "meeting_id": meetingId,
+               "classroom_id": "@ViewBag.Id"
+           }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/course/FetchLiveClassMeetingDetailForStudent",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#no-data-present").hide();
+                    if (data.meeting_details.topic_name != null) {
+                        $("#topic-name").text(data.meeting_details.topic_name);
+                    }
+                    if (data.meeting_details.video_url != null) {
+                        $("#video-url").attr("src", data.meeting_details.video_url);
+                        $("#video-url").show();
+                        $("#no-video-data-present").hide();
+                    }
+
+                    else {
+                        $("#video-url").hide();
+                        $("#no-video-data-present").show();
+                    }
+                }
+                else {
+                    $("#no-data-present").show();
+                    //else part of ajax call
+                }
+
+            }
+        });
     }
 
 </script>

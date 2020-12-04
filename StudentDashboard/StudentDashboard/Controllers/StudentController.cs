@@ -470,7 +470,7 @@ namespace StudentDashboard.Controllers
                 StudentRegisterModal objRegiserModel = new StudentRegisterModal();
                 objRegiserModel.m_strFirstName = collection["firstName"];
                 objRegiserModel.m_strLastName = collection["lastName"];
-                objRegiserModel.m_strPhoneNo = collection["phoneNo"];
+                objRegiserModel.m_strPhoneNo = collection["countryCode"]+collection["phoneNo"];
                 objRegiserModel.m_strAddressLine1 = collection["address1"];
                 objRegiserModel.m_strAddressLine2 = collection["address2"];
                 objRegiserModel.m_iCityId = int.Parse(collection["city"]);
@@ -675,6 +675,38 @@ namespace StudentDashboard.Controllers
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public PartialViewResult JoinNewStudent()
+        {
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public PartialViewResult JoinedStudents()
+        {
+            try
+            {
+                return PartialView();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinedStduents", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
@@ -1178,6 +1210,58 @@ namespace StudentDashboard.Controllers
                 return View("Error");
             }
             //return View("UnAuthorizedAccess.cshtml");
+        }
+        [HttpGet]
+        public async Task<ActionResult> StudentProfile(long id)
+        {
+            try
+            {
+
+                if (!await objStudentService.CheckStudentFollowingStudent(long.Parse(Session["user_id"].ToString()), id))
+                {
+                    ViewBag.id = id;
+                    return PartialView();
+                }
+                else
+                {
+                    return Redirect("StudentFriend?id="+ id );
+                }
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> StudentFriend(long id)
+        {
+            try
+            {
+                if (await objStudentService.CheckStudentFollowingStudent(long.Parse(Session["user_id"].ToString()), id))
+                {
+                    ViewBag.id = id;
+                    return PartialView();
+                }
+                else
+                {
+                    return Redirect("./StudentProfile?id=" +id );
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+
         }
     }
 }

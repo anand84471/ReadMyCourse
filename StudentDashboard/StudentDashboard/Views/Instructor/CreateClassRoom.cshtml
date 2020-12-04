@@ -283,7 +283,6 @@
         $.ajax({
             xhr: function () {
                 var xhr = new window.XMLHttpRequest();
-
                 xhr.upload.addEventListener("progress", function (evt) {
                     if (evt.lengthComputable) {
                         var percentComplete = evt.loaded / evt.total;
@@ -295,7 +294,6 @@
                         }
                     }
                 }, false);
-
                 return xhr;
             },
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },

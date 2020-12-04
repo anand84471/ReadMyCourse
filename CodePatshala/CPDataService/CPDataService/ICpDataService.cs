@@ -186,7 +186,7 @@ namespace CPDataService
         bool GetStudentIdFromUserId(string UserId, ref long StudentId);
         [OperationContract]
         bool UpdateStudentDetails(string FirstName, string LastName, string AddressLine1, string AddressLine2, string PinCode,
-                                          int? StateId, int? CityId, string Gender, long StudentId);
+                                          int? StateId, int? CityId, string Gender, long StudentId, string PhoneNo);
         [OperationContract]
         bool UpdateStudentPassword(long StudentId, string OldHashedPassword, string NewHashedPassword);
         [OperationContract]
@@ -497,6 +497,38 @@ namespace CPDataService
         DataSet GetStudentRecentCourseJoin(long StudentId);
         [OperationContract]
         DataSet GetStudentRecentLiveClassJoin(long StudentId);
+        [OperationContract]
+        DataSet GetSearchResultForStudent(string SearchString, int MaxRowToReturn, int NoOfRowsFetch, long StudentId);
+        [OperationContract]
+        bool UpdateClassroomBackground(long ClassroomId, string OriginalImagePath, string SmallIcon, string MediumIcon);
+        [OperationContract]
+        bool UpdateCourseBackground(long CourseId, string OriginalImagePath, string SmallIcon, string MediumIcon);
+        [OperationContract]
+        bool JoinNewStudent(long StudentStaertedFollowingId, long StudentGettingFollowedId);
+        [OperationContract]
+        bool UnfollowStudent(long StudentStaertedFollowingId, long StudentGettingFollowedId);
+        [OperationContract]
+        bool FollowBackStudent(long StudentStaertedFollowingId, long StudentGettingFollowedId);
+        [OperationContract]
+        DataSet GetAllStudentsToFollow(long StudentId, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        [OperationContract]
+        DataSet GetStudentPublicProfileDetails(long StudentId);
+        [OperationContract]
+        DataSet GetAllStudentsFollowedByStudent(long StudentId, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        [OperationContract]
+        DataSet GetStudentFriendDetails(long StudentId, long FriendId);
+        [OperationContract]
+        DataSet CheckStudentFollowingStudent(long StudentId, long StudentToBeFollowedId);
+        [OperationContract]
+        DataSet GetStudentSelfPublicDetails(long StudentId);
+        [OperationContract]
+        bool UpdateClassroomsingleMeetingDetails(long MeetingId, string VideoUrl, string TopicName, string TopicNotes);
+        [OperationContract]
+        DataSet GetLiveClassMeetingDetails(long MeetingId);
+        [OperationContract]
+        DataSet GetClassroomAllMeetingDetailsForStudent(long StudentId, long ClassroomId);
+        [OperationContract]
+        DataSet GetClassroomMeetingDetailsForStudent(long StudentId, long MeetingId);
 
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

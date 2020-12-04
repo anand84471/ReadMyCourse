@@ -383,6 +383,34 @@ namespace StudentDashboard.DTO
             }
             return objJitsiMeetingModal;
         }
+        public async Task<GetLiveClassDetailsForInstructor> GetLiveClassDetailsForInstructor(long MeetingId)
+        {
+            GetLiveClassDetailsForInstructor objGetLiveClassDetailsForInstructor = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetLiveClassMeetingDetailsAsync(MeetingId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    objGetLiveClassDetailsForInstructor = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetLiveClassDetailsForInstructor(
+                         dataRow.Field<string>("MEETING_TOPIC"),
+                         dataRow.Field<string>("MEETING_DESCRIPTION"),
+                          dataRow.Field<string>("VIDEO_URL"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_PARTICIPANTS")
+                         )).ToList()[0];
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objGetLiveClassDetailsForInstructor;
+        }
         public async Task<bool> CheckClassroomAccess(long ClassroomId, int InstructorId)
         {
             bool result = false;
@@ -620,5 +648,26 @@ namespace StudentDashboard.DTO
             }
             return objClassRoomModal;
         }
+        public async Task<bool> UpdateClassroomVideoUrl(UpdateClassroomVideoUrlRequest updateClassroomVideoUrlRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomsingleMeetingDetailsAsync(updateClassroomVideoUrlRequest.m_llMeetingId, updateClassroomVideoUrlRequest.m_strVideoLink,
+                    updateClassroomVideoUrlRequest.m_strTopicName,
+                    updateClassroomVideoUrlRequest.m_strTopicDescription
+                    );
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomVideoUrl", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+       
     }
 }

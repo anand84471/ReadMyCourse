@@ -2203,7 +2203,10 @@ namespace StudentDashboard.DTO
                          dataRow.Field<DateTime>("MEETING_START_TIME").ToString("f"),
                          dataRow.Field<DateTime?>("MEETING_CLOSE_TIME")==null? Constants.CLASSROOM_MEETING_NOT_CLOSED_MESSAGE : dataRow.Field<DateTime>("MEETING_CLOSE_TIME").ToString("hh:mm tt"),
                          dataRow.Field<bool>("IS_ACTIVE"),
-                         dataRow.Field<int>("NO_OF_PARTICIPANTS")
+                         dataRow.Field<int>("NO_OF_PARTICIPANTS"),
+                         dataRow.Field<string>("MEETING_TOPIC"),
+                         dataRow.Field<string>("MEETING_DESCRIPTION"),
+                         dataRow.Field<string>("VIDEO_URL")
                          )).ToList();
                 }
             }
@@ -2656,6 +2659,44 @@ namespace StudentDashboard.DTO
         //    }
         //    return classroomScheduleDTO;
         //}
+        public async Task<bool> UpdateClassroomImage(UpdateClassroomBackgroundImageRequest updateClassroomBackgroundImageRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomBackgroundAsync(updateClassroomBackgroundImageRequest.m_llClassroomId,
+                    updateClassroomBackgroundImageRequest.imageUploadDetailsModal.m_strOriginalFileUrl,
+                    updateClassroomBackgroundImageRequest.imageUploadDetailsModal.m_strSmallSizeUrl,
+                    updateClassroomBackgroundImageRequest.imageUploadDetailsModal.m_strMediumSizeUrl);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateInstructorProfilePicture", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateCourseImage(UpdateCourseBackgroundImageRequest updateCourseBackgroundImageRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateCourseBackgroundAsync(updateCourseBackgroundImageRequest.m_llCourseId,
+                    updateCourseBackgroundImageRequest.imageUploadDetailsModal.m_strOriginalFileUrl,
+                    updateCourseBackgroundImageRequest.imageUploadDetailsModal.m_strSmallSizeUrl,
+                    updateCourseBackgroundImageRequest.imageUploadDetailsModal.m_strMediumSizeUrl);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateCourseImageRequest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }
  

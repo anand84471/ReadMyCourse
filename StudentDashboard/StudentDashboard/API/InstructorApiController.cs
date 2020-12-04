@@ -1637,7 +1637,7 @@ namespace StudentDashboard.API
             InstructorSearchResponse objResponse = new InstructorSearchResponse();
             try
             {
-
+                    
                 if (objInstructorSearchRequest != null && GetInstructorIdInRequest() != -1)
                 {
                     objInstructorSearchRequest.m_iInstructorId = GetInstructorIdInRequest();
@@ -2166,6 +2166,13 @@ namespace StudentDashboard.API
             ImageUploadMasterResponse objResponse = new ImageUploadMasterResponse();
             try
             {
+                if (!Request.Content.IsMimeMultipartContent())
+                {
+                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                }
+                Byte[] byteArray = await Request.Content.ReadAsByteArrayAsync();
+
+
                 int InstructorId = GetInstructorIdInRequest();
                 if (InstructorId != -1)
                 {
@@ -2177,7 +2184,6 @@ namespace StudentDashboard.API
                     string rootpath = HttpContext.Current.Server.MapPath("~/Uploads/Instructor/Images");
 
                     var provider = new MultipartFileStreamProvider(rootpath);
-
                     var task = await Request.Content.ReadAsMultipartAsync(provider).
 
                         ContinueWith(t =>
@@ -2190,6 +2196,7 @@ namespace StudentDashboard.API
                             {
                                 try
                                 {
+
                                     string name = item.Headers.ContentDisposition.FileName.Replace("\"", "");
                                     string newfilename = InstructorId.ToString() + "_" + Guid.NewGuid() + Path.GetExtension(name);
                                     File.Move(item.LocalFileName, Path.Combine(rootpath, newfilename));
@@ -2666,5 +2673,108 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+        [Route("UpdateClassroomImage")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateClassroomImage(UpdateClassroomBackgroundImageRequest updateClassroomBackgroundImageRequest)
+        {
+            APIDefaultResponse objResonse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if(updateClassroomBackgroundImageRequest!=null&&InstructorId != -1&&await objInstructorService.CheckClassroomAccess(updateClassroomBackgroundImageRequest.m_llClassroomId,InstructorId))
+                {
+                    if (await objHomeService.UpdateClassroomImage(updateClassroomBackgroundImageRequest))
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+               
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomImage", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("UpdateCourseImage")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateCourseImage(UpdateCourseBackgroundImageRequest updateCourseBackgroundImageRequest)
+        {
+            AboutCourseResponse objResonse = new AboutCourseResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if(updateCourseBackgroundImageRequest != null&&InstructorId != -1&& await objInstructorService.CheckClassroomAccess(updateCourseBackgroundImageRequest.m_llCourseId,InstructorId))
+                {
+                     if(await objHomeService.UpdateCourseImage(updateCourseBackgroundImageRequest))
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateCourseImage", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("UpdateLiveClassDetails")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateClassroomMeeting(UpdateClassroomVideoUrlRequest updateClassroomVideoUrlRequest)
+        {
+            AboutCourseResponse objResonse = new AboutCourseResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (updateClassroomVideoUrlRequest != null && InstructorId != -1 && await objInstructorService.CheckClassroomAccess(updateClassroomVideoUrlRequest.m_llClassroomId, InstructorId))
+                {
+                    if (await objInstructorService.UpdateClassroomVideoUrl(updateClassroomVideoUrlRequest))
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateCourseImage", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("GetLiveClassDetails")]
+        [HttpPost]
+        public async Task<GetLiveClassDetailsResponseForInstructor> UpdateClassroomMeeting(GetLiveClassroomDetailsForInstructorRequest getLiveClassroomDetailsForInstructorRequest)
+        {
+            GetLiveClassDetailsResponseForInstructor objResonse = new GetLiveClassDetailsResponseForInstructor();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (getLiveClassroomDetailsForInstructorRequest != null && InstructorId != -1 && await objInstructorService.CheckClassroomAccess(getLiveClassroomDetailsForInstructorRequest.m_llClassroomId, InstructorId))
+                {
+                    objResonse.getLiveClassDetailsForInstructor = await objInstructorService.GetLiveClassDetailsForInstructor(getLiveClassroomDetailsForInstructorRequest.m_llMeetingId);
+                    if(objResonse.getLiveClassDetailsForInstructor!=null)
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateCourseImage", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+
     }
 }

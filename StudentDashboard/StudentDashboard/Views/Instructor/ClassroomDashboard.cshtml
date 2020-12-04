@@ -405,10 +405,25 @@
                         </div>
 
                     </div>
-                   
-                    <button class="btn btn-sm btn-primary" onclick="callUpdateClassRoomDetails(this)">Update</button>
-                   
+                    <button class="btn btn-sm btn-primary" onclick="callUpdateClassroomDetails(this)">Update</button>
                 </div>
+                <br />
+                <hr />
+                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                    <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Upload classroom back ground image</label>
+                        <input type="file" id="fileUpload" name="file" accept="image/x-png,image/gif,image/jpeg" />
+                        <button type="button" class="btn btn-primary" onclick="requestUpload()">Upload</button>
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                        </div>
+                        <div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">
+                            file uploaded successfully
+                        </div>
+                    </div>
+                </form> 
+                <button class="btn btn-sm btn-primary" onclick="updateClassroomBgImage()">Update Image</button>
             </div>
         </div>
         <div class="col-lg-12 mb-2" id="navUpdateSchedulerDetails" style="display:none">
@@ -546,7 +561,7 @@
                         </button>
                         
                     </div>
-                    <button class="btn btn-sm btn-primary" onclick="callUpdateClassroomDetails()">Update classroom time-table</button>
+                    <button class="btn btn-sm btn-primary" onclick="callUpdateClassroomSchedule()">Update classroom time-table</button>
                 </div>   
             </div>
             
@@ -755,21 +770,85 @@
                     </div>*@
             </div>
         </div>
-        <div class="col-lg-12 mb-2" id="navPreviousMeetings" style="display:none">
-            <div class="card shadow-lg border-primary">
+        <div class="row col-lg-12 mb-2" id="navPreviousMeetings" style="display:none">
+            <div class="col-lg-8">
+                <div class="card">
+                    <h4 id="no-video-data-present" class="text-center align-items-center">No video file present</h4>
+                   
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <h4 id="no-data-present" class="text-center">No data present in the topic</h4>
+                        <iframe id="video-url" class="embed-responsive-item" src="" allowfullscreen style="display:none;"></iframe>
+                    </div>
+                    <h4 class="text-center font-weight-bolder p-1" id="topic-name"></h4>
+                    <div class="card-footer">
+                        <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
+                            </li>
+                        </ul>
+                        <hr />
+                        
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
+                                    <div class="col-sm-8">
+                                        <input onchange="validateInputField(this)" type="text" class="form-control" id="liveClassTopicName" placeholder="give your lecture a name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Notes</label>
+                                    <div class="col-sm-8">
+                                        <textarea type="text" onchange="validateInputField(this)" placeholder="share some notes related to class" id="liveClassNotes" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Edit video url or upload new</label>
+                                    <div class="col-sm-8">
+                                        <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="liveClassVideoUrl" placeholder="Enter attachment url">
+                                    </div>
+                                </div>
+                                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                                    <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlFile1">Upload attachment</label>
+                                        <input type="file" id="studyMaterialUpload" name="file" accept="*" />
+                                        <button type="button" class="btn btn-primary" onclick="updateClassroomMeetingDetails()">Upload</button>
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                        </div>
+                                        <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
+                                            file uploaded successfully
+                                        </div>                      
+                                    </div>
+                                </form>
+                                <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
+                                    Updated Sucessfully
+                                </div>
+                                <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
+                                    Can not be 
+                                </div>
+                                <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
+                            </div>
+                            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 card shadow-lg border-primary">
                 <div class="card-header">Live classes <span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous class</a></span></div>
                 <div class="card-body">
-                    <div class="table-responsive ">
-                        <table id="coursesTable" class="table-responsive table-hover" style="display:none">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>S.No.</th>
-                                    <th class="pr-2">Start time</th>
-                                    <th class="pr-2">Close time</th>
-                                    <th class="pr-2">Students joined</th>
-                                    <th class="pr-2">Edit video</th>
-                                </tr>
-                            </thead>
+                    <div class="table-responsive table-hover">
+                        <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
+                           
 
                             <tbody id="tableBody"></tbody>
                         </table>
@@ -794,8 +873,9 @@
 
             </div>
 
-            <div id="secctionTest"></div>
+            
         </div>
+        <div id="secctionTest"></div>
             <div class="col-lg-12 mb-2" id="navAddNewAttachment" style="display:none">
                 <div class="card shadow-lg border-primary">
                     <div class="card-header">Add attachment<span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous meeting</a></span></div>
@@ -929,46 +1009,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img class="image-popup img-fluid" id="imagePreview" alt="preview error" />
+                <img class="image-popup img-fluid" id="imagePreview" alt="waiting the file to appear" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>
-</div>
-<div class="modal fade top" id="fileUploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-full-height modal-top" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header ">
-                <h4 class="modal-title w-100 " id="myModalLabel"> <b>Upload Item</b></h4>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
-                    <i class="fa fa-download upload-icon" aria-hidden="true"></i>
-                    <div class="form-group">
-                        <label for="exampleFormControlFile1">Upload classroom back ground image</label>
-                        <input type="file" id="fileUpload" name="file" accept="image/x-png,image/gif,image/jpeg" />
-                        <button type="button" class="btn btn-primary" onclick="requestUpload()">Upload</button>
-                        <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
-                        </div>
-                        <div class="alert alert-success" id="postUploadAlert" style="display:none" role="alert">
-                            file uploaded successfully
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <!--Footer-->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!--/.Content-->
     </div>
 </div>
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
@@ -1051,6 +1097,24 @@
             </div>
             <div class="modal-body">
                 <h3 id="infoMessage">Post added successfully</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="classroomUpdateSuccess" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="infoMessage">Details updated successfully</h3>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -1354,8 +1418,7 @@
         {
             clearInterval(messageInerval);
         }
-
-
+    
         function getMeetingDetails() {
         //debugger;
             $.ajax({
@@ -1372,8 +1435,8 @@
                     $('#tableBody').empty();
                     for (var i = 0; i < meetings.length; i++) {
                         sNo++;
-                        var rows = '<tr><td class="pr-2"><i class="fa fa-4x fa-play-circle"></i></td></td>'
-                        + '<td class="pr-2">' + meetings[i].meeting_start_time + '</td><td class="pr-2">' + meetings[i].meeting_finish_time + '</td>'
+                        var rows = '<tr><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                        + '<td class="pr-2">Topic Name</td><td class="pr-2">' + meetings[i].meeting_finish_time + '</td>'
                         + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
                         +''
                         +'</tr>';
@@ -1383,8 +1446,6 @@
                     }
                     $("#startPreviousMeeting").fadeIn();
                     $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=@Model.m_llClassRoomId");
-
-                    $('#coursesTable').DataTable();
 
                 }
                 else {
@@ -1455,9 +1516,9 @@
                         + '<td>' + students[i].student_name + '</td><td>' + students[i].time_of_joining + '</td>'
                         + '</tr>';
                         $('#tableBodyStudentMeetingDetails').append(rows);
-                       
+
                     }
-                      
+
                     $('#studentMeetingTable').DataTable();
 
                 }
@@ -1645,7 +1706,8 @@
     var syncFlag = false;
     var lastMessageId = -1;
 
-    function callUpdateClassRoomDetails(buttonid) {
+    function callUpdateClassroomDetails(buttonid) {
+        debugger
         $(buttonid).append('<i class="fa fa-spinner fa-spin" id="tempspinner"></i>');
         $(buttonid).disabled = true;
         var classRoomName = $("#classroomName").val();
@@ -2042,7 +2104,7 @@
             $('#classroomStartTime'.concat(i)).timepicker();
             $('#classroomFinishTime'.concat(i)).timepicker();
         }
-        callGetClassroomTimeTable();    
+        callGetClassroomTimeTable();
     }
     function requestNewFileUpload()
     {
@@ -2084,10 +2146,12 @@
                 debugger
                 if (data != null && data.response_code == 1) {
                     backGroundImagePath = data.file_location;
+                    smallIconUrl = data.small_size_icon_url;
+                    mediumSizeIconUrl = data.medium_size_icon_url;
                     $("#imagePreview").attr("src", data.file_location);
                 }
                 else {
-                    $("#errorAlertMessageBody").text("test could not be deleted");
+                    $("#errorAlertMessageBody").text("file could not be added");
                     $("#errorAlertHeader").modal('show');
                 }
             }
@@ -2254,7 +2318,7 @@
                         $("#tableClassroomAttachments").show();
                     }
                     $("#tableBodyClassroomAttachments").fadeIn();
-                    
+
                     $('#coursesTable').DataTable();
                 }
                 else {
@@ -2360,7 +2424,7 @@
         }
         return classroomScheduleDetails;
     }
-    function callUpdateClassroomDetails()
+    function callUpdateClassroomSchedule()
     {
         debugger
         var _data = {
@@ -2403,9 +2467,9 @@
                     setClassroomTimeTable(data.classroom_schedule_details.schedule_details);
                 }
                 else {
-                    
+
                 }
-                
+
             }
         });
     }
@@ -2464,7 +2528,7 @@
         $('#classroomDailyStartTime').prop('value', function () {
             return new Date().toJSON().split('T')[0];
         });
-       
+
     });
     var selectedDates = {
         "monday": 0,
@@ -2475,7 +2539,7 @@
         "saturday": 0,
         "sunday":0
     };
-    
+
     function setDate(id,date)
     {
         if ($(id).hasClass("btn-primary"))
@@ -2495,4 +2559,109 @@
             selectedDates["tuesday"] + selectedDates["wednesday"] + selectedDates["thursday"] +
             selectedDates["friday"] + selectedDates["saturday"] + selectedDates["sunday"];
     }
+    var smallIconUrl;
+    var mediumSizeIconUrl;
+    var backGroundImagePath;
+    function updateClassroomBgImage()
+    {
+
+        var _data =
+            {
+                "classroom_id": "@Model.m_llClassRoomId",
+                "image_data": {
+                    "small_size_url": smallIconUrl,
+                    "original_url": backGroundImagePath,
+                    "medium_size_url": mediumSizeIconUrl
+                }
+            }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data:JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateClassroomImage",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    location.reload();
+                }
+                else {
+
+                }
+
+            }
+        });
+
+    }
+    var currentMeetingId = 0;
+    function updateClassroomMeetingDetails() {
+
+        var _data =
+            {
+                "video_link": $("#liveClassVideoUrl").val(),
+                "meeting_id":currentMeetingId,
+                "classroom_id": "@Model.m_llClassRoomId",
+                "topic_name": $("#liveClassTopicName").val(),
+                "topic_description": $("#liveClassNotes").val(),
+            }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateClassroomVideo",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    location.reload();
+                }
+                else {
+
+                }
+
+            }
+        });
+    }
+    function showClassroomMeetingContent(meetingId)
+    {
+        var _data =
+           {
+               "meeting_id": meetingId,
+               "classroom_id": "@Model.m_llClassRoomId"
+           }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/GetLiveClassDetails",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#no-data-present").hide();
+                    if(data.live_class_details.class_topic!=null){
+                        $("#topic-name").text(data.live_class_details.class_topic);
+                    }
+                    if(data.live_class_details.video_url!=null)
+                    {
+                        $("#video-url").attr("src", data.live_class_details.video_url);
+                        $("#video-url").show();
+                        $("#no-video-data-present").hide();
+                    }
+                   
+                    else {
+                        $("#video-url").hide();
+                        $("#no-video-data-present").show();
+                    }
+                }
+                else {
+                    $("#no-data-present").show();
+                    //else part of ajax call
+                }
+
+            }
+        });
+    }
+    
 </script>

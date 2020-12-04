@@ -1232,6 +1232,10 @@ namespace StudentDashboard.Controllers
         {
             return View();
         }
-
+        [HttpGet]
+        public ActionResult StudentProfile(long Id)
+        {
+            return View();
+        }
     }
 }

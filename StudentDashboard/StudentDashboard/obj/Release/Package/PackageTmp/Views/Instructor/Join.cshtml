@@ -11,9 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="CodePathshalaAdmin" content="">
-    <title>ReadMyCourse - Instructor Login</title>
+    <title>ReadMyCourse - Instructor Join</title>
     <!-- Custom fonts for this template-->
     <link href="../../Scripts/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../fonts/vendors/intl-tel-input-master/intlTelInput.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="../../fonts/css/sb-admin-2.min.css" rel="stylesheet">
@@ -28,15 +29,15 @@
                 <div class="row">
                    
                     <div class="col-lg-7">
-                        <div class="p-5">
+                        <div class="p-5 pt-1">
                             <div class="text-center">
-                                <a href="./"><img src="../Images/site-logo-v2-full.png" class="img-fluid " alt="..."></a>
+                                <a href="./"><img src="../Images/site-logo-v2-full.png" class="img-fluid " alt="..." style="max-width:200px;"></a>
                                 <h4 class="text-gray-900 font-weight-bold mb-2">Instructor Join</h4>
                             </div>
                             <form method="post" class="needs-validation" action="/Instructor/Register" novalidate>
                                 @Html.AntiForgeryToken()
                                 <div class="form-row">
-                                    <div class="col-md-4 mb-3 md-form">
+                                    <div class="col-md-6 mb-3 md-form">
                                         <label for="validationCustom012">First name</label>
                                         <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" required>
                                         <div class="invalid-feedback">
@@ -44,21 +45,14 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-4 mb-3 md-form">
+                                    <div class="col-md-6 mb-3 md-form">
                                         <label for="validationCustom022">Last name</label>
                                         <input type="text"  class="form-control" name="lastName" id="lastName" placeholder="Last name" required>
                                         <div class="invalid-feedback">
                                             Please enter last name
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3 md-form">
-                                        <label for="validationCustomUsername2">Phone No</label>
-                                        <input type="tel" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" maxlength="10" minsize="10" name="phoneNo" id="phoneNo" placeholder="Phone No" aria-describedby="inputGroupPrepend2"
-                                               required>
-                                        <div class="invalid-feedback" id="phoneNoError">
-                                            Please enter a valid phone no
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                 <div class="form-row">
                                     <div class="col-md-6 mb-3 md-form">
@@ -68,7 +62,15 @@
                                             Please enter a valid Email
                                         </div>
                                     </div>
-
+                                    <div class="col-md-6 mb-3 md-form">
+                                        <input type="hidden" name="countryCode" id="countryCode" value="+91" />
+                                        <label for="validationCustomUsername2">Phone No</label>
+                                        <input type="tel" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" maxlength="10" minsize="10" name="phoneNo" id="phoneNo" placeholder="Phone No" aria-describedby="inputGroupPrepend2"
+                                               required>
+                                        <div class="invalid-feedback" id="phoneNoError">
+                                            Please enter a valid phone no
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="col-md-6 mb-3 md-form">
@@ -101,8 +103,8 @@
                                     }
                                     else
                                     {
-                                        <div class="alert alert-primary" role="alert">
-                                            Registration failed
+                                        <div class="alert alert-danger" role="alert">
+                                            Registration failed. Try changing email id. 
                                         </div>
                                     }
                                 }
@@ -119,7 +121,6 @@
                                 </div>
                                 <button class="btn btn-primary btn-sm btn-rounded" type="submit" id="submitFormButton">Submit form</button>
                             </form>
-
                             <hr>
                             @*<div class="text-center">
                                 <a class="small" href="/Instructor/ForgotPassword">Forgot Password?</a>
@@ -160,7 +161,8 @@
                             event.preventDefault();
                             event.stopPropagation();
                         }
-                            form.classList.add('was-validated');
+                        form.classList.add('was-validated');
+                        $("#countryCode").val("+" + iti.s.dialCode);
                     }, false);
                 });
             }, false);
@@ -210,6 +212,17 @@
                 }
             });
         })();
+    </script>
+    <script src="../../Scripts/vendor/intl-tel-input-master/intlTelInput.min.js"></script>
+
+    <script src="../../Scripts/vendor/intl-tel-input-master/intlTelInput-jquery.min.js"></script>
+    <script src="../../Scripts/vendor/intl-tel-input-master/utils.js"></script>
+    <script type="text/javascript">
+        var input = document.getElementById("phoneNo");
+        var iti=window.intlTelInput(input, ({
+            initialCountry: "in",
+        }));
+
     </script>
 </body>
 </html>

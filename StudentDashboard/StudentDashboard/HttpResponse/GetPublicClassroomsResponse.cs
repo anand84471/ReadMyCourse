@@ -22,9 +22,22 @@ namespace StudentDashboard.HttpResponse
         public string m_strJoiningDate;
         [JsonProperty("classroom_joining_fee")]
         public string m_strClassrooomJoiningFee;
+        [JsonProperty("instructor_name")]
+        public string m_strInstructorName;
+        [JsonProperty("classroom_image")]
+        public string m_strClassroomImage;
+        [JsonProperty("instructor_image")]
+        public string m_strInstructorImage;
+        [JsonProperty("instructor_id")]
+        public int m_iInstructorId;
+        [JsonProperty("classroom_rating")]
+        public string m_strClassroomRating;
+        [JsonProperty("no_of_ratings")]
+        public int m_iNoOfRatings;
         public GetPublicClassroomsResponse(string classroomName,
             long classroomId,string creationDate,int noOfEnrollments,long? StudentJoinId,
-            DateTime? JoiningDate,int ClassroomJoiningFeeInPaise)
+            DateTime? JoiningDate,int ClassroomJoiningFeeInPaise,string InstructorName,string InstructorImageUrl,
+            int InstructorId,string ClassroomImageUrl)
         {
             this.m_strClasssroomName = classroomName;
             this.m_llClasssroomId = classroomId;
@@ -42,6 +55,10 @@ namespace StudentDashboard.HttpResponse
             {
                 this.m_strClassrooomJoiningFee = "&#8377 "+(ClassroomJoiningFeeInPaise/100).ToString();
             }
+            this.m_strClassroomImage = ClassroomImageUrl;
+            this.m_strInstructorName = InstructorName;
+            this.m_iInstructorId = InstructorId;
+            this.m_strInstructorImage = InstructorImageUrl;
         }
     }
 }

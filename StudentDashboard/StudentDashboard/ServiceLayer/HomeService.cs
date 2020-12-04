@@ -1424,6 +1424,15 @@ namespace StudentDashboard.ServiceLayer
                 }
             }
         }
+        public async Task<bool> UpdateClassroomImage(UpdateClassroomBackgroundImageRequest updateClassroomBackgroundImageRequest)
+        {
+            return await objHomeDTO.UpdateClassroomImage(updateClassroomBackgroundImageRequest);
+        }
+        public async Task<bool> UpdateCourseImage(UpdateCourseBackgroundImageRequest updateCourseBackgroundImageRequest)
+        {
+            return await objHomeDTO.UpdateCourseImage(updateCourseBackgroundImageRequest);
+        }
+
     }
 
 }

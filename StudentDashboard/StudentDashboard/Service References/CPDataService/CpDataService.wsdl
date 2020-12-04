@@ -242,6 +242,102 @@
   <wsdl:message name="ICpDataService_GetStudentRecentLiveClassJoin_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetStudentRecentLiveClassJoinResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetSearchResultForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSearchResultForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetSearchResultForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSearchResultForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomBackground_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomBackground" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomBackground_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomBackgroundResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateCourseBackground_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCourseBackground" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateCourseBackground_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCourseBackgroundResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_JoinNewStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:JoinNewStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_JoinNewStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:JoinNewStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UnfollowStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:UnfollowStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UnfollowStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnfollowStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_FollowBackStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:FollowBackStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_FollowBackStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FollowBackStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllStudentsToFollow_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStudentsToFollow" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllStudentsToFollow_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStudentsToFollowResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentPublicProfileDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentPublicProfileDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentPublicProfileDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentPublicProfileDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllStudentsFollowedByStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStudentsFollowedByStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllStudentsFollowedByStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStudentsFollowedByStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentFriendDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentFriendDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentFriendDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentFriendDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentFollowingStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentFollowingStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckStudentFollowingStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckStudentFollowingStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentSelfPublicDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentSelfPublicDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentSelfPublicDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentSelfPublicDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomsingleMeetingDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomsingleMeetingDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomsingleMeetingDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomsingleMeetingDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetLiveClassMeetingDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLiveClassMeetingDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetLiveClassMeetingDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLiveClassMeetingDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomAllMeetingDetailsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomAllMeetingDetailsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomAllMeetingDetailsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomAllMeetingDetailsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomMeetingDetailsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomMeetingDetailsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomMeetingDetailsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomMeetingDetailsForStudentResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -1551,6 +1647,70 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin" message="tns:ICpDataService_GetStudentRecentLiveClassJoin_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoinResponse" message="tns:ICpDataService_GetStudentRecentLiveClassJoin_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetSearchResultForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetSearchResultForStudent" message="tns:ICpDataService_GetSearchResultForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetSearchResultForStudentResponse" message="tns:ICpDataService_GetSearchResultForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomBackground">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomBackground" message="tns:ICpDataService_UpdateClassroomBackground_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomBackgroundResponse" message="tns:ICpDataService_UpdateClassroomBackground_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCourseBackground">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateCourseBackground" message="tns:ICpDataService_UpdateCourseBackground_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateCourseBackgroundResponse" message="tns:ICpDataService_UpdateCourseBackground_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="JoinNewStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/JoinNewStudent" message="tns:ICpDataService_JoinNewStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/JoinNewStudentResponse" message="tns:ICpDataService_JoinNewStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UnfollowStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UnfollowStudent" message="tns:ICpDataService_UnfollowStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UnfollowStudentResponse" message="tns:ICpDataService_UnfollowStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FollowBackStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/FollowBackStudent" message="tns:ICpDataService_FollowBackStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/FollowBackStudentResponse" message="tns:ICpDataService_FollowBackStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStudentsToFollow">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllStudentsToFollow" message="tns:ICpDataService_GetAllStudentsToFollow_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllStudentsToFollowResponse" message="tns:ICpDataService_GetAllStudentsToFollow_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentPublicProfileDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentPublicProfileDetails" message="tns:ICpDataService_GetStudentPublicProfileDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentPublicProfileDetailsResponse" message="tns:ICpDataService_GetStudentPublicProfileDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStudentsFollowedByStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllStudentsFollowedByStudent" message="tns:ICpDataService_GetAllStudentsFollowedByStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllStudentsFollowedByStudentResponse" message="tns:ICpDataService_GetAllStudentsFollowedByStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentFriendDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentFriendDetails" message="tns:ICpDataService_GetStudentFriendDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentFriendDetailsResponse" message="tns:ICpDataService_GetStudentFriendDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentFollowingStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentFollowingStudent" message="tns:ICpDataService_CheckStudentFollowingStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckStudentFollowingStudentResponse" message="tns:ICpDataService_CheckStudentFollowingStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentSelfPublicDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentSelfPublicDetails" message="tns:ICpDataService_GetStudentSelfPublicDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentSelfPublicDetailsResponse" message="tns:ICpDataService_GetStudentSelfPublicDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomsingleMeetingDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomsingleMeetingDetails" message="tns:ICpDataService_UpdateClassroomsingleMeetingDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomsingleMeetingDetailsResponse" message="tns:ICpDataService_UpdateClassroomsingleMeetingDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiveClassMeetingDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetLiveClassMeetingDetails" message="tns:ICpDataService_GetLiveClassMeetingDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetLiveClassMeetingDetailsResponse" message="tns:ICpDataService_GetLiveClassMeetingDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomAllMeetingDetailsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomAllMeetingDetailsForStudent" message="tns:ICpDataService_GetClassroomAllMeetingDetailsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomAllMeetingDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomAllMeetingDetailsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomMeetingDetailsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudent" message="tns:ICpDataService_GetClassroomMeetingDetailsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomMeetingDetailsForStudent_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -2666,6 +2826,150 @@
     </wsdl:operation>
     <wsdl:operation name="GetStudentRecentLiveClassJoin">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentRecentLiveClassJoin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchResultForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetSearchResultForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomBackground">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomBackground" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCourseBackground">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateCourseBackground" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JoinNewStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/JoinNewStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnfollowStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UnfollowStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FollowBackStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/FollowBackStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStudentsToFollow">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllStudentsToFollow" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentPublicProfileDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentPublicProfileDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStudentsFollowedByStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllStudentsFollowedByStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentFriendDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentFriendDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckStudentFollowingStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckStudentFollowingStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentSelfPublicDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentSelfPublicDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomsingleMeetingDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomsingleMeetingDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiveClassMeetingDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetLiveClassMeetingDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomAllMeetingDetailsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomAllMeetingDetailsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomMeetingDetailsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

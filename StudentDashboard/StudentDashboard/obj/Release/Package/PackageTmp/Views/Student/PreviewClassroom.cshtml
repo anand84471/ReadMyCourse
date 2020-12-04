@@ -101,7 +101,7 @@
     <div class="row">
         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4 border-bottom-success ">
-                <div class="card-body classroom-background-container" style="background-image:url(../../Images/course-3.jpg)">
+                <div class="card-body classroom-background-container" style="background-image:url(../../Images/course-3.jpg)" id="classroom_bg_content">
                     <div class="classroom-background-mask">
                         <h1 class="card-text font-weight-bold text-gray-100 " id="classroomName"></h1>
                         <h6 class="mb-0 font-weight-bold" id="classroomDescription"></h6>
@@ -115,6 +115,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <div class="modal fade border-success" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -255,6 +256,7 @@
     </div>
 
 </div>
+
 <div class="accordion p-2 bg-white" id="accordionExample">
     <h1 class="text-center mb-1 font-weight-bolder text-primary"><span>FAQs</span> </h1>
     <div class="card">
@@ -354,6 +356,7 @@
                     $("#classroomDescription").text(classroomDetails.classroom_description);
                     $("#classroomJoiningFee").text(classroomDetails.classroom_joining_fee);
                     $("#classroomCreationDate").text("Creation date:" + classroomDetails.creation_date);
+                    $("#classroom_bg_content").css("background-image", 'url(' + classroomDetails.background_url + ')');
                     hideSpinner();
                 }
                 hideSpinner();
@@ -453,4 +456,5 @@
             }
         });
     }
+
 </script>

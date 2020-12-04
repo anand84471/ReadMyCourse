@@ -256,6 +256,15 @@ namespace StudentDashboard.ServiceLayer
         {
             return  objInstructorDTO.AddNewTestSeries(insertTestSeriesRequest);
         }
-       
+        public async Task<bool> UpdateClassroomVideoUrl(UpdateClassroomVideoUrlRequest updateClassroomVideoUrlRequest)
+        {
+            return await objInstructorDTO.UpdateClassroomVideoUrl(updateClassroomVideoUrlRequest);
+        }
+
+        public async Task<GetLiveClassDetailsForInstructor> GetLiveClassDetailsForInstructor(long MeetingId)
+        {
+            return await objInstructorDTO.GetLiveClassDetailsForInstructor(MeetingId);
+        }
+
     }
 }

@@ -22,6 +22,8 @@ namespace StudentDashboard.HttpResponse
         public int m_iInstructorId;
         [JsonProperty("no_of_students_joined")]
         public int m_iNoOfStudentsJoined;
+        [JsonProperty("profile_url")]
+        public string m_strProfileUrl;
         public SearchInstructorResponseModal()
         {
 
@@ -33,6 +35,16 @@ namespace StudentDashboard.HttpResponse
             this.m_iNoOfCourseCreated = NoOfCourseCreated;
             this.m_iInstructorId = InstructorId;
             this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
+        }
+        public SearchInstructorResponseModal(int InstructorId, string FirstName, string LastName, string DateOfJoining, int NoOfCourseCreated, int NoOfStudentsJoined,
+            string ProfileUrl)
+        {
+            this.m_strInstructorFullName = FirstName + " " + LastName;
+            this.m_strDateOfJoining = DateOfJoining;
+            this.m_iNoOfCourseCreated = NoOfCourseCreated;
+            this.m_iInstructorId = InstructorId;
+            this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
+            this.m_strProfileUrl = ProfileUrl;
         }
     }
 }

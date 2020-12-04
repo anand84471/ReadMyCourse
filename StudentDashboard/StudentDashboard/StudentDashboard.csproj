@@ -320,8 +320,12 @@
     <Compile Include="HttpRequest\ContentSearchRequest.cs" />
     <Compile Include="HttpRequest\Document\AddEmailSubscriberRequest.cs" />
     <Compile Include="HttpRequest\FileUploadTypeRequest.cs" />
+    <Compile Include="HttpRequest\GetClassroomMeetingDetailsForStudentRequest.cs" />
+    <Compile Include="HttpRequest\GetAllStudentFollowedByStudentRequest.cs" />
     <Compile Include="HttpRequest\GetJoinedCourseRequest.cs" />
+    <Compile Include="HttpRequest\GetLiveClassroomDetailsForInstructorRequest.cs" />
     <Compile Include="HttpRequest\GetStudentRequestDetailsModel.cs" />
+    <Compile Include="HttpRequest\GetStudentsToFollowRequest.cs" />
     <Compile Include="HttpRequest\InsertCourseV2Request.cs" />
     <Compile Include="HttpRequest\InsertInstructorMessageToClassroom.cs" />
     <Compile Include="HttpRequest\InsertStudentMessageToClassroom.cs" />
@@ -337,7 +341,11 @@
     <Compile Include="HttpRequest\StudentCourseDetailsRequestModel.cs" />
     <Compile Include="HttpRequest\StudentCourseJoinRequest.cs" />
     <Compile Include="HttpRequest\StudentProfileChangeRequest.cs" />
+    <Compile Include="HttpRequest\StudentToFollowRequest.cs" />
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
+    <Compile Include="HttpRequest\UpdateClassroomBackgroundImageRequest.cs" />
+    <Compile Include="HttpRequest\UpdateClassroomVideoUrlRequest.cs" />
+    <Compile Include="HttpRequest\UpdateCourseBackgroundImageRequest.cs" />
     <Compile Include="HttpResponse\AboutCourseResponse.cs" />
     <Compile Include="HttpResponse\AddAssgnmentResponse.cs" />
     <Compile Include="HttpResponse\AddeNewTestSeriesResponse.cs" />
@@ -354,6 +362,7 @@
     <Compile Include="HttpResponse\BasicAssignmentDetails.cs" />
     <Compile Include="HttpResponse\BasicCourseDetails.cs" />
     <Compile Include="HttpResponse\BasicIndexDetails.cs" />
+    <Compile Include="HttpResponse\BasicLiveClassDetails.cs" />
     <Compile Include="HttpResponse\BasicTestDetails.cs" />
     <Compile Include="HttpResponse\ClassroomAcceptPaymentResponse.cs" />
     <Compile Include="HttpResponse\ClassRoom\ClassroomAttachmentDetailsResponse.cs" />
@@ -388,14 +397,21 @@
     <Compile Include="HttpResponse\FileUploadResponse.cs" />
     <Compile Include="HttpResponse\GetAllAlertForInstructorResponse.cs" />
     <Compile Include="HttpResponse\GetAllCourseDetailsForInstructorResponseModel.cs" />
+    <Compile Include="HttpResponse\GetAllLiveClassMeetingDetailsForStudentResponse.cs" />
+    <Compile Include="HttpResponse\GetAllStudentsFollowedByStudentResponse.cs" />
+    <Compile Include="HttpResponse\GetAllStudentsToJoinRespone.cs" />
     <Compile Include="HttpResponse\GetAssignmentDetailsResponse.cs" />
     <Compile Include="HttpResponse\GetAssignmentSubssionDetials.cs" />
     <Compile Include="HttpResponse\GetCityResponse.cs" />
+    <Compile Include="HttpResponse\GetClassroomMeetingDetailsForStudentResponse.cs" />
     <Compile Include="HttpResponse\GetCourseDetailsApiResponse.cs" />
     <Compile Include="HttpResponse\GetInstructorActivityResponse.cs" />
+    <Compile Include="HttpResponse\GetLiveClassDetailsResponseForInstructor.cs" />
     <Compile Include="HttpResponse\GetPublicClassroomsResponse.cs" />
     <Compile Include="HttpResponse\GetStateResponse.cs" />
     <Compile Include="HttpResponse\GetStudentResponseModel.cs" />
+    <Compile Include="HttpResponse\GetStudentSelfProfileDetailsResponse.cs" />
+    <Compile Include="HttpResponse\GetStudentToStudentConnectionResponse.cs" />
     <Compile Include="HttpResponse\GetTestDetailsResponseWithAccessCode.cs" />
     <Compile Include="HttpResponse\GetTestResultsForStudentResponse.cs" />
     <Compile Include="HttpResponse\GetTestSubmissionDetailsResponse.cs" />
@@ -441,6 +457,8 @@
     <Compile Include="Models\Classroom\ClassroomScheduleDetails.cs" />
     <Compile Include="Models\Classroom\ClassroomSyllabusDetailsModal.cs" />
     <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
+    <Compile Include="Models\Classroom\GetLiveClassDetailsForInstructor.cs" />
+    <Compile Include="Models\Classroom\StudentLiveClassMeetingDetails.cs" />
     <Compile Include="Models\Course\AssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\AssignmentModel.cs" />
     <Compile Include="Models\Course\ContentModel.cs" />
@@ -475,6 +493,9 @@
     <Compile Include="Models\RazorPay\RazorPayPaymentResponseModal.cs" />
     <Compile Include="Models\SchoolRegisterModel.cs" />
     <Compile Include="Models\SmsModal\MasterSmsModal.cs" />
+    <Compile Include="Models\Social\StudentDetailToFolllow.cs" />
+    <Compile Include="Models\Social\StudentFollowerDetails.cs" />
+    <Compile Include="Models\Social\StudentToStudentFollowDetails.cs" />
     <Compile Include="Models\StudentDetailsModel.cs" />
     <Compile Include="HttpRequest\UserLoginRequest.cs" />
     <Compile Include="HttpRequest\UserRegisterRequest.cs" />
@@ -483,6 +504,8 @@
     <Compile Include="Models\InstructorRegisterModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\StudentPublicProfileResponse.cs" />
+    <Compile Include="Models\StudentToStudentConnectionDetails.cs" />
     <Compile Include="Models\Student\AssignmentAccessModal.cs" />
     <Compile Include="Models\Student\ClassroomJoinDetailsModal.cs" />
     <Compile Include="Models\Student\CourseAccessModal.cs" />
@@ -498,8 +521,10 @@
     <Compile Include="Models\Student\StudentClassroomTestModal.cs" />
     <Compile Include="Models\Student\StudentCourseModal.cs" />
     <Compile Include="Models\Student\StudentCourseQuestionModal.cs" />
+    <Compile Include="Models\Student\StudentFollowedByStudentDetails.cs" />
     <Compile Include="Models\Student\StudentHomeModal.cs" />
     <Compile Include="Models\Student\StudentIndexModal.cs" />
+    <Compile Include="Models\Student\StudentProfileDetails.cs" />
     <Compile Include="Models\Student\StudentRegisterModal.cs" />
     <Compile Include="Models\Student\StudentSearchRequestModal.cs" />
     <Compile Include="Models\Student\StudentSearchResponse.cs" />
@@ -1061,6 +1086,10 @@
     <Content Include="Views\InstructorDetails\Details.cshtml" />
     <Content Include="Views\JoinLiveClass\Details.cshtml" />
     <Content Include="Views\Student\Search.cshtml" />
+    <Content Include="Views\Student\JoinedStudents.cshtml" />
+    <Content Include="Views\Student\JoinNewStudent.cshtml" />
+    <Content Include="Views\Student\StudentProfile.cshtml" />
+    <Content Include="Views\Student\StudentFriend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

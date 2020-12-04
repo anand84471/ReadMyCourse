@@ -12,5 +12,7 @@ namespace StudentDashboard.HttpResponse
         public string m_strIndexName { get; set; }
         [JsonProperty("course_id")]
         public long m_iIndexId { get; set; }
+        [JsonProperty("course_image_url")]
+        public string m_strCourseImage;
     }
 }

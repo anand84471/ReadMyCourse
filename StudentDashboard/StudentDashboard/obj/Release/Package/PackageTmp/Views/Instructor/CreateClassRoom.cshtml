@@ -218,7 +218,11 @@
             {
                 "classroom_name": classRoomName,
                 "classroom_description": classRoomDescription,
-                "background_url": backGroundImagePath
+                "classroom_image_details": {
+                    "small_size_url": smallIconUrl,
+                    "original_url": backGroundImagePath,
+                    "medium_size_url": mediumSizeIconUrl
+                }
             }
             $.ajax({
                 headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -267,7 +271,9 @@
     $("#imageUpload").change(function () {
         readURL(this);
     });
-    var backGroundImagePath = "";
+    var smallIconUrl;
+    var mediumSizeIconUrl;
+    var backGroundImagePath;
     function requestUpload() {
         document.getElementById("fileUploadProgressBar").style.width = "0%";
         debugger
@@ -277,7 +283,6 @@
         $.ajax({
             xhr: function () {
                 var xhr = new window.XMLHttpRequest();
-
                 xhr.upload.addEventListener("progress", function (evt) {
                     if (evt.lengthComputable) {
                         var percentComplete = evt.loaded / evt.total;
@@ -289,7 +294,6 @@
                         }
                     }
                 }, false);
-
                 return xhr;
             },
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -304,6 +308,8 @@
                 debugger
                 if (data != null && data.response_code == 1) {
                     backGroundImagePath = data.file_location;
+                    smallIconUrl = data.small_size_icon_url;
+                    mediumSizeIconUrl = data.medium_size_icon_url;
                     $("#imagePreview").attr("src", data.file_location);
                 }
                 else {

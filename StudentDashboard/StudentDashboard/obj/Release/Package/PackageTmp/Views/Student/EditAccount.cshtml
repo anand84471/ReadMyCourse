@@ -52,11 +52,11 @@
                         Please  enter last name
                     </div>
                 </div>
-
+                <input type="hidden" name="countryCode" id="countryCode" value="+91" />
                 <div class="form-group row">
                     <label for="staticPhone" class="col-sm-2 col-form-label text-success font-weight-bolder">Phone No:</label>
                     <div class="col-sm-4">
-                        <input type="tel" name="phoneNo" class="form-control" value="@Model.m_strPhoneNo" id="staticPhone" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" size="10" placeholder="Enter phone no..." required>
+                        <input type="tel" name="phoneNo" class="form-control" value="@Model.m_strPhoneNo" id="phoneNo" pattern=".{10,}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" size="10" placeholder="Enter phone no..." required>
                     </div>
                     <div class="invalid-feedback">
                         Please enter phone no
@@ -66,7 +66,7 @@
                         <select id="genderselect" name="gender" class="browser-default custom-select">
                             <option selected value="N">@Model.m_strGender</option>
                             <option value="M">Male</option>
-                            <option value="F">Femal</option>
+                            <option value="F">Female</option>
                             <option value="O">Other</option>
                         </select>
                         <div class="invalid-feedback">
@@ -210,6 +210,7 @@
                             $("#genderselect").removeClass("is-invalid");
                             $("#genderselect").addClass("is-valid");
                         }
+                        $("#countryCode").val("+" + iti.s.dialCode);
                     }, false);
                 });
             }, false);
@@ -222,4 +223,15 @@
             window.addEventListener('load', getStates()
             , false);
         })();
+</script>
+<script src="../../Scripts/vendor/intl-tel-input-master/intlTelInput.min.js"></script>
+
+<script src="../../Scripts/vendor/intl-tel-input-master/intlTelInput-jquery.min.js"></script>
+<script src="../../Scripts/vendor/intl-tel-input-master/utils.js"></script>
+<script type="text/javascript">
+        var input = document.getElementById("phoneNo");
+        var iti=window.intlTelInput(input, ({
+            initialCountry: "in",
+        }));
+
 </script>

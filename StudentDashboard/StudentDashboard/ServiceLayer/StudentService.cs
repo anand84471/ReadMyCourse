@@ -6,9 +6,12 @@ using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
+using StudentDashboard.Models;
+using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.RazorPay;
+using StudentDashboard.Models.Social;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
 using StudentDashboard.Views.Student;
@@ -335,6 +338,22 @@ namespace StudentDashboard.ServiceLayer
             try
             {
                 lsSearchInstructorResponseModal = await objStudentDTO.SearchForInstructor(SearchString, MaxRowToReturn);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForInstructor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsSearchInstructorResponseModal;
+        }
+        public async Task<List<SearchInstructorResponseModal>> SearchForInstructorNew(string SearchString, int MaxRowToReturn,int NoOfRowsFetched,long StudentId)
+        {
+            List<SearchInstructorResponseModal> lsSearchInstructorResponseModal = null;
+            try
+            {
+                lsSearchInstructorResponseModal = await objStudentDTO.SearchForInstructorNew(SearchString, MaxRowToReturn, NoOfRowsFetched, StudentId);
             }
             catch (Exception Ex)
             {
@@ -803,6 +822,68 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return studentSearchResponse;
-        } 
+        }
+        public async Task<List<StudentDetailToFolllow>> GetAllStudentsToJoin(GetStudentsToFollowRequest getStudentsToFollowRequest)
+        {
+            List<StudentDetailToFolllow> lsStudentDetailToFolllow = null;
+            try
+            {
+                getStudentsToFollowRequest.m_iNoOfRowsToBeFetched = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                lsStudentDetailToFolllow = await objStudentDTO.GetAllStudentsToJoin(getStudentsToFollowRequest);
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllStudentsToJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentDetailToFolllow;
+        }
+        public async Task<StudentPublicProfileResponse> GetStudentPublicProfileResponse(long StudentId)
+        {
+            return await objStudentDTO.GetStudentPublicProfileResponse(StudentId);
+        }
+        public async Task<bool> JoinStudentToStudent(long StudentId, long StudentToBeJoinedId)
+        {
+            return await objStudentDTO.JoinStudentToStudent(StudentId, StudentToBeJoinedId);
+        }
+        public async Task<List<StudentFollowedByStudentDetails>> GetAllStudentsFollwoedByStudent(GetAllStudentFollowedByStudentRequest getAllStudentFollowedByStudentRequest)
+        {
+            List<StudentFollowedByStudentDetails> lsStudentFollowedByStudentDetails = null;
+            try
+            {
+                getAllStudentFollowedByStudentRequest.m_iNoOfRowsToBeFetched = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                lsStudentFollowedByStudentDetails= await objStudentDTO.GetAllStudentsFollwoedByStudent(getAllStudentFollowedByStudentRequest);
+            }
+            catch(Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllStudentsToJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentFollowedByStudentDetails;
+        }
+        public async Task<bool> CheckStudentFollowingStudent(long StudentId, long StudentToBeFollowedId)
+        {
+            return await objStudentDTO.CheckStudentFollowingStudent(StudentId, StudentToBeFollowedId);
+        }
+        public async Task<StudentToStudentConnectionDetails> FetchStudentToStudentConnectionDetails(long StudentId, long FriendId)
+        {
+            return await objStudentDTO.FetchStudentToStudentConnectionDetails(StudentId, FriendId);
+        }
+        public async Task<StudentProfileDetails> FetchStudentSelfDetails(long StudentId)
+        {
+            return await objStudentDTO.FetchStudentSelfDetails(StudentId);
+        }
+        public async Task<List<StudentLiveClassMeetingDetails>> GetAllLiveClassMeetingDetailsForStudnet(long StudentId, long ClassroomId)
+        {
+            return await objStudentDTO.GetAllLiveClassMeetingDetailsForStudnet(StudentId, ClassroomId);
+        }
+        public async Task<StudentLiveClassMeetingDetails> GetLiveClassMeetingDetailsForStudnet(GetClassroomMeetingDetailsForStudentRequest getClassroomMeetingDetailsForStudentRequest)
+        {
+            return await objStudentDTO.GetLiveClassMeetingDetailsForStudnet(getClassroomMeetingDetailsForStudentRequest);
+        }
     }
 }

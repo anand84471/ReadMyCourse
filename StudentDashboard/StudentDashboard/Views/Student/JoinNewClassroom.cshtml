@@ -28,7 +28,158 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         border-radius: 8px; 
     }
 </style>
-<div class="container-fluid " id="addNewCourseContainer">
+<style type="text/css">
+  .card-img-top{
+    max-width: 22.8rem !important;
+    max-height: 12.8rem !important;
+    padding: 0.5rem;
+    border-radius:15px;
+}
+.card-bodys{
+    padding-top: 0.8rem;
+}
+.card-titles{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+    padding-bottom: 0;
+    margin-bottom: 5px;
+}
+.stars-outer {
+    display: inline-block;
+    color: #f8ce0b;
+    position: relative;
+    font-family: FontAwesome;
+    font-size: 20px;
+    letter-spacing: 5px;
+  }
+  
+  .stars-outer::before {
+    content: "\f006 \f006 \f006 \f006 \f006";
+  }
+  
+  .stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    color: #f8ce0b;
+  }
+
+  .stars-outer spam{
+      letter-spacing: normal;
+      color: black;
+  }
+  .stars-outer spam:nth-child(3){
+    letter-spacing: normal;
+    color: black;
+    opacity: 0.6;
+    font-size: 17px;
+}
+.badge-course-complexity{
+    position: absolute;
+    background-image: linear-gradient(to left,#FF8008,#FFC837);
+    color: white;
+    width: 6rem;
+    font-size: 1rem;
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius:20px;
+    text-align:center;
+}
+.card-texts{
+    color: black;
+    opacity: 0.8;
+    padding-top: 10px;
+}
+.enroll{
+    display: flex;
+    justify-content: flex-end;
+}
+#join-now-button {
+    color: #fff;
+    background-color: #09e176;
+    border-color: #09e176;
+    min-width: 9.2rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    border-radius: 5px;
+    text-align: center;
+    justify-content: center;
+    justify-content: space-between;
+}
+#join-now-button:hover{
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.course-details{
+    display: flex;
+    justify-content: space-between;
+}
+.course-details button{
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.price{
+    margin: .5rem 0 0;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: .2rem 0 0;
+    color: #7a17eb;
+}
+.author{
+    display: flex;
+    margin-top: 0;
+}
+.author img{
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+}
+.author div{
+    margin: 0.1rem 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 550;
+    color: black;
+    opacity: 0.8;       
+}
+.live{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border: 2px solid red;
+    color: red;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    width: 5rem;
+
+    float: right;
+}
+
+@@media only screen and (max-width: 600px) {
+    .parent{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .live-class-cards{
+        width: 21rem !important;
+        min-height: 29rem !important;
+    }
+    .card-img-top{
+        width: 20.8rem !important;
+    }
+}
+</style>
+<div class="container-fluid" id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Join new classroom</h1>
         <nav aria-label="breadcrumb">
@@ -39,10 +190,10 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             </ol>
         </nav>
     </div>
-    <div class="input-group pl-lg-5 pr-lg-5">
+    <div class="input-group p-1">
         <input type="text" class="form-control" id="classroomSearchBox" placeholder="Search for classrooms..." aria-label="Search">
         <div class="input-group-append">
-            <button class="btn btn-primary" onclick="searchForClassrooms()" type="button">
+            <button class="btn btn-primary" onclick="initiliazeJoinNewClassroom()" type="button">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -53,8 +204,8 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    <div  id="allClassroomContainer">
-
+      <div class="row col-md-12 mt-4 parent" id="live-classes-container">
+     
     </div>
     <div class="alert alert-danger" id="footerAllClassroom" style="display:none">
         No more classrooms founds
@@ -154,50 +305,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     </div>
 </div>
 <script type="text/javascript">
+
         (function () {
             'use strict';
             window.addEventListener('load', function () {
-                searchForClassrooms();
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form)
-                {
-                    form.addEventListener('submit', function (event)
-                    {
-                        if (form.checkValidity() === false ) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                            form.classList.add('was-validated');
-                    }, false);
-                });
+                initiliazeJoinNewClassroom();
             }, false);
         })();
         function initiliazeJoinNewClassroom()
         {
+            $("#live-classes-container").empty();
             lastClassroomIdFetched = 0;
             searchForClassrooms();
-        }
-        onpageshow = initiliazeJoinNewClassroom();
-        function requestStartAssignment() {
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify(_data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                url: "/api/v1/instructor/contact",
-                success: function (data) {
-                    if (data != null && data.response_code == 1) {
-                        $("#successResponseMessage").text("response received. we will contact you soon");
-                        $("#successDelete").modal('show');
-                    }
-                    else {
-                        $("#errorAlertMessageBody").text("Form submission failed. Please try again");
-                        $("#errorAlertHeader").modal('show');
-                    }
-                }
-            });
         }
 </script>
 <script>
@@ -206,7 +325,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         var input = document.getElementById("classroomSearchBox");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
-                searchForClassrooms();
+                initiliazeJoinNewClassroom();
             }
         });
         $("#spinner").remove();
@@ -218,7 +337,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         {
             queryString = "";
         }
-        $.ajax({
+        $.ajax({    
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -226,6 +345,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             url: "/api/v1/Course/SearchClassroom?LastClassroomId=".concat(lastClassroomIdFetched).
                 concat("&SearchString=").concat(queryString),
             success: function (data) {
+                debugger
                 if (data != null && data.response_code == 1) {
                     var row = '';
                     var classrooms = data.classrooms;
@@ -233,23 +353,40 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         for (var i = 0; i < classrooms.length; i++) {
                             lastClassroomIdFetched = classrooms[i].classroom_id;
                             if (classrooms[i].is_joined == false) {
-                                row = '<div class="card shadow classroom-assignemnts p-2">' +
-                           '<h4 class="text-white font-weight-bold p2"><span ><i class="fa fa-bookmark"></i></span> ' + classrooms[i].classroom_name + '</h4>' +
-                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Created On: ' + classrooms[i].classroom_creation_date + '</h6>' +
-                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-users"></i></span> No Of students joined: ' + classrooms[i].no_of_enrollments + '</h6>';
-                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Joining Fee: ' + classrooms[i].classroom_joining_fee + ' </span><a class="ml-2 btn btn-sm btn-outline-light" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Join Now</a></h6>';
+                                row = '<div class="col-md-6 col-lg-4 col-sm-12 my-2 my_card">'
+                            + '<div class="card live-class-cards shadow-lg" >'
+                              + '<div class="badge-course-complexity">Beginner</div>'
+                              + '<img src="' + classrooms[i].classroom_image + '" class="card-img-top" alt="course">'
+                              + '<div class="card-body card-bodys">'
+                                + '<div class="live ml-1">Live Class</div>'
+                                + '<div class="card-title card-titles">' + classrooms[i].classroom_name + '</div>'
+                                + '<div class="stars-outer">'
+                                  + '<div class="stars-inner">'
+                                  + '</div>'
+                                  + '<spam >5</spam>'
+                                  + '<spam > (' + classrooms[i].no_of_enrollments + ') </spam>'
+                                  + '<p class="ml-3 price">' + classrooms[i].classroom_joining_fee + '</p>'
+                                + '</div>'
+                                + '<p class="card-text card-texts">20+ Exclusive Lessons |  English</p>'
+                                + '<div class="author">'
+                                  + '<img src="' + classrooms[i].instructor_image + '"alt="prof" />'
+                                  + '<div>' + classrooms[i].instructor_name + '</div>'
+                                 + '</div>' 
+                                + '<div class="enroll">'
+                                     + '<div class="course-details">'
+                                    + '<a class="btn text-gray-500" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Details</a>'
+                                     + '</div>'
+                                    + '<a id="join-now-button" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Join now</a>'
+                                + '</div>'
+                          + '</div>'
+                        + '</div>'
+                      + '</div>';
+                                $("#live-classes-container").append(row);
+                               
                             }
-                            else {
-                                row = '<div class="card shadow classroom-assignemnts-submitted p-2">' +
-                           '<h4 class="text-white font-weight-bold p2"><span ><i class="fa fa-check-circle"></i></span> ' + classrooms[i].classroom_name + '</h4>' +
-                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-calendar"></i></span> Added On: ' + classrooms[i].classroom_creation_date + '</h6>' +
-                           '<h6 class="text-white font-weight-bold ml-4"><span><i class="fa fa-users"></i></span> No Of students joined: ' + classrooms[i].no_of_enrollments + '</h6>';
-                                row += '<h6 class="ml-4"><span class="badge badge-pill badge-light ml-10 h3" id="successbadge">Status: Joined</span><a class="btn btn-sm btn-outline-light ml-2" href="ViewClassroom?classroom_id=' + classrooms[i].classroom_id + '">Visit</a></h6>';
-                            }
-                            row += '</div>';
-                            $("#allClassroomContainer").append(row);
-                        }
 
+                        }
+                       
                     } else {
                         $("#footerAllClassroom").show();
                     }
@@ -260,4 +397,6 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             }
         });
     }
+
+  
 </script>

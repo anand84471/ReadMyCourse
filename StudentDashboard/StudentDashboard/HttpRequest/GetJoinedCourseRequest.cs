@@ -15,5 +15,7 @@ namespace StudentDashboard.HttpRequest
         public long m_llStudentGid;
         [JsonProperty("last_fetched_id")]
         public long m_llLastFetchedId;
+        [JsonProperty("no_of_rows_fetched")]
+        public int m_iNoOfRowsFetched;
     }
 }
