@@ -338,6 +338,12 @@
   <wsdl:message name="ICpDataService_GetClassroomMeetingDetailsForStudent_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetClassroomMeetingDetailsForStudentResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomSyllabus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomSyllabus" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetClassroomSyllabus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClassroomSyllabusResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
   </wsdl:message>
@@ -1711,6 +1717,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudent" message="tns:ICpDataService_GetClassroomMeetingDetailsForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomMeetingDetailsForStudent_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetClassroomSyllabus">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomSyllabus" message="tns:ICpDataService_GetClassroomSyllabus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomSyllabusResponse" message="tns:ICpDataService_GetClassroomSyllabus_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse" message="tns:ICpDataService_UpdateNotificationStatus_OutputMessage" />
@@ -2970,6 +2980,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetClassroomMeetingDetailsForStudent">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClassroomSyllabus">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomSyllabus" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

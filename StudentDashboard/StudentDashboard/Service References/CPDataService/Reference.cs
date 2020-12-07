@@ -413,6 +413,12 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomMeetingDetailsForStudentResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomMeetingDetailsForStudentAsync(long StudentId, long MeetingId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomSyllabus", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomSyllabusResponse")]
+        System.Data.DataSet GetClassroomSyllabus(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomSyllabus", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomSyllabusResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomSyllabusAsync(long ClassroomId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -3054,6 +3060,14 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomMeetingDetailsForStudentAsync(long StudentId, long MeetingId) {
             return base.Channel.GetClassroomMeetingDetailsForStudentAsync(StudentId, MeetingId);
+        }
+        
+        public System.Data.DataSet GetClassroomSyllabus(long ClassroomId) {
+            return base.Channel.GetClassroomSyllabus(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomSyllabusAsync(long ClassroomId) {
+            return base.Channel.GetClassroomSyllabusAsync(ClassroomId);
         }
         
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {

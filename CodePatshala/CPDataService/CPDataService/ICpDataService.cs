@@ -529,6 +529,9 @@ namespace CPDataService
         DataSet GetClassroomAllMeetingDetailsForStudent(long StudentId, long ClassroomId);
         [OperationContract]
         DataSet GetClassroomMeetingDetailsForStudent(long StudentId, long MeetingId);
+        [OperationContract]
+        DataSet GetClassroomSyllabus(long ClassroomId);
+    
 
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

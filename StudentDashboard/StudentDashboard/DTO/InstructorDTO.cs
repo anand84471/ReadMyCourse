@@ -668,6 +668,45 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-       
+        public async Task<bool> UpdateClassroomSyllabus(long ClassroomId,string ClassroomSyllabus)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomSyllabusAsync(ClassroomId, ClassroomSyllabus);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<ClassroomSyllabusDetailsModal> GetClassroomSyllabus(long ClassroomId)
+        {
+            ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetClassroomSyllabusAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    classroomSyllabusDetailsModal = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ClassroomSyllabusDetailsModal(
+                         dataRow.Field<string>("CLASSROOM_SYLLABUS")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return classroomSyllabusDetailsModal;
+        }
+
     }
 }

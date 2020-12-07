@@ -265,6 +265,19 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objInstructorDTO.GetLiveClassDetailsForInstructor(MeetingId);
         }
-
+        public async Task<bool> UpdateClassroomSyllabus(ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal)
+        {
+            classroomSyllabusDetailsModal.m_strSerializedSyllabus = JsonConvert.SerializeObject(classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus);
+            return await objInstructorDTO.UpdateClassroomSyllabus(classroomSyllabusDetailsModal.m_llClassroomId, classroomSyllabusDetailsModal.m_strSerializedSyllabus);
+        }
+        public async Task<ClassroomSyllabusDetailsModal> GetClassroomSyllabus(long ClassroomId)
+        {
+            ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal = await objInstructorDTO.GetClassroomSyllabus(ClassroomId);
+            if(classroomSyllabusDetailsModal!=null)
+            {
+                classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus = JsonConvert.DeserializeObject<List<ClassroomWeekWiseSyallabus>>(classroomSyllabusDetailsModal.m_strSerializedSyllabus);
+            }
+            return classroomSyllabusDetailsModal;
+        }
     }
 }

@@ -8,8 +8,19 @@ namespace StudentDashboard.Models.Classroom
 {
     public class ClassroomSyllabusDetailsModal
     {
+        [JsonProperty("classroom_id")]
+        public long m_llClassroomId;
         [JsonProperty("week_wise_schedule")]
         public List<ClassroomWeekWiseSyallabus> m_lsClassroomWeekWiseSyallabus;
+        public string m_strSerializedSyllabus;
+        public ClassroomSyllabusDetailsModal()
+        {
+
+        }
+        public ClassroomSyllabusDetailsModal(string SerializedSyallabus)
+        {
+            this.m_strSerializedSyllabus = SerializedSyallabus;
+        }
     }
     public class ClassroomWeekWiseSyallabus
     {

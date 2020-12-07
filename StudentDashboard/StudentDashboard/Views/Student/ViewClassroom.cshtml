@@ -549,7 +549,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                 </div>
             </div>
             <div class="card col-lg-4  border-primary">
-                <div class="card-header">Live classes <span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous class</a></span></div>
+                <div class="card-header">Live classes </div>
                 <div class="card-body">
                     <div class="table-responsive table-hover">
                         <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
@@ -1015,15 +1015,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     var isJoined = "absent";
                     $('#tableBody').empty();
                     var sNo = 0;
+                    var absentClass = "";
                     for (var i = 0; i < meetings.length; i++) {
                         sNo++;
                         isJoined = "absent";
+                        absentClass = "danger";
                         if (meetings[i].student_join_id != null) {
                             isJoined = "present";
+                            absentClass = "info";
                         }
-                        var rows = '<tr><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                        var rows = '<tr class="justify-content-between"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
                         + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].date + '</td>'
-                        + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + isJoined + '</button></td>'
+                        + '<td class="pr-2"><p class="text-' + absentClass + '">' + isJoined + '</p></td>'
                         + ''
                         + '</tr>';
                         $('#tableBody').append(rows);

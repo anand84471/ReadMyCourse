@@ -2775,6 +2775,31 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+        [Route("UpdateClassroomSyllabus")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateClassroomSyllabus(ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal)
+        {
+            APIDefaultResponse objResonse = new APIDefaultResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if (classroomSyllabusDetailsModal != null && InstructorId != -1 && await objInstructorService.CheckClassroomAccess(classroomSyllabusDetailsModal.m_llClassroomId, InstructorId))
+                {
+                    if (await objInstructorService.UpdateClassroomSyllabus(classroomSyllabusDetailsModal))
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateCourseImage", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
 
     }
 }

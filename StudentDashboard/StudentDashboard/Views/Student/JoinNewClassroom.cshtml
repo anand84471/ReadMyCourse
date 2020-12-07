@@ -290,6 +290,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     </dd>
                     <dt class="col-sm-3">Instructor:</dt>
                     <dd class="col-sm-9" id="instructorName"></dd>
+                    
                     <dt class="col-sm-3">No od enrollments:</dt>
                     <dd class="col-sm-9" id="noOfStudentsJoined"></dd>
                 </dl>
@@ -353,6 +354,13 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         for (var i = 0; i < classrooms.length; i++) {
                             lastClassroomIdFetched = classrooms[i].classroom_id;
                             if (classrooms[i].is_joined == false) {
+                                if (classrooms[i].instructor_image == null)
+                                {
+                                    classrooms[i].instructor_image = "../../Images/profile1.png";
+                                }
+                                if (classrooms[i].classroom_image == null) {
+                                    classrooms[i].classroom_image = "../../Images/join_new_static_course_graphics.jpg";
+                                }
                                 row = '<div class="col-md-6 col-lg-4 col-sm-12 my-2 my_card">'
                             + '<div class="card live-class-cards shadow-lg" >'
                               + '<div class="badge-course-complexity">Beginner</div>'
@@ -369,6 +377,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                                 + '</div>'
                                 + '<p class="card-text card-texts">20+ Exclusive Lessons |  English</p>'
                                 + '<div class="author">'
+                                
                                   + '<img src="' + classrooms[i].instructor_image + '"alt="prof" />'
                                   + '<div>' + classrooms[i].instructor_name + '</div>'
                                  + '</div>' 
