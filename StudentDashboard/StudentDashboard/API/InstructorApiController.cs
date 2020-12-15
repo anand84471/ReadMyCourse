@@ -2800,6 +2800,31 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
-
+        [Route("GetClassroomSyllabus")]
+        [HttpPost]
+        public async Task<GetClassroomSyllabusDetailsResponse> GetClassroomSyllabus(long ClassroomId)
+        {
+            GetClassroomSyllabusDetailsResponse objResonse = new GetClassroomSyllabusDetailsResponse();
+            try
+            {
+                int InstructorId = GetInstructorIdInRequest();
+                if ( InstructorId != -1 && await objInstructorService.CheckClassroomAccess(ClassroomId, InstructorId))
+                {
+                    objResonse.classroomSyllabusDetailsModal = await objInstructorService.GetClassroomSyllabus(ClassroomId);
+                    if(objResonse.classroomSyllabusDetailsModal!=null)
+                    {
+                        objResonse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
     }
 }

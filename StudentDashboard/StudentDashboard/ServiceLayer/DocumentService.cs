@@ -116,6 +116,11 @@ namespace StudentDashboard.ServiceLayer
             LiveClassBusinessLayer objLiveClassBusinessLayer = new LiveClassBusinessLayer();
             return await objDocumentDTO.GetClassroomDetailsForStudentJoin(objLiveClassBusinessLayer.GetClassroomIdFromSku(ClassroomSku));
         }
+        public long GetClassroomIdFromSku(string ClassroomSku)
+        {
+            LiveClassBusinessLayer objLiveClassBusinessLayer = new LiveClassBusinessLayer();
+            return objLiveClassBusinessLayer.GetClassroomIdFromSku(ClassroomSku);
+        }
         public async Task<bool> InsertNewSubscriber(AddEmailSubscriberRequest addEmailSubscriberRequest)
         {
             return await objDocumentDTO.InsertNewSubscribe(addEmailSubscriberRequest.m_strEmailAddress);

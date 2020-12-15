@@ -23,10 +23,12 @@ namespace StudentDashboard.Models.Student
         public int m_iClassroomCharge;
         public string m_strClassroomCharge;
         public string m_strClassroomBackgroundImage;
+        public ClassroomScheduleDetails classroomScheduleDetails;
+        
         public ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal;
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined,int NoOfAssignments,int NoOfLiveClassess,
             int NoOfTests,int NoOfStudyMaterials,string ClassroomName,string ClassroomDescription,DateTime ClassroomStartDate,
-            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus
+            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule
             )
         {
             this.m_iNoOfAssignments = NoOfAssignments;
@@ -77,16 +79,20 @@ namespace StudentDashboard.Models.Student
             }
             if(ClassroomSyllabus!=null)
             {
-                classroomSyllabusDetailsModal= JsonConvert.DeserializeObject<ClassroomSyllabusDetailsModal>(ClassroomSyllabus);
+                classroomSyllabusDetailsModal = new ClassroomSyllabusDetailsModal();
+                classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus = JsonConvert.DeserializeObject<List<ClassroomWeekWiseSyallabus>>(ClassroomSyllabus);
             }
-
+            if (Schedule != null)
+            {
+                setClassroomSchedule(Schedule);
+            }
         }
         public ClassroomJoinDetailsModal()
         {
 
         }
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined, int NoOfAssignments, int NoOfLiveClassess,
-            int NoOfTests, int NoOfStudyMaterials)
+            int NoOfTests, int NoOfStudyMaterials, string ClassroomSyllabus, string Schedule)
         {
             this.m_iNoOfAssignments = NoOfAssignments;
             this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
@@ -114,6 +120,27 @@ namespace StudentDashboard.Models.Student
                 m_iNoOfStudentsJoined = 1000;
             }
             m_iNoOfPracticeMaterials = m_iNoOfTests + m_iNoOfAssignments;
+            if (ClassroomSyllabus != null)
+            {
+                classroomSyllabusDetailsModal = new ClassroomSyllabusDetailsModal();
+                classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus = JsonConvert.DeserializeObject<List<ClassroomWeekWiseSyallabus>>(ClassroomSyllabus);
+            }
+            if (Schedule != null)
+            {
+                setClassroomSchedule(Schedule);
+            }
+        }
+        private void setClassroomSchedule(string Schedule)
+        {
+            classroomScheduleDetails = JsonConvert.DeserializeObject<ClassroomScheduleDetails>(Schedule);
+            if(classroomScheduleDetails!=null&& classroomScheduleDetails.m_lsDayWiseScheduleDetails!=null)
+            {
+                var days = new List<String> { "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+                for(var i=0;i<classroomScheduleDetails.m_lsDayWiseScheduleDetails.Count;i++)
+                {
+                    classroomScheduleDetails.m_lsDayWiseScheduleDetails[i].m_strDayName = days[i];
+                }
+            }
         }
     }
 }

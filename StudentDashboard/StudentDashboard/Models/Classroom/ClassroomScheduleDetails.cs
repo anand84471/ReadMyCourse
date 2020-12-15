@@ -11,7 +11,7 @@ namespace StudentDashboard.Models.Classroom
         [JsonProperty("classroom_id")]
         public long m_llClassroomId;
         [JsonProperty("schedule_details")]
-        List<ClassroomDayWiseScheduleModal> m_lsDayWiseScheduleDetails;
+        public List<ClassroomDayWiseScheduleModal> m_lsDayWiseScheduleDetails;
         [JsonProperty("row_insertion_time")]
         public string m_strClassroomScheduleInsertionTime;
         [JsonProperty("row_updation_time")]

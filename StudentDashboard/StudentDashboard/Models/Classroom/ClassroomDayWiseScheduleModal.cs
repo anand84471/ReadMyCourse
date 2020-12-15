@@ -13,6 +13,8 @@ namespace StudentDashboard.Models.Classroom
         [JsonProperty("close_time")]
         public string m_strClassroomCloseTime;
         [JsonProperty("is_open")]
-        public bool IsOpen; 
+        public bool IsOpen;
+        [JsonProperty("day_name")]
+        public string m_strDayName;
     }
 }

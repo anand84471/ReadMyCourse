@@ -27,7 +27,8 @@ namespace StudentDashboard.Controllers
             ClassroomJoinDetailsModal classroomJoinDetailsModal;
             if (Session["user_id"] != null)
             {
-                Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/JoinNow?Id=" + id );
+                long ClassroomId = objDocumentService.GetClassroomIdFromSku(id);
+                Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId);
             }
             classroomJoinDetailsModal = await objDocumentService.GetLiveClassDetailsForStudent(id);
             ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + id + "&&access_code=";

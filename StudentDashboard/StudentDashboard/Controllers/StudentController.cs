@@ -113,6 +113,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strPassword = collection["password"];
                 objRegiserModel.m_strEmail = collection["email"];
                 objRegiserModel.m_strUserId = objRegiserModel.m_strEmail;
+                objRegiserModel.m_strCountryCode = collection["countryCode"];
                 objRegiserModel.m_strPhoneNo = collection["phoneNo"];
                 objRegiserModel.m_llClassroomId = long.Parse(collection["classroom_id"]);
                 long ClassroomId = objRegiserModel.m_llClassroomId;
@@ -135,7 +136,7 @@ namespace StudentDashboard.Controllers
                                 Session["student_profile_picture_url"] = objRegiserModel.m_strProfileUrl;
                                 if(await objStudentService.RegisterStudentFreeToClassroom(ClassroomId, (long)Session["user_id"]))
                                 {
-                                    Response.Redirect("~/Student/ViewClassroom?classroom_id=" + ClassroomId);
+                                    Response.Redirect("~/Student/Home");
                                 }
                             }
                         }
@@ -1035,9 +1036,14 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
-                ViewBag.Id = classroom_id;
-                return View(studentClassroomHomeDetails);
+                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"],classroom_id))
+                {
+                    StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
+                    ViewBag.Id = classroom_id;
+                    return View(studentClassroomHomeDetails);
+                }
+                
+                
             }
             catch (Exception Ex)
             {
@@ -1047,6 +1053,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
+            return PartialView("UnAuthorizedAccess");
         }
         [HttpGet]
         public ActionResult MyClassrooms()

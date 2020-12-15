@@ -5,6 +5,165 @@
 @using StudentDashboard.Models.Student;
 @model StudentClassroomHomeDetails
 <style type="text/css">
+
+    /*Vertical Steps*/
+    .inside-body {
+        padding: 25px;
+    }
+
+    .list-group.vertical-steps .list-group-item {
+        border: none;
+        border-left: 3px solid #0052c2;
+        box-sizing: border-box;
+        border-radius: 0;
+        counter-increment: step-counter;
+        padding-left: 20px;
+        padding-right: 0px;
+        padding-bottom: 20px;
+        padding-top: 0px;
+    }
+
+        .list-group.vertical-steps .list-group-item.active {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .list-group.vertical-steps .list-group-item:last-child {
+            border-left: 3px solid transparent;
+            padding-bottom: 0;
+        }
+
+        .list-group.vertical-steps .list-group-item::before {
+            border-radius: 50%;
+            background-color: #0052c2;
+            color: #fff;
+            content: counter(step-counter);
+            display: inline-block;
+            float: left;
+            height: 25px;
+            line-height: 25px;
+            margin-left: -35px;
+            text-align: center;
+            width: 25px;
+        }
+
+        .list-group.vertical-steps .list-group-item span,
+        .list-group.vertical-steps .list-group-item a {
+            display: block;
+            overflow: hidden;
+            padding-top: 2px;
+        }
+    /* End of Vertical Step */
+
+    #how-to .panel-group .panel {
+        border-radius: 0px;
+        border: 0px;
+    }
+
+    #how-to .panel-group {
+        margin: 0px;
+    }
+
+    #how-to .container {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #how-to .panel-heading {
+        padding: 0px !important;
+        border-radius: 0px;
+    }
+
+    #how-to .parent a {
+        display: block;
+        text-decoration: none;
+        padding: 25px;
+    }
+
+    #how-to .child a {
+        display: block;
+        text-decoration: none;
+        padding: 25px;
+    }
+
+    #how-to .parent {
+        background-color: #fff !important;
+    }
+
+    #how-to .child {
+        background-color: #f2f2f2 !important;
+    }
+
+    #how-to .panel-body {
+        border: none;
+    }
+
+    #how-to .panel-body {
+        padding: 0px;
+    }
+
+    #how-to .panel-group .panel + .panel {
+        margin: 0px;
+    }
+
+    #how-to .panel-group .parent {
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    #how-to .panel-group .child {
+        border-bottom: 1px solid #FDFDFD;
+    }
+
+    #superaccordion {
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;
+    }
+
+    .panel-heading a:after {
+        content: "";
+        position: relative;
+        top: 1px;
+        right: 10px;
+        display: inline-block;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14pt;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        float: right;
+        transition: transform .25s linear;
+        -webkit-transition: -webkit-transform .25s linear;
+        color: #333;
+    }
+
+    .panel-heading a[aria-expanded="true"]:after {
+        content: "\2212";
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    .panel-heading a[aria-expanded="false"]:after {
+        content: "\002b";
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    .parent a:after {
+        content: "";
+        position: relative;
+        top: -15px;
+        right: 10px;
+        display: inline-block;
+        line-height: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        float: right;
+        transition: transform .25s linear;
+        -webkit-transition: -webkit-transform .25s linear;
+        color: #333;
+    }
+</style>
+<style type="text/css">
     .classroom-background-container {
         background-position: center;
         background-repeat: no-repeat;
@@ -71,26 +230,26 @@
         text-transform: capitalize;
     }
 
-   .ui-form-input {
-  padding: 13px 15px;
-  border-radius: 8px;
-  border: 2px solid #1a73e8;
-  outline: 0;
-  width: 100%;
-  max-height:200px;
- 
-}
-.ui-form-chat {
-  padding: 13px 15px;
-  margin-bottom:0px;
-  border-radius: 8px;
-  border: 2px solid #1a73e8;
-  outline: 0;
-  width: 70%;
-  float:right;
-}
+    .ui-form-input {
+        padding: 13px 15px;
+        border-radius: 8px;
+        border: 2px solid #1a73e8;
+        outline: 0;
+        width: 100%;
+        max-height: 200px;
+    }
 
-  .ui-form-chat-instructor {
+    .ui-form-chat {
+        padding: 13px 15px;
+        margin-bottom: 0px;
+        border-radius: 8px;
+        border: 2px solid #1a73e8;
+        outline: 0;
+        width: 70%;
+        float: right;
+    }
+
+    .ui-form-chat-instructor {
         padding: 13px 8px;
         margin-bottom: 0px;
         border-radius: 8px;
@@ -100,45 +259,49 @@
         width: 70%;
         float: left;
     }
-.time_date {
-    margin-top:5px;
-    margin-bottom:10px;
-    color: #747474;
-    display: block;
-    font-size: 12px;
-    width: 70%;
-    float:right;
-}
-.time_date_instructor {
-    margin-top:5px;
-    margin-bottom:10px;
-    color: #747474;
-    display: block;
-    font-size: 12px;
-    width: 70%;
-    float:left;
-}
-       .ui-input-container-message {
-  background-color: #fff;
-  border-radius: 4px;
-  max-height:300px;
- overflow-y:scroll;
-}
 
-.messge-sender {
-    margin-top:5px;
-    margin-bottom:10px;
-    color: rgba(3,0,237,0.969625350140056);
-    display: block;
-    font-size: 18px;
-    width: 70%;
-    float:left;
-}
+    .time_date {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        color: #747474;
+        display: block;
+        font-size: 12px;
+        width: 70%;
+        float: right;
+    }
+
+    .time_date_instructor {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        color: #747474;
+        display: block;
+        font-size: 12px;
+        width: 70%;
+        float: left;
+    }
+
+    .ui-input-container-message {
+        background-color: #fff;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    .messge-sender {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        color: rgba(3,0,237,0.969625350140056);
+        display: block;
+        font-size: 18px;
+        width: 70%;
+        float: left;
+    }
+
     #zmmtg-root {
         background-color: aquamarine;
     }
 
- .classroom-nav li a:hover {
+    .classroom-nav li a:hover {
         border-bottom: 3px solid red;
     }
 
@@ -157,32 +320,32 @@
     .classroom-nav li a active {
         border-bottom: 3px solid red;
     }
-    .classroom-assignemnts
-    {
-        width:100%;
-        border:10px;
-background: rgb(58,180,60);
-background: linear-gradient(90deg, rgba(58,180,60,1) 26%, rgba(253,29,29,1) 100%, rgba(252,176,69,1) 100%);
-        padding:3px;
-        margin-top:10px;
-        margin-bottom:10px;
-        color:#f8f9fccc !important;
-        border-radius: 8px; 
-    }
-    .classroom-assignemnts-submitted
-    {
-        width:100%;
-        border:10px;
-background: rgb(58,180,60);
-background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 100%, rgba(252,176,69,1) 100%);
-        padding:3px;
-        margin-top:10px;
-        margin-bottom:10px;
-        color:#f8f9fccc !important;
-        border-radius: 8px; 
+
+    .classroom-assignemnts {
+        width: 100%;
+        border: 10px;
+        background: rgb(58,180,60);
+        background: linear-gradient(90deg, rgba(58,180,60,1) 26%, rgba(253,29,29,1) 100%, rgba(252,176,69,1) 100%);
+        padding: 3px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: #f8f9fccc !important;
+        border-radius: 8px;
     }
 
-     @@media only screen and (max-width: 600px) {
+    .classroom-assignemnts-submitted {
+        width: 100%;
+        border: 10px;
+        background: rgb(58,180,60);
+        background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 100%, rgba(252,176,69,1) 100%);
+        padding: 3px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: #f8f9fccc !important;
+        border-radius: 8px;
+    }
+
+    @@media only screen and (max-width: 600px) {
         .container-classroom-section {
             padding-left: 0rem;
             padding-right: 0rem;
@@ -202,7 +365,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         </nav>
     </div>
 
-    <div class="col-lg-12" >
+    <div class="col-lg-12">
         <nav class="navbar navbar-expand-lg  navbar-light font-weight-bold">
             @*<a class="navbar-brand" href="#">@Model.m_strClassRoomName</a>*@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -214,8 +377,8 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         <a class="nav-link active" href="#navHome" onclick="showHomeDetails()"><span class="fa fa-home"></span> Home <span class="sr-only">(current)</span></a>
                     </li>
                     @*<li class="nav-item">
-                        <a class="nav-link" href="#navPreviousMeetings" onclick="showTeachingSessions()">Teaching Sessions <span class="sr-only">(current)</span></a>
-                    </li>*@
+                            <a class="nav-link" href="#navPreviousMeetings" onclick="showTeachingSessions()">Teaching Sessions <span class="sr-only">(current)</span></a>
+                        </li>*@
                     <li class="nav-item">
                         <a class="nav-link" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Discussions</a>
                     </li>
@@ -239,17 +402,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                             <span class="fa fa-pencil-square "></span> Tests
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#navAllClassroomTests"  onclick="viewAllClassroomTest()"><span class="fa fa-pencil"></span>  Submit new test</a>
+                            <a class="dropdown-item" href="#navAllClassroomTests" onclick="viewAllClassroomTest()"><span class="fa fa-pencil"></span>  Submit new test</a>
                             <a class="dropdown-item" href="#navAllClassroomTestSubmissions" onclick="viewAllClassroomTestSubmissions()"><span class="fa fa-bars"></span>  View all submissions</a>
                         </div>
                     </li>
-                   
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="fa fa-cogs"></span> Actions
+                            <span class="fa fa-chevron-circle-down"></span> More
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            
+                            <a class="dropdown-item" href="#navClassroomSyllabus" onclick="showClassroomSyllabus()"><span class="fa fa-bookmark"></span>  Classroom syllabus</a>
+                            <a class="dropdown-item" href="#navClassroomSchedule" onclick="showClassroomSchedule()"><span class="fa fa-calendar"></span>  Classroom Schedule</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" onclick="callHome()"><span class="fa fa-sign-out"></span>  Exit classroom</a>
                         </div>
@@ -261,7 +425,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     <div class="row">
         <div class="col-lg-12 mb-4" id="classroomHomeDetails">
             <div class="card shadow mb-4 border-bottom-success ">
-              
+
                 <div class="card-body classroom-background-container" style="background-image:url(../../Images/course-3.jpg)" id="backgroundUrl">
                     <div class="classroom-background-mask">
                         <h1 class="card-text font-weight-bold text-gray-100 " id="classroomName"></h1>
@@ -351,9 +515,10 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     <div class="control-buttons">
                         @*<button class="btn btn-circle bg-primary text-white" onclick="requestUploadVideo()" data-toggle="tooltip" data-placement="top" title="Upload video"><span><i class="fa fa-file"></i></span></button>*@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="callAddNewAssignment()" data-toggle="tooltip" data-placement="top" title="Add assignment"><i class="fa fa-pen"></i></button>
-                            <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
+        <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
                         <h2 id="isMeetingActive"></h2>
-                        <a  class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live" onclick="callClassroomMeeting()"><span><i class="fa fa-play-circle"></i></span> Join live class</a>
+                        <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
+                        <a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live" onclick="callClassroomMeeting()"><span><i class="fa fa-play-circle"></i></span> Join live class</a>
                         @*<a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live"><span><i class="fa fa-play-circle"></i></span> Join live class using app</a>*@
                     </div>
                 </div>
@@ -403,11 +568,11 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         </div>
                     </div>
                     <div id="allClassroomAssignmentContainer"></div>
-                  
+
                     <div id="footerPracticeNewAssignment" style="display:none">
                         <h6 class="card-title"> No assignments found</h6>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
         <div class="col-lg-12 mb-2" id="navAllAssignmentSubmissions" style="display:none">
@@ -420,7 +585,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         </div>
                     </div>
                     <div id="allClassroomAssignmentSubmissionsContainer"></div>
-                    
+
                     <div id="footerAllAssignmentSubmissions" style="display:none">
                         <h6 class="card-title"> No records found</h6>
                     </div>
@@ -437,9 +602,56 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                         </div>
                     </div>
                     <div id="allClassroomTestContainer"></div>
-                    
+
                     <div id="footerAllTests" style="display:none">
                         <h6 class="card-title"> No test found</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-2" id="navClassroomSchedule" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Classroom Schedule</div>
+                <div class="card-body">
+                    <div id="spinnerClassroomSchedule" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <h6>All the times are in IST(UTC +5:30).</h6>
+                    <table class="table table-responsive">
+                        <thead class="thead-light">
+                            <tr>
+                                <td>Day</td>
+                                <td>Status</td>
+                                <td>Start Time</td>
+                                <td>Close Time</td>
+                            </tr>
+                        </thead>
+                        <tbody id="classroomScheduleContainer">
+                        </tbody>
+                    </table>
+                    <div id="footerClassroomSchedule" style="display:none">
+                        <h6 class="card-title"> No test found</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-2" id="navClassroomSyllabus" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Classroom Syllabus</div>
+                <div class="card-body">
+                    <div id="spinnerClassroomSyllabus" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="panel-group">
+                        <div id="classroomSyllabusContainer"> </div>
+                    </div>
+
+                    <div id="footerClassroomSyllabus" style="display:none">
+                        <h6 class="card-title">No details found</h6>
                     </div>
                 </div>
             </div>
@@ -486,66 +698,66 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                     </div>
                     <h4 class="text-center font-weight-bolder p-1" id="topic-name"></h4>
                     @*<div class="card-footer">
-                        <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
-                            </li>
-                        </ul>
-                        <hr />
+                            <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
+                                </li>
+                            </ul>
+                            <hr />
 
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
-                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
-                                    <div class="col-sm-8">
-                                        <input onchange="validateInputField(this)" type="text" class="form-control" id="liveClassTopicName" placeholder="give your lecture a name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">Notes</label>
-                                    <div class="col-sm-8">
-                                        <textarea type="text" onchange="validateInputField(this)" placeholder="share some notes related to class" id="liveClassNotes" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">Edit video url or upload new</label>
-                                    <div class="col-sm-8">
-                                        <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="liveClassVideoUrl" placeholder="Enter attachment url">
-                                    </div>
-                                </div>
-                                <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
-                                    <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlFile1">Upload attachment</label>
-                                        <input type="file" id="studyMaterialUpload" name="file" accept="*" />
-                                        <button type="button" class="btn btn-primary" onclick="updateClassroomMeetingDetails()">Upload</button>
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
-                                        </div>
-                                        <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
-                                            file uploaded successfully
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
+                                        <div class="col-sm-8">
+                                            <input onchange="validateInputField(this)" type="text" class="form-control" id="liveClassTopicName" placeholder="give your lecture a name">
                                         </div>
                                     </div>
-                                </form>
-                                <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
-                                    Updated Sucessfully
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label">Notes</label>
+                                        <div class="col-sm-8">
+                                            <textarea type="text" onchange="validateInputField(this)" placeholder="share some notes related to class" id="liveClassNotes" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label">Edit video url or upload new</label>
+                                        <div class="col-sm-8">
+                                            <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="liveClassVideoUrl" placeholder="Enter attachment url">
+                                        </div>
+                                    </div>
+                                    <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                                        <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlFile1">Upload attachment</label>
+                                            <input type="file" id="studyMaterialUpload" name="file" accept="*" />
+                                            <button type="button" class="btn btn-primary" onclick="updateClassroomMeetingDetails()">Upload</button>
+                                            <div class="progress progress-sm mr-2">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                            </div>
+                                            <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
+                                                file uploaded successfully
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
+                                        Updated Sucessfully
+                                    </div>
+                                    <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
+                                        Can not be
+                                    </div>
+                                    <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
                                 </div>
-                                <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
-                                    Can not be
-                                </div>
-                                <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
+                                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
                             </div>
-                            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-                        </div>
-                    </div>*@
+                        </div>*@
                 </div>
             </div>
             <div class="card col-lg-4  border-primary">
@@ -557,7 +769,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
 
                             <tbody id="tableBody"></tbody>
                         </table>
-                        
+
                     </div>
                     <div id="spinner" class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
@@ -626,7 +838,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         </div>
     </div>
 </div>
-   
+
 
 <div class="modal fade border-success" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -893,8 +1105,10 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         $("#navAllClassroomTestSubmissions").hide();
         $("#navClassroomAttachments").hide();
         $("#navPreviousClasses").hide();
-
+        $("#navClassroomSchedule").hide();
+        $("#navClassroomSyllabus").hide();
     }
+
     function showClassroomMessages()
     {
         hideAllClssroomDetails();
@@ -1024,9 +1238,9 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                             isJoined = "present";
                             absentClass = "info";
                         }
-                        var rows = '<tr class="justify-content-between"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                        var rows = '<tr class="d-sm-flex align-items-center justify-content-between"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
                         + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].date + '</td>'
-                        + '<td class="pr-2"><p class="text-' + absentClass + '">' + isJoined + '</p></td>'
+                        + '<td class="pr-2"><div class="text-' + absentClass + '">' + isJoined + '</div></td>'
                         + ''
                         + '</tr>';
                         $('#tableBody').append(rows);
@@ -1218,5 +1432,91 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             }
         });
     }
+     function showClassroomSchedule() {
+        hideAllClssroomDetails();
+        $("#navClassroomSchedule").show();
+         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+             url: "/api/v1/Course/GetClassroomSchedule?ClassroomId=@ViewBag.Id",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    var row = '';
+                    $("#classroomScheduleContainer").empty();
+                    var scheduleDetails = data.classroom_schedule_details.schedule_details;
+                    for (var i = 0; i < scheduleDetails.length; i++) {
+                        if (scheduleDetails[i].is_open) {
+                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-success font-weight-bold right">Open</td><td class="text-su    ccess font-weight-bold right">' + scheduleDetails[i].start_time + '</td><td class="text-success font-weight-bold right">' + scheduleDetails[i].close_time +'</td></tr>';
+                        }
+                        else {
+                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-danger font-weight-bold right">Closed</td><td class="text-success font-weight-bold right">NA</td><td class="text-success font-weight-bold right">NA</td></tr>';
+                        }
 
+                    }
+
+                }
+                $("#classroomScheduleContainer").append(row);
+                $("#spinnerClassroomSchedule").remove();
+            }
+        });
+
+    }
+    function showClassroomSyllabus() {
+        debugger
+        hideAllClssroomDetails();
+         $("#navClassroomSyllabus").show();
+         $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+             url: "/api/v1/Course/GetClassroomSyllabus?ClassroomId=@ViewBag.Id",
+             success: function (data) {
+                 debugger
+                if (data != null && data.response_code == 1) {
+
+                    $("#classroomSyllabusContainer").empty();
+                    var scheduleDetails = data.syllabus.week_wise_schedule;
+                    for (var i = 0; i < scheduleDetails.length; i++) {
+                        var row = '';
+                        row += ' <div class="panel">'
+                            + '<div id="collapse1" class="panel-collapse ">'
+                            + '<div class="panel-body">'
+                            + '<div class="panel-group" id="week-body-' + i + '">'
+                            + '<div class="panel">'
+                            + '<div class="panel-heading child">'
+                            + '<h4 class="panel-title">'
+                            + '<a class="accordion-toggle" data-toggle="collapse" data-parent="#week-body-' + i + '" href="#week-header-' + i + '" aria-expanded="false">'
+                            + '' + scheduleDetails[i].week_name + ' </a>'
+                            + '</h4>'
+                            + '</div>'
+                            + '<div id="week-header-' + i + '" class="panel-collapse collapse">'
+                            + '<div class="panel-body">'
+                            + '<div class="inside-body">'
+                            + '<ol class="list-group vertical-steps">';
+                        var topics = scheduleDetails[i].topics_to_be_covered;
+                        for (var j = 0; j < topics.length; j++) {
+                            row += '<li class="list-group-item"><span>' + topics[j]+'</span></li>';
+                        }
+                        row += '</ol >'
+                                +'</div >'
+                                +'</div >'
+                                +'</div >'
+                                +'</div >'
+                                +'</div >'
+                                +'</div >'
+                                +'</div >'
+                            + '</div >';
+                        $("#classroomSyllabusContainer").append(row);
+                    }
+
+                }
+
+                $("#spinnerClassroomSyllabus").remove();
+            }
+        });
+
+    }
 </script>

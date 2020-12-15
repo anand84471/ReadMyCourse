@@ -639,6 +639,15 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
+        public async Task<bool> JoinClassroomTrial(long StudentId,long ClassroomId)
+        {
+            bool result = false;
+            if(await objStudentDTO.JoinClassroom(ClassroomId,StudentId))
+            {
+                result = true;
+            }
+            return result;
+        }
         public async Task<bool> JoinClassroomMeeting(long MeetingId, long StudentId)
         {
             return await objStudentDTO.JoinClassroomMeeting(MeetingId, StudentId);
@@ -884,6 +893,35 @@ namespace StudentDashboard.ServiceLayer
         public async Task<StudentLiveClassMeetingDetails> GetLiveClassMeetingDetailsForStudnet(GetClassroomMeetingDetailsForStudentRequest getClassroomMeetingDetailsForStudentRequest)
         {
             return await objStudentDTO.GetLiveClassMeetingDetailsForStudnet(getClassroomMeetingDetailsForStudentRequest);
+        }
+        public async Task<ClassroomSyllabusDetailsModal> GetClassroomSyllabus(long ClassroomId)
+        {
+            ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal = await objStudentDTO.GetClassroomSyllabus(ClassroomId);
+            if (classroomSyllabusDetailsModal != null)
+            {
+                classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus = JsonConvert.DeserializeObject<List<ClassroomWeekWiseSyallabus>>(classroomSyllabusDetailsModal.m_strSerializedSyllabus);
+            }
+            return classroomSyllabusDetailsModal;
+        }
+        public async Task<ClassroomScheduleDetails> GetClassroomSchedule(long ClassroomId)
+        {
+            ClassroomScheduleDTO classroomScheduleDTO = await objStudentDTO.GetClassroomScheduleDetails(ClassroomId);
+            ClassroomScheduleDetails classroomScheduleDetails = null;
+            if (classroomScheduleDTO != null)
+            {
+                classroomScheduleDetails = JsonConvert.DeserializeObject<ClassroomScheduleDetails>(classroomScheduleDTO.m_strClassroomScheduleObj);
+                classroomScheduleDetails.m_strClassroomScheduleInsertionTime = classroomScheduleDTO.m_dtClassroomScheduleInsertionTime.ToString();
+                classroomScheduleDetails.m_strClassroomScheduleUpdationTime = classroomScheduleDTO.m_dtClassroomScheduleUpdationTime.ToString();
+            }
+            if (classroomScheduleDetails != null && classroomScheduleDetails.m_lsDayWiseScheduleDetails != null)
+            {
+                var days = new List<String> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+                for (var i = 0; i < classroomScheduleDetails.m_lsDayWiseScheduleDetails.Count; i++)
+                {
+                    classroomScheduleDetails.m_lsDayWiseScheduleDetails[i].m_strDayName = days[i];
+                }
+            }
+            return classroomScheduleDetails;
         }
     }
 }

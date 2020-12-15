@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -404,11 +405,14 @@
     <Compile Include="HttpResponse\GetAssignmentSubssionDetials.cs" />
     <Compile Include="HttpResponse\GetCityResponse.cs" />
     <Compile Include="HttpResponse\GetClassroomMeetingDetailsForStudentResponse.cs" />
+    <Compile Include="HttpResponse\GetClassroomSyllabusDetailsResponse.cs" />
+    <Compile Include="HttpResponse\GetClassroomSyllabusResponse.cs" />
     <Compile Include="HttpResponse\GetCourseDetailsApiResponse.cs" />
     <Compile Include="HttpResponse\GetInstructorActivityResponse.cs" />
     <Compile Include="HttpResponse\GetLiveClassDetailsResponseForInstructor.cs" />
     <Compile Include="HttpResponse\GetPublicClassroomsResponse.cs" />
     <Compile Include="HttpResponse\GetStateResponse.cs" />
+    <Compile Include="HttpResponse\GetStudentLiveClassScheduleResponse.cs" />
     <Compile Include="HttpResponse\GetStudentResponseModel.cs" />
     <Compile Include="HttpResponse\GetStudentSelfProfileDetailsResponse.cs" />
     <Compile Include="HttpResponse\GetStudentToStudentConnectionResponse.cs" />
@@ -612,9 +616,12 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\.DS_Store" />
+    <Content Include="Images\29_9430b2b4-6610-4955-a931-d415af1bbaa2.png_200x200_.png" />
+    <Content Include="Images\4035_13707cf6-0c98-4384-9244-30295549dcb1.jpg_200x200_.jpg" />
     <Content Include="Images\add-course-logo.svg" />
     <Content Include="Images\add-friend.svg" />
     <Content Include="Images\add-user.svg" />
+    <Content Include="Images\arabilc-live-class-logo.jpg" />
     <Content Include="Images\avatar-user.png" />
     <Content Include="Images\bg_1.jpg" />
     <Content Include="Images\bg_2.jpg" />
@@ -622,6 +629,7 @@
     <Content Include="Images\bg_4.jpg" />
     <Content Include="Images\bg_5.jpg" />
     <Content Include="Images\classroom-bg.png" />
+    <Content Include="Images\classroom_bg.jpg" />
     <Content Include="Images\contact-us.svg" />
     <Content Include="Images\content-search.svg" />
     <Content Include="Images\course-1.jpg" />
@@ -630,14 +638,19 @@
     <Content Include="Images\course-4.jpg" />
     <Content Include="Images\course-5.jpg" />
     <Content Include="Images\course-6.jpg" />
+    <Content Include="Images\courses-bg.png" />
+    <Content Include="Images\course_bg %281%29.jpg" />
     <Content Include="Images\dept-5.jpg" />
     <Content Include="Images\google-play-logo.png" />
+    <Content Include="Images\henry-be-lc7xcWebECc-unsplash.jpg" />
     <Content Include="Images\home-bg-login1.png" />
     <Content Include="Images\home-bg-login12.png" />
     <Content Include="Images\home-bg-login13.jpg" />
     <Content Include="Images\home-lgin-back.jpg" />
     <Content Include="Images\home-login-final.jpg" />
     <Content Include="Images\home-login-final1.jpg" />
+    <Content Include="Images\home-page-bg-graphics.jpg" />
+    <Content Include="Images\home-page-bg-graphics.svg" />
     <Content Include="Images\icon\favicon_io\android-chrome-192x192.png" />
     <Content Include="Images\icon\favicon_io\android-chrome-512x512.png" />
     <Content Include="Images\icon\favicon_io\apple-touch-icon.ico" />
@@ -645,8 +658,18 @@
     <Content Include="Images\icon\favicon_io\favicon-32x32.png" />
     <Content Include="Images\icon\favicon_io\favicon.ico" />
     <Content Include="Images\icon\favicon_io\site.webmanifest" />
+    <Content Include="Images\icon\web_icons\accelerate.png" />
+    <Content Include="Images\icon\web_icons\book.png" />
     <Content Include="Images\icon\web_icons\bulb.png" />
+    <Content Include="Images\icon\web_icons\certificate.png" />
+    <Content Include="Images\icon\web_icons\chat.png" />
+    <Content Include="Images\icon\web_icons\earnings.svg" />
+    <Content Include="Images\icon\web_icons\job-search.png" />
+    <Content Include="Images\icon\web_icons\learning.svg" />
+    <Content Include="Images\icon\web_icons\messenger.png" />
+    <Content Include="Images\icon\web_icons\video.png" />
     <Content Include="Images\iit-indore-logo.png" />
+    <Content Include="Images\iit-madras-logo.png" />
     <Content Include="Images\iit_mandi_logo.png" />
     <Content Include="Images\image_1.jpg" />
     <Content Include="Images\image_2.jpg" />
@@ -654,20 +677,52 @@
     <Content Include="Images\image_4.jpg" />
     <Content Include="Images\image_5.jpg" />
     <Content Include="Images\image_6.jpg" />
+    <Content Include="Images\jez-timms-8muUTAmcWU4-unsplash.jpg" />
     <Content Include="Images\jitsi-logo.png" />
     <Content Include="Images\jitsi-meeting.jpg" />
+    <Content Include="Images\join_as_instructor.svg" />
+    <Content Include="Images\join_course.svg" />
+    <Content Include="Images\join_new_live_class_graphics.jpg" />
+    <Content Include="Images\join_new_live_class_graphics.svg" />
+    <Content Include="Images\join_new_static_course_graphics.jpg" />
+    <Content Include="Images\join_new_static_course_graphics.svg" />
+    <Content Include="Images\live-class-bg.png" />
+    <Content Include="Images\live-class-readmycourse.png" />
+    <Content Include="Images\live.gif" />
+    <Content Include="Images\live_class_join.svg" />
     <Content Include="Images\loader.svg" />
     <Content Include="Images\loc.png" />
+    <Content Include="Images\matlab-data-science-logo.jpg" />
+    <Content Include="Images\matlab-datascience-live-class-logo.png" />
+    <Content Include="Images\matlab-live-class-logo.jpg" />
+    <Content Include="Images\matlab.png" />
     <Content Include="Images\mnnit-allahabad-logo.png" />
     <Content Include="Images\people-search.svg" />
+    <Content Include="Images\profile1.png" />
+    <Content Include="Images\python-bioinfo-live-class.jpg" />
+    <Content Include="Images\python-bioinfo-live-class.png" />
+    <Content Include="Images\python-data-science-live-class-logo.jpg" />
+    <Content Include="Images\python-for-begin-live-class-logo.jpg" />
+    <Content Include="Images\python_for_bioinfromatics-min.png" />
+    <Content Include="Images\python_for_bioinfromatics.png" />
     <Content Include="Images\register_bg.jpg" />
+    <Content Include="Images\RMC Certificate webinar-05.svg" />
+    <Content Include="Images\RMC Certificate-03.svg" />
+    <Content Include="Images\rmc_certifcate_sample.jpg.jpg" />
     <Content Include="Images\search-gen.svg" />
+    <Content Include="Images\site-background.png" />
     <Content Include="Images\site-logo-pro.png" />
     <Content Include="Images\site-logo-square.png" />
     <Content Include="Images\site-logo-v2-full.png" />
     <Content Include="Images\site-logo-v2.png" />
     <Content Include="Images\site-logo.jpg" />
     <Content Include="Images\site-logo.png" />
+    <Content Include="Images\spoken-english-live-class-logo.jpg" />
+    <Content Include="Images\student-login-page-img.jpg" />
+    <Content Include="Images\students-joined.jpg" />
+    <Content Include="Images\submit_new_assignment_graphics.jpg" />
+    <Content Include="Images\submit_new_assignment_graphics.svg" />
+    <Content Include="Images\submit_new_test_graphics.svg" />
     <Content Include="Images\teacher.svg" />
     <Content Include="Images\teaching-logo.svg" />
     <Content Include="Images\team-anand.jpg" />
@@ -676,6 +731,11 @@
     <Content Include="Images\team-farhan.jpg" />
     <Content Include="Images\team-farhan.png" />
     <Content Include="Images\team-simran.jpg" />
+    <Content Include="Images\testimonial1.jpg" />
+    <Content Include="Images\testimonial2.jpg" />
+    <Content Include="Images\valentin-antonini-0eTLk6dA_Ds-unsplash.jpg" />
+    <Content Include="Images\web graphic renewed-04.svg" />
+    <Content Include="Images\will-van-wingerden-dsvJgiBJTOs-unsplash.jpg" />
     <Content Include="Scripts\AboutScripts\aos.js" />
     <Content Include="Scripts\AboutScripts\bootstrap.min.js" />
     <Content Include="Scripts\AboutScripts\google-map.js" />

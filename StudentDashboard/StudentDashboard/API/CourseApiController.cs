@@ -912,6 +912,32 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("JoinClassroomTrial")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> JoinClassroomTrial(long ClassroomId)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    if (await objStudentService.JoinClassroomTrial(StudentidInRequest, ClassroomId))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinClassroomTrial", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
         [Route("GetJoinedClassroom")]
         [HttpPost]
         public async Task<StudentClassroomResponse> GetJoinedClassrooms()
@@ -1594,6 +1620,59 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("GetClassroomSyllabus")]
+        [HttpPost]
+        public async Task<GetClassroomSyllabusResponse> GetClassroomSyllabus(long ClassroomId)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            GetClassroomSyllabusResponse objResponse = new GetClassroomSyllabusResponse();
+            try
+            {
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, ClassroomId))
+                {
+                    objResponse.ClassroomSyllabusDetailsModal = await objStudentService.GetClassroomSyllabus(ClassroomId);
+                }
+                if (objResponse.ClassroomSyllabusDetailsModal != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetClassroomSchedule")]
+        [HttpPost]
+        public async Task<GetClassroomSheduleResponse> GetClassroomSchedule(long ClassroomId)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            GetClassroomSheduleResponse objResponse = new GetClassroomSheduleResponse();
+            try
+            {
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, ClassroomId))
+                {
+                    objResponse.classroomScheduleDetails = await objStudentService.GetClassroomSchedule(ClassroomId);
+                }
+                if (objResponse.classroomScheduleDetails != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomSchedule", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+
     }
 }
 

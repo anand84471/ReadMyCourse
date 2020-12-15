@@ -45,12 +45,15 @@
         color: orange;
     }
      @@media (max-width:800px) {
-  img#hideable-on-small {
-    display: none;
-  }
+      div#hideable-on-small {
+        display: none;
+      }
+      img#large-on-small{
+          max-width: 90vw;
+      }
 }
 </style>
-<section class="ftco-section ftco-no-pt ftc-no-pb site-back-ground-image img" style="background-image: url(../Images/live-class-bg.png);background-repeat:no-repeat;">
+<section class="ftco-section ftco-no-pt ftc-no-pb site-back-ground-image img" >
     <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center mb-1 pb-2 pt-sm-2">
@@ -58,34 +61,23 @@
                 <h2 class="mb-1 hero-wrap bread">Learn <img class="img-profile" src="~/Images/live.gif" style="height:40px;width:100px;" /><span> from top instructors</span> </h2>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-xl-12 col-lg-12 col-md-9">
+        <div class="row justify-content-center" >
+            <div class="col-xl-12 col-lg-12">
                 <div class="o-hidden border-0  my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6">
-                                @*<div class="embed-responsive embed-responsive-16by9">
-                                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/pOPTEVX9uzk" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture;controls;" allowfullscreen controls></iframe>
-                                    </div>*@
-                                <img class="img shadow-lg" id="hideable-on-small" src="~/Images/live-class-readmycourse.png" style="max-width:600px"/> 
-
-                            </div>
-                            <div class="col-lg-6 mb-2 mt-5" data-stellar-background-ratio="0.5">
-                                <div class="p-5">
-                                    @*<form method="post" class="needs-validation" action="/Student/ValidateLogin" autocomplete="off" novalidate>
-                                        <a href="./Instructor" class="btn btn-primary btn-user btn-block">
-                                            Continue as Instructor
-                                        </a>
-
-                                        <hr>
-                                        <a href="./Student" class="btn btn-primary btn-user btn-block">
-                                            Continue as Student
-                                        </a>
-                                        <hr>
-
-                                    </form>*@
+                        <div class="row text-center">
+                          
+                            <div class="col-lg-6 pt-1" data-stellar-background-ratio="0.5">
+                                <div>
+                                    
+                                    <img class="img-fluid shadow-lg" id="large-on-small" src="~/Images/live_class_bg_new.jpg" style="max-height:50vh;" />
                                 </div>
+                            </div>
+                              <div class="col-lg-6" id="hideable-on-small">
+                                <h4 class="text-primary font-weight-bold text-center">Dashboard that you will surely love.</h4>
+                                <img class="img-fluid shadow-lg"  src="~/Images/live-class-readmycourse.png" style="max-height:44vh"/> 
+
                             </div>
 
                         </div>
@@ -96,7 +88,7 @@
     </div>
 
 </section>
-<section class="ftco-section bg-light">
+<section class="ftco-section bg-light" style="padding-top:1rem;padding-bottom:0.5rem;">
     <div class="container">
         <div class="row justify-content-center mb-5 pb-2">
             <div class="col-md-8 text-center heading-section ftco-animate">
@@ -144,6 +136,27 @@
                                 <span class="fa fa-star checked"></span>
                                 <span class="fa fa-star"></span>
                                 <a href="#" class="meta-chat"><span class="icon-users"></span> 100+</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 ftco-animate">
+                <div class="live_class blog-entry">
+                    <a href="~/JoinLiveClass/Details/python_for_beginners_in_hindi_10027" class="block-20 d-flex align-items-end" style="background-image: url('../images/python-for-begin-live-class-logo.jpg');">
+                    </a>
+                    <div class="text bg-white p-4">
+                        <h3 class="heading"><a href="~/JoinLiveClass/Details/python_for_beginners_in_hindi_10027">Python for beginners in Hindi</a></h3>
+                        <p>ReadMyCousrse offering python programming in Hindi. Enroll now to learn Python online & be a certified Python professional with ReadMyCourse. Here you will learn python data types, loops, functions, classes, modules, plotting, file processing, and scientific calculations.</p>
+                        <div class="d-flex align-items-center mt-4">
+                            <p class="mb-0"><a href="~/JoinLiveClass/Details/python_for_beginners_in_hindi_10027" class="btn btn-secondary">Join free<span class="ion-ios-arrow-round-forward"></span></a></p>
+                            <p class="ml-auto mb-0">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <a href="#" class="meta-chat"><span class="icon-users"></span> 1000+</a>
                             </p>
                         </div>
                     </div>
@@ -263,9 +276,9 @@
     </div>
 </section>
 
-<section class="ftco-section ftco-counter img" id="section-counter" style="padding-top:2rem;" data-stellar-background-ratio="0.5">
+<section class="ftco-section ftco-counter img" id="section-counter" style="padding-top:1rem;padding-bottom:0.5rem;" data-stellar-background-ratio="0.5">
     <div class="container">
-        <div class="row justify-content-center mb-5 pb-2">
+        <div class="row justify-content-center">
             <div class="col-md-8 text-center heading-section heading-section-black ftco-animate">
                 <h2 class="mb-1"><span>Join live class from </span>top instructors</h2>
                 <h6 class="mb-1"><span> Try a free live course today from one of 10+ world-class universities.</span> </h6>
@@ -351,9 +364,9 @@
         </div>
     </div>
 </section>
-<section class="ftco-section testimony-section bg-light">
+<section class="ftco-section testimony-section bg-light" style="padding-top:1rem;padding-bottom:0.5rem;">
     <div class="container">
-        <div class="row justify-content-center mb-5 pb-2">
+        <div class="row justify-content-center">
             <div class="col-md-8 text-center heading-section ftco-animate">
                 <h2 class="mb-4"><span>Why should you choose us.</span></h2>
                 <p></p>

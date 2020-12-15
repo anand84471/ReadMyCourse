@@ -698,71 +698,10 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="updateClassroomSyllabus()">Update details</button>
-                    <button class="btn btn-primary" onclick="addNewWeek()">Add new week</button>
                     <div class="accordion" id="classroom-syllabus-container">
-
                     </div>
-                    <div class="" id="footerClassroomSyllabus">
-                        <div class="accordion" id="accordionExample">
-                            <div class="">
-                                <div class="card-header" id="headingOne">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Week
-                                        </button> 
-                                        <span><button class="btn btn-outline-danger btn-sm text-left" onclick="requestAddNewWeekToSyllabus(0)"><i class="fa fa-plus-circle"></i>
-                                            add topic
-                                        </button></span>
-                                    </h2>
-                                </div>
-
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <ul class="list-group">
-                                            <li class="list-group-item disabled" aria-disabled="true">Cras justo odio</li>
-                                            <li class="list-group-item">Dapibus ac facilisis in 
-                                            <button class="btn btn-outline-primary fa fa p-1 fa-pencil"></button>
-                                            <button class="btn btn-outline-primary fa fa p-1 fa-trash"></button>
-                                            </li>
-                                            <li class="list-group-item">Morbi leo risus</li>
-                                            <li class="list-group-item">Porta ac consectetur ac</li>
-                                            <li class="list-group-item">Vestibulum at eros</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingTwo">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Collapsible Group Item #2
-                                        </button>
-                                    </h2>
-                                </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingThree">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Collapsible Group Item #3
-                                        </button>
-                                    </h2>
-                                </div>
-                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h6 class="card-title"> You have not added any study materials</h6>
-                    </div>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="addNewWeek()">Add new week</button>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="updateClassroomSyllabus()">update schedule</button>
                 </div>
             </div>
         </div>
@@ -1229,11 +1168,16 @@
                         <input  type="text" class="form-control" id="currentWeekTopic" placeholder="please enter topic name" value="">
                     </div>
                 </div>
-               
-                <button type="button" class="btn btn-primary" onclick="addTopicToWeek()" >Save</button>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter topic preview url</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="currentWeekTopicPreviewUrl" placeholder="please enter preview url" value="">
+                    </div>
+                </div>
+                
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addTopicToWeek()">Save</button>
             </div>
         </div>
     </div>
@@ -1552,7 +1496,7 @@
         {
             clearInterval(messageInerval);
         }
-    
+
         function getMeetingDetails() {
         //debugger;
             $.ajax({
@@ -2784,7 +2728,7 @@
                         $("#video-url").show();
                         $("#no-video-data-present").hide();
                     }
-                   
+
                     else {
                         $("#video-url").hide();
                         $("#no-video-data-present").show();
@@ -2802,31 +2746,42 @@
     {
         hideAll();
         $("#updateSyllabusDiv").show();
+        getClassroomSyllabus();
+    }
+    function updateTopic(weekname, topic_no) {
+        classroomSyllabus[weekno - 1]["week" + weekno].topics_to_be_covered[topic_no] = $("#updateTopicOfWeek").val();
+
+    }
+    function deleteTopic(weekno, topic_no) {
+        debugger
+        classroomSyllabus[weekno - 1]["week" + weekno].topics_to_be_covered.splice(topic_no,1);
     }
     function addTopicToWeek()
     {
+        if ($("#currentWeekTopic").val() == "") {
+            return;
+        }
         debugger
-        classroomSyllabus[currentWeekNo].push($("#currentWeekTopic").val());
-
+        classroomSyllabus[currentWeekNo - 1].topics_to_be_covered.push($("#currentWeekTopic").val());
+        $("#week" + currentWeekNo + "-body").append('<li class="list-group-item">' + $("#currentWeekTopic").val() +
+            '<button onclick="deleteTopic(' + currentWeekNo + ',' + classroomSyllabus[currentWeekNo - 1].topics_to_be_covered.length + ')"><i class="fa fa-trash"></i></button></li>');
         $("#currentWeekTopic").val("");
+        $('#currentWeekTopicPreviewUrl').val("");
     }
     function getClassroomSyllabus()
     {
-        var _data = {
-            "week_wise_schedule": classroomSyllabus,
-            "classroom_id": "@Model.m_llClassRoomId"
-        };
+      
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            data: JSON.stringify(_data),
-            url: "/api/v1/instructor/UpdateClassroomSyllabus",
+            url: "/api/v1/instructor/GetClassroomSyllabus?ClassroomId=".concat("@Model.m_llClassRoomId"),
             success: function (data) {
+                $("#spinnerClassroomClassroomSchedule").remove();
                 debugger
                 if (data != null && data.response_code == 1) {
-                    classroomSyllabus = data.week_wise_schedule;
+                    setClassroomSchedule(data.classroom_syllabus_response.week_wise_schedule);
                 }
                 else {
 
@@ -2863,25 +2818,31 @@
     }
     var classroomSyllabus = [];
     var currentWeekNo = 0;
+
     function addNewWeek()
     {
         debugger
         var week = "week ".concat(classroomSyllabus.length + 1);
         var weekId = "week".concat(classroomSyllabus.length + 1);
-        classroomSyllabus.push(new Array() );
-        var row = '<div class="card-header" id="' + weekId + '">'
+        var data = {
+            "week_name": week,
+            "topics_to_be_covered": new Array()
+        }
+        classroomSyllabus.push(data);
+        console.log(classroomSyllabus);
+        var row = '<div class="card-header" id="collapse-week-header' + weekId + '">'
                                     +'<h2 class="mb-0">'
-                                        +'<button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
-                                            week 
+            + '<button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapse-week-body' + weekId + '" aria-expanded="true" aria-controls="collapse-week-body' + weekId +'">'+
+                                            week
                                         +'</button> '
                                         + '<span><button class="btn btn-outline-danger btn-sm text-left" onclick="requestAddNewTopicToWeek(' + classroomSyllabus.length + ')"><i class="fa fa-plus-circle"></i>'
                                             +'add topic'
                                         +'</button></span>'
                                     +'</h2>'
                                 + '</div>';
-        row += ' <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="' + weekId + '">'
+        row += ' <div id="collapse-week-body'+weekId+'" class="collapse" aria-labelledby="headingOne" data-parent="#collapse-week-header' + weekId + '">'
                                       + '<div class="card-body">'
-                                          + '<ul class="list-group">'
+                                          + '<ul class="list-group" id="' + weekId + '-body">'
                                           + '</ul>'
                                      + ' </div>'
                                  + ' </div>'
@@ -2893,5 +2854,16 @@
         currentWeekNo = weekNo;
         $("#classroomTopicModal").modal("show");
     }
-    
+    function setClassroomSchedule(data) {
+        $("#classroom-syllabus-container").empty();
+        classroomSyllabus = [];
+        for (var i = 0; i < data.length; i++) {
+            addNewWeek();
+            currentWeekNo = i + 1;
+            for (var j = 0; j < data[i].topics_to_be_covered.length;j++) {
+                $("#currentWeekTopic").val(data[i].topics_to_be_covered[j]);
+                addTopicToWeek();
+            }
+        }
+    }
 </script>

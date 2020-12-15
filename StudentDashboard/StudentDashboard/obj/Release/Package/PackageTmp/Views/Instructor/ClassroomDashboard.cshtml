@@ -248,6 +248,7 @@
                                 <a class="dropdown-item" href="#navUpdateDetails" onclick="showUpdateMeeting()"><span class="fa fa-cog"></span> Update Details</a>
                                 <a class="dropdown-item" href="#navUpdateSchedulerDetails" onclick="showUpdateScheduleDetails()"><span class="fa fa-calendar"></span> Update Classroom Time-Table</a>
                                 @*<a class="dropdown-item" href="#">Delete Classroom</a>*@
+                                <a class="dropdown-item" href="#updateSyllabusDiv" onclick="viewUpdateClassroomSyallabus()"><span class="fa fa-pencil"></span> Update syllabus</a>
                                 <a class="dropdown-item" href="#shareModal" onclick="viewClassroomSharingDetails()"><span class="fa fa-share"></span> Share classroom</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" onclick="callHome()"><span class="fas fa-sign-out-alt"></span> Exit classroom</a>
@@ -626,6 +627,36 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-12 mb-2" id="callClassroomSyllabus" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">View all tests</div>
+
+                <div class="card-body">
+                    <div class="table-responsive ">
+                        <table id="studentAllTestTable" class="table-responsive table-hover" style="display:none">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="p-2">Test Name</th>
+                                    <th class="p-2">Creation Date</th>
+                                    <th class="p-2">No of questions</th>
+                                    <th class="p-2">No submissions</th>
+                                    <th class="p-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableAllTests"></tbody>
+                        </table>
+                        <div id="spinnerAllTests" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="footerAllTests" style="display:none">
+                        <h6 class="card-title"> You have not created any test</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-12 mb-2" id="navAllAttachments" style="display:none">
             <div class="card shadow-lg border-primary">
                 <div class="card-header">View all study materials</div>
@@ -654,6 +685,23 @@
                     <div class="card-body" id="footerAllAttachments" style="display:none">
                         <h6 class="card-title"> You have not added any study materials</h6>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-2" id="updateSyllabusDiv" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Update classroom syllabus</div>
+                
+                <div class="card-body">
+                    <div id="spinnerClassroomClassroomSchedule" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="accordion" id="classroom-syllabus-container">
+                    </div>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="addNewWeek()">Add new week</button>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="updateClassroomSyllabus()">update schedule</button>
                 </div>
             </div>
         </div>
@@ -1104,6 +1152,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="classroomTopicModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Update classroom syllabus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter topic name</label>
+                    <div class="col-sm-12">
+                        <input  type="text" class="form-control" id="currentWeekTopic" placeholder="please enter topic name" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter topic preview url</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="currentWeekTopicPreviewUrl" placeholder="please enter preview url" value="">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addTopicToWeek()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="classroomUpdateSuccess" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -1418,7 +1496,7 @@
         {
             clearInterval(messageInerval);
         }
-    
+
         function getMeetingDetails() {
         //debugger;
             $.ajax({
@@ -1691,6 +1769,7 @@
         $("#classroomContaintProgressDetails").hide();
         $("#navHome").hide();
         $("#navUpdateSchedulerDetails").hide();
+        $("#updateSyllabusDiv").hide();
     }
     function showPreviousMeetings() {
         hideAll();
@@ -2649,7 +2728,7 @@
                         $("#video-url").show();
                         $("#no-video-data-present").hide();
                     }
-                   
+
                     else {
                         $("#video-url").hide();
                         $("#no-video-data-present").show();
@@ -2663,5 +2742,128 @@
             }
         });
     }
-    
+    function viewUpdateClassroomSyallabus()
+    {
+        hideAll();
+        $("#updateSyllabusDiv").show();
+        getClassroomSyllabus();
+    }
+    function updateTopic(weekname, topic_no) {
+        classroomSyllabus[weekno - 1]["week" + weekno].topics_to_be_covered[topic_no] = $("#updateTopicOfWeek").val();
+
+    }
+    function deleteTopic(weekno, topic_no) {
+        debugger
+        classroomSyllabus[weekno - 1]["week" + weekno].topics_to_be_covered.splice(topic_no,1);
+    }
+    function addTopicToWeek()
+    {
+        if ($("#currentWeekTopic").val() == "") {
+            return;
+        }
+        debugger
+        classroomSyllabus[currentWeekNo - 1].topics_to_be_covered.push($("#currentWeekTopic").val());
+        $("#week" + currentWeekNo + "-body").append('<li class="list-group-item">' + $("#currentWeekTopic").val() +
+            '<button onclick="deleteTopic(' + currentWeekNo + ',' + classroomSyllabus[currentWeekNo - 1].topics_to_be_covered.length + ')"><i class="fa fa-trash"></i></button></li>');
+        $("#currentWeekTopic").val("");
+        $('#currentWeekTopicPreviewUrl').val("");
+    }
+    function getClassroomSyllabus()
+    {
+      
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/GetClassroomSyllabus?ClassroomId=".concat("@Model.m_llClassRoomId"),
+            success: function (data) {
+                $("#spinnerClassroomClassroomSchedule").remove();
+                debugger
+                if (data != null && data.response_code == 1) {
+                    setClassroomSchedule(data.classroom_syllabus_response.week_wise_schedule);
+                }
+                else {
+
+                }
+            }
+        });
+    }
+    function updateClassroomSyllabus()
+    {
+
+        var _data = {
+            "week_wise_schedule":classroomSyllabus,
+            "classroom_id": "@Model.m_llClassRoomId"
+        };
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateClassroomSyllabus",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#infoMessage").text("classroom details updated successfully");
+                    $("#successModal").modal("show");
+                    getClassroomSyllabus();
+                }
+                else {
+
+                }
+            }
+        });
+    }
+    var classroomSyllabus = [];
+    var currentWeekNo = 0;
+
+    function addNewWeek()
+    {
+        debugger
+        var week = "week ".concat(classroomSyllabus.length + 1);
+        var weekId = "week".concat(classroomSyllabus.length + 1);
+        var data = {
+            "week_name": week,
+            "topics_to_be_covered": new Array()
+        }
+        classroomSyllabus.push(data);
+        console.log(classroomSyllabus);
+        var row = '<div class="card-header" id="collapse-week-header' + weekId + '">'
+                                    +'<h2 class="mb-0">'
+            + '<button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapse-week-body' + weekId + '" aria-expanded="true" aria-controls="collapse-week-body' + weekId +'">'+
+                                            week
+                                        +'</button> '
+                                        + '<span><button class="btn btn-outline-danger btn-sm text-left" onclick="requestAddNewTopicToWeek(' + classroomSyllabus.length + ')"><i class="fa fa-plus-circle"></i>'
+                                            +'add topic'
+                                        +'</button></span>'
+                                    +'</h2>'
+                                + '</div>';
+        row += ' <div id="collapse-week-body'+weekId+'" class="collapse" aria-labelledby="headingOne" data-parent="#collapse-week-header' + weekId + '">'
+                                      + '<div class="card-body">'
+                                          + '<ul class="list-group" id="' + weekId + '-body">'
+                                          + '</ul>'
+                                     + ' </div>'
+                                 + ' </div>'
+                                 + ' </div>';
+        $("#classroom-syllabus-container").append(row);
+    }
+    function requestAddNewTopicToWeek(weekNo)
+    {
+        currentWeekNo = weekNo;
+        $("#classroomTopicModal").modal("show");
+    }
+    function setClassroomSchedule(data) {
+        $("#classroom-syllabus-container").empty();
+        classroomSyllabus = [];
+        for (var i = 0; i < data.length; i++) {
+            addNewWeek();
+            currentWeekNo = i + 1;
+            for (var j = 0; j < data[i].topics_to_be_covered.length;j++) {
+                $("#currentWeekTopic").val(data[i].topics_to_be_covered[j]);
+                addTopicToWeek();
+            }
+        }
+    }
 </script>

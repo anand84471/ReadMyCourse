@@ -111,8 +111,8 @@
                             <tbody>
                                 @foreach (var classrooms in Model.m_lsClassrooms)
                                 {
-                                    <tr>
-                                        <td class="font-weight-bolder p-2"><span class="fa fa-2x text-primary fa-play-circle p-2"></span><a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId">@classrooms.m_strClassroomName</a></td>
+                                    <tr class="">
+                                        <td class="justify-content-between font-weight-bolder p-2"><span class="fa fa-2x text-primary fa-play-circle p-2"></span><a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId">@classrooms.m_strClassroomName</a></td>
                                         <td>@classrooms.m_strClassroomJoiningDate</td>
                                     </tr>
                                 }
