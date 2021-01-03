@@ -419,6 +419,12 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomSyllabus", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomSyllabusResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetClassroomSyllabusAsync(long ClassroomId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessful", ReplyAction="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessfulResponse")]
+        bool MarkStudentClassroomPaymentSuccessful(long ClassroomId, long StudentId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessful", ReplyAction="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessfulResponse")]
+        System.Threading.Tasks.Task<bool> MarkStudentClassroomPaymentSuccessfulAsync(long ClassroomId, long StudentId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus", ReplyAction="http://tempuri.org/ICpDataService/UpdateNotificationStatusResponse")]
         bool UpdateNotificationStatus(bool Status, long NotificationId);
         
@@ -746,10 +752,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAfterLastMessageAsync(long ClassroomId, long LastMessageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
-        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
-        System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroom", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomResponse")]
         bool DeleteClassroom(long ClassroomId);
@@ -3070,6 +3076,14 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetClassroomSyllabusAsync(ClassroomId);
         }
         
+        public bool MarkStudentClassroomPaymentSuccessful(long ClassroomId, long StudentId) {
+            return base.Channel.MarkStudentClassroomPaymentSuccessful(ClassroomId, StudentId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> MarkStudentClassroomPaymentSuccessfulAsync(long ClassroomId, long StudentId) {
+            return base.Channel.MarkStudentClassroomPaymentSuccessfulAsync(ClassroomId, StudentId);
+        }
+        
         public bool UpdateNotificationStatus(bool Status, long NotificationId) {
             return base.Channel.UpdateNotificationStatus(Status, NotificationId);
         }
@@ -3478,12 +3492,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllClassroomMessageAfterLastMessageAsync(ClassroomId, LastMessageId);
         }
         
-        public bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription) {
-            return base.Channel.UpdateClassroomDetails(ClassroomId, ClassroomName, ClassroomDescription);
+        public bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate) {
+            return base.Channel.UpdateClassroomDetails(ClassroomId, ClassroomName, ClassroomDescription, classroomStartDate, classroomRegistrationCloseDate);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription) {
-            return base.Channel.UpdateClassroomDetailsAsync(ClassroomId, ClassroomName, ClassroomDescription);
+        public System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate) {
+            return base.Channel.UpdateClassroomDetailsAsync(ClassroomId, ClassroomName, ClassroomDescription, classroomStartDate, classroomRegistrationCloseDate);
         }
         
         public bool DeleteClassroom(long ClassroomId) {

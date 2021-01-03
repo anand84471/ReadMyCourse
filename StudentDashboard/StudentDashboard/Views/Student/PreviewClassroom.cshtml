@@ -266,11 +266,11 @@
                         <h6 class="mb-0 font-weight-bold" id="classroomDescription"></h6>
                         @*<p class="text mr-3  text-white" id="classroomCreationDate"></p>*@
                         <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
-                        <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> </h4>
+                        <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> <span class="badge badge-pill badge-light" style="text-decoration: line-through;" id="classroomJoiningFeeMain"></span></h4>
                         @*<span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestClassroomPayment()">Join now</button></span>*@
                         <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="joinClassroomTrial()">Join now</button></span>
                         <h5 class="text-danger font-weight-bold">Attend three sessions free and pay only after you are satisfied.</h5>
-                        <h6 class="text-warning font-weight-bold" href="@ViewBag.ReturnUrl">Hurry! Few seats available. Live class will start from 21 Dec 2020</h6>
+                        <h6 class="text-warning font-weight-bold" href="@ViewBag.ReturnUrl" id="registration-last-date"></h6>
 
                         <span><a class="btn btn-outline-light custom-green text-white font-weight-bold" id="goToCourse" style="display:none;" href="./MyClassrooms">Go to my classroom<i class="ml-2 fa fa-arrow-right"></i></a></span>
                     </div>
@@ -286,15 +286,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="infoTitle">Success</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                   
                 </div>
                 <div class="modal-body">
                     <h3 id="infoMessageSuccess">Classroom joined successfully</h3>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-secondary" data-dismiss="modal" href="./MyCourses">Close</a>
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal" href="ViewClassroom?classroom_id=@Model.m_llClassroomId">Close</a>
                 </div>
             </div>
         </div>
@@ -620,7 +618,24 @@
                     $("#classroomName").text(classroomDetails.classroom_name);
                     $("#classroomDescription").text(classroomDetails.classroom_description);
                     $("#classroomJoiningFee").text(classroomDetails.classroom_joining_fee);
+                    if (classroomDetails.classroom_joining_fee != "free") {
+                        $("#classroomJoiningFeeMain").text(2 * parseInt(classroomDetails.classroom_joining_fee));
+                    }
+                    else {
+                        $("#classroomJoiningFeeMain").hide();
+                    }
                     $("#classroomCreationDate").text("Creation date:" + classroomDetails.creation_date);
+                    if (classroomDetails.stu_classroom_class_start_date != null && classroomDetails.stu_classroom_class_start_date != "") {
+                        $("#registration-last-date").text("Hurry! Few seats available. Live class will start from " + classroomDetails.stu_classroom_class_start_date+".");
+                    }
+                    else { 
+                        $("#registration-last-date").text("Hurry! Few seats available. Seats Filling fast.")
+                    }
+                    if (classroomDetails.is_registration_closed) {
+                        $("#enrollNowButton").hide();
+                        $("#registration-last-date").text("Sorry!, You can not join this course. Registration has been closed for this course. If still want to join plz contact on info@readmycourse.com")
+                    }
+                    
                     $("#classroom_bg_content").css("background-image", 'url(' + classroomDetails.background_url + ')');
                     hideSpinner();
                 }

@@ -29,6 +29,7 @@ namespace StudentDashboard.HttpResponse
             this.m_llNoOfStudentsJoined = NoOfStudents>100?NoOfStudents:165;
             this.m_llNoOfInstructorsJoined = NoOfInstructors>20?NoOfInstructors:23;
             this.m_llNoOfTestCreated = NoOfTests>100?NoOfTests:167;
+            this.m_llNoOfStudentsJoined *= 100;
 
         }
     }

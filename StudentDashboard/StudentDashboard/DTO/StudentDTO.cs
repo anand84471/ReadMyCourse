@@ -879,14 +879,16 @@ namespace StudentDashboard.DTO
                           dataRow.Field<bool?>("IS_MEETING_ACTIVE"),
                           dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
                           dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
-                           dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE")
+                          dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
+                          dataRow.Field<DateTime?>("CLASS_START_DATE"),
+                          dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE")
                          )).ToList()[0];
                 }
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomDetailsForStudent", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -900,6 +902,24 @@ namespace StudentDashboard.DTO
 
                 result = await objCPDataService.JoinStudentToClassroomAsync(ClassroomId,StudentId);
                 
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasSubmittedTheTest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> MarkClassroomPaymentSuccess(long ClassroomId, long StudentId)
+        {
+            bool result = false;
+            try
+            {
+
+                result = await objCPDataService.MarkStudentClassroomPaymentSuccessfulAsync(ClassroomId, StudentId);
+
             }
             catch (Exception Ex)
             {
@@ -1209,7 +1229,10 @@ namespace StudentDashboard.DTO
                          ClassroomId,
                          dataRow.Field<int>("NO_OF_MEETINGS_JOINED"),
                          dataRow.Field<int>("NO_OF_TESTS_SUBMITTED"),
-                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED")
+                         dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED"),
+                         dataRow.Field<bool>("IS_PAYMENT_DONE"),
+                         dataRow.Field<DateTime?>("CLASSROOM_START_DATE"),
+                         dataRow.Field<int>("CLASSROOM_JOINING_FEE_IN_PAISE")
                          )).ToList()[0];
                 }
             }

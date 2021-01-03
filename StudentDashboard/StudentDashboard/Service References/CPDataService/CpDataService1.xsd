@@ -1222,6 +1222,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="MarkStudentClassroomPaymentSuccessful">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MarkStudentClassroomPaymentSuccessfulResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MarkStudentClassroomPaymentSuccessfulResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="UpdateNotificationStatus">
     <xs:complexType>
       <xs:sequence>
@@ -2341,6 +2356,8 @@
         <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
         <xs:element minOccurs="0" name="ClassroomName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ClassroomDescription" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="classroomStartDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="classroomRegistrationCloseDate" type="xs:dateTime" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

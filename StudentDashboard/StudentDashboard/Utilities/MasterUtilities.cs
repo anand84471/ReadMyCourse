@@ -53,6 +53,33 @@ namespace StudentDashboard.Utilities
             }
             return HttpContext.Current.Server.MapPath(path);
         }
-         
+        public static string GetDateByDateTime(DateTime? datetime )
+        {
+            if (datetime != null)
+            {
+                return ((DateTime)datetime).ToString("d MMM yyyy");
+            }
+            else
+            {
+                return "";
+            }
+        }
+        public static bool CompareToToday(DateTime? datetime)
+        {
+            bool result = false;
+            try
+            {
+                if (datetime != null)
+                {
+                    result=(DateTime)datetime<DateTime.Now;
+                }
+            }
+            catch(Exception Ex)
+            {
+                
+            }
+            return result;
+
+        }
     }
 }

@@ -2360,7 +2360,8 @@ namespace StudentDashboard.DTO
             try
             {
                 result = await objCPDataService.UpdateClassroomDetailsAsync(classRoomModal.m_llClassRoomId,
-                    classRoomModal.m_strClassRoomName, classRoomModal.m_strClassRoomDescription);
+                    classRoomModal.m_strClassRoomName, classRoomModal.m_strClassRoomDescription,classRoomModal.m_dtClassStartDate,
+                    classRoomModal.m_dtRegistrationCloseDate);
             }
             catch (Exception Ex)
             {

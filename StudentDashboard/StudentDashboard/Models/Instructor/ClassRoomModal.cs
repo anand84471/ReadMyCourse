@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,16 @@ namespace StudentDashboard.Models.Instructor
         public string m_strClassrooomJoiningFee;
         [JsonProperty("classroom_image_details")]
         public ImageUploadDetailsModal imageUploadDetailsModal;
+        [JsonProperty("classroom_registration_close_date")]
+        public DateTime m_dtRegistrationCloseDate;
+        [JsonProperty("classroom_class_start_date")]
+        public DateTime m_dtClassStartDate;
+        [JsonProperty("stu_classroom_class_start_date")]
+        public string m_strClassroomStartDate;
+        [JsonProperty("stu_classroom_registration_close_date")]
+        public string m_strClassroomRegistratioCloseDate;
+        [JsonProperty("is_registration_closed")]
+        public bool m_bIsRegistrationClosed;
         public ClassRoomModal()
         {
 
@@ -67,8 +78,8 @@ namespace StudentDashboard.Models.Instructor
             this.m_bIsMeetingActive = IsMeetingActive;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string ClassroomDescription, string CreationDate, string ClassroomStatus,
-            int NoOfPosts,string ShareUrl,string AccessCode,int NoOfAssignments,int NoOfTests,int NoOfStudentsJoined,int NoOfMeetings,
-            string BackgroundUrl,string MeetingName)
+            int NoOfPosts, string ShareUrl, string AccessCode, int NoOfAssignments, int NoOfTests, int NoOfStudentsJoined, int NoOfMeetings,
+            string BackgroundUrl, string MeetingName, DateTime? ClassroomStartDate, DateTime? ClassroomRegistrationCloseDate)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -84,9 +95,21 @@ namespace StudentDashboard.Models.Instructor
             this.m_iNoOfMeetings = NoOfMeetings;
             this.m_strBackGroundImageUrl = BackgroundUrl;
             this.m_strClassroomMeetingName = MeetingName;
+            if (ClassroomStartDate != null)
+            {
+                this.m_strClassroomStartDate = ((DateTime)ClassroomStartDate).ToString("MM/dd/yyyy"); ;
+            }
+            else
+            {
+                this.m_strClassroomStartDate = "";
+            }
+            this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTime(ClassroomRegistrationCloseDate);
+            this.m_strClassroomStartDate = MasterUtilities.GetDateByDateTime(ClassroomStartDate);
+
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
-             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise )
+             string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise,
+             DateTime? ClassroomRegistrationCloseDate,DateTime? ClassStartDate)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -104,6 +127,11 @@ namespace StudentDashboard.Models.Instructor
             {
                 this.m_strClassrooomJoiningFee = "" + (ClassroomJoiningFeeInPaise / 100).ToString();
             }
+            this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTime(ClassroomRegistrationCloseDate);
+            this.m_strClassroomStartDate= MasterUtilities.GetDateByDateTime(ClassStartDate);
+            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(ClassStartDate);
         }
+        
+
     }
 }

@@ -912,6 +912,33 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("MarkClassroomPaySuccess")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> MarkClassroomPaySuccess(StudentClassroomJoinRequest request)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                long StudentidInRequest = GetStudentIdInRequest();
+                if (StudentidInRequest != -1)
+                {
+                    request.m_llStudentId = StudentidInRequest;
+                    if (await objStudentService.MarkClassroomPaySuccess(request))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAssignmentSubmissionDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
         [Route("JoinClassroomTrial")]
         [HttpPost]
         public async Task<APIDefaultResponse> JoinClassroomTrial(long ClassroomId)

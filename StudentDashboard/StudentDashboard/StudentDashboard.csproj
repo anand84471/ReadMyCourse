@@ -284,6 +284,7 @@
     <Compile Include="Controllers\AndroidAppController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
     <Compile Include="Controllers\AuthServiceController.cs" />
+    <Compile Include="Controllers\BecomeInstructorController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\CreateMeetingController.cs" />
@@ -1150,6 +1151,9 @@
     <Content Include="Views\Student\JoinNewStudent.cshtml" />
     <Content Include="Views\Student\StudentProfile.cshtml" />
     <Content Include="Views\Student\StudentFriend.cshtml" />
+    <Content Include="Views\ClassroomPayNow.cshtml" />
+    <Content Include="Views\Student\ClassroomPayNow.cshtml" />
+    <Content Include="Views\BecomeInstructor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

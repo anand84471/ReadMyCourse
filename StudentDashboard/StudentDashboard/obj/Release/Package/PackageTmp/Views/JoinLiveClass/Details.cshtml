@@ -508,6 +508,9 @@
         .live-class-info-root {
             padding: 0px;
         }
+        .container-fluid {
+            padding: 0px;
+        }
     }
 </style>
 <div class="course-demo-card container-fluid mt-2">
@@ -528,13 +531,33 @@
                     <div class="classroom-background-mask">
                         <h1 class="text-white font-weight-bold text-gray-100 " id="classroomName">@Model.m_strClassroomName</h1>
                         <h6 class="mb-0 font-weight-bold" id="classroomDescription">@Model.m_strClassroomDescription</h6>
+                        @if (Model.m_strClassroomCharge != "free")
+                        {
+                            <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee">@Model.m_strClassroomCharge</span>  <span class="badge badge-pill badge-light" style="text-decoration: line-through;">@Model.m_strPromotonialCharge</span></h4>
+                        }
+                        else
+                        {
+                            <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee">@Model.m_strClassroomCharge</span></h4>
+                        }
+                        @if (Model.m_bIsRegistrationClosed)
+                        {
+                            <p class="text-white h6 font-weight-bolder" id="classroomCreationDate">Sorry! you can't join this course. Registration has been closed for this course.</p>
+                        }
+                        else
+                        {
+                            if (Model.m_strLiveClassStartDate != null && Model.m_strLiveClassStartDate != "")
+                            {
+                                <p class="text-white h6 font-weight-bolder" id="classroomCreationDate">Live class will start from @Model.m_strLiveClassStartDate.</p>
+                            }
+                            else
+                            {
 
-                        <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee">@Model.m_strClassroomCharge</span> </h4>
-                        <p class="text-white h6 font-weight-bolder" id="classroomCreationDate">Live class start from: 21 Dec 2020</p>
-                        <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
-                        <span><button class="btn btn-outline-light font-weight-bold" onclick="LaunchDemoModal()" href="@ViewBag.ReturnUrl">Join free now</button></span>
-                        <h5 class="text-danger font-weight-bold">Attend three sessions free and pay only after you are satisfied.</h5>
-                        <h6 class="text-warning font-weight-bold" href="@ViewBag.ReturnUrl">Hurry! Few seats available</h6>
+                            }
+                            <span><button class="btn btn-outline-light font-weight-bold" onclick="LaunchDemoModal()" href="@ViewBag.ReturnUrl">Join free now</button></span>
+                            <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
+                            <h5 class="text-danger font-weight-bold">Attend three sessions free and pay only after you are satisfied.</h5>
+                            <h6 class="text-warning font-weight-bold" href="@ViewBag.ReturnUrl">Hurry! Few seats available</h6>
+                        }
                     </div>
                 </div>
             </div>
@@ -558,9 +581,9 @@
             </div>
         </div>
     </div>
-    <div class="row p-1 col-auto" id="classroomContaintProgressDetails">
+    <div class="row" id="classroomContaintProgressDetails">
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
             <div class="card border-left-primary shadow h-100 py-1">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -576,7 +599,7 @@
             </div>
         </div>
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -592,7 +615,7 @@
             </div>
         </div>
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -608,7 +631,7 @@
             </div>
         </div>
         <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -706,8 +729,7 @@
         <h2 class="text-center text-capitalize font-weight-bolder">Time table</h2>
         <section class="ftco-animate p-0">
             <div class="col-lg-12" id="navUpdateSchedulerDetails">
-                <div class="card">
-                    
+                <div class="card p-0" >
                     <div class="card-body">
                         <h6 class="text-danger">All the times are in IST(UTC +5:30).</h6>
                         <table class="table table-responsive">

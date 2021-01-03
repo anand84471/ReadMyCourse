@@ -83,8 +83,17 @@ namespace StudentDashboard.ServiceLayer
                     if(objStudentRegisterModal!=null)
                     {
                         string OTP = objInstructorBusinessLayer.GenerateOtp();
+                        string PhoneNo = "";
                         AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
-                        await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                        if(!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
+                        {
+                            PhoneNo = objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
+                        }
+                        else
+                        {
+                            PhoneNo = objStudentRegisterModal.m_strPhoneNo =  objStudentRegisterModal.m_strPhoneNo;
+                        }
+                        await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, PhoneNo);
                         await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
                     }
                 }
@@ -636,6 +645,18 @@ namespace StudentDashboard.ServiceLayer
                 await objStudentDTO.InsertRazorPayPaymentResponse(studentClassroomJoinRequest.razorPayPaymentResponseModal);
                 await objInstructorAlertManager.AddClassroomJoinAlert(studentClassroomJoinRequest.m_llStudentId,
                     studentClassroomJoinRequest.m_llClassroomId);
+            }
+            return result;
+        }
+        public async Task<bool> MarkClassroomPaySuccess(StudentClassroomJoinRequest studentClassroomJoinRequest)
+        {
+            bool result = false;
+            studentClassroomJoinRequest.razorPayPaymentResponseModal.m_strOrderId = studentClassroomJoinRequest.m_strOrderId;
+            if (objInstructorBusinessLayer.ValidateRazorPayPaymentRequest(studentClassroomJoinRequest.razorPayPaymentResponseModal))
+            {
+                result = await objStudentDTO.MarkClassroomPaymentSuccess(studentClassroomJoinRequest.m_llClassroomId,
+                    studentClassroomJoinRequest.m_llStudentId);
+                await objStudentDTO.InsertRazorPayPaymentResponse(studentClassroomJoinRequest.razorPayPaymentResponseModal);
             }
             return result;
         }

@@ -515,7 +515,7 @@
                     <div class="control-buttons">
                         @*<button class="btn btn-circle bg-primary text-white" onclick="requestUploadVideo()" data-toggle="tooltip" data-placement="top" title="Upload video"><span><i class="fa fa-file"></i></span></button>*@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="callAddNewAssignment()" data-toggle="tooltip" data-placement="top" title="Add assignment"><i class="fa fa-pen"></i></button>
-        <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
+                            <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
                         <h2 id="isMeetingActive"></h2>
                         <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
                         <a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live" onclick="callClassroomMeeting()"><span><i class="fa fa-play-circle"></i></span> Join live class</a>
@@ -690,74 +690,14 @@
         <div class="row col-lg-12 mb-2" id="navPreviousClasses" style="display:none">
             <div class="col-lg-8 mb-1">
                 <div class="card shadow-lg">
-                    <h4 id="no-video-data-present" class="p-2 text-center align-items-center">No video file present</h4>
-
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <h4 id="no-data-present" class="text-center">No data present in the topic</h4>
-                        <iframe id="video-url" class="embed-responsive-item" src="" allowfullscreen style="display:none;"></iframe>
-                    </div>
+                    <p class="text-center"><img id="no_video_present_img" class="text-center img-fluid" src="~/Images/no_video_present.png" style="max-width:300px"></p>
+                    <h5 id="no-video-data-present" class="p-2 text-center align-items-center">Recording might not present.</h5>
+                    <video id="topic-video-palyer-container" playsinline controls class="videos" style="display:none;">
+                        <source src="" id="video-url" type="video/webm" style="display:none;">
+                        Your browser does not support HTML video.
+                    </video>
                     <h4 class="text-center font-weight-bolder p-1" id="topic-name"></h4>
-                    @*<div class="card-footer">
-                            <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
-                                </li>
-                            </ul>
-                            <hr />
-
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <div class="form-group row">
-                                        <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
-                                        <div class="col-sm-8">
-                                            <input onchange="validateInputField(this)" type="text" class="form-control" id="liveClassTopicName" placeholder="give your lecture a name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputPassword" class="col-sm-3 col-form-label">Notes</label>
-                                        <div class="col-sm-8">
-                                            <textarea type="text" onchange="validateInputField(this)" placeholder="share some notes related to class" id="liveClassNotes" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputPassword" class="col-sm-3 col-form-label">Edit video url or upload new</label>
-                                        <div class="col-sm-8">
-                                            <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="liveClassVideoUrl" placeholder="Enter attachment url">
-                                        </div>
-                                    </div>
-                                    <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
-                                        <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlFile1">Upload attachment</label>
-                                            <input type="file" id="studyMaterialUpload" name="file" accept="*" />
-                                            <button type="button" class="btn btn-primary" onclick="updateClassroomMeetingDetails()">Upload</button>
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
-                                            </div>
-                                            <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
-                                                file uploaded successfully
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
-                                        Updated Sucessfully
-                                    </div>
-                                    <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
-                                        Can not be
-                                    </div>
-                                    <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
-                                </div>
-                                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-                            </div>
-                        </div>*@
+                   
                 </div>
             </div>
             <div class="card col-lg-4  border-primary">
@@ -765,11 +705,8 @@
                 <div class="card-body">
                     <div class="table-responsive table-hover">
                         <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
-
-
                             <tbody id="tableBody"></tbody>
                         </table>
-
                     </div>
                     <div id="spinner" class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
@@ -780,17 +717,13 @@
                         <div class="card-body">
                             <h6 class="card-title"> Live class not started.</h6>
                             <div id="assignmentContainer" class="assignmentContainer"></div>
-
                         </div>
                         <div class="card-footer text-muted">
                             Thank you!
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
         <div class="col-lg-12 mb-2" id="navClassroomLiveClass" style="display:none">
             <div class="card shadow-lg border-primary">
@@ -1091,6 +1024,14 @@
     }
     function hideAllClssroomDetails()
     {
+        if (player != null) {
+            try {
+                player.pause();
+            }
+            catch (ex) {
+
+            }
+        }
         clearInterval(messageInerval);
         $(".nav-link").removeClass("active");
         $("#classroomHomeDetails").hide();
@@ -1223,7 +1164,6 @@
             dataType: "json",
             url: "/api/v1/Course/FetchAllLiveClassMeetingDetailForStudent?ClassroomId=@ViewBag.Id",
             success: function (data) {
-
                 if (data != null && data.response_code == 1) {
                     var meetings = data.meetings;
                     var isJoined = "absent";
@@ -1247,6 +1187,7 @@
                         $("#spinner").remove();
                         $("#coursesTable").show();
                     }
+                    showClassroomMeetingContent(meetings[meetings.length-1].meeting_id);
                     $("#startPreviousMeeting").fadeIn();
                     $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=@ViewBag.Id");
                 }
@@ -1305,7 +1246,6 @@
         hideAllClssroomDetails();
         $("#navPreviousClasses").show();
         getAllLiveClassMeetingDetailsForStudent();
-
     }
 
     function viewAllClassroomTestSubmissions() {
@@ -1393,6 +1333,7 @@
 
         }
     }
+    var player=null;
     function showClassroomMeetingContent(meetingId) {
         var _data =
            {
@@ -1414,12 +1355,31 @@
                         $("#topic-name").text(data.meeting_details.topic_name);
                     }
                     if (data.meeting_details.video_url != null) {
-                        $("#video-url").attr("src", data.meeting_details.video_url);
+                        $("#topic-video-palyer-container").show();
+                        if (player == null) {
+                            player = new Plyr("#topic-video-palyer-container", { captions: { active: true } });
+                            window.player = player;
+
+                        }
+                       
+                        player.source = {
+                            type: 'video',
+                            sources: [
+                                {
+                                    src: data.meeting_details.video_url,
+                                    type: 'video/mp4',
+                                }
+                            ],
+                        };
+                        
                         $("#video-url").show();
                         $("#no-video-data-present").hide();
+                        $("#no_video_present_img").hide();
                     }
 
                     else {
+                        $("#topic-video-palyer-container").hide();
+                        $("#no_video_present_img").show();
                         $("#video-url").hide();
                         $("#no-video-data-present").show();
                     }
@@ -1517,6 +1477,7 @@
                 $("#spinnerClassroomSyllabus").remove();
             }
         });
-
     }
 </script>
+<script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+<script src="https://unpkg.com/plyr@3"></script>

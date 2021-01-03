@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StudentDashboard.Models.Classroom;
+using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,12 @@ namespace StudentDashboard.Models.Student
         public ClassroomScheduleDetails classroomScheduleDetails;
         
         public ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal;
+        public string m_strLiveClassStartDate;
+        public bool m_bIsRegistrationClosed;
+        public string m_strPromotonialCharge;
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined,int NoOfAssignments,int NoOfLiveClassess,
             int NoOfTests,int NoOfStudyMaterials,string ClassroomName,string ClassroomDescription,DateTime ClassroomStartDate,
-            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule
+            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule, DateTime? LiveClassStartDate 
             )
         {
             this.m_iNoOfAssignments = NoOfAssignments;
@@ -64,10 +68,12 @@ namespace StudentDashboard.Models.Student
             if(this.m_iClassroomCharge==0)
             {
                 this.m_strClassroomCharge = "free";
+                this.m_strPromotonialCharge = "";
             }
             else
             {
                 this.m_strClassroomCharge = this.m_iClassroomCharge.ToString();
+                this.m_strPromotonialCharge = (2* this.m_iClassroomCharge).ToString();
             }
             if(ClassroomImage==null)
             {
@@ -86,6 +92,8 @@ namespace StudentDashboard.Models.Student
             {
                 setClassroomSchedule(Schedule);
             }
+            this.m_strLiveClassStartDate = MasterUtilities.GetDateByDateTime(LiveClassStartDate);
+            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(LiveClassStartDate);
         }
         public ClassroomJoinDetailsModal()
         {

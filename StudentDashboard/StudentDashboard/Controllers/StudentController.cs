@@ -220,6 +220,8 @@ namespace StudentDashboard.Controllers
                         {
                             m_strStringBuilder.Append("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                         }
+                        ViewBag.IsLoggedIn = false;
+                        ViewName = "Index";
                         ViewBag.ErrorMessage = m_strStringBuilder.ToString();
                     }
                 }
@@ -1039,11 +1041,13 @@ namespace StudentDashboard.Controllers
                 if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"],classroom_id))
                 {
                     StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
+                    if(studentClassroomHomeDetails.m_bShouldBlockClassroomAccess)
+                    {
+                        return Redirect("ClassroomPayNow?classroom_id="+classroom_id);
+                    }
                     ViewBag.Id = classroom_id;
                     return View(studentClassroomHomeDetails);
                 }
-                
-                
             }
             catch (Exception Ex)
             {
@@ -1055,6 +1059,29 @@ namespace StudentDashboard.Controllers
             }
             return PartialView("UnAuthorizedAccess");
         }
+        [HttpGet]
+        public async Task<ActionResult> ClassroomPayNow(long classroom_id)
+        {
+            try
+            {
+                if (await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], classroom_id))
+                {
+                    StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
+                    ViewBag.Id = classroom_id;
+                    return View(studentClassroomHomeDetails);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ClassroomPayNow", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+            return PartialView("UnAuthorizedAccess");
+        }
+
         [HttpGet]
         public ActionResult MyClassrooms()
         {

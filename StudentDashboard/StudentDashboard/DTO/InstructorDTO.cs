@@ -340,7 +340,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
                          dataRow.Field<int>("NO_OF_MEETINGS"),
                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
-                         dataRow.Field<string>("CLASSROOM_MEETING_NAME")
+                         dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
+                         dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
+                         dataRow.Field<DateTime?>("CLASS_START_DATE")
                          )).ToList()[0];
                 }
             }
@@ -635,7 +637,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
                          dataRow.Field<int>("NO_OF_MEETINGS"),
                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
-                         dataRow.Field<string>("CLASSROOM_MEETING_NAME")
+                         dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
+                         dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
+                         dataRow.Field<DateTime?>("CLASS_START_DATE")
                          )).ToList()[0];
                 }
             }
