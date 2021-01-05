@@ -881,7 +881,8 @@ namespace StudentDashboard.DTO
                           dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
                           dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
                           dataRow.Field<DateTime?>("CLASS_START_DATE"),
-                          dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE")
+                          dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
+                          dataRow.Field<int>("NO_OF_DEMO_CLASSES")
                          )).ToList()[0];
                 }
             }

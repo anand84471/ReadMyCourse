@@ -338,6 +338,7 @@
     <Compile Include="HttpRequest\InstructorProfileChangeRequest.cs" />
     <Compile Include="HttpRequest\InstructorSearchRequest.cs" />
     <Compile Include="HttpRequest\ProfileUploadRequest.cs" />
+    <Compile Include="HttpRequest\SearchInstructorByUserIdRequest.cs" />
     <Compile Include="HttpRequest\SerchCourseRequest.cs" />
     <Compile Include="HttpRequest\StudentClassroomJoinRequest.cs" />
     <Compile Include="HttpRequest\StudentCourseDetailsRequestModel.cs" />

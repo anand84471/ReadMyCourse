@@ -64,6 +64,17 @@ namespace StudentDashboard.Utilities
                 return "";
             }
         }
+        public static string GetDateByDateTimeYYYYMMDD(DateTime? datetime)
+        {
+            if (datetime != null)
+            {
+                return ((DateTime)datetime).ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                return "";
+            }
+        }
         public static bool CompareToToday(DateTime? datetime)
         {
             bool result = false;

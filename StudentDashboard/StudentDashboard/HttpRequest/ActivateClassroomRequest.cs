@@ -26,5 +26,7 @@ namespace StudentDashboard.HttpRequest
         public string m_strClassroomShareCode;
         [JsonIgnore]
         public string m_strTinyUrl;
+        [JsonProperty("no_of_demo_classes")]
+        public int m_iNoOfDemoClasses;
     }
 }

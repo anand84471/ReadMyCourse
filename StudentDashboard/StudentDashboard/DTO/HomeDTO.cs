@@ -815,7 +815,8 @@ namespace StudentDashboard.DTO
                 result = await objCPDataService.ActivateClassroomAsync(activateClassroomRequest.m_llClassroomId,
                     activateClassroomRequest.m_strClassroomShareCode,activateClassroomRequest.m_strTinyUrl,
                     activateClassroomRequest.m_bPublicType,activateClassroomRequest.m_iClassroomJoiningFee,
-                    activateClassroomRequest.m_strClassroomStartTime,activateClassroomRequest.m_strClassroomBitwiseSchedule);
+                    activateClassroomRequest.m_strClassroomStartTime,activateClassroomRequest.m_strClassroomBitwiseSchedule,
+                    activateClassroomRequest.m_iNoOfDemoClasses);
             }
             catch (Exception Ex)
             {
@@ -2089,7 +2090,7 @@ namespace StudentDashboard.DTO
                     objClassRoomModal.imageUploadDetailsModal.m_strOriginalFileUrl, 
                     objClassRoomModal.m_strClassroomMeetingName,
                     objClassRoomModal.imageUploadDetailsModal.m_strSmallSizeUrl,
-                    objClassRoomModal.imageUploadDetailsModal.m_strMediumSizeUrl);
+                    objClassRoomModal.imageUploadDetailsModal.m_strMediumSizeUrl, objClassRoomModal.m_iNoOfDemoSessions);
             }
             catch(Exception Ex)
             {
@@ -2361,7 +2362,7 @@ namespace StudentDashboard.DTO
             {
                 result = await objCPDataService.UpdateClassroomDetailsAsync(classRoomModal.m_llClassRoomId,
                     classRoomModal.m_strClassRoomName, classRoomModal.m_strClassRoomDescription,classRoomModal.m_dtClassStartDate,
-                    classRoomModal.m_dtRegistrationCloseDate);
+                    classRoomModal.m_dtRegistrationCloseDate, classRoomModal.m_iNoOfDemoSessions);
             }
             catch (Exception Ex)
             {

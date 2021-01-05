@@ -342,14 +342,15 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
                          dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
                          dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
-                         dataRow.Field<DateTime?>("CLASS_START_DATE")
+                         dataRow.Field<DateTime?>("CLASS_START_DATE"),
+                         dataRow.Field<int>("NO_OF_DEMO_CLASSES")
                          )).ToList()[0];
                 }
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomDetailsForInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -639,7 +640,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
                          dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
                          dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
-                         dataRow.Field<DateTime?>("CLASS_START_DATE")
+                         dataRow.Field<DateTime?>("CLASS_START_DATE"),
+                         dataRow.Field<int>("NO_OF_DEMO_CLASSES")
                          )).ToList()[0];
                 }
             }

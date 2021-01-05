@@ -406,9 +406,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">No of demo classes</label>
+                        <div class="col-sm-3">
+                            <input onchange="validateInputField(this)" type="number" name="noOfDemoClasses" class="form-control" id="noOfDemoClasses" placeholder="No of demo classes" value="@Model.m_iNoOfDemoSessions">
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Registration close date</label>
                         <div class="col-sm-6">
-                            <input type="date" onchange="validateInputField(this)" placeholder="registration close date" id="registrationCloseDate" name="registrationCloseDate" rows="2" class="form-control md-textarea" value="@Model.m_strClassroomRegistratioCloseDate" >
+                            <input type="date" onchange="validateInputField(this)" placeholder="registration close date" id="registrationCloseDate" name="registrationCloseDate" rows="2" class="form-control md-textarea" value="@Model.m_strClassroomRegistratioCloseDate">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -1248,6 +1255,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">No of demo classes</label>
+                    <div class="col-sm-4">
+                        <input  min="0" type="number" name="courseName" class="form-control" id="demoClasses" placeholder="demo classes" value="0">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="inputPassword" class="col-sm-6 col-form-label">Please enter classroom start date</label>
                     <div class="col-sm-6">
                         <input  type="date" class="form-control" id="classroomStartDate" placeholder="please enter classroom start date" >
@@ -1262,7 +1275,7 @@
                     </div>
                     
                 </div>
-                <h6 class="font-weight-bolder">Please select classroom </h6>
+                <h6 class="font-weight-bolder">Please select classroom active days</h6>
                 <div class="row col-sm-12">
                 <button onclick="setDate(this,'monday')" class="btn btn-sm btn-outline-primary col-2">Monday</button>
                 <button onclick="setDate(this,'tuesday')"  class="btn btn-sm btn-outline-primary col-2">Tuesday</button>
@@ -1478,12 +1491,14 @@
     function activateClassroom() {
         debugger;
         var classroomJoiningFee = $("#classroomFee").val();
+        var demoClasses = $("#demoClasses").val();
         var _data = {
             "classroom_id": "@Model.m_llClassRoomId",
             "classroom_joining_fee": classroomJoiningFee,
             "classroom_start_date": $("#classroomStartDate").val(),
             "classroom_start_time": $("#classroomDailyStartTime").val(),
             "classroom_weekday_schedule": getSelectedDates(),
+            "no_of_demo_classes": demoClasses,
             "public_type": ClassroomPublicType
         }
         $.ajax({
@@ -1814,6 +1829,7 @@
         var BackGroundUrl = $("#classroomBackGroundUrl").val();
         var classroomRegistrationCloseDate = $("#registrationCloseDate").val();
         var classroomStartDate = $("#classroomStartDateSchedule").val();
+        var noOfDemoClassrooms = $("#noOfDemoClasses").val();
         if (validateInputField(classroomName) && validateInputField(classroomDescription)) {
             var _data =
             {
@@ -1823,6 +1839,7 @@
                 "background_url": BackGroundUrl,
                 "classroom_class_start_date": classroomStartDate,
                 "classroom_registration_close_date": classroomRegistrationCloseDate,
+                "no_of_demo_sessions": noOfDemoClassrooms
             }
             $.ajax({
                 headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },

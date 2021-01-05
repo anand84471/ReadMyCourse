@@ -1908,6 +1908,7 @@
         <xs:element minOccurs="0" name="ClassroomMeetingName" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ThumbnailSmall" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ThumbnailMedium" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="NoOfDemoClassrooms" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1985,6 +1986,7 @@
         <xs:element minOccurs="0" name="ClassroomJoiningAmountInPaise" type="xs:int" />
         <xs:element minOccurs="0" name="StartTime" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="ArrayOpeningDays" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="NofDemoClasses" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -2358,6 +2360,7 @@
         <xs:element minOccurs="0" name="ClassroomDescription" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="classroomStartDate" type="xs:dateTime" />
         <xs:element minOccurs="0" name="classroomRegistrationCloseDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="NoOfDemoSessions" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

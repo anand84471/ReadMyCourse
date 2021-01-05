@@ -453,7 +453,8 @@ namespace StudentDashboard.DTO
                            dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
                            dataRow.Field<string>("CLASSROOM_SYLLABUS"),
                            dataRow.Field<string>("CLASSROOM_SCHEDULE_OBJ"),
-                           dataRow.Field<DateTime?>("CLASS_START_DATE")
+                           dataRow.Field<DateTime?>("CLASS_START_DATE"),
+                           dataRow.Field<int>("NO_OF_DEMO_CLASSES")
                          )).ToList()[0];
                 }
                 objClassRoomModal.m_llClassroomId = ClassroomId;

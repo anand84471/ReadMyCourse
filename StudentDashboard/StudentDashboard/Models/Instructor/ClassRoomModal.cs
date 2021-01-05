@@ -58,6 +58,8 @@ namespace StudentDashboard.Models.Instructor
         public string m_strClassroomRegistratioCloseDate;
         [JsonProperty("is_registration_closed")]
         public bool m_bIsRegistrationClosed;
+        [JsonProperty("no_of_demo_sessions")]
+        public int m_iNoOfDemoSessions;
         public ClassRoomModal()
         {
 
@@ -79,7 +81,7 @@ namespace StudentDashboard.Models.Instructor
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string ClassroomDescription, string CreationDate, string ClassroomStatus,
             int NoOfPosts, string ShareUrl, string AccessCode, int NoOfAssignments, int NoOfTests, int NoOfStudentsJoined, int NoOfMeetings,
-            string BackgroundUrl, string MeetingName, DateTime? ClassroomStartDate, DateTime? ClassroomRegistrationCloseDate)
+            string BackgroundUrl, string MeetingName, DateTime? ClassroomStartDate, DateTime? ClassroomRegistrationCloseDate,int NoOfDemoClasses)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -103,13 +105,14 @@ namespace StudentDashboard.Models.Instructor
             {
                 this.m_strClassroomStartDate = "";
             }
-            this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTime(ClassroomRegistrationCloseDate);
-            this.m_strClassroomStartDate = MasterUtilities.GetDateByDateTime(ClassroomStartDate);
+            this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomRegistrationCloseDate);
+            this.m_strClassroomStartDate = MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomStartDate);
+            this.m_iNoOfDemoSessions = NoOfDemoClasses;
 
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
              string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise,
-             DateTime? ClassroomRegistrationCloseDate,DateTime? ClassStartDate)
+             DateTime? ClassroomRegistrationCloseDate,DateTime? ClassStartDate,int NoOfDemoClasses)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -130,6 +133,7 @@ namespace StudentDashboard.Models.Instructor
             this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTime(ClassroomRegistrationCloseDate);
             this.m_strClassroomStartDate= MasterUtilities.GetDateByDateTime(ClassStartDate);
             this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(ClassStartDate);
+            this.m_iNoOfDemoSessions = NoOfDemoClasses;
         }
         
 
