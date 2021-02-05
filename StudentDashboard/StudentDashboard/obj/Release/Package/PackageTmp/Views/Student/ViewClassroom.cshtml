@@ -1285,7 +1285,6 @@
     function getAllClassroomAttachments() {
         hideAllClssroomDetails();
         $("#navClassroomAttachments").show();
-
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",

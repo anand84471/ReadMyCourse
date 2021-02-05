@@ -25,13 +25,13 @@ namespace StudentDashboard.Controllers
         public async Task<ActionResult> Details(string id)
         {
             ClassroomJoinDetailsModal classroomJoinDetailsModal;
+            long ClassroomId = objDocumentService.GetClassroomIdFromSku(id);
             if (Session["user_id"] != null)
             {
-                long ClassroomId = objDocumentService.GetClassroomIdFromSku(id);
                 Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId);
             }
             classroomJoinDetailsModal = await objDocumentService.GetLiveClassDetailsForStudent(id);
-            ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + id + "&&access_code=";
+            ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId;
             ViewBag.Id = classroomJoinDetailsModal.m_llClassroomId;
             return View(classroomJoinDetailsModal);
         }

@@ -318,6 +318,8 @@
     <Compile Include="HttpRequest\AssignmentQuestionResponse.cs" />
     <Compile Include="HttpRequest\AssignmentSubmissionRequest.cs" />
     <Compile Include="HttpRequest\ClassroomAttachmentRequest.cs" />
+    <Compile Include="HttpRequest\ClassroomFeedbackRequest.cs" />
+    <Compile Include="HttpRequest\ClassroomNotificationMasterDetails.cs" />
     <Compile Include="HttpRequest\ContactUsApiRequest.cs" />
     <Compile Include="HttpRequest\ContentSearchRequest.cs" />
     <Compile Include="HttpRequest\Document\AddEmailSubscriberRequest.cs" />
@@ -337,6 +339,7 @@
     <Compile Include="HttpRequest\InstructorFileUploadRequest.cs" />
     <Compile Include="HttpRequest\InstructorProfileChangeRequest.cs" />
     <Compile Include="HttpRequest\InstructorSearchRequest.cs" />
+    <Compile Include="HttpRequest\MasterSearchRequest.cs" />
     <Compile Include="HttpRequest\ProfileUploadRequest.cs" />
     <Compile Include="HttpRequest\SearchInstructorByUserIdRequest.cs" />
     <Compile Include="HttpRequest\SerchCourseRequest.cs" />
@@ -435,6 +438,7 @@
     <Compile Include="HttpResponse\SearchCourseResponse.cs" />
     <Compile Include="HttpResponse\SearchForTestResponse.cs" />
     <Compile Include="HttpResponse\SearchForAssignmentsApiResponse.cs" />
+    <Compile Include="HttpResponse\SearchInstructorByUserIdResponse.cs" />
     <Compile Include="HttpResponse\SearchInstructorResponse.cs" />
     <Compile Include="HttpResponse\SearchInstructorResponseModal.cs" />
     <Compile Include="HttpResponse\SearchStudentPublicClassroomResponse.cs" />
@@ -465,6 +469,7 @@
     <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
     <Compile Include="Models\Classroom\GetLiveClassDetailsForInstructor.cs" />
     <Compile Include="Models\Classroom\StudentLiveClassMeetingDetails.cs" />
+    <Compile Include="Models\CouponDetailsModal.cs" />
     <Compile Include="Models\Course\AssignmentDetailsModel.cs" />
     <Compile Include="Models\Course\AssignmentModel.cs" />
     <Compile Include="Models\Course\ContentModel.cs" />
@@ -492,7 +497,11 @@
     <Compile Include="Models\Instructor\InstructorProjectsDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorSchoolDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorTestSeriesModal.cs" />
+    <Compile Include="Models\Instructor\InstructorUserIdSearchResponse.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
+    <Compile Include="Models\Instructor\MasterInstructorDetails.cs" />
+    <Compile Include="Models\MasterFeedback.cs" />
+    <Compile Include="Models\OAuth\GoogleSignInRequest.cs" />
     <Compile Include="Models\RazorPay\RazorPayCustomerData.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentDataModal.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentRequestModal.cs" />
@@ -559,7 +568,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="ServiceLayer\classroomPaymentRequestDTO.cs" />
+    <Compile Include="ServiceLayer\ClassroomPaymentRequestDTO.cs" />
     <Compile Include="ServiceLayer\DocumentService.cs" />
     <Compile Include="ServiceLayer\HomeService.cs" />
     <Compile Include="ServiceLayer\InstructorService.cs" />
@@ -1155,6 +1164,8 @@
     <Content Include="Views\ClassroomPayNow.cshtml" />
     <Content Include="Views\Student\ClassroomPayNow.cshtml" />
     <Content Include="Views\BecomeInstructor\Index.cshtml" />
+    <Content Include="Views\Student\VarifyPhoneNo.cshtml" />
+    <Content Include="Views\Student\SavePhoneNoStep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AmazonAWSServices\" />

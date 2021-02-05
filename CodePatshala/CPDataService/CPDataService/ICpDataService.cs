@@ -228,7 +228,7 @@ namespace CPDataService
         [OperationContract]
         DataSet GetStudentJoinedToCourse(long CourseId);
         [OperationContract]
-        DataSet GetAllStudentsJoinedToInstructor(int InstructorId);
+        DataSet GetAllStudentsJoinedToInstructor(int InstructorId, int NoOfRowsFetched, string SearchString);
         [OperationContract]
         bool InsertNewCourseV2(string CourseName, string CourseDescription, int InstructorId, string AboutCourse, string CourseImagePath, ref long CourseId);
         [OperationContract]
@@ -343,7 +343,7 @@ namespace CPDataService
         DataSet GetAllClassRoomForInstrcutor(int InstrcutorId);
         [OperationContract]
         long InsertNewClassRoomForInstructor(int InstrcuctorId, string ClassRoomName, string ClassRoomDescription, string BackGroundImageUrl,
-            string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium);
+            string ClassroomMeetingName, string ThumbnailSmall, string ThumbnailMedium, int NoOfDemoClassrooms);
         [OperationContract]
         bool InertNewPostToClassroom(long ClassroomId, string Post);
         [OperationContract]
@@ -352,7 +352,7 @@ namespace CPDataService
         DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
         [OperationContract]
         bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl,
-            int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays);
+            int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses);
         [OperationContract]
         DataSet GetClasroomDetails(long ClassRoomId);
         [OperationContract]
@@ -386,7 +386,8 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId);
         [OperationContract]
-        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription);
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, DateTime classroomStartDate,
+            DateTime classroomRegistrationCloseDate, int NoOfDemoSessions);
         [OperationContract]
         bool DeleteClassroom(long ClassroomId);
         [OperationContract]
@@ -510,7 +511,7 @@ namespace CPDataService
         [OperationContract]
         bool FollowBackStudent(long StudentStaertedFollowingId, long StudentGettingFollowedId);
         [OperationContract]
-        DataSet GetAllStudentsToFollow(long StudentId, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        DataSet GetAllStudentsToFollow(long StudentId, int NoOfRowsFetched, int NoOfRowsToBeFetched, string SearchString);
         [OperationContract]
         DataSet GetStudentPublicProfileDetails(long StudentId);
         [OperationContract]
@@ -531,8 +532,28 @@ namespace CPDataService
         DataSet GetClassroomMeetingDetailsForStudent(long StudentId, long MeetingId);
         [OperationContract]
         DataSet GetClassroomSyllabus(long ClassroomId);
-    
-
+        [OperationContract]
+        bool MarkStudentClassroomPaymentSuccessful(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet SearchInstructorByUserId(string SearchString);
+        [OperationContract]
+        bool InsertOrUpdateClassroomFeedbackByStudent(long ClassroomId, long StudentId, string
+            FeedbackMessage, int NoOfRatings);
+        [OperationContract]
+        DataSet GetAllCoupons();
+        [OperationContract]
+        bool SendClassroomNotification(long ClassroomId, string NotificationMessage);
+        [OperationContract]
+        bool RegisterNewStudentViaGmail(string GmailId, string FirstName, string LastName, string UserId, string PhoneNo,
+            string PhoneNoVarificationGuid, string ProfileUrl);
+        [OperationContract]
+        DataSet CheckGmailUserAlreadyExists(string GmailId, string UserId);
+        [OperationContract]
+        bool VarifyStudentPhoneNo(string UserId, string Otp, string PhoneNoGuid);
+        [OperationContract]
+        bool InsertOtpToVarifyPhoneNoOfStudent(long StudentId, string Otp);
+        [OperationContract]
+        bool UpdatePhoneNoOfGmailRegStudent(string UserId, string Token, string PhoneNo);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

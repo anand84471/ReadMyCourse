@@ -8,6 +8,18 @@
       <xsd:import schemaLocation="http://localhost:60955/CpDataService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CPDataService" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="ICpDataService_InsertOtpToVarifyPhoneNoOfStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertOtpToVarifyPhoneNoOfStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertOtpToVarifyPhoneNoOfStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertOtpToVarifyPhoneNoOfStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdatePhoneNoOfGmailRegStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdatePhoneNoOfGmailRegStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdatePhoneNoOfGmailRegStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdatePhoneNoOfGmailRegStudentResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudent" />
   </wsdl:message>
@@ -349,6 +361,48 @@
   </wsdl:message>
   <wsdl:message name="ICpDataService_MarkStudentClassroomPaymentSuccessful_OutputMessage">
     <wsdl:part name="parameters" element="tns:MarkStudentClassroomPaymentSuccessfulResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_SearchInstructorByUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchInstructorByUserId" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_SearchInstructorByUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchInstructorByUserIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertOrUpdateClassroomFeedbackByStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertOrUpdateClassroomFeedbackByStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertOrUpdateClassroomFeedbackByStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertOrUpdateClassroomFeedbackByStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllCoupons_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCoupons" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllCoupons_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCouponsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_SendClassroomNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendClassroomNotification" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_SendClassroomNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendClassroomNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_RegisterNewStudentViaGmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterNewStudentViaGmail" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_RegisterNewStudentViaGmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterNewStudentViaGmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckGmailUserAlreadyExists_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckGmailUserAlreadyExists" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckGmailUserAlreadyExists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckGmailUserAlreadyExistsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_VarifyStudentPhoneNo_InputMessage">
+    <wsdl:part name="parameters" element="tns:VarifyStudentPhoneNo" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_VarifyStudentPhoneNo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VarifyStudentPhoneNoResponse" />
   </wsdl:message>
   <wsdl:message name="ICpDataService_UpdateNotificationStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateNotificationStatus" />
@@ -1503,6 +1557,14 @@
     <wsdl:part name="parameters" element="tns:InsertNewTestToCourseResponse" />
   </wsdl:message>
   <wsdl:portType name="ICpDataService">
+    <wsdl:operation name="InsertOtpToVarifyPhoneNoOfStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertOtpToVarifyPhoneNoOfStudent" message="tns:ICpDataService_InsertOtpToVarifyPhoneNoOfStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertOtpToVarifyPhoneNoOfStudentResponse" message="tns:ICpDataService_InsertOtpToVarifyPhoneNoOfStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePhoneNoOfGmailRegStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudent" message="tns:ICpDataService_UpdatePhoneNoOfGmailRegStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudentResponse" message="tns:ICpDataService_UpdatePhoneNoOfGmailRegStudent_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetClassroomHomeDetailsForStudent">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage" />
@@ -1730,6 +1792,34 @@
     <wsdl:operation name="MarkStudentClassroomPaymentSuccessful">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessful" message="tns:ICpDataService_MarkStudentClassroomPaymentSuccessful_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessfulResponse" message="tns:ICpDataService_MarkStudentClassroomPaymentSuccessful_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchInstructorByUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/SearchInstructorByUserId" message="tns:ICpDataService_SearchInstructorByUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/SearchInstructorByUserIdResponse" message="tns:ICpDataService_SearchInstructorByUserId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertOrUpdateClassroomFeedbackByStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertOrUpdateClassroomFeedbackByStudent" message="tns:ICpDataService_InsertOrUpdateClassroomFeedbackByStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertOrUpdateClassroomFeedbackByStudentResponse" message="tns:ICpDataService_InsertOrUpdateClassroomFeedbackByStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCoupons">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllCoupons" message="tns:ICpDataService_GetAllCoupons_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllCouponsResponse" message="tns:ICpDataService_GetAllCoupons_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendClassroomNotification">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/SendClassroomNotification" message="tns:ICpDataService_SendClassroomNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/SendClassroomNotificationResponse" message="tns:ICpDataService_SendClassroomNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewStudentViaGmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/RegisterNewStudentViaGmail" message="tns:ICpDataService_RegisterNewStudentViaGmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/RegisterNewStudentViaGmailResponse" message="tns:ICpDataService_RegisterNewStudentViaGmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckGmailUserAlreadyExists">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckGmailUserAlreadyExists" message="tns:ICpDataService_CheckGmailUserAlreadyExists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckGmailUserAlreadyExistsResponse" message="tns:ICpDataService_CheckGmailUserAlreadyExists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VarifyStudentPhoneNo">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/VarifyStudentPhoneNo" message="tns:ICpDataService_VarifyStudentPhoneNo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/VarifyStudentPhoneNoResponse" message="tns:ICpDataService_VarifyStudentPhoneNo_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="UpdateNotificationStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateNotificationStatus" message="tns:ICpDataService_UpdateNotificationStatus_InputMessage" />
@@ -2502,6 +2592,24 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICpDataService" type="tns:ICpDataService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertOtpToVarifyPhoneNoOfStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertOtpToVarifyPhoneNoOfStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePhoneNoOfGmailRegStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetClassroomHomeDetailsForStudent">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" style="document" />
       <wsdl:input>
@@ -3008,6 +3116,69 @@
     </wsdl:operation>
     <wsdl:operation name="MarkStudentClassroomPaymentSuccessful">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/MarkStudentClassroomPaymentSuccessful" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchInstructorByUserId">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/SearchInstructorByUserId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertOrUpdateClassroomFeedbackByStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertOrUpdateClassroomFeedbackByStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCoupons">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllCoupons" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendClassroomNotification">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/SendClassroomNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterNewStudentViaGmail">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/RegisterNewStudentViaGmail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckGmailUserAlreadyExists">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckGmailUserAlreadyExists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VarifyStudentPhoneNo">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/VarifyStudentPhoneNo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

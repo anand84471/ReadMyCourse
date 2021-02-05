@@ -2,6 +2,7 @@
 using StudentDashboard.HttpResponse;
 using StudentDashboard.Models;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.OAuth;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Security;
 using StudentDashboard.Security.Student;
@@ -23,20 +24,21 @@ namespace StudentDashboard.Controllers
         StringBuilder m_strLogMessage = new StringBuilder();
         StudentService objStudentService = new StudentService();
         DocumentService objDocumentService = new DocumentService();
-        public ActionResult Index(string return_url=null)
+        public ActionResult Index(string return_url = null)
         {
-            if(Session["user_id"]!=null)
+            if (Session["user_id"] != null)
             {
                 if (return_url == null)
                 {
                     return Redirect("/Student/Home");
                 }
-                
+
                 return Redirect(return_url);
             }
-            if(return_url!=null)
+            if (return_url != null)
             {
-                ViewBag.ReturnUrl = "/Student/ValidateLogin?return_url="+return_url;
+                ViewBag.ReturnUrl = "/Student/ValidateLogin?return_url=" + return_url;
+                ViewBag.RedirectUri = return_url;
             }
             else
             {
@@ -67,7 +69,7 @@ namespace StudentDashboard.Controllers
                 objRegiserModel.m_strCountryCode = collection["countryCode"];
                 var objDynamicRoutingAPIRequestValidator = new StudentAccountRegisterValidator();
                 {
-                    var result=await objDynamicRoutingAPIRequestValidator.ValidateAsync(objRegiserModel);
+                    var result = await objDynamicRoutingAPIRequestValidator.ValidateAsync(objRegiserModel);
                     if (result.IsValid)
                     {
                         if (await objStudentService.RegisterNewStudent(objRegiserModel))
@@ -103,7 +105,7 @@ namespace StudentDashboard.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> RegisterLiveClass(FormCollection collection)
+        public async Task<ActionResult> RegisterLiveClass(FormCollection collection,string return_url=null)
         {
             try
             {
@@ -134,9 +136,9 @@ namespace StudentDashboard.Controllers
                                 Session["user_id"] = objRegiserModel.m_llStudentId;
                                 objRegiserModel = await objStudentService.GetStudentBasicDetails(objRegiserModel.m_llStudentId);
                                 Session["student_profile_picture_url"] = objRegiserModel.m_strProfileUrl;
-                                if(await objStudentService.RegisterStudentFreeToClassroom(ClassroomId, (long)Session["user_id"]))
+                                if (await objStudentService.RegisterStudentFreeToClassroom(ClassroomId, (long)Session["user_id"]))
                                 {
-                                    Response.Redirect("~/Student/Home");
+                                    Response.Redirect("~/Student/Home?return_url="+return_url);
                                 }
                             }
                         }
@@ -169,7 +171,7 @@ namespace StudentDashboard.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> ValidateLogin(FormCollection collection,string return_url=null)
+        public async Task<ActionResult> ValidateLogin(FormCollection collection, string return_url = null)
         {
             string strCurrentMethodName = "Register";
             string ViewName = "";
@@ -184,12 +186,12 @@ namespace StudentDashboard.Controllers
                 }
                 var objStudentLoginValidator = new StudentLoginValidator();
                 {
-                    var ValidationResult =objStudentLoginValidator.Validate(objStudentRegisterModal);
+                    var ValidationResult = objStudentLoginValidator.Validate(objStudentRegisterModal);
                     if (ValidationResult.IsValid)
                     {
                         if (objStudentService.ValidateLogin(objStudentRegisterModal))
                         {
-                         
+
                             ViewName = "Home";
                             ViewBag.Token = JwtManager.GenerateToken(objStudentRegisterModal.m_strUserId);
                             ViewBag.InstructorUserName = objStudentRegisterModal.m_strUserId;
@@ -198,13 +200,13 @@ namespace StudentDashboard.Controllers
                             Session["user_id"] = objStudentRegisterModal.m_llStudentId;
                             objStudentRegisterModal = await objStudentService.GetStudentBasicDetails(objStudentRegisterModal.m_llStudentId);
                             Session["student_profile_picture_url"] = objStudentRegisterModal.m_strProfileUrl;
-                            if (return_url!=null)
+                            if (return_url != null)
                             {
-                                return Redirect(return_url);
+                                return Redirect("Home?redirect_url=" + return_url);
                             }
                             else
                             {
-                                return RedirectToAction("Home");
+                                return Redirect("Home");
                             }
                         }
                         else
@@ -236,39 +238,39 @@ namespace StudentDashboard.Controllers
             }
             return View(ViewName);
         }
-        [ValidateAntiForgeryToken]
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult> ResetPassword(FormCollection collection)
-        {
-            string strCurrentMethodName = "ResetPassword";
-            string ViewName = "ForgotPassword";
-            try
-            {
-                StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
-                objStudentRegisterModal.m_strUserId = collection["userEmail"];
-                string token = await objStudentService.InsertPasswordRecovery(objStudentRegisterModal.m_strUserId);
-                if (token != null&& token != string.Empty)
-                {
-                    string sid = objStudentRegisterModal.m_strUserId;
-                    return RedirectToAction("PasswordAuthRequest",new { sid, token });
-                }
-                else
-                {
-                    ViewBag.Message = "User Id does not exist";
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-                ViewName = "Error";
-            }
-            return View(ViewName);
+        //[ValidateAntiForgeryToken]
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public async Task<ActionResult> ResetPassword(FormCollection collection)
+        //{
+        //    string strCurrentMethodName = "ResetPassword";
+        //    string ViewName = "ForgotPassword";
+        //    try
+        //    {
+        //        StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
+        //        objStudentRegisterModal.m_strUserId = collection["userEmail"];
+        //        //string token = await objStudentService.InsertPasswordRecovery(objStudentRegisterModal.m_strUserId);
+        //        if (token != null&& token != string.Empty)
+        //        {
+        //            string sid = objStudentRegisterModal.m_strUserId;
+        //            return RedirectToAction("PasswordAuthRequest",new { sid, token });
+        //        }
+        //        else
+        //        {
+        //            ViewBag.Message = "User Id does not exist";
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //        ViewName = "Error";
+        //    }
+        //    return View(ViewName);
 
-        }
+        //}
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]
@@ -286,7 +288,7 @@ namespace StudentDashboard.Controllers
                 string token = objStudentUpdatePasswordRequestModal.m_strToken;
                 if (await objStudentService.ValidatePasswordRecodevrtOtp(objStudentUpdatePasswordRequestModal))
                 {
-                    
+
                     return RedirectToAction("ChangePassword", new { sid, token });
                 }
                 else
@@ -347,7 +349,7 @@ namespace StudentDashboard.Controllers
             return View(ViewName);
         }
         [HttpGet]
-        public PartialViewResult ChangePassword(string sid,string token)
+        public PartialViewResult ChangePassword(string sid, string token)
         {
             ViewBag.StudentId = sid;
             ViewBag.Token = token;
@@ -366,7 +368,7 @@ namespace StudentDashboard.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult PasswordAuthRequest(string sid,string token)
+        public ActionResult PasswordAuthRequest(string sid, string token)
         {
             string strCurrentMethodName = "PasswordAuthRequest";
             try
@@ -399,16 +401,17 @@ namespace StudentDashboard.Controllers
             ViewBag.IsRegistered = true;
             return View();
         }
-        public async Task<PartialViewResult> Home()
+        public async Task<PartialViewResult> Home(string redirect_url = null)
         {
             try
             {
                 long StudentId = (long)Session["user_id"];
 
-                StudentHomeModal objStudentHomeModal =await objStudentService.GetStudentHomeDetails(StudentId);
+                StudentHomeModal objStudentHomeModal = await objStudentService.GetStudentHomeDetails(StudentId);
                 if (objStudentHomeModal != null)
                 {
                     ViewBag.Token = JwtManager.GenerateToken(StudentId.ToString());
+                    ViewBag.redirect_url = redirect_url;
                     return PartialView(objStudentHomeModal);
                 }
             }
@@ -473,7 +476,7 @@ namespace StudentDashboard.Controllers
                 StudentRegisterModal objRegiserModel = new StudentRegisterModal();
                 objRegiserModel.m_strFirstName = collection["firstName"];
                 objRegiserModel.m_strLastName = collection["lastName"];
-                objRegiserModel.m_strPhoneNo = collection["countryCode"]+collection["phoneNo"];
+                objRegiserModel.m_strPhoneNo = collection["countryCode"] + collection["phoneNo"];
                 objRegiserModel.m_strAddressLine1 = collection["address1"];
                 objRegiserModel.m_strAddressLine2 = collection["address2"];
                 objRegiserModel.m_iCityId = int.Parse(collection["city"]);
@@ -509,17 +512,17 @@ namespace StudentDashboard.Controllers
             ViewBag.IsAccessError = true;
             try
             {
-                if(collection!=null)
+                if (collection != null)
                 {
                     AssignmentAccessModal objAssignmentAccessModal = new AssignmentAccessModal();
-                    long.TryParse(collection["assignment_id"],out objAssignmentAccessModal.m_llAssignmentId);
+                    long.TryParse(collection["assignment_id"], out objAssignmentAccessModal.m_llAssignmentId);
                     objAssignmentAccessModal.m_strAccessCode = collection["assignment_access_code"].ToString();
-                    if (await objDocumentService.CheckAssignmentAccess(objAssignmentAccessModal.m_llAssignmentId,objAssignmentAccessModal.m_strAccessCode))
+                    if (await objDocumentService.CheckAssignmentAccess(objAssignmentAccessModal.m_llAssignmentId, objAssignmentAccessModal.m_strAccessCode))
                     {
-                        return Redirect("./GiveAssignment?id="+ objAssignmentAccessModal.m_llAssignmentId+"&&access_code="+
+                        return Redirect("./GiveAssignment?id=" + objAssignmentAccessModal.m_llAssignmentId + "&&access_code=" +
                             objAssignmentAccessModal.m_strAccessCode);
                     }
-                } 
+                }
             }
             catch (Exception Ex)
             {
@@ -598,14 +601,14 @@ namespace StudentDashboard.Controllers
             {
                 return PartialView();
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "JoinNewCourse", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
-            } 
+            }
         }
         [HttpGet]
         public async Task<ActionResult> JoinCourse(long id)
@@ -622,7 +625,7 @@ namespace StudentDashboard.Controllers
                 {
                     return RedirectToAction("./LearnCourse", new { id });
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -649,7 +652,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
-            
+
         }
         [HttpGet]
         public PartialViewResult Instructors()
@@ -665,7 +668,7 @@ namespace StudentDashboard.Controllers
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
-            }  
+            }
         }
         [HttpGet]
         public PartialViewResult JoinInstructor()
@@ -730,7 +733,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
-           
+
         }
         [HttpGet]
         public PartialViewResult NewAssignment()
@@ -749,10 +752,10 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> GiveAssignment(long id,string access_code)
+        public async Task<ActionResult> GiveAssignment(long id, string access_code)
         {
 
-            if(access_code == null|| await objDocumentService.CheckAssignmentAccess(id,access_code))
+            if (access_code == null || await objDocumentService.CheckAssignmentAccess(id, access_code))
             {
                 ViewBag.id = id;
                 ViewBag.AccessCode = access_code;
@@ -768,7 +771,7 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                if(await objStudentService.CheckIsAssignmentSubmissionIdExsitsForStudent((long)Session["user_id"], id))
+                if (await objStudentService.CheckIsAssignmentSubmissionIdExsitsForStudent((long)Session["user_id"], id))
                 {
                     ViewBag.id = id;
                     return PartialView();
@@ -820,14 +823,14 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult> StartTest(long id,string access_code)
+        public async Task<ActionResult> StartTest(long id, string access_code)
         {
             try
             {
-                if(access_code == null||await objDocumentService.CheckTestAccess(id,access_code))
-                { 
+                if (access_code == null || await objDocumentService.CheckTestAccess(id, access_code))
+                {
                     ViewBag.id = id;
-                   
+
                 }
                 else
                 {
@@ -859,7 +862,7 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
-           
+
         }
         public async Task<ActionResult> TestResponse(long id)
         {
@@ -889,16 +892,16 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                if(await objStudentService.CheckIsStudentHasJoinedTheCourse(long.Parse(Session["user_id"].ToString()),id))
+                if (await objStudentService.CheckIsStudentHasJoinedTheCourse(long.Parse(Session["user_id"].ToString()), id))
                 {
                     ViewBag.id = id;
                     return PartialView();
                 }
                 else
                 {
-                    return RedirectToAction("./JoinCourse",new { id});
+                    return RedirectToAction("./JoinCourse", new { id });
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -908,15 +911,15 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
-          
+
         }
         [HttpGet]
         public async Task<ActionResult> TeacherProfile(int id)
         {
             try
             {
-                InstructorProfileDetailsModal objInstructorProfileDetailsModal = await objStudentService.GetInstructorProfileDetails(id,(long)Session["user_id"]);
-                if(objInstructorProfileDetailsModal!=null)
+                InstructorProfileDetailsModal objInstructorProfileDetailsModal = await objStudentService.GetInstructorProfileDetails(id, (long)Session["user_id"]);
+                if (objInstructorProfileDetailsModal != null)
                 {
                     objInstructorProfileDetailsModal.m_lsCourses = await objStudentService.GetAllCourseDetailsForInstructor(id);
                     objInstructorProfileDetailsModal.m_iInstructorId = id;
@@ -937,7 +940,7 @@ namespace StudentDashboard.Controllers
             }
         }
         [HttpGet]
-        public  ActionResult ViewAssignment(int id)
+        public ActionResult ViewAssignment(int id)
         {
             try
             {
@@ -971,10 +974,10 @@ namespace StudentDashboard.Controllers
         [HttpGet]
         public async Task<ActionResult> JoinClassroomMeeting(long ClassroomId)
         {
-            JitsiMeetingModal objJitsiMeetingModal=null;
+            JitsiMeetingModal objJitsiMeetingModal = null;
             try
             {
-                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
+                if (await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
                 {
                     objJitsiMeetingModal = await objStudentService.GetClassroomMeetingDetails(ClassroomId);
                     return View(objJitsiMeetingModal);
@@ -1038,12 +1041,12 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"],classroom_id))
+                if (await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], classroom_id))
                 {
                     StudentClassroomHomeDetails studentClassroomHomeDetails = await objStudentService.GetStudentClassroomHomeDetails(classroom_id, (long)Session["user_id"]);
-                    if(studentClassroomHomeDetails.m_bShouldBlockClassroomAccess)
+                    if (studentClassroomHomeDetails.m_bShouldBlockClassroomAccess)
                     {
-                        return Redirect("ClassroomPayNow?classroom_id="+classroom_id);
+                        return Redirect("ClassroomPayNow?classroom_id=" + classroom_id);
                     }
                     ViewBag.Id = classroom_id;
                     return View(studentClassroomHomeDetails);
@@ -1100,13 +1103,13 @@ namespace StudentDashboard.Controllers
             }
 
         }
-        
+
         [HttpGet]
         public ActionResult JoinNewClassroom()
         {
             try
             {
-                
+
                 return View();
             }
             catch (Exception Ex)
@@ -1140,7 +1143,7 @@ namespace StudentDashboard.Controllers
         {
             try
             {
-                if(await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
+                if (await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
                 {
                     Response.Redirect("./ViewClassroom?classroom_id=" + ClassroomId);
                 }
@@ -1258,9 +1261,9 @@ namespace StudentDashboard.Controllers
                 }
                 else
                 {
-                    return Redirect("StudentFriend?id="+ id );
+                    return Redirect("StudentFriend?id=" + id);
                 }
-               
+
             }
             catch (Exception Ex)
             {
@@ -1283,7 +1286,7 @@ namespace StudentDashboard.Controllers
                 }
                 else
                 {
-                    return Redirect("./StudentProfile?id=" +id );
+                    return Redirect("./StudentProfile?id=" + id);
                 }
 
             }
@@ -1295,6 +1298,232 @@ namespace StudentDashboard.Controllers
                 MainLogger.Error(m_strLogMessage);
                 return PartialView("Error");
             }
+
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<string> GoogleFormRegistration(GoogleSignInRequest googleSignInRequest)
+        {
+            string returnUrl = "Join";
+            try
+            {
+                StudentRegisterModal objRegiserModel = objStudentService.GetStudentModalFromGoogleModal(googleSignInRequest);
+                var objDynamicRoutingAPIRequestValidator = new StudentAccountRegisterValidator();
+                {
+                    if (await objStudentService.RegisterNewStudentViaGmail(objRegiserModel))
+                    {
+                        StudentRegisterModal userDetails = await objStudentService.CheckGmailUserAlreadyExists(objRegiserModel);
+                        objRegiserModel.m_strUserId = objRegiserModel.m_strEmail;
+                        StudentRegisterModal studentDetails = await objStudentService.CheckGmailUserAlreadyExists(objRegiserModel);
+                        if (studentDetails != null)
+                        {
+                            ViewBag.Token = JwtManager.GenerateToken(objRegiserModel.m_strUserId);
+                            ViewBag.InstructorUserName = objRegiserModel.m_strUserId;
+                            ViewBag.IsLoggedIn = true;
+                            Session["student_email"] = objRegiserModel.m_strUserId;
+                            Session["user_id"] = studentDetails.m_llStudentId;
+                            Session["student_profile_picture_url"] = studentDetails.m_strProfileUrl;
+                            if (googleSignInRequest.m_bShouldVarifyPhoneNo == "true")
+                            {
+                                returnUrl = "/Student/VarifyPhoneNo?user_id=" + objRegiserModel.m_strUserId + "&&token=" + objRegiserModel.m_strPhoneNoVarificationGuid;
+                            }
+                            else
+                            {
+                                returnUrl = "/Student/Home";
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "Register", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                returnUrl = "Error";
+            }
+            return returnUrl;
+        }
+        [HttpGet]
+        public async Task<ActionResult> VarifyPhoneNo(string user_id, string token,string redirect_url=null)
+        {
+            try
+            {
+                if (await objStudentService.InsertOtpToVarifyAccount(long.Parse(Session["user_id"].ToString())))
+                {
+                    ViewBag.token = token;
+                    ViewBag.userId = user_id;
+                    ViewBag.redirectUrl = redirect_url;
+                    return PartialView();
+                }
+                else
+                {
+                    return Redirect("./");
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "LearnCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                return PartialView("Error");
+            }
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> VarifyPhoneNo(FormCollection collection,string redirect_url = null)
+        {
+            string strCurrentMethodName = "VarifyPhoneNo";
+            string ViewName = "";
+            try
+            {
+                string token = collection["token"];
+                string otp = collection["otp"];
+                string userId = collection["userName"];
+
+                if (await objStudentService.VarifyPhoneNo(otp, userId, token))
+                {
+                    if (redirect_url != null)
+                    {
+                        return Redirect("Home?redirect_url="+ redirect_url);
+                    }
+                    else
+                    {
+                        return Redirect("Home");
+                    }
+                }
+                else
+                {
+                    ViewBag.Token = token;
+                    ViewBag.InvalidOtp = true;
+                    ViewBag.redirectUrl = redirect_url;
+                    return View("VarifyPhoneNo");
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ValidateGmailLogin(FormCollection collection, string return_url = null)
+        {
+            string strCurrentMethodName = "ValidateGmailLogin";
+            string ViewName = "Index";
+            try
+            {
+                StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
+                objStudentRegisterModal.m_strEmail = collection["user_id"];
+                objStudentRegisterModal.m_strUserId = collection["user_id"];
+                objStudentRegisterModal.m_strGmailId = collection["gmail_id"];
+                objStudentRegisterModal.m_strProfileUrl = collection["profile_url"];
+                objStudentRegisterModal.m_strFirstName = collection["first_name"];
+                objStudentRegisterModal.m_strLastName = collection["last_name"];
+                StudentRegisterModal userDetails = await objStudentService.CheckGmailUserAlreadyExists(objStudentRegisterModal);
+                if (userDetails == null)
+                {
+                    //register student
+                    if (await objStudentService.RegisterNewStudentViaGmail(objStudentRegisterModal))
+                    {
+                        userDetails = await objStudentService.CheckGmailUserAlreadyExists(objStudentRegisterModal);
+                    }
+                }
+                if (userDetails != null)
+                {
+                    Session["user_id"] = userDetails.m_llStudentId;
+                    Session["student_profile_picture_url"] = userDetails.m_strProfileUrl;
+                    Session["student_email"] = objStudentRegisterModal.m_strUserId;
+                    if (userDetails.m_strPhoneNo != "" && userDetails != null)
+                    {
+                        ViewBag.Token = JwtManager.GenerateToken(objStudentRegisterModal.m_strUserId);
+                       
+                        ViewBag.InstructorUserName = objStudentRegisterModal.m_strUserId;
+                        ViewBag.IsLoggedIn = true;
+                        if (return_url != null)
+                        {
+                            return Redirect("Home?redirect_url=" + return_url);
+                        }
+                        else
+                        {
+                            return Redirect("Home");
+                        }
+                    }
+                    else
+                    {
+                        return Redirect("SavePhoneNoStep?user_id=" + objStudentRegisterModal.m_strUserId + "&&token=" + userDetails.m_strPhoneNoVarificationGuid+ "&&redirect_url="+ return_url);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
+        }
+        [HttpGet]
+        public ActionResult SavePhoneNoStep(string user_id, string token,string redirect_url=null)
+        {
+            ViewBag.token = token;
+            ViewBag.userId = user_id;
+            ViewBag.redirectUrl = redirect_url;
+            return View();
+        }
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> UpdatePhoneNo(FormCollection collection,string redirect_url=null)
+        {
+            string ViewName = "Index";
+            string strCurrentMethodName = "UpdatePhoneNo";
+            try
+            {
+                string phoneNo = collection["country_code"]+collection["phone_no"];
+                string token = collection["token"];
+                string email = collection["user_id"];
+                string VarifyPhone= collection["varify_phone"];
+                if (await objStudentService.UpdatePhoneNoOfGmailRegStudentAsync(phoneNo, email, token))
+                {
+                    if (VarifyPhone == "true")
+                    {
+                        return Redirect("VarifyPhoneNo?user_id="+email+"&token="+token+ "&redirect_url=" + redirect_url);
+                    }
+                    if (redirect_url != null)
+                    {
+                        return Redirect("Home?redirect_url="+redirect_url);
+                    }
+                    return Redirect("Home");
+                }
+                else
+                {
+                    ViewBag.Token = token;
+                    ViewBag.InvalidOtp = true;
+                    return View("VarifyPhoneNo");
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
 
         }
     }

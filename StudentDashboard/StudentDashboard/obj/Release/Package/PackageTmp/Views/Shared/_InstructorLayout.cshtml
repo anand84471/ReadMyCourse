@@ -8,14 +8,14 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#" onclick="callHome()">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Home">
                     <img width="60" height="60" src="../Images/site-logo-v2.png"  />
             </a>
             <!-- Divider --> 
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="callMyEarning()">
+                <a class="nav-link" href="MyEarnings">
                     <i class="fa fa-inr" aria-hidden="true"></i>
                     <span class="">My Earnings</span>
                 </a>
@@ -34,9 +34,9 @@
                 <div id="collapseFive" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">ReadMyCourse Classroom</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateClassroom()">Launch new Live Course </a>
+                        <a class="collapse-item font-weight-bold" href="CreateClassroom">Launch new Live Course </a>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllClassroom()">View all Live Courses </a>
+                        <a class="collapse-item font-weight-bold" href="Classrooms">View all Live Courses </a>
                     </div>
                 </div>
             </li>
@@ -49,9 +49,9 @@
                 <div id="collapseTwo" class="collapse side-nav" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Courses for you</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewCourse()">Create new course</a>
+                        <a class="collapse-item font-weight-bold" href="CreateNewCourse">Create new course</a>
                         @*<a class="collapse-item font-weight-bold" href="#" onclick="callCreateInterativeCourse()">Create Interactive Course</a>*@
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllCourse()">View all courses</a>
+                        <a class="collapse-item font-weight-bold" href="Courses">View all courses</a>
                     </div>
                 </div>
             </li>
@@ -65,8 +65,8 @@
                 <div id="collapseUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Assignments:</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewAssignment()">Create new assignment</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllAssignment()">View all assignments</a>
+                        <a class="collapse-item font-weight-bold" href="CreateAssignment">Create new assignment</a>
+                        <a class="collapse-item font-weight-bold" href="Assignments" onclick="callViewAllAssignment()">View all assignments</a>
                     </div>
                 </div>
             </li>
@@ -78,10 +78,8 @@
                 <div id="collapseUtilities1" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tests:</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callCreateNewTest()">Create new Test</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callViewAllTest()">View all tests</a>
-                        @*<a class="collapse-item font-weight-bold" href="#" onclick="callCeateNewTestSeries()">Create new test series</a>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="CallViewAllTestSeries()">View all test series</a>*@
+                        <a class="collapse-item font-weight-bold" href="CreateTest">Create new Test</a>
+                        <a class="collapse-item font-weight-bold" href="Tests">View all tests</a>
                     </div>
                 </div>
             </li>
@@ -94,33 +92,11 @@
                 <div id="headingUtilities" class="collapse side-nav" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Students:</h6>
-                        <a class="collapse-item font-weight-bold" href="#" onclick="callGetAllStudentsJoined()">Students Joined</a>
+                        <a class="collapse-item font-weight-bold" href="StudentsJoined">Students Joined</a>
                     </div>
                 </div>
             </li>
-            <!-- Divider -->
-           
-            <!-- Heading -->
-            
-       
-            <!-- Nav Item - Charts -->
-            <!--
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span>
-                </a>
-            </li>
-            -->
-            <!-- Nav Item - Tables -->
-            <!--
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span>
-                </a>
-            </li>
-            -->
+         
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
@@ -186,58 +162,11 @@
                                 <div id="alertContainer">
 
                                 </div>
-                                @*<a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">Welcome to the CodePathshala</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>*@
+                                
                                 
                             </div>
                         </li>
-                        <!-- Nav Item - Messages -->
-                        @*<li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">0</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                               
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>*@
+                      
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
@@ -247,22 +176,22 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <button class="dropdown-item" id="profilePage">
+                                <a href="Account" class="dropdown-item" id="profilePage">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </button>
-                                <button class="dropdown-item" id="editAccountPage">
+                                </a>
+                                <a href="EditAccount" class="dropdown-item" id="editAccountPage">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Edit Account
-                                </button>
-                                <button class="dropdown-item" id="editProfilePicture" onclick="requestNewProfilePicture()">
+                                </a>
+                                <a href="Activity" class="dropdown-item" id="editProfilePicture" onclick="requestNewProfilePicture()">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Change Profile Picture
-                                </button>
-                                <button class="dropdown-item" id="activityLogPage">
+                                </a>
+                                <a href="Contact" class="dropdown-item" id="activityLogPage">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
-                                </button>
+                                </a>
                                 <button  id="contactPage" class="dropdown-item">
                                     <i class="fas fa-envelope fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Contact
@@ -387,18 +316,18 @@
     </div>
 </div>
 <script type="text/javascript"> 
-    $('#contactPage').click(function () {
-        callContact();
-    });
-    $('#activityLogPage').click(function () {
-        callActivity();
-    });
-    $('#editAccountPage').click(function () {
-        callEditAccount();
-    });
-    $('#profilePage').click(function () {
-        callAccount();
-    });
+    //$('#contactPage').click(function () {
+    //    callContact();
+    //});
+    //$('#activityLogPage').click(function () {
+    //    callActivity();
+    //});
+    //$('#editAccountPage').click(function () {
+    //    callEditAccount();
+    //});
+    //$('#profilePage').click(function () {
+    //    callAccount();
+    //});
 </script>
 <script type="text/javascript">
     //Ajax calls

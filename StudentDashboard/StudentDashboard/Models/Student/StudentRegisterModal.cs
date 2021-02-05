@@ -7,6 +7,7 @@ namespace StudentDashboard.Models.Student
 {
     public class StudentRegisterModal
     {
+        public string m_strGmailId { get; set; }
         public string m_strFirstName { get; set; }
         public long m_llClassroomId { get; set; }
         public string m_strLastName { get; set; }
@@ -35,6 +36,7 @@ namespace StudentDashboard.Models.Student
 
         public string m_strPasswrodRecoveryAuthToken;
         public string m_strProfileUrl;
+        public bool m_bIsPhoneNoVarified;
         
         public StudentRegisterModal(string FirstName,string LastName,string ProfilePictureUrl)
         {
@@ -48,7 +50,7 @@ namespace StudentDashboard.Models.Student
         }
         public StudentRegisterModal()
         {
-
+            
         }
 
         public StudentRegisterModal(string FirstName, string LastName, string InstrcutorEmail, string InstructorPhoneNo, string AddressLine1,
@@ -82,6 +84,14 @@ namespace StudentDashboard.Models.Student
             this.m_iStateId = StateCode == null ? -1 : StateCode;
 
         }
-
+        public StudentRegisterModal(long StudentId,bool IsPhoneNoVarified,string ProfileUrl,
+            string PhoneNo,string PhoneNoVarificationGuid)
+        {
+            this.m_bIsPhoneNoVarified = IsPhoneNoVarified;
+            this.m_llStudentId = StudentId;
+            this.m_strProfileUrl = ProfileUrl;
+            this.m_strPhoneNo = PhoneNo;
+            this.m_strPhoneNoVarificationGuid = PhoneNoVarificationGuid;
+        }
     }
 }

@@ -6,62 +6,65 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\DeployReadMyCourse\12_4_2020\dataservice</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\D\ReadMyCourseBuild\4_2_2021\dataservice</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
-      <publishTime>02/26/2020 00:31:55</publishTime>
+      <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
-      <publishTime>02/26/2020 00:31:55</publishTime>
+      <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="bin/CPDataService.dll">
-      <publishTime>12/04/2020 11:05:55</publishTime>
+      <publishTime>02/04/2021 20:56:42</publishTime>
+    </File>
+    <File Include="bin/CPDataService.pdb">
+      <publishTime>02/04/2021 20:56:42</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
-      <publishTime>12/07/2015 19:04:38</publishTime>
+      <publishTime>12/08/2020 11:11:58</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.DependencyCollector.dll">
-      <publishTime>03/10/2016 14:26:18</publishTime>
+      <publishTime>12/08/2020 11:11:59</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.PerfCounterCollector.dll">
-      <publishTime>03/10/2016 14:26:26</publishTime>
+      <publishTime>12/08/2020 11:12:00</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.ServerTelemetryChannel.dll">
-      <publishTime>03/09/2016 12:00:14</publishTime>
+      <publishTime>12/08/2020 11:12:02</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Web.dll">
-      <publishTime>03/10/2016 14:26:26</publishTime>
+      <publishTime>12/08/2020 11:12:01</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.WindowsServer.dll">
-      <publishTime>03/10/2016 14:26:26</publishTime>
+      <publishTime>12/08/2020 11:12:01</publishTime>
     </File>
     <File Include="bin/Microsoft.ApplicationInsights.dll">
-      <publishTime>03/09/2016 11:57:34</publishTime>
+      <publishTime>12/08/2020 11:11:58</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>03/27/2020 19:47:06</publishTime>
+      <publishTime>12/08/2020 11:12:05</publishTime>
     </File>
     <File Include="bin/NLog.dll">
-      <publishTime>03/27/2020 19:47:06</publishTime>
+      <publishTime>12/08/2020 11:12:02</publishTime>
     </File>
     <File Include="CpDataService.svc">
-      <publishTime>02/28/2020 23:52:51</publishTime>
+      <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="NLog.config">
-      <publishTime>03/27/2020 19:47:05</publishTime>
+      <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>03/27/2020 19:47:06</publishTime>
+      <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="scripts/ai.0.22.9-build00167.js">
-      <publishTime>02/26/2020 00:31:55</publishTime>
+      <publishTime>12/08/2020 11:11:58</publishTime>
     </File>
     <File Include="scripts/ai.0.22.9-build00167.min.js">
-      <publishTime>02/26/2020 00:31:55</publishTime>
+      <publishTime>12/08/2020 11:11:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/20/2020 09:18:31</publishTime>
+      <publishTime>02/04/2021 20:56:45</publishTime>
     </File>
   </ItemGroup>
 </Project>

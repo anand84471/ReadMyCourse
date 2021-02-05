@@ -11,6 +11,7 @@ namespace StudentDashboard.DTO
         public string m_strCutomerEmail;
         public string m_strCustomerPhoneNo;
         public int m_iClassroomPayment;
+        public string m_strCurrency;
         public PaymentRequestDTO()
         {
 

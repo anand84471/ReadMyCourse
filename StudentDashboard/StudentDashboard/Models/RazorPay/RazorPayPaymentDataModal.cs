@@ -11,7 +11,7 @@ namespace StudentDashboard.Models.RazorPay
         [JsonProperty("amount")]
         public int m_iAmountInPaise;
         [JsonProperty("currency")]
-        public string m_strCurrency = "INR";
+        public string m_strCurrency;
         [JsonProperty("payment_capture")]
         public string m_strPaymentCaptureCode;
         [JsonProperty("order_id")]

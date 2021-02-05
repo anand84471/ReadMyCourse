@@ -174,9 +174,12 @@
             </div>
         </div>
     </div>
-<script type="text/javascript">
+    <script type="text/javascript">
     (function () {
         'use strict';
         window.localStorage.setItem('jwttoken', "@ViewBag.Token");
+        if ("@ViewBag.redirect_url" != "null" &&"@ViewBag.redirect_url" != "" ) {
+            location.href = "@ViewBag.redirect_url";
+        }
     })();
-</script>
+    </script>

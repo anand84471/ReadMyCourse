@@ -242,14 +242,17 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="fa fa-cogs"></span> Settings 
+                                <span class="fa fa-cogs"></span> Settings
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#navUpdateDetails" onclick="showUpdateMeeting()"><span class="fa fa-cog"></span> Update Details</a>
+                                <a class="dropdown-item" href="#navUpdateDetails" onclick="showInstructorsOfClassrooms()"><span class="fa fa-cog"></span> Instructors</a>
                                 <a class="dropdown-item" href="#navUpdateSchedulerDetails" onclick="showUpdateScheduleDetails()"><span class="fa fa-calendar"></span> Update Classroom Time-Table</a>
                                 @*<a class="dropdown-item" href="#">Delete Classroom</a>*@
                                 <a class="dropdown-item" href="#updateSyllabusDiv" onclick="viewUpdateClassroomSyallabus()"><span class="fa fa-pencil"></span> Update syllabus</a>
+                                <a class="dropdown-item" href="#sendClassroomNotification" onclick="sendClassroomNotification()"><span class="fa fa-paper-plane"></span> Send Notification</a>
                                 <a class="dropdown-item" href="#shareModal" onclick="viewClassroomSharingDetails()"><span class="fa fa-share"></span> Share classroom</a>
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" onclick="callHome()"><span class="fas fa-sign-out-alt"></span> Exit classroom</a>
                             </div>
@@ -406,9 +409,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">No of demo classes</label>
+                        <div class="col-sm-3">
+                            <input onchange="validateInputField(this)" type="number" name="noOfDemoClasses" class="form-control" id="noOfDemoClasses" placeholder="No of demo classes" value="@Model.m_iNoOfDemoSessions">
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Registration close date</label>
                         <div class="col-sm-6">
-                            <input type="date" onchange="validateInputField(this)" placeholder="registration close date" id="registrationCloseDate" name="registrationCloseDate" rows="2" class="form-control md-textarea" value="@Model.m_strClassroomRegistratioCloseDate" >
+                            <input type="date" onchange="validateInputField(this)" placeholder="registration close date" id="registrationCloseDate" name="registrationCloseDate" rows="2" class="form-control md-textarea" value="@Model.m_strClassroomRegistratioCloseDate">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -434,8 +444,16 @@
                             file uploaded successfully
                         </div>
                     </div>
-                </form> 
+                </form>
                 <button class="btn btn-sm btn-primary" onclick="updateClassroomBgImage()">Update Image</button>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-2" id="navInstructors" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Update classroom details</div>
+                <div class="card-body">
+
+                </div>
             </div>
         </div>
         <div class="col-lg-12 mb-2" id="navUpdateSchedulerDetails" style="display:none">
@@ -571,12 +589,12 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        
+
                     </div>
                     <button class="btn btn-sm btn-primary" onclick="callUpdateClassroomSchedule()">Update classroom time-table</button>
-                </div>   
+                </div>
             </div>
-            
+
         </div>
         <div class="col-lg-12 mb-2" id="navAllAssignments" style="display:none">
             <div class="card shadow-lg border-primary">
@@ -699,10 +717,25 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-12 mb-2" id="sendClassroomNotification" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Send SMS Notification</div>
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="classroomNotification" class="col-sm-3 col-form-label">Enter classroom message</label>
+                        <div class="col-sm-8">
+                            <textarea onchange="validateInputField(this)" type="text" name="courseName" class="form-control" id="classroomNotification" placeholder="Enter enter message"></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="sendClassroomSMSNotificationToAllStudents()">Send</button>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-12 mb-2" id="updateSyllabusDiv" style="display:none">
             <div class="card shadow-lg border-primary">
                 <div class="card-header">Update classroom syllabus</div>
-                
+
                 <div class="card-body">
                     <div id="spinnerClassroomClassroomSchedule" class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
@@ -841,7 +874,7 @@
                         @*<iframe id="video-url" class="embed-responsive-16by9 container-fluid" src="" allowfullscreen style="display:none;min-width:50vw;min-height:40vh;"></iframe>*@
                     </div>
                     <video id="topic-video-palyer-container" controls class="videos" style="display:none;">
-                        <source  src="" id="video-url" type="video/mp4" style="display:none;">
+                        <source src="" id="video-url" type="video/mp4" style="display:none;">
                         Your browser does not support HTML video.
                     </video>
 
@@ -915,7 +948,7 @@
                 <div class="card-body">
                     <div class="table-responsive table-hover">
                         <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
-                           
+
 
                             <tbody id="tableBody"></tbody>
                         </table>
@@ -940,100 +973,100 @@
 
             </div>
 
-            
+
         </div>
         <div id="secctionTest"></div>
-            <div class="col-lg-12 mb-2" id="navAddNewAttachment" style="display:none">
-                <div class="card shadow-lg border-primary">
-                    <div class="card-header">Add attachment<span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous meeting</a></span></div>
-                    <div class="card-body">
+        <div class="col-lg-12 mb-2" id="navAddNewAttachment" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Add attachment<span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous meeting</a></span></div>
+                <div class="card-body">
 
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Name of attachment</label>
+                            <div class="col-sm-8">
+                                <input onchange="validateInputField(this)" type="text" class="form-control" id="attachmentName" placeholder="Enter name of attachment">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Description of attachment</label>
+                            <div class="col-sm-8">
+                                <textarea type="text" onchange="validateInputField(this)" placeholder="Enter attachment description" id="attachmentDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Add attachment url or upload file</label>
+                            <div class="col-sm-8">
+                                <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="attachmentUrl" placeholder="Enter attachment url">
+                            </div>
+                        </div>
+                        <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                            <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                            <div class="form-group">
+                                <label for="exampleFormControlFile1">Upload attachment</label>
+                                <input type="file" id="studyMaterialUpload" name="file" accept="*" />
+                                <button type="button" class="btn btn-primary" onclick="requestFileUpload()">Upload</button>
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                </div>
+                                <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
+                                    file uploaded successfully
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
+                            Attachment Added successfully
+                        </div>
+                        <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
+                            Attachment could not added
+                        </div>
+                        <button id="addAssignmentButton" type="button" class="btn btn-primary  btn-block" onclick="callAddAttachment(this)">Add attachment</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-12 mb-2" id="navAllAssignments" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Assignments</div>
+                <div class="card-body">
+                    <div class="table-responsive ">
+                        <table id="coursesTable" class="table-responsive table-hover" style="display:none">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="p-2">Assignment Name</th>
+                                    <th class="p-2">Creation date</th>
+                                    <th>Status</th>
+                                    <th>Students joined</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                        <div id="spinner" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card text-center" id="footer" style="display:none">
                         <div class="card-body">
-                            <div class="form-group row">
-                                <label for="inputPassword" class="col-sm-3 col-form-label">Name of attachment</label>
-                                <div class="col-sm-8">
-                                    <input onchange="validateInputField(this)" type="text" class="form-control" id="attachmentName" placeholder="Enter name of attachment">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword" class="col-sm-3 col-form-label">Description of attachment</label>
-                                <div class="col-sm-8">
-                                    <textarea type="text" onchange="validateInputField(this)" placeholder="Enter attachment description" id="attachmentDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
-                                </div>
-
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputPassword" class="col-sm-3 col-form-label">Add attachment url or upload file</label>
-                                <div class="col-sm-8">
-                                    <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="attachmentUrl" placeholder="Enter attachment url">
-                                </div>
-                            </div>
-                            <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
-                                <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
-                                <div class="form-group">
-                                    <label for="exampleFormControlFile1">Upload attachment</label>
-                                    <input type="file" id="studyMaterialUpload" name="file" accept="*" />
-                                    <button type="button" class="btn btn-primary" onclick="requestFileUpload()">Upload</button>
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
-                                    </div>
-                                    <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
-                                        file uploaded successfully
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
-                                Attachment Added successfully
-                            </div>
-                            <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
-                                Attachment could not added
-                            </div>
-                            <button id="addAssignmentButton" type="button" class="btn btn-primary  btn-block" onclick="callAddAttachment(this)">Add attachment</button>
+                            <h6 class="card-title"> You have not created any assignsent</h6>
+                            <a type="button" href="CreateClassroomAssignment" class="btn btn-link">Create Assignment&rarr;</a>
                         </div>
+
                     </div>
-
-
                 </div>
 
             </div>
 
-
-            <div class="col-lg-12 mb-2" id="navAllAssignments" style="display:none">
-                <div class="card shadow-lg border-primary">
-                    <div class="card-header">Assignments</div>
-                    <div class="card-body">
-                        <div class="table-responsive ">
-                            <table id="coursesTable" class="table-responsive table-hover" style="display:none">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th class="p-2">Assignment Name</th>
-                                        <th class="p-2">Creation date</th>
-                                        <th>Status</th>
-                                        <th>Students joined</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableBody"></tbody>
-                            </table>
-                            <div id="spinner" class="d-flex justify-content-center">
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card text-center" id="footer" style="display:none">
-                            <div class="card-body">
-                                <h6 class="card-title"> You have not created any assignsent</h6>
-                                <a type="button" href="CreateClassroomAssignment" class="btn btn-link">Create Assignment&rarr;</a>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="secctionTest"></div>
-            </div>
+            <div id="secctionTest"></div>
+        </div>
     }
 </div>
 <div class="modal fade" id="requestStartMeeting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1248,6 +1281,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">No of demo classes</label>
+                    <div class="col-sm-4">
+                        <input  min="0" type="number" name="courseName" class="form-control" id="demoClasses" placeholder="demo classes" value="0">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="inputPassword" class="col-sm-6 col-form-label">Please enter classroom start date</label>
                     <div class="col-sm-6">
                         <input  type="date" class="form-control" id="classroomStartDate" placeholder="please enter classroom start date" >
@@ -1262,7 +1301,7 @@
                     </div>
                     
                 </div>
-                <h6 class="font-weight-bolder">Please select classroom </h6>
+                <h6 class="font-weight-bolder">Please select classroom active days</h6>
                 <div class="row col-sm-12">
                 <button onclick="setDate(this,'monday')" class="btn btn-sm btn-outline-primary col-2">Monday</button>
                 <button onclick="setDate(this,'tuesday')"  class="btn btn-sm btn-outline-primary col-2">Tuesday</button>
@@ -1402,7 +1441,8 @@
     //  tinycomments_author: 'Author name'
 
     //});
-
+    
+    
     function viewClassroomSharingDetails()
     {
         $("#shareModal").modal('show');
@@ -1478,12 +1518,14 @@
     function activateClassroom() {
         debugger;
         var classroomJoiningFee = $("#classroomFee").val();
+        var demoClasses = $("#demoClasses").val();
         var _data = {
             "classroom_id": "@Model.m_llClassRoomId",
             "classroom_joining_fee": classroomJoiningFee,
             "classroom_start_date": $("#classroomStartDate").val(),
             "classroom_start_time": $("#classroomDailyStartTime").val(),
             "classroom_weekday_schedule": getSelectedDates(),
+            "no_of_demo_classes": demoClasses,
             "public_type": ClassroomPublicType
         }
         $.ajax({
@@ -1537,7 +1579,7 @@
                         + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
                         +''
                             + '</tr>';
-                       
+
                         $('#tableBody').append(rows);
                         $("#spinner").remove();
                         $("#coursesTable").show();
@@ -1772,6 +1814,10 @@
         hideAll();
         $("#navUpdateDetails").show();
     }
+    function showInstructorsOfClassrooms() {
+        hideAll();
+        $("#navInstructors").show();
+    }
     function hideAll()
     {
         clearInterval(messageInerval);
@@ -1780,6 +1826,7 @@
         $("#navPreviousMeetings").hide();
         $("#navStudentsJoined").hide();
         $("#navUpdateDetails").hide();
+        $("#navInstructors").hide();
         $("#navAllAssignments").hide();
         $("#navAllTests").hide();
         $("#classroomDetails").hide();
@@ -1790,6 +1837,7 @@
         $("#navHome").hide();
         $("#navUpdateSchedulerDetails").hide();
         $("#updateSyllabusDiv").hide();
+        $("#sendClassroomNotification").hide();
     }
     function showPreviousMeetings() {
         hideAll();
@@ -1814,6 +1862,7 @@
         var BackGroundUrl = $("#classroomBackGroundUrl").val();
         var classroomRegistrationCloseDate = $("#registrationCloseDate").val();
         var classroomStartDate = $("#classroomStartDateSchedule").val();
+        var noOfDemoClassrooms = $("#noOfDemoClasses").val();
         if (validateInputField(classroomName) && validateInputField(classroomDescription)) {
             var _data =
             {
@@ -1823,6 +1872,7 @@
                 "background_url": BackGroundUrl,
                 "classroom_class_start_date": classroomStartDate,
                 "classroom_registration_close_date": classroomRegistrationCloseDate,
+                "no_of_demo_sessions": noOfDemoClassrooms
             }
             $.ajax({
                 headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -2794,7 +2844,7 @@
                     if(data.live_class_details.class_topic!=null){
                         $("#topic-name").text(data.live_class_details.class_topic);
                         $("#liveClassTopicName").val(data.live_class_details.class_topic);
-                        
+
                     }
                     if(data.live_class_details.video_url!=null)
                     {
@@ -2851,7 +2901,7 @@
     }
     function getClassroomSyllabus()
     {
-      
+
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
@@ -2946,6 +2996,39 @@
                 addTopicToWeek();
             }
         }
+    }
+    function sendClassroomNotification() {
+        hideAll();
+        $("#sendClassroomNotification").show();
+    }
+    function sendClassroomSMSNotificationToAllStudents() {
+
+        if ($("#classroomNotification").val() == null || $("#classroomNotification").val() == "") {
+            return;
+        }
+        var _data = {
+            "notification": $("#classroomNotification").val(),
+            "classroom_id": "@Model.m_llClassRoomId"
+        };
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/SendClassroomNotificationToStudents",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#infoMessage").text("classroom details updated successfully");
+                    $("#successModal").modal("show");
+                    getClassroomSyllabus();
+                }
+                else {
+
+                }
+            }
+        });
     }
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>

@@ -1569,7 +1569,7 @@ namespace StudentDashboard.DTO
             try
             {
                 DataSet ds = await objCPDataService.GetAllStudentsToFollowAsync(getStudentsToFollowRequest.m_llStudentId,
-                    getStudentsToFollowRequest.m_iNoOfRowsFetched, getStudentsToFollowRequest.m_iNoOfRowsToBeFetched);
+                    getStudentsToFollowRequest.m_iNoOfRowsFetched, getStudentsToFollowRequest.m_iNoOfRowsToBeFetched, getStudentsToFollowRequest.m_strSearchString);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     lsStudentDetailToFolllow = ds.Tables[0].AsEnumerable().Select(
@@ -1861,6 +1861,142 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return classroomScheduleDTO;
+        }
+        public async Task<bool> InsertClassroomFeedback(ClassroomFeedbackRequest classroomFeedbackRequest)
+        {
+            bool result = false;
+            try
+            {
+
+                result = await objCPDataService.InsertOrUpdateClassroomFeedbackByStudentAsync(
+                    classroomFeedbackRequest.m_llClassroomId, classroomFeedbackRequest.m_llStudentId,
+                    classroomFeedbackRequest.m_strFeedbackMessage, classroomFeedbackRequest.m_iNoOfRatings);
+                
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<CouponDetailsModal>> GetAllCoupons()
+        {
+            List<CouponDetailsModal> m_lsCouponDetailsModal = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllCouponsAsync();
+                m_lsCouponDetailsModal = ds.Tables[0].AsEnumerable().Select(
+                    dataRow => new CouponDetailsModal(
+                        dataRow.Field<string>("COUPON_CODE"),
+                        dataRow.Field<int>("COUPON_DISCOUNT_PERCENTAGE")
+                        )).ToList();
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsStudentHasJoinedTheCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return m_lsCouponDetailsModal;
+        }
+        public async Task<bool> RegisterNewStudentViaEmail(StudentRegisterModal objStudentDetailsModal)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.RegisterNewStudentViaGmailAsync(
+                   objStudentDetailsModal.m_strGmailId, objStudentDetailsModal.m_strFirstName, objStudentDetailsModal.m_strLastName,
+                               objStudentDetailsModal.m_strEmail, objStudentDetailsModal.m_strPhoneNo,
+                               objStudentDetailsModal.m_strPhoneNoVarificationGuid, objStudentDetailsModal.m_strProfileUrl);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<StudentRegisterModal> CheckGmailUserAlreadyExists(StudentRegisterModal user)
+        {
+            StudentRegisterModal result = null;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckGmailUserAlreadyExistsAsync(user.m_strGmailId, user.m_strUserId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentRegisterModal(
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<bool>("IS_PHONE_NO_VERIFIED"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<string>("PHONE_NO"), 
+                         dataRow.Field<string>("PHONE_NO_VERIFICATION_LINK_GUID")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchForCourse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> InsertOtpToVarifyAccount(string Otp,long StudentId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertOtpToVarifyPhoneNoOfStudentAsync(StudentId, Otp);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> VarifyPhoneNo(string Otp, string StudentUserId,string PhoneNoVarificationGuid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.VarifyStudentPhoneNoAsync(StudentUserId, Otp, PhoneNoVarificationGuid);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdatePhoneNoOfGmailRegStudentAsync(string PhoneNo, string StudentUserId, string PhoneNoVarificationGuid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdatePhoneNoOfGmailRegStudentAsync(StudentUserId, PhoneNoVarificationGuid, PhoneNo);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

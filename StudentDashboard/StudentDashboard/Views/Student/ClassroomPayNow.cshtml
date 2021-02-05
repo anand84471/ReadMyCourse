@@ -426,7 +426,8 @@
                         <span class="badge badge-pill badge-light" id="classroomCreationDate"></span>
                         <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
                         <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> </h4>
-                        <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestClassroomPayment()">Pay now <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
+                        <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoupon(1)">Pay now <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
+                        <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoupon(2)">Pay now ($)<i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
                     </div>
 
                 </div>
@@ -506,7 +507,7 @@
                     <div class="control-buttons">
                         <h2 id="isMeetingActive"></h2>
                         <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
-                        <button class="btn  bg-primary text-white" id="meetingJoinLink"  data-toggle="tooltip" data-placement="top" title="Start live" onclick="requestClassroomPayment()"><span><i class="fa fa-play-circle"></i></span> Join live class</button>
+                        <button class="btn  bg-primary text-white" id="meetingJoinLink"  data-toggle="tooltip" data-placement="top" title="Start live" onclick="requestClassroomPayment(1)"><span><i class="fa fa-play-circle"></i></span> Join live class</button>
                     </div>
                 </div>
             </div>
@@ -520,7 +521,10 @@
                     <div class="control-buttons">
                         <h4 class="text-primary" id="isMeetingActive">This classroom's demo session has been expired. please pay the course fee to continue.</h4>
                         <h6>if you faces any problem in payment please write to us at info@readmycourse.com</h6>
-                        <button class="btn  bg-primary text-white" onclick="requestClassroomPayment()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></span>Pay Now</button>
+                        <h6>if you want to apply for <strong>financial aid</strong>, please write to us at info@readmycourse.com</h6>
+                        <button class="btn  bg-primary text-white" onclick="requestCoupon(1)" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></span>Pay Now</button>
+                        <button class="btn  bg-primary text-white" onclick="requestCoupon(2)" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></span>Pay in $</button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -612,7 +616,33 @@
         
 </div>
 
-
+<div class="modal" tabindex="-1" role="dialog" id="couponModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Apply coupon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="font-weight-bolder">Enter Coupon Code</label>
+                    <input type="email" class="form-control" id="coupon-code" aria-describedby="emailHelp" placeholder="please enter your coupon code here">
+                    <small id="emailHelp" class="form-text text-muted">Apply coupon code to avail the discount.</small>
+                    <br />
+                    <h3 class="text-danger font-weight-bolder">Coupons available for today only</h3>
+                    <h4 class="text-info">STUDENT30</h4>
+                    <small class="text-muted">Avail 30% instant discount on all course purchases.</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="requestClassroomPayment()">Apply coupon</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel payment</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade border-success" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="card border-success modal-content">
@@ -697,8 +727,7 @@
                         $("#meetingJoinLink").show();
                     }
                     else {
-                        $("#isMeetingActive").text("Live class is not started.");
-
+                        $("#isMeetingActive").text("Live class started.");
                         $("#meetingJoinLink").remove();
                     }
                     if (classroomDetails.background_url != null && classroomDetails.background_url != "")
@@ -713,15 +742,27 @@
             }
         });
     }
+    var country_type;
+    function requestCoupon(country_type_code) {
+        country_type = country_type_code;
+        $("#couponModal").modal("show");
+    }
      function requestClassroomPayment()
-    {
+     {
+         $("#couponModal").modal("hide");
+         _data = {
+             "classroom_id": "@ViewBag.id",
+             "country_code": country_type,
+             "coupon_code": $("#coupon-code").val()
+         }
         debugger;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/JoinClassroomPayNow?ClassroomId=".concat("@ViewBag.id"),
+            data: JSON.stringify(_data),
+            url: "/api/v1/Course/JoinClassroomPayNow?ClassroomId",
             success: function (data) {
                 debugger;
                 if (data != null && data.response_code == 1) {
@@ -769,11 +810,6 @@
             }
             joinClassroom(pass);
         },
-        //"prefill": {
-        //    "name": "Gaurav Kumar",
-        //    "email": "gaurav.kumar@example.com",
-        //    "contact": "7317553431"
-        //},
         "notes": {
             "address": "Razorpay Corporate Office"
         },
@@ -782,8 +818,9 @@
         }
     };
     var rzp1 = new Razorpay(options);
-    rzp1.open();
+        rzp1.open();
     }
+    
     function joinClassroom(razorPayResponse) {
         debugger;
         $.ajax({
@@ -805,7 +842,7 @@
             }
         });
     }
-    
+
     function hideAllClssroomDetails()
     {
         $(".nav-link").removeClass("active");
@@ -844,10 +881,10 @@
         $("#classroomContaintProgressDetails").show();
         $("#classroomMeetingStartSection").show();
     }
-  
 
-  
-   
+
+
+
     function viewAllPreviousLiveClasses()
     {
         hideAllClssroomDetails();
@@ -856,8 +893,8 @@
 
     }
 
-   
-   
+
+
     function callClassroomMeeting() {
         debugger
         try {
@@ -867,7 +904,7 @@
 
         }
     }
-   
+
      function showClassroomSchedule() {
         hideAllClssroomDetails();
         $("#navClassroomSchedule").show();
@@ -957,4 +994,5 @@
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
 <script src="https://unpkg.com/plyr@3"></script>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

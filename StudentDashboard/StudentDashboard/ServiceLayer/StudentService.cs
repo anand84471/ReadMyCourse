@@ -10,6 +10,7 @@ using StudentDashboard.Models;
 using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
+using StudentDashboard.Models.OAuth;
 using StudentDashboard.Models.RazorPay;
 using StudentDashboard.Models.Social;
 using StudentDashboard.Models.Student;
@@ -71,42 +72,47 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public async Task<string> InsertPasswordRecovery(string StudentUserId)
+        public async Task InsertPasswordRecovery(string PhoneNo)
         {
-            string AuthToken=null;
-            try
-            {
-                var StudentId = objStudentDTO.GetStudentIdFromUserId(StudentUserId);
-                if (StudentId != -1)
-                {
-                    StudentRegisterModal objStudentRegisterModal = await objStudentDTO.GetStudentDetails(StudentId);
-                    if(objStudentRegisterModal!=null)
-                    {
-                        string OTP = objInstructorBusinessLayer.GenerateOtp();
-                        string PhoneNo = "";
-                        AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
-                        if(!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
-                        {
-                            PhoneNo = objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
-                        }
-                        else
-                        {
-                            PhoneNo = objStudentRegisterModal.m_strPhoneNo =  objStudentRegisterModal.m_strPhoneNo;
-                        }
-                        await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, PhoneNo);
-                        await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
-                    }
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return AuthToken;
+            string AuthToken = null;
+            
         }
+        //public async Task<string> InsertPasswordRecovery(string StudentUserId)
+        //{
+        //    string AuthToken=null;
+        //    try
+        //    {
+        //        var StudentId = objStudentDTO.GetStudentIdFromUserId(StudentUserId);
+        //        if (StudentId != -1)
+        //        {
+        //            StudentRegisterModal objStudentRegisterModal = await objStudentDTO.GetStudentDetails(StudentId);
+        //            if(objStudentRegisterModal!=null)
+        //            {
+        //                string OTP = objInstructorBusinessLayer.GenerateOtp();
+        //                string PhoneNo = "";
+        //                AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
+        //                if(!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
+        //                {
+        //                    PhoneNo = objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
+        //                }
+        //                else
+        //                {
+        //                    PhoneNo = objStudentRegisterModal.m_strPhoneNo =  objStudentRegisterModal.m_strPhoneNo;
+        //                }
+        //                await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, PhoneNo);
+        //                await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return AuthToken;
+        //}
         
         public bool ValidateLogin(StudentRegisterModal objStudentRegisterModal)
         {
@@ -749,32 +755,35 @@ namespace StudentDashboard.ServiceLayer
             }
             return await objStudentDTO.SearchClassroom(LastClassroomId,10, StudentId, QueryString);
         }
-        public async Task<RazorPayPaymentRequestModal> GetClassroomPaymentData(long ClassroomId, long StudentId)
+        public async Task<RazorPayPaymentRequestModal> GetClassroomPaymentData(ClassroomPaymentRequestDTO classroomPaymentRequestDTO)
         {
             RazorPayPaymentRequestModal razorPayPaymentRequestModal = null;
-            PaymentRequestDTO classroomPaymentRequestDTO = await objStudentDTO.GetClassroomPaymentInfo(ClassroomId, StudentId);
+            PaymentRequestDTO paymentRequestDTO = await objStudentDTO.GetClassroomPaymentInfo(classroomPaymentRequestDTO.m_llClassroomId, classroomPaymentRequestDTO.m_llStudentId);
             if (classroomPaymentRequestDTO != null)
             {
                 razorPayPaymentRequestModal = new RazorPayPaymentRequestModal();
-                if (classroomPaymentRequestDTO.m_iClassroomPayment == 0)
+                if (paymentRequestDTO.m_iClassroomPayment == 0)
                 {
-                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinClassroom(ClassroomId, StudentId);
+                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinClassroom(classroomPaymentRequestDTO.m_llClassroomId, classroomPaymentRequestDTO.m_llStudentId);
                     razorPayPaymentRequestModal.m_bIsFreeCourse = true;
                 }
                 else
                 {
-                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(classroomPaymentRequestDTO.m_iClassroomPayment);
+                    paymentRequestDTO.m_strCurrency = objInstructorBusinessLayer.GetCurrencyValue(classroomPaymentRequestDTO.m_iCountryCode);
+                    paymentRequestDTO.m_iClassroomPayment = objInstructorBusinessLayer.GetAmountBasedOnCounty(classroomPaymentRequestDTO.m_iCountryCode, paymentRequestDTO.m_iClassroomPayment);
+                    paymentRequestDTO.m_iClassroomPayment = objInstructorBusinessLayer.GetCouponDiscount(classroomPaymentRequestDTO.m_strCouponCode, paymentRequestDTO.m_iClassroomPayment, await objStudentDTO.GetAllCoupons());
+                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(paymentRequestDTO);
                     razorPayPaymentRequestModal.m_strOrderId = razorPayPaymentDataModal.m_strOrderId;
                     razorPayPaymentRequestModal.razorPayPaymentDataModal = new RazorPayPaymentDataModal();
                     razorPayPaymentRequestModal.razorPayPaymentDataModal.m_strCurrency = razorPayPaymentDataModal.m_strCurrency;
-                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise = classroomPaymentRequestDTO.m_iClassroomPayment;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise = paymentRequestDTO.m_iClassroomPayment;
                     razorPayPaymentRequestModal.m_strLogoUrl = Constants.WEBSITE_LOGO_URL;
                     razorPayPaymentRequestModal.m_strRazorPayKey = MvcApplication._strRazorPayKey;
                     razorPayPaymentRequestModal.m_strSiteName = Constants.WEBSITE_NAME;
                     razorPayPaymentRequestModal.razorPayCustomerData = new RazorPayCustomerData();
-                    razorPayPaymentRequestModal.razorPayCustomerData.m_strContact = classroomPaymentRequestDTO.m_strCustomerPhoneNo;
-                    razorPayPaymentRequestModal.razorPayCustomerData.m_strEmail = classroomPaymentRequestDTO.m_strCutomerEmail;
-                    razorPayPaymentRequestModal.razorPayCustomerData.m_strName = classroomPaymentRequestDTO.m_strCustomerName;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strContact = paymentRequestDTO.m_strCustomerPhoneNo;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strEmail = paymentRequestDTO.m_strCutomerEmail;
+                    razorPayPaymentRequestModal.razorPayCustomerData.m_strName = paymentRequestDTO.m_strCustomerName;
                     if (!await objStudentDTO.InsertPaymentOrderRequest(razorPayPaymentRequestModal))
                     {
                         razorPayPaymentRequestModal = null;
@@ -784,24 +793,24 @@ namespace StudentDashboard.ServiceLayer
             }
             return razorPayPaymentRequestModal;
         }
-        public async Task<RazorPayPaymentRequestModal> GetCoursePaymentData(long CourseId,long StudentId)
+        public async Task<RazorPayPaymentRequestModal> GetCoursePaymentData(ClassroomPaymentRequestDTO classroomPaymentRequestDTO)
         {
             RazorPayPaymentRequestModal razorPayPaymentRequestModal = null;
-            PaymentRequestDTO paymentRequestDTO = await objStudentDTO.GetCoursePaymentInfo(CourseId, StudentId);
+            PaymentRequestDTO paymentRequestDTO = await objStudentDTO.GetCoursePaymentInfo(classroomPaymentRequestDTO.m_llClassroomId, classroomPaymentRequestDTO.m_llStudentId);
             if (paymentRequestDTO!=null)
             {
                 razorPayPaymentRequestModal = new RazorPayPaymentRequestModal();
                 if (paymentRequestDTO.m_iClassroomPayment==0)
                 {
-                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinStudentToCourse(CourseId, StudentId);
+                    razorPayPaymentRequestModal.m_bIsJoined = await objStudentDTO.JoinStudentToCourse(classroomPaymentRequestDTO.m_llClassroomId, classroomPaymentRequestDTO.m_llStudentId);
                     razorPayPaymentRequestModal.m_bIsFreeCourse = true;
                 }
                 else
                 {
-                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(paymentRequestDTO.m_iClassroomPayment);
+                    RazorPayPaymentDataModal razorPayPaymentDataModal = objInstructorBusinessLayer.CreateRazorPaymentRequest(paymentRequestDTO);
                     razorPayPaymentRequestModal.m_strOrderId = razorPayPaymentDataModal.m_strOrderId;
                     razorPayPaymentRequestModal.razorPayPaymentDataModal = new RazorPayPaymentDataModal();
-                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_strCurrency = razorPayPaymentDataModal.m_strCurrency;
+                    razorPayPaymentRequestModal.razorPayPaymentDataModal.m_strCurrency =objInstructorBusinessLayer.GetCurrencyValue(classroomPaymentRequestDTO.m_iCountryCode);
                     razorPayPaymentRequestModal.razorPayPaymentDataModal.m_iAmountInPaise = paymentRequestDTO.m_iClassroomPayment;
                     razorPayPaymentRequestModal.m_strLogoUrl = Constants.WEBSITE_LOGO_URL;
                     razorPayPaymentRequestModal.m_strRazorPayKey = MvcApplication._strRazorPayKey;
@@ -859,6 +868,10 @@ namespace StudentDashboard.ServiceLayer
             try
             {
                 getStudentsToFollowRequest.m_iNoOfRowsToBeFetched = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                if (getStudentsToFollowRequest.m_strSearchString == null)
+                {
+                    getStudentsToFollowRequest.m_strSearchString = "";
+                }
                 lsStudentDetailToFolllow = await objStudentDTO.GetAllStudentsToJoin(getStudentsToFollowRequest);
             }
             catch(Exception Ex)
@@ -943,6 +956,135 @@ namespace StudentDashboard.ServiceLayer
                 }
             }
             return classroomScheduleDetails;
+        }
+        public async Task<bool> InsertClassroomFeedback(ClassroomFeedbackRequest classroomFeedbackRequest)
+        {
+            return await objStudentDTO.InsertClassroomFeedback(classroomFeedbackRequest);
+        }
+        public StudentRegisterModal GetStudentModalFromGoogleModal(GoogleSignInRequest googleSignInRequest)
+        {
+            StudentRegisterModal studentRegisterModal = new StudentRegisterModal();
+            try
+            {
+
+                studentRegisterModal.m_strFirstName = googleSignInRequest.m_strFirstName;
+                studentRegisterModal.m_strLastName = googleSignInRequest.m_strLastName;
+                studentRegisterModal.m_strEmail = googleSignInRequest.m_strEmailId;
+                studentRegisterModal.m_strPhoneNo = googleSignInRequest.m_strPhoneNo;
+                studentRegisterModal.m_strProfileUrl = googleSignInRequest.m_strProfileUrl;
+                studentRegisterModal.m_strGmailId = googleSignInRequest.m_strGoogleId;
+                if (studentRegisterModal.m_strProfileUrl == null || studentRegisterModal.m_strProfileUrl == "")
+                {
+                    studentRegisterModal.m_strProfileUrl = "../Images/avatar-user.png";
+                }
+            }
+            catch(Exception Ex)
+            {
+
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentModalFromGoogleModal", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return studentRegisterModal;
+        }
+        public async Task<bool> RegisterNewStudentViaGmail(StudentRegisterModal objStudentRegisterModal)
+        {
+            bool result = false;
+            try
+            {
+                objStudentRegisterModal.m_strPhoneNo = objStudentRegisterModal.m_strPhoneNo;
+                objStudentRegisterModal.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
+                //objStudentRegisterModal.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
+                if (await objStudentDTO.RegisterNewStudentViaEmail(objStudentRegisterModal))
+                {
+                    result = true;
+                    var SmsVarificationLink = objInstructorBusinessLayer.GetLinkForSmsVarification(objStudentRegisterModal.m_strEmailVarificationGuid,
+                        objStudentRegisterModal.m_strEmail, Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_STUDENT);
+                    //await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, objStudentRegisterModal.m_strPhoneNo);
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewUser", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<StudentRegisterModal> CheckGmailUserAlreadyExists(StudentRegisterModal user)
+        {
+            StudentRegisterModal studentRegisterModal = null;
+            try
+            {
+                studentRegisterModal = await objStudentDTO.CheckGmailUserAlreadyExists(user);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckGmailUserAlreadyExists", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return studentRegisterModal;
+        }
+        public async Task<bool> InsertOtpToVarifyAccount( long StudentId)
+        {
+            bool result = false;
+            try
+            {
+                string Otp = objInstructorBusinessLayer.GenerateOtp();
+                StudentRegisterModal studentDetails =await GetStudentDetails(StudentId);
+                if (studentDetails != null)
+                {
+                    if (await objStudentDTO.InsertOtpToVarifyAccount(Otp, StudentId))
+                    {
+                        result=await objSMSServiceManager.SendPhoneNoVarificationOtp(Otp, studentDetails.m_strPhoneNo);
+                    }
+                }
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertOtpToVarifyAccount", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> VarifyPhoneNo(string Otp, string StudentUserId, string PhoneNoVarificationGuid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objStudentDTO.VarifyPhoneNo(Otp, StudentUserId,PhoneNoVarificationGuid);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdatePhoneNoOfGmailRegStudentAsync(string PhoneNo, string StudentUserId, string PhoneNoVarificationGuid)
+        {
+            bool result = false;
+            try
+            {
+                result = await objStudentDTO.UpdatePhoneNoOfGmailRegStudentAsync(PhoneNo, StudentUserId, PhoneNoVarificationGuid);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

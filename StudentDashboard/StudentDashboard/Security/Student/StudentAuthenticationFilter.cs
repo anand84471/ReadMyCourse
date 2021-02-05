@@ -13,7 +13,8 @@ namespace StudentDashboard.Security.Student
         {
             List<string> allowAnnonymousAction = new List<string> {
                 "Index","LogIn","ForgotPassword","Join","RegistrationSuccessful","Register","ValidateLogin","LoginFirst","PasswordAuthRequest","ResetPassword",
-                "ChangePassword","SubmitUpdatePasswordOtp","ChangePasswordNow","PasswordUpdatedSuccessfully","RegisterLiveClass"
+                "ChangePassword","SubmitUpdatePasswordOtp","ChangePasswordNow","PasswordUpdatedSuccessfully","RegisterLiveClass","GoogleFormRegistration",
+                "ValidateGmailLogin","SavePhoneNoStep","UpdatePhoneNo","VarifyPhoneNo"
             };
             if (string.IsNullOrEmpty(Convert.ToString(filterContext.HttpContext.Session["user_id"])) && !(allowAnnonymousAction.Contains(filterContext.ActionDescriptor.ActionName)))
             {

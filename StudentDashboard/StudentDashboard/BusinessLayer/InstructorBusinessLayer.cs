@@ -1,9 +1,12 @@
-﻿using StudentDashboard.Models.RazorPay;
+﻿using StudentDashboard.DTO;
+using StudentDashboard.Models;
+using StudentDashboard.Models.RazorPay;
 using StudentDashboard.Utilities;
 using StudentDashboard.Vendors.AWS.Concrete;
 using StudentDashboard.Vendors.MagicDotNetDataCompression;
 using StudentDashboard.Vendors.RazorPay;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -265,11 +268,60 @@ namespace StudentDashboard.BusinessLayer
         {
             return MasterUtilities.RemoveWhitespace(ClassroomName) + "_" + MasterUtilities.RemoveWhitespace(FileName);
         }
-        public RazorPayPaymentDataModal CreateRazorPaymentRequest(int AmountInPaise)
+        public string GetCurrencyValue(int CurrenyId)
+        {
+            string currency = null;
+            switch (CurrenyId)
+            {
+                case (int)Constants.RazorPayCountryCodes.INDIA:
+                    {
+                        currency = Constants.COUNTY_CODE_INDIA;
+                        break;
+                    }
+                case (int)Constants.RazorPayCountryCodes.FOREIGN:
+                    {
+                        currency = Constants.COUNTRY_CODE_FOREIGN;
+                        break;
+                    }
+            }
+            return currency;
+        }
+        public int GetAmountBasedOnCounty(int CurrenyId,int AmountInPaise)
+        {
+            int amount = 0;
+            switch (CurrenyId)
+            {
+                case (int)Constants.RazorPayCountryCodes.INDIA:
+                    {
+                        amount = AmountInPaise;
+                        break;
+                    }
+                case (int)Constants.RazorPayCountryCodes.FOREIGN:
+                    {
+                        amount = AmountInPaise*Constants.FOREIGN_COURRENCY_CONVERSION_CONSTANT/100;
+                        break;
+                    }
+            }
+            return amount;
+        }
+        public int GetCouponDiscount(string CouponCode, int AmountInPaise,List<CouponDetailsModal> lsCouponDetailsModal)
+        {
+            int amount = AmountInPaise;
+            foreach(var CouponData in lsCouponDetailsModal)
+            {
+                if(CouponData.m_strCouponCode == CouponCode){
+                    amount = amount- amount*CouponData.m_iCouponDicount / 100;
+                    break;
+                }
+            }
+            return amount;
+        }
+        public RazorPayPaymentDataModal CreateRazorPaymentRequest(PaymentRequestDTO paymentRequestDTO)
         {
             razorPayHelper = new RazorPayHelper();
             RazorPayPaymentDataModal razorPayPaymentDataModal = new RazorPayPaymentDataModal();
-            razorPayPaymentDataModal.m_iAmountInPaise = AmountInPaise;
+            razorPayPaymentDataModal.m_iAmountInPaise = paymentRequestDTO.m_iClassroomPayment;
+            razorPayPaymentDataModal.m_strCurrency = paymentRequestDTO.m_strCurrency;
             razorPayPaymentDataModal.m_strPaymentCaptureCode = "1";
             razorPayPaymentDataModal.m_strOrderId = razorPayHelper.CreateOrder(razorPayPaymentDataModal);
             return razorPayPaymentDataModal;
@@ -300,5 +352,7 @@ namespace StudentDashboard.BusinessLayer
 
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
+       
     }
+    
 }

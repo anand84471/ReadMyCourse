@@ -42,13 +42,13 @@ namespace StudentDashboard.ServiceLayer
                 objInstructorRegisterModel.m_strPassword = EncryptedPassword;
                 objInstructorRegisterModel.m_strPhoneNoVarificationGuid = objInstructorBusinessLayer.GetSmsVerificationString();
                 objInstructorRegisterModel.m_strEmailVarificationGuid = objInstructorBusinessLayer.GetEmailVerficationString();
-                objInstructorRegisterModel.m_strPhoneNo = objInstructorRegisterModel.m_strCountryCode+objInstructorRegisterModel.m_strPhoneNo;
-                if(await objInstructorDTO.RegisterNewInstructor(objInstructorRegisterModel))
+                objInstructorRegisterModel.m_strPhoneNo = objInstructorRegisterModel.m_strCountryCode + objInstructorRegisterModel.m_strPhoneNo;
+                if (await objInstructorDTO.RegisterNewInstructor(objInstructorRegisterModel))
                 {
                     result = true;
-                    var SmsVarificationLink =objInstructorBusinessLayer.GetLinkForSmsVarification(objInstructorRegisterModel.m_strEmailVarificationGuid,
-                        objInstructorRegisterModel.m_strEmail,Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_INSTRUCTOR);
-                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink,objInstructorRegisterModel.m_strPhoneNo);
+                    var SmsVarificationLink = objInstructorBusinessLayer.GetLinkForSmsVarification(objInstructorRegisterModel.m_strEmailVarificationGuid,
+                        objInstructorRegisterModel.m_strEmail, Constants.SMS_VERIFICATION_LINK_TYPE_ID_FOR_INSTRUCTOR);
+                    await objSMSServiceManager.SendInstructorPhoneNoVarification(SmsVarificationLink, objInstructorRegisterModel.m_strPhoneNo);
                 }
 
             }
@@ -80,7 +80,7 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<InstructorRegisterModel> GetInstructorPostLoginDetails(int Id)
         {
-           return await objInstructorDTO.GetInstructorPostLoginDetails(Id);
+            return await objInstructorDTO.GetInstructorPostLoginDetails(Id);
         }
         public async Task<InstructorRegisterModel> GetInstructorDetails(int InstructorId)
         {
@@ -193,7 +193,7 @@ namespace StudentDashboard.ServiceLayer
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "ChangePasswordAfterAuth", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomDetailsForInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -205,7 +205,7 @@ namespace StudentDashboard.ServiceLayer
             JitsiMeetingModal objJitsiMeetingModal = null;
             try
             {
-                objJitsiMeetingModal = await objInstructorDTO.GetClassroomMeetingDetails(ClassroomId,-1);
+                objJitsiMeetingModal = await objInstructorDTO.GetClassroomMeetingDetails(ClassroomId, -1);
             }
             catch (Exception Ex)
             {
@@ -240,12 +240,12 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<bool> UpdateInstructorBio(int InstructorId, string IntructorBio)
         {
-           return await objInstructorDTO.UpdateInstructorBio(InstructorId, IntructorBio);
+            return await objInstructorDTO.UpdateInstructorBio(InstructorId, IntructorBio);
         }
         public async Task<InstrucorEarningDetailsModal> GetInstructorEarningDetails(int InstructorId)
         {
             InstrucorEarningDetailsModal instrucorEarningDetailsModal = await objInstructorDTO.GetInstructorEarningDetails(InstructorId);
-            if(instrucorEarningDetailsModal!=null)
+            if (instrucorEarningDetailsModal != null)
             {
                 instrucorEarningDetailsModal.m_lsInstructorClassroomEarningModal = await objInstructorDTO.GetInstructorClassroomEarning(InstructorId);
                 instrucorEarningDetailsModal.m_lsInstructorCourseEarningDetailsModal = await objInstructorDTO.GetInstructorCourseEarning(InstructorId);
@@ -254,7 +254,7 @@ namespace StudentDashboard.ServiceLayer
         }
         public long AddNewTestSeries(InsertTestSeriesRequest insertTestSeriesRequest)
         {
-            return  objInstructorDTO.AddNewTestSeries(insertTestSeriesRequest);
+            return objInstructorDTO.AddNewTestSeries(insertTestSeriesRequest);
         }
         public async Task<bool> UpdateClassroomVideoUrl(UpdateClassroomVideoUrlRequest updateClassroomVideoUrlRequest)
         {
@@ -273,11 +273,20 @@ namespace StudentDashboard.ServiceLayer
         public async Task<ClassroomSyllabusDetailsModal> GetClassroomSyllabus(long ClassroomId)
         {
             ClassroomSyllabusDetailsModal classroomSyllabusDetailsModal = await objInstructorDTO.GetClassroomSyllabus(ClassroomId);
-            if(classroomSyllabusDetailsModal!=null)
+            if (classroomSyllabusDetailsModal != null)
             {
                 classroomSyllabusDetailsModal.m_lsClassroomWeekWiseSyallabus = JsonConvert.DeserializeObject<List<ClassroomWeekWiseSyallabus>>(classroomSyllabusDetailsModal.m_strSerializedSyllabus);
             }
             return classroomSyllabusDetailsModal;
+        }
+        public async Task<List<MasterInstructorDetails>> SearchInstrucrByUserId(SearchInstructorByUserIdRequest searchInstructorByUserIdRequest)
+        {
+            return await objInstructorDTO.SearchInstrucrByUserId(searchInstructorByUserIdRequest);
+        }
+        public async Task<bool> SendClassroomNotification(ClassroomNotificationMasterDetails classroomNotificationMasterDetails)
+        {
+            return await objInstructorDTO.SendClassroomNotification(classroomNotificationMasterDetails.m_llClassroomId,
+                classroomNotificationMasterDetails.m_strNotification);
         }
     }
 }

@@ -107,7 +107,7 @@
     <div class="input-group pl-lg-5 pr-lg-5">
         <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for student..." aria-label="Search">
         <div class="input-group-append">
-            <button class="btn btn-primary" onclick="searchForInstructor()" type="button">
+            <button class="btn btn-primary" onclick="userStudentSearch()" type="button">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -133,30 +133,36 @@
         input.addEventListener("keyup", function (event) {
             // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
-                searchForInstructor();
+                searchForStudent();
             }
         });
-        onpageshow = searchForInstructor();
+        onpageshow = searchForStudent();
     })();
     $(window).on("scroll", function () {
         var scrollHeight = $(document).height();
         var scrollPos = $(window).height() + $(window).scrollTop();
         if ((scrollHeight - scrollPos) / scrollHeight == 0) {
             if (!is_last_id_feteced) {
-                searchForInstructor();
+                searchForStudent();
             }
         }
     });
 
     var no_of_rows_fetched = 0;
     var is_last_id_feteced = false;
-    function searchForInstructor() {
+    function userStudentSearch() {
+        debugger
+        no_of_rows_fetched = 0;
+        $("#joined-members").empty();
+        searchForStudent();
+    }
+    function searchForStudent() {
         debugger
         $("#infinit-spinner").show();
         $("#infinit-spinner-body").show();
         var _data =
             {
-                "key": $("#courseSearchBox").val(),
+                "search_string": $("#courseSearchBox").val(),
                 "no_of_rows_fetched": no_of_rows_fetched
             }
         $.ajax({

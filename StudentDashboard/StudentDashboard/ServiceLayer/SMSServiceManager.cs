@@ -23,6 +23,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return "ReadMyCourse: Otp to reset your password is: "+otp;
         }
+        private string GetStudentVarifyPhoneNoOtp(string otp)
+        {
+            return "ReadMyCourse: Otp to varify your phone no is: " + otp;
+        }
         public void SendSms(string PhoneNo,string SmsBody)
         {
             objSmsManger.SendEmail(PhoneNo, SmsBody);
@@ -40,7 +44,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objDocumentService.InsertSMSNotification(GetStudentForgotPasswordOtpMessage(OTP), PhoneNo, Constants.SMS_NOTIFICATION_TYPE_INSTRUCTOR_FORGOT_PASSWORD);
         }
-
+        public async Task<bool> SendPhoneNoVarificationOtp(string OTP, string PhoneNo)
+        {
+            return await objDocumentService.InsertSMSNotification(GetStudentVarifyPhoneNoOtp(OTP), PhoneNo, Constants.SMS_NOTIFICATION_TYPE_STUDENT_PHONE_NO_VERIFICATION);
+        }
 
 
     }

@@ -1535,9 +1535,9 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("Joinee")]
-        public async Task<CourseJoinedResponse> GetAllStudentsJoinedToInstructs()
+        public async Task<CourseJoinedResponse> GetAllStudentsJoinedToInstructs(MasterSearchRequest masterSearchRequest )
         {
-            if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+            if (masterSearchRequest==null&&!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
                 return null;
             }
@@ -1547,17 +1547,12 @@ namespace StudentDashboard.API
             CourseJoinedResponse objResponse = new CourseJoinedResponse();
             try
             {
-                objResponse.m_lsStudentsJoined = await objHomeService.GetAllStudentsJoinedToInstructor(InstructorId);
+                objResponse.m_lsStudentsJoined = await objHomeService.GetAllStudentsJoinedToInstructor(InstructorId, masterSearchRequest);
                 if (objResponse.m_lsStudentsJoined != null)
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    objResponse.SetSuccessResponse();
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {
@@ -2826,28 +2821,55 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
-        [Route("SearchInstructor")]
+        [Route("SearchInstructorByUserId")]
         [HttpPost]
-        public async Task<> SearchInstructor(SearchInstructorByUserIdRequest searchInstructorByUserIdRequest)
+        public async Task<SearchInstructorByUserIdResponse> SearchInstructorById(SearchInstructorByUserIdRequest searchInstructorByUserIdRequest)
         {
-            GetClassroomSyllabusDetailsResponse objResonse = new GetClassroomSyllabusDetailsResponse();
+            SearchInstructorByUserIdResponse objResonse = new SearchInstructorByUserIdResponse();
             try
             {
                 if (searchInstructorByUserIdRequest != null)
                 {
                     int InstructorId = GetInstructorIdInRequest();
+                    searchInstructorByUserIdRequest.m_llInstructorId = InstructorId;
                     if (InstructorId != -1)
                     {
-
+                        objResonse.m_lsMasterInstructorDetails = await objInstructorService.SearchInstrucrByUserId(searchInstructorByUserIdRequest);
                     }
-                }
-               
-                
+                } 
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomSyllabus", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchInstructorById", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("SendClassroomNotificationToStudents")]
+        [HttpPost]
+        public async Task<SearchInstructorByUserIdResponse> SendClassroomNotification(ClassroomNotificationMasterDetails classroomNotificationMasterDetails)
+        {
+            SearchInstructorByUserIdResponse objResonse = new SearchInstructorByUserIdResponse();
+            try
+            {
+                if (classroomNotificationMasterDetails != null)
+                {
+                    int InstructorId = GetInstructorIdInRequest();
+                    if(InstructorId!=-1&&await objInstructorService.CheckClassroomAccess(classroomNotificationMasterDetails.m_llClassroomId, InstructorId))
+                    {
+                        if (InstructorId != -1&& await objInstructorService.SendClassroomNotification(classroomNotificationMasterDetails))
+                        {
+                            objResonse.SetSuccessResponse();
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "SearchInstructorById", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

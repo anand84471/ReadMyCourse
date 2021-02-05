@@ -2,7 +2,7 @@
     ViewBag.Title = "Contact";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
 }
-<div class="modal fade" id="successDelete" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="card border-success modal-content">
             <div class="modal-content">
@@ -16,7 +16,7 @@
                     <h3 id="successResponseMessage">deleted successfully</h3>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Close</button>
                 </div>
             </div>
         </div>
@@ -259,7 +259,7 @@
                 success: function (data) {
                     if (data != null && data.response_code == 1) {
                         $("#successResponseMessage").text("response received. we will contact you soon");
-                        $("#successDelete").modal('show');
+                        $("#successModal").modal('show');
                     }
                     else {
                         $("#errorAlertMessageBody").text("Form submission failed. Please try again");

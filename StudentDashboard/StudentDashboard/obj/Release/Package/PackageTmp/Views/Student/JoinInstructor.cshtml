@@ -96,7 +96,7 @@
     <div class="input-group pl-lg-5 pr-lg-5">
         <input type="text" class="form-control" id="courseSearchBox" placeholder="Search for instructor..." aria-label="Search">
         <div class="input-group-append">
-            <button class="btn btn-primary" onclick="searchForInstructor()" type="button">
+            <button class="btn btn-primary" onclick="perfromUserSearch()" type="button">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -122,7 +122,7 @@
         input.addEventListener("keyup", function (event) {
             // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
-                searchForInstructor();
+                perfromUserSearch();
             }
         });
         onpageshow = searchForInstructor();
@@ -136,7 +136,11 @@
             }
         }
     });
-
+    function perfromUserSearch() {
+        no_of_rows_fetched = 0;
+        $("#joined-members").empty();
+        searchForInstructor();
+    }
     var no_of_rows_fetched = 0;
     var is_last_id_feteced = false;
     function searchForInstructor() {

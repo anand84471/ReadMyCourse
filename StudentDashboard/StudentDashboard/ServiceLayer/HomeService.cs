@@ -1033,9 +1033,9 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.GetAllStudentsJoinedToCourse(CourseId);
         }
-        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId,MasterSearchRequest masterSearchRequest)
         {
-            return await objHomeDTO.GetAllStudentsJoinedToInstructor(InstructorId);
+            return await objHomeDTO.GetAllStudentsJoinedToInstructor(InstructorId, masterSearchRequest);
         }
         public  bool InsertNewCourseV2(InsertCourseV2Request objInsertCourseV2Request)
         {

@@ -10,6 +10,7 @@ namespace StudentDashboard
       
         public static readonly string API_RESPONSE_MESSAGE_SUCCESS = "success";
         public static readonly string API_RESPONSE_MESSAGE_FAIL = "fail";
+
         public static readonly int COUNTRY_CODE_FOR_INDIA = 101;
         public static readonly int API_RESPONSE_CODE_SUCCESS = 1;
         public static readonly int API_RESPONSE_CODE_FAIL = -1;
@@ -52,8 +53,10 @@ namespace StudentDashboard
         public static readonly string ACCESS_CODE_FOR_INTERNAL_ACCESS= "q96zSIeRwke2qflTV0kWRA";
         public static readonly string WEBSITE_LOGO_URL = "https://readmycourse.com/Images/site-logo-v2.png";
         public static readonly string WEBSITE_NAME = "ReadMyCourse";
-      
 
+        public static readonly string COUNTY_CODE_INDIA = "INR";
+        public static readonly string COUNTRY_CODE_FOREIGN = "USD";
+        public static readonly int FOREIGN_COURRENCY_CONVERSION_CONSTANT = 2;
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
         public static string BASE_URL_PATH_FOR_TEST = "https://readmycourse.com/Test/Details?id=";
@@ -158,6 +161,10 @@ namespace StudentDashboard
             ABSOLUTE_PATH=1,
             WRT_SERVER=2
         }
-        
+        public enum RazorPayCountryCodes
+        {
+            INDIA=1,
+            FOREIGN=2
+        }
     }
 }

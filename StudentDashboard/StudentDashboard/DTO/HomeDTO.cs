@@ -1774,7 +1774,8 @@ namespace StudentDashboard.DTO
                      dataRow => new CoursesJoinedResponseModal(
                          dataRow.Field<string>("STUDENT_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<long>("STUDENT_ID")
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("PROFILE_URL")
                          )).ToList();
                 }
             }
@@ -1787,12 +1788,12 @@ namespace StudentDashboard.DTO
             }
             return lsCoursesJoinedResponseModal;
         }
-        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId)
+        public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId,MasterSearchRequest masterSearchRequest)
         {
             List<CoursesJoinedResponseModal> lsCoursesJoinedResponseModal = new List<CoursesJoinedResponseModal>();
             try
             {
-                DataSet ds = await objCPDataService.GetAllStudentsJoinedToInstructorAsync(InstructorId);
+                DataSet ds = await objCPDataService.GetAllStudentsJoinedToInstructorAsync(InstructorId, masterSearchRequest.m_iNoOfRowsFetched, masterSearchRequest.m_strSearchString);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
                     //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
@@ -1800,14 +1801,15 @@ namespace StudentDashboard.DTO
                      dataRow => new CoursesJoinedResponseModal(
                          dataRow.Field<string>("STUDENT_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
-                         dataRow.Field<long>("STUDENT_ID")
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("PROFILE_URL")
                          )).ToList();
                 }
             }
             catch (Exception Ex)
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetCourseIndexDetails", Ex.ToString());
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllStudentsJoinedToInstructor", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

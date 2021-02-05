@@ -1326,15 +1326,16 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("JoinClassroomPayNow")]
-        public async Task<ClassroomAcceptPaymentResponse> CreatePaymentRequestForClassroomJoin(long ClassroomId)
+        public async Task<ClassroomAcceptPaymentResponse> CreatePaymentRequestForClassroomJoin(ClassroomPaymentRequestDTO classroomPaymentRequestDTO)
         {
             ClassroomAcceptPaymentResponse objResponse = new ClassroomAcceptPaymentResponse();
             try
             {
                 long StudentId = GetStudentIdInRequest();
-                if (StudentId != -1)
+                if (classroomPaymentRequestDTO!=null&&StudentId != -1)
                 {
-                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetClassroomPaymentData(ClassroomId, StudentId);
+                    classroomPaymentRequestDTO.m_llStudentId = StudentId;
+                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetClassroomPaymentData(classroomPaymentRequestDTO);
                     if (objResponse.razorPayPaymentRequestModal != null)
                     {
                         objResponse.m_bIsJoined = objResponse.razorPayPaymentRequestModal.m_bIsJoined;
@@ -1354,7 +1355,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("JoinCoursePayNow")]
-        public async Task<CourseAcceptPaymentResponse> CreatePaymentRequestForCourse(long CourseId)
+        public async Task<CourseAcceptPaymentResponse> CreatePaymentRequestForCourse([FromBody] ClassroomPaymentRequestDTO classroomPaymentRequestDTO)
         {
             CourseAcceptPaymentResponse objResponse = new CourseAcceptPaymentResponse();
             try
@@ -1362,7 +1363,8 @@ namespace StudentDashboard.API
                 long StudentId = GetStudentIdInRequest();
                 if (StudentId != -1)
                 {
-                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetCoursePaymentData(CourseId, StudentId);
+                    
+                    objResponse.razorPayPaymentRequestModal = await objStudentService.GetCoursePaymentData(classroomPaymentRequestDTO);
                     if (objResponse.razorPayPaymentRequestModal != null)
                     {
                         objResponse.m_bIsJoined = objResponse.razorPayPaymentRequestModal.m_bIsJoined;
@@ -1689,6 +1691,32 @@ namespace StudentDashboard.API
                 {
                     objResponse.SetSuccessResponse();
                 }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomSchedule", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("InsertClassroomFeedback")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> InsertClassroomFeedback(ClassroomFeedbackRequest classroomFeedbackRequest)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            GetClassroomSheduleResponse objResponse = new GetClassroomSheduleResponse();
+            try
+            {
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, classroomFeedbackRequest.m_llClassroomId))
+                {
+                    if(await objStudentService.InsertClassroomFeedback(classroomFeedbackRequest))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+                
             }
             catch (Exception Ex)
             {

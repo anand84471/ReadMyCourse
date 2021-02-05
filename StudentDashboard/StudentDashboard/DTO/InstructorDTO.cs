@@ -713,6 +713,46 @@ namespace StudentDashboard.DTO
             }
             return classroomSyllabusDetailsModal;
         }
-
+        public async Task<List<MasterInstructorDetails>> SearchInstrucrByUserId(SearchInstructorByUserIdRequest searchInstructorByUserIdRequest)
+        {
+            List<MasterInstructorDetails> lsMasterInstructorDetails = null;
+            try
+            {
+                DataSet ds = await objCPDataService.SearchInstructorByUserIdAsync(searchInstructorByUserIdRequest.m_strInstructorSearchId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsMasterInstructorDetails = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new MasterInstructorDetails(
+                         dataRow.Field<string>("INSTRUCTOR_NAME"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<int>("INSTRUCTOR_ID")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsMasterInstructorDetails;
+        }
+        public async Task<bool> SendClassroomNotification(long ClassroomId, string ClassroomSyllabus)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.SendClassroomNotificationAsync(ClassroomId, ClassroomSyllabus);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

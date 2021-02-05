@@ -269,7 +269,7 @@
                         <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> <span class="badge badge-pill badge-light" style="text-decoration: line-through;" id="classroomJoiningFeeMain"></span></h4>
                         @*<span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestClassroomPayment()">Join now</button></span>*@
                         <span><button class="btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="joinClassroomTrial()">Join now</button></span>
-                        <h5 class="text-danger font-weight-bold">Attend three sessions free and pay only after you are satisfied.</h5>
+                        <h5 class="text-danger font-weight-bold" id="demoClassrooms">Attend three sessions free and pay only after you are satisfied.</h5>
                         <h6 class="text-warning font-weight-bold" href="@ViewBag.ReturnUrl" id="registration-last-date"></h6>
 
                         <span><a class="btn btn-outline-light custom-green text-white font-weight-bold" id="goToCourse" style="display:none;" href="./MyClassrooms">Go to my classroom<i class="ml-2 fa fa-arrow-right"></i></a></span>
@@ -624,6 +624,7 @@
                     else {
                         $("#classroomJoiningFeeMain").hide();
                     }
+                    $("#demoClassrooms").text("Attend " + classroomDetails.no_of_demo_sessions+" sessions free and pay only after you are satisfied.");
                     $("#classroomCreationDate").text("Creation date:" + classroomDetails.creation_date);
                     if (classroomDetails.stu_classroom_class_start_date != null && classroomDetails.stu_classroom_class_start_date != "") {
                         $("#registration-last-date").text("Hurry! Few seats available. Live class will start from " + classroomDetails.stu_classroom_class_start_date+".");
