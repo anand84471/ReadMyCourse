@@ -638,7 +638,9 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<ClassRoomModal> GetClassroomDetailsForStudent(long ClassroomId)
         {
-            return await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
+            ClassRoomModal classRoomModal= await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
+
+            return classRoomModal;
         }
         public async Task<bool> JoinClassroom(StudentClassroomJoinRequest studentClassroomJoinRequest)
         {

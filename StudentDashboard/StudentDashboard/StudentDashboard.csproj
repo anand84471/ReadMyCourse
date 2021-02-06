@@ -549,6 +549,7 @@
     <Compile Include="Models\Student\StudentTopicModal.cs" />
     <Compile Include="Models\Student\StudentUpdatePasswordRequestModal.cs" />
     <Compile Include="Models\Student\TestAccessModal.cs" />
+    <Compile Include="Models\TimeScheduleDetails.cs" />
     <Compile Include="Models\Utils\SmsNotificationModal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedulers\ForgotPasswordScheduler.cs" />

@@ -516,6 +516,7 @@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="requestUploadVideo()" data-toggle="tooltip" data-placement="top" title="Upload video"><span><i class="fa fa-file"></i></span></button>*@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="callAddNewAssignment()" data-toggle="tooltip" data-placement="top" title="Add assignment"><i class="fa fa-pen"></i></button>
                             <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
+                        <h4 id="classroomStartDate" class="text-danger font-weight-bolder"></h4>
                         <h2 id="isMeetingActive"></h2>
                         <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
                         <a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live" onclick="callClassroomMeeting()"><span><i class="fa fa-play-circle"></i></span> Join live class</a>
@@ -855,6 +856,10 @@
                         $("#meetingJoinLink").show();
                     }
                     else {
+                        //stu_classroom_class_start_date
+                        if (classroomDetails.stu_classroom_class_start_date != null && classroomDetails.stu_classroom_class_start_date != "") {
+                            $("#classroomStartDate").text("This classroom is scheduled to start from " + classroomDetails.stu_classroom_class_start_date+".")
+                        }
                         $("#isMeetingActive").text("Live class is not started.");
 
                         $("#meetingJoinLink").remove();

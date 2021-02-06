@@ -92,5 +92,6 @@ namespace StudentDashboard.Utilities
             return result;
 
         }
+        public static TimeScheduleDetails 
     }
 }
