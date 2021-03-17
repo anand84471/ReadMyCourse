@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static StudentDashboard.Constants;
 
 namespace StudentDashboard.BusinessLayer
 {
@@ -337,6 +338,24 @@ namespace StudentDashboard.BusinessLayer
             }
             return result;
         }
+        public int GetPriceAccordingToCurrency(int currencyTypeEnum,int Price)
+        {
+            int NewPrice=Price;
+            switch (currencyTypeEnum)
+            {
+                case (int)CurrencyTypeEnum.INR:
+                    {
+                        NewPrice = CURRENCY_INR_VALUE * Price;
+                        break;
+                    }
+                case (int)CurrencyTypeEnum.USD:
+                    {
+                        NewPrice = CURRENCY_USD_VALUE * Price;
+                        break;
+                    }
+            }
+            return NewPrice;
+        }
        
     }
     public static class HmacValidator
@@ -354,5 +373,6 @@ namespace StudentDashboard.BusinessLayer
         }
        
     }
+    
     
 }

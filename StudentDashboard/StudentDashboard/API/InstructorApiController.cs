@@ -922,21 +922,21 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("contact")]
-        public async Task<APIDefaultResponse> ContactUs([FromBody] ContactUsApiRequest objContactUsApiRequest)
+        public async Task<APIDefaultResponse> ContactUs([FromBody] IntructorContactUsRequest intructorContactUsRequest)
         {
             APIDefaultResponse objResponse = new APIDefaultResponse();
             try
             {
-                if (objContactUsApiRequest != null && await objHomeService.InserContatUsRequest(objContactUsApiRequest))
+                int InstructorId = GetInstructorIdInRequest();
+                if (InstructorId != -1&& intructorContactUsRequest != null)
                 {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_SUCCESS;
+                    intructorContactUsRequest.m_iInstructorId = InstructorId;
+                    if (await objHomeService.InsertInstructorContatUsRequest(intructorContactUsRequest))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
                 }
-                else
-                {
-                    objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_FAIL;
-                    objResponse.m_strResponseMessage = Constants.API_RESPONSE_MESSAGE_FAIL;
-                }
+                
             }
             catch (Exception Ex)
             {

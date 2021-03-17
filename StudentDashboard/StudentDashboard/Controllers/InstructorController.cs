@@ -374,7 +374,7 @@ namespace StudentDashboard.Controllers
             {
                 JitsiMeetingModal objModal = new JitsiMeetingModal();
                 long.TryParse(collection["classroom_id"],out objModal.m_llClassroomId);
-                if (await objInstructorService.InertNewMeetingToClassroom(objModal))
+                if (await objInstructorService.CheckIsClassroomAlreadyTakenoday(objModal.m_llClassroomId)|| await objInstructorService.InertNewMeetingToClassroom(objModal))
                 {
                     return Redirect("StartMeeting?ClassroomId="+ objModal.m_llClassroomId);
                 }
@@ -817,7 +817,7 @@ namespace StudentDashboard.Controllers
                 if(await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"])){
                     ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id,
                     (int)Session["instructor_id"]);
-                    return PartialView(objClassRoomModal);
+                    return PartialView(objInstructorService.GetClassroomInstructorView(objClassRoomModal), objClassRoomModal);
                 }
             }
             catch (Exception Ex)
@@ -831,30 +831,7 @@ namespace StudentDashboard.Controllers
             }
             return PartialView("UnAuthorizedAccess");
         }
-        [HttpGet]
-        public async Task<PartialViewResult> ClassroomDashboardV2(long id)
-        {
-            string strCurrentMethodName = "ClassroomDashboardV2";
-            try
-            {
-                if (await objInstructorService.CheckClassroomAccess(id, (int)Session["instructor_id"]))
-                {
-                    ClassRoomModal objClassRoomModal = await objInstructorService.GetClassroomDetailsForInstructor(id,
-                    (int)Session["instructor_id"]);
-                    return PartialView(objClassRoomModal);
-                }
-            }
-            catch (Exception Ex)
-            {
-
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-                return PartialView("Errors");
-            }
-            return PartialView("UnAuthorizedAccess");
-        }
+       
         [HttpGet]
         public PartialViewResult PreviewCourse(int id)
         {

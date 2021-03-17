@@ -933,6 +933,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objHomeDTO.InserContatUsRequest(objContactUsApiRequest);
         }
+        public async Task<bool> InsertInstructorContatUsRequest(IntructorContactUsRequest intructorContactUsRequest)
+        {
+            return await objHomeDTO.InsertInstructorContatUsRequest(intructorContactUsRequest);
+        }
         public async Task<bool> DeleteIndexTopic(long TopicId)
         {
             return await objHomeDTO.DeleteIndexTopic(TopicId);
@@ -1111,7 +1115,9 @@ namespace StudentDashboard.ServiceLayer
                 activateClassroomRequest.m_strClassroomShareCode = objInstructorBusinessLayer.GetShareCodeForAssignment();
                 activateClassroomRequest.m_strTinyUrl  = await objInstructorBusinessLayer.GetTinyUrlForClassroom(activateClassroomRequest.m_llClassroomId,
                     activateClassroomRequest.m_strClassroomShareCode);
+
                 activateClassroomRequest.m_iClassroomJoiningFee = activateClassroomRequest.m_iClassroomJoiningFee * 100;
+                activateClassroomRequest.m_iClassroomJoiningFee = objInstructorBusinessLayer.GetPriceAccordingToCurrency(activateClassroomRequest.m_iCurrencyType, activateClassroomRequest.m_iClassroomJoiningFee);
                 result = await objHomeDTO.ActivateClassroom(activateClassroomRequest);
             }
             catch (Exception Ex)

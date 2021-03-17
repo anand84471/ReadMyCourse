@@ -42,7 +42,6 @@ pre {
 }
 
 .indexDetail {
-  
   width: 30%;
   background-color: #f8f9fc;
 }
@@ -50,11 +49,6 @@ pre {
 .courseDetail {
   width: 70%;
   min-height:500px;
-  max-height: 90vh;
-
-  overflow-y:scroll;
-    
-  
 }
    
 
@@ -124,7 +118,7 @@ pre {
 }
 
 #indexContent {
-    max-height: 80vh;
+    max-height: 90vh;
     overflow: auto;
 }
 @@media (max-width: 480px) {
@@ -294,31 +288,27 @@ textarea {
         <img src="~/Images/site-logo-v2-full.png" width="140" height="35" class="align-top " alt="">
     </a>
 </nav>
-
-
-
     <div id="courseCard content-wrapper" class="d-flex flex-column">
         <div class="container-fluid" id="course-container">
-            <h1 class="navbar-item nav-item pl-0 text-danger text-center" id="courseName"></h1>
+            @*<h1 class="navbar-item nav-item pl-0 text-danger text-center" id="courseName"></h1>*@
             <div class="row" >
                 <div class="courseDetail col-sm-8">
-                   
-                    
                     <div id="mainCourseContainer">
-                        <div class="h3 custom-black font-weight-bolder mt-2 p-1" id="courseHeading">
+                        <div class="h4 custom-black font-weight-bolder p-1 text-center" id="courseHeading">
                             About this Course
                         </div>
                         <div id="extraContainer">
                             <div id="content-wrapper" class="d-flex flex-column">
                             </div>
                         </div>
-                        <div class="embed-responsive embed-responsive-16by9 " id="videoContainer" style="display:none">
+                        <div class="embed-responsive embed-responsive-16by9 " id="videoContainer" style="display:none;max-height:68vh;">
 
                         </div>
                         
-                        <pre id="courseDetails" class="p-2 h5 text-gray-900">
+                        <pre id="courseDetails" class="p-1 h5 text-gray-900">
                             
                         </pre>
+                        <hr />
                         <div class="" id="attachmentContainer" style="display:none">
 
                         </div>
@@ -377,14 +367,14 @@ textarea {
                     
                 </div>
                 <div class="indexDetail col-sm-4">
-                    @*<div id="collapseIcon"
+                    <div id="collapseIcon"
                          data-toggle="collapse"
                          href="#indexContent"
                          aria-expanded="true" onclick="this.d">
                         <span>
                             <i class="fa fa-angle-double-right indexIcon"></i>
                         </span>
-                    </div>*@
+                    </div>
                     <div id="indexContent" class="collapse show">
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -401,9 +391,7 @@ textarea {
 
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="pills-indexes" role="tabpanel" aria-labelledby="pills-indexes">
-                                   
                                     <div id="allIndexAndContent">
-
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pills-ask-questions" role="tabpanel" aria-labelledby="pills-ask-questions">
@@ -616,7 +604,7 @@ textarea {
         if (topicContentDetails[topicId].file_attachment_path != null && topicContentDetails[topicId].file_attachment_path != "") {
 
             //PDFObject.embed(topicContentDetails[topicId].file_attachment_path, "#pdfAttachmentContainer");
-            $("#attachmentContainer").append('<a download="attachment" download class="btn btn-primary" target="_blank" href="' + topicContentDetails[topicId].file_attachment_path + '"><i class="fa fa-download" aria-hidden="true"></i>download attachment</a>');
+            $("#attachmentContainer").append('<a download="attachment" download class="btn btn-primary" target="_blank" href="' + topicContentDetails[topicId].file_attachment_path + '"><i class="fa fa-download" aria-hidden="true"></i> download attachment</a>');
             $("#attachmentContainer").show();
         }
         else {

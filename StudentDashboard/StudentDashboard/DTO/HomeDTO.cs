@@ -816,7 +816,8 @@ namespace StudentDashboard.DTO
                     activateClassroomRequest.m_strClassroomShareCode,activateClassroomRequest.m_strTinyUrl,
                     activateClassroomRequest.m_bPublicType,activateClassroomRequest.m_iClassroomJoiningFee,
                     activateClassroomRequest.m_strClassroomStartTime,activateClassroomRequest.m_strClassroomBitwiseSchedule,
-                    activateClassroomRequest.m_iNoOfDemoClasses);
+                    activateClassroomRequest.m_iNoOfDemoClasses, activateClassroomRequest.m_iCategoryId,
+                    activateClassroomRequest.m_iLevel);
             }
             catch (Exception Ex)
             {
@@ -2116,7 +2117,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("CLASSROOM_ID"),
                          dataRow.Field<string>("CLASSROOM_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
-                         dataRow.Field<string>("COURSE_STATUS_NAME")
+                         dataRow.Field<string>("COURSE_STATUS_NAME"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED")
                          )).ToList();
                 }
             }
@@ -2701,6 +2703,24 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+          public async Task<bool> InsertInstructorContatUsRequest(IntructorContactUsRequest intructorContactUsRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertInstructorContactUsDetailAsync(intructorContactUsRequest.m_iInstructorId,
+                    intructorContactUsRequest.m_strEmail, intructorContactUsRequest.m_strPhoneNo, intructorContactUsRequest.m_strSubject, intructorContactUsRequest.m_strMessage);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertInstructorContatUsRequest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+     
     }
 }
  

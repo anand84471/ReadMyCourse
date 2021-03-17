@@ -103,7 +103,11 @@ namespace StudentDashboard.ServiceLayer
                     {
                         string OTP = objInstructorBusinessLayer.GenerateOtp();
                         AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
-                        await objSMSServiceManager.SendInstructorPasswordRecoveryOTP(OTP, "+91" + objStudentRegisterModal.m_strPhoneNo);
+                        if (!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
+                        {
+                            objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
+                        }
+                        await objSMSServiceManager.SendInstructorPasswordRecoveryOTP(OTP,objStudentRegisterModal.m_strPhoneNo);
                         await objInstructorDTO.InsertPasswordRecoveryForInstructor(InstrcutorUserId, AuthToken, OTP);
                     }
                 }
@@ -287,6 +291,38 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objInstructorDTO.SendClassroomNotification(classroomNotificationMasterDetails.m_llClassroomId,
                 classroomNotificationMasterDetails.m_strNotification);
+        }
+        public string GetClassroomInstructorView(ClassRoomModal classroomModal)
+        {
+            string ViewName = Constants.CLASSROOM_VIEW_INACTIVE;
+            if (classroomModal.m_strClassroomStatus == Constants.CONTENT_STATUS_ACTIVE)
+            {
+                if(classroomModal.m_bIsVarifiedByAdmin==true&& classroomModal.m_iAdminVarificationCode == (int)Constants.ClassroomVarificationStateId.ACCEPTED)
+                {
+                    ViewName = Constants.CLASSROOM_VIEW_VARIFIED;
+                }
+                else
+                {
+                    ViewName = Constants.CLASSROOM_VIEW_VARIFICATION_PENDING;
+                }
+            }
+            return ViewName;
+        }
+        public async Task<bool> CheckIsClassroomAlreadyTakenoday(long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                result = await objInstructorDTO.CheckIsClassroomAlreadyTakenoday(ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsClassroomAlreadyTakenoday", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

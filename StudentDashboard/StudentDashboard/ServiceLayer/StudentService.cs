@@ -7,6 +7,7 @@ using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.JsonSerializableObject;
 using StudentDashboard.Models;
+using StudentDashboard.Models.Base;
 using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
@@ -72,48 +73,44 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
-        public async Task InsertPasswordRecovery(string PhoneNo)
+       
+        public async Task<string> InsertPasswordRecovery(string StudentUserId)
         {
             string AuthToken = null;
-            
+            try
+            {
+                var StudentId = objStudentDTO.GetStudentIdFromUserId(StudentUserId);
+                if (StudentId != -1)
+                {
+                    StudentRegisterModal objStudentRegisterModal = await objStudentDTO.GetStudentDetails(StudentId);
+                    if (objStudentRegisterModal != null)
+                    {
+                        string OTP = objInstructorBusinessLayer.GenerateOtp();
+                        string PhoneNo = "";
+                        AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
+                        if (!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
+                        {
+                            PhoneNo = objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
+                        }
+                        else
+                        {
+                            PhoneNo = objStudentRegisterModal.m_strPhoneNo = objStudentRegisterModal.m_strPhoneNo;
+                        }
+                        await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, PhoneNo);
+                        await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return AuthToken;
         }
-        //public async Task<string> InsertPasswordRecovery(string StudentUserId)
-        //{
-        //    string AuthToken=null;
-        //    try
-        //    {
-        //        var StudentId = objStudentDTO.GetStudentIdFromUserId(StudentUserId);
-        //        if (StudentId != -1)
-        //        {
-        //            StudentRegisterModal objStudentRegisterModal = await objStudentDTO.GetStudentDetails(StudentId);
-        //            if(objStudentRegisterModal!=null)
-        //            {
-        //                string OTP = objInstructorBusinessLayer.GenerateOtp();
-        //                string PhoneNo = "";
-        //                AuthToken = objInstructorBusinessLayer.GeneratePasswordVeryficationToken();
-        //                if(!objStudentRegisterModal.m_strPhoneNo.StartsWith("+"))
-        //                {
-        //                    PhoneNo = objStudentRegisterModal.m_strPhoneNo = "+91" + objStudentRegisterModal.m_strPhoneNo;
-        //                }
-        //                else
-        //                {
-        //                    PhoneNo = objStudentRegisterModal.m_strPhoneNo =  objStudentRegisterModal.m_strPhoneNo;
-        //                }
-        //                await objSMSServiceManager.SendStudentPasswordRecoveryOTP(OTP, PhoneNo);
-        //                await objStudentDTO.InsertPasswordRecovery(StudentUserId, AuthToken, OTP);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "InsertPasswordRecovery", Ex.ToString());
-        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-        //        MainLogger.Error(m_strLogMessage);
-        //    }
-        //    return AuthToken;
-        //}
-        
+
         public bool ValidateLogin(StudentRegisterModal objStudentRegisterModal)
         {
             bool result = false;
@@ -639,7 +636,10 @@ namespace StudentDashboard.ServiceLayer
         public async Task<ClassRoomModal> GetClassroomDetailsForStudent(long ClassroomId)
         {
             ClassRoomModal classRoomModal= await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
-
+            if (classRoomModal.m_dtClassStartDate != null)
+            {
+                classRoomModal.timeScheduleDetails = MasterUtilities.GetTimer((DateTime)classRoomModal.m_dtClassStartDate-DateTime.Now) ;
+            }
             return classRoomModal;
         }
         public async Task<bool> JoinClassroom(StudentClassroomJoinRequest studentClassroomJoinRequest)
@@ -748,14 +748,13 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.GetStudentBasicDetails(StudentId);
         }
-        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(long LastClassroomId,
-           long StudentId, string QueryString)
+        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(int NoOfRowsFetched,long StudentId, string QueryString)
         {
             if(QueryString==null)
             {
                 QueryString = "";
             }
-            return await objStudentDTO.SearchClassroom(LastClassroomId,10, StudentId, QueryString);
+            return await objStudentDTO.SearchClassroom(NoOfRowsFetched, Constants.MAX_ITEMS_TO_BE_RETURNED, StudentId, QueryString);
         }
         public async Task<RazorPayPaymentRequestModal> GetClassroomPaymentData(ClassroomPaymentRequestDTO classroomPaymentRequestDTO)
         {
@@ -926,6 +925,10 @@ namespace StudentDashboard.ServiceLayer
         {
             return await objStudentDTO.GetAllLiveClassMeetingDetailsForStudnet(StudentId, ClassroomId);
         }
+        public async Task<List<StudentLiveClassMeetingDetails>> GetAllTrialLiveClassMeetingDetailsForStudnet(long StudentId, long ClassroomId)
+        {
+            return await objStudentDTO.GetAllTrialLiveClassMeetingDetailsForStudnet(StudentId, ClassroomId);
+        }
         public async Task<StudentLiveClassMeetingDetails> GetLiveClassMeetingDetailsForStudnet(GetClassroomMeetingDetailsForStudentRequest getClassroomMeetingDetailsForStudentRequest)
         {
             return await objStudentDTO.GetLiveClassMeetingDetailsForStudnet(getClassroomMeetingDetailsForStudentRequest);
@@ -1087,6 +1090,123 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<List<StudentsJoinedToClassroomDetailsForStudent>> GetStudentsJoinedToClassroom(StudentsJoinedToClassroomRequestForStudent studentsJoinedToClassroomRequestForStudent)
+        {
+            List < StudentsJoinedToClassroomDetailsForStudent > lsStudentsJoinedToClassroomDetailsForStudent = null;
+            try
+            {
+                studentsJoinedToClassroomRequestForStudent.m_iMaxRowsToBeFetched = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                lsStudentsJoinedToClassroomDetailsForStudent = await objStudentDTO.GetStudentsJoinedToClassroom(studentsJoinedToClassroomRequestForStudent);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentsJoinedToClassroomDetailsForStudent;
+        }
+        public async Task<AvgReviewModel> GetAvgClassroomRating(long ClassroomId)
+        {
+            AvgReviewModel avgReviewModel = new AvgReviewModel();
+            List<RatingNormal> lsRatingNormal = null;
+            try
+            {
+                lsRatingNormal = await objStudentDTO.GetAvgClassroomRating(ClassroomId);
+                var TotalRatings = 0;
+                var AvgRatingSum = 0;
+                foreach(var data in lsRatingNormal)
+                {
+                    TotalRatings += data.m_iNoOfRating;
+                    
+                    switch (data.m_iRating)
+                    {
+                        case 1:
+                            {
+                                AvgRatingSum += 1 * data.m_iNoOfRating;
+                                avgReviewModel.m_fPercentage1StartRating = data.m_iNoOfRating;
+                                break;
+                            }
+                        case 2:
+                            {
+                                AvgRatingSum += 2 * data.m_iNoOfRating;
+                                avgReviewModel.m_fPercentage2StartRating = data.m_iNoOfRating;
+                                break;
+                            }
+                        case 3:
+                            {
+                                AvgRatingSum += 3 * data.m_iNoOfRating;
+                                avgReviewModel.m_fPercentage3StartRating = data.m_iNoOfRating;
+                                break;
+                            }
+                        case 4:
+                            {
+                                AvgRatingSum += 4 * data.m_iNoOfRating;
+                                avgReviewModel.m_fPercentage4StartRating = data.m_iNoOfRating;
+                                break;
+                            }
+                        case 5:
+                            {
+                                AvgRatingSum += 5 * data.m_iNoOfRating;
+                                avgReviewModel.m_fPercentage5StartRating = data.m_iNoOfRating;
+                                break;
+                            }
+                    }
+                }
+                if (TotalRatings != 0)
+                {
+                    avgReviewModel.m_iTotalReviews = TotalRatings;
+                    avgReviewModel.m_fPercentage1StartRating =MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage1StartRating, TotalRatings);
+                    avgReviewModel.m_fPercentage2StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage2StartRating, TotalRatings);
+                    avgReviewModel.m_fPercentage3StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage3StartRating, TotalRatings);
+                    avgReviewModel.m_fPercentage4StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage4StartRating, TotalRatings);
+                    avgReviewModel.m_fPercentage5StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage5StartRating, TotalRatings);
+                    avgReviewModel.m_fAvgRating = AvgRatingSum / TotalRatings;
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return avgReviewModel;
+        }
+        public async Task<List<ReviewModel>> GetAllClassroomReviews(MasterSearchRequest masterSearchRequest,long ClassroomId)
+        {
+            List<ReviewModel> lsReviewModel = null;
+            try
+            {
+                lsReviewModel = await objStudentDTO.GetAllClassroomReviews(ClassroomId,masterSearchRequest.m_iNoOfRowsFetched,Constants.MAX_ITEMS_TO_BE_RETURNED);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsReviewModel;
+        }
+        public async Task<ClassroomReviewsResponse> GetClassroomReview(long ClassroomId)
+        {
+            ClassroomReviewsResponse classroomReviewsResponse = new ClassroomReviewsResponse();
+            try
+            {
+                classroomReviewsResponse.avgReviewModel = await GetAvgClassroomRating(ClassroomId);
+                classroomReviewsResponse.lsReviews = await GetAllClassroomReviews(new MasterSearchRequest() { m_iNoOfRowsFetched=0},ClassroomId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VarifyPhoneNo", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return classroomReviewsResponse;
         }
     }
 }

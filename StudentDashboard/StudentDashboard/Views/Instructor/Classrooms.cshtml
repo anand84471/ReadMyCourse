@@ -105,10 +105,11 @@
                + '<div class="card-body ">'
                    + '<h1 class="text-white font-weight-bold"><a>' + classrooms[i].classroom_name + '</a></h1>'
 
-                     + '<span class="badge badge-pill badge-light" id="successbadge">Status: ' + classrooms[i].classroom_status + '</span>'
+                + '<span class="badge badge-pill p-1 badge-light" id="successbadge">Status: ' + classrooms[i].classroom_status + '</span>'
+                + '<span class="text-white font-weight-bolder ml-4 h2"> <i class="fa fa-users"></i> ' + classrooms[i].no_of_student_joined + '</span>'
                     + '<h6 class="card-title font-weight-light">Created on:' + classrooms[i].creation_date + '</h6>'
                    + ' <div class="col mb-2">'
-
+                  
                    + '<ul class="list-unstyled list-inline rating mb-0">'
                       + '<li class="list-inline-item mr-0"><a  class="btn btn-outline-light" href="ClassroomDashboard?id=' + classrooms[i].classroom_id + '">Start Teaching</a></li>'
                   + '</ul>'

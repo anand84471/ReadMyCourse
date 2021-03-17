@@ -1300,7 +1300,7 @@ namespace StudentDashboard.API
         }
         [HttpPost]
         [Route("SearchClassroom")]
-        public async Task<SearchStudentPublicClassroomResponse> GetPublicClassroom(long LastClassroomId, string SearchString)
+        public async Task<SearchStudentPublicClassroomResponse> GetPublicClassroom(MasterSearchRequestModel masterSearchRequestModel )
         {
             SearchStudentPublicClassroomResponse objResponse = new SearchStudentPublicClassroomResponse();
             try
@@ -1308,7 +1308,8 @@ namespace StudentDashboard.API
                 long StudentId = GetStudentIdInRequest();
                 if (StudentId != -1)
                 {
-                    objResponse.m_lsGetPublicClassroomsResponse = await objStudentService.SearchClassroom(LastClassroomId, StudentId, SearchString);
+                    objResponse.m_lsGetPublicClassroomsResponse = await objStudentService.SearchClassroom(masterSearchRequestModel.m_iNoOfRecordsFeteched,
+                        StudentId,masterSearchRequestModel.m_strSearchRequest );
                     if (objResponse.m_lsGetPublicClassroomsResponse != null)
                     {
                         objResponse.SetSuccessResponse();
@@ -1711,7 +1712,8 @@ namespace StudentDashboard.API
             {
                 if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, classroomFeedbackRequest.m_llClassroomId))
                 {
-                    if(await objStudentService.InsertClassroomFeedback(classroomFeedbackRequest))
+                    classroomFeedbackRequest.m_llStudentId = StudentId;
+                    if (await objStudentService.InsertClassroomFeedback(classroomFeedbackRequest))
                     {
                         objResponse.SetSuccessResponse();
                     }
@@ -1727,7 +1729,87 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("GetAllStudentsJoinedToClassroomForStudent")]
+        [HttpPost]
+        public async Task<StudentsJoinedToClassroomDetailsForStudentResponse> 
+            GetAllStudentsJoinedToClassroomForStudent(StudentsJoinedToClassroomRequestForStudent studentsJoinedToClassroomRequestForStudent)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            StudentsJoinedToClassroomDetailsForStudentResponse objResponse = new StudentsJoinedToClassroomDetailsForStudentResponse();
+            try
+            {
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, studentsJoinedToClassroomRequestForStudent.m_llClassroomId))
+                {
+                    studentsJoinedToClassroomRequestForStudent.m_llStudentId = StudentId;
+                    objResponse.m_lsStudentsJoinedToClassroomDetailsForStudent =await  objStudentService.GetStudentsJoinedToClassroom(studentsJoinedToClassroomRequestForStudent);
+                    if (objResponse.m_lsStudentsJoinedToClassroomDetailsForStudent != null)
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
 
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllStudentsJoinedToClassroomForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("FetchAllTrailClassMeetingDetailForStudent")]
+        [HttpPost]
+        public async Task<GetAllLiveClassMeetingDetailsForStudentResponse> FetchAllTrailClassMeetingDetailForStudent(long ClassroomId)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            GetAllLiveClassMeetingDetailsForStudentResponse objResponse = new GetAllLiveClassMeetingDetailsForStudentResponse();
+            try
+            {
+                if (StudentId != -1 && await objStudentService.CheckStudentAccessToClassroom(StudentId, ClassroomId))
+                {
+                    objResponse.lsStudentLiveClassMeetingDetails = await objStudentService.GetAllTrialLiveClassMeetingDetailsForStudnet(StudentId, ClassroomId);
+                }
+                if (objResponse.lsStudentLiveClassMeetingDetails != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetClassroomReviews")]
+        [HttpPost]
+        public async Task<MasterApiResponse<ClassroomReviewsResponse>> FetchAllClassroomReviews(long ClassroomId)
+        {
+            long StudentId = GetStudentIdInRequest(); ;
+            MasterApiResponse<ClassroomReviewsResponse> objResponse = new MasterApiResponse<ClassroomReviewsResponse>();
+            try
+            {
+                if (StudentId != -1 )
+                {
+                    objResponse.data = await objStudentService.GetClassroomReview(ClassroomId);
+                }
+                if (objResponse.data != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }
 }
 

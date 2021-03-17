@@ -34,10 +34,12 @@ namespace StudentDashboard.HttpResponse
         public string m_strClassroomRating;
         [JsonProperty("no_of_ratings")]
         public int m_iNoOfRatings;
+        [JsonProperty("is_registration_closed")]
+        public bool m_bIsRegistrationClosed;
         public GetPublicClassroomsResponse(string classroomName,
             long classroomId,string creationDate,int noOfEnrollments,long? StudentJoinId,
             DateTime? JoiningDate,int ClassroomJoiningFeeInPaise,string InstructorName,string InstructorImageUrl,
-            int InstructorId,string ClassroomImageUrl)
+            int InstructorId,string ClassroomImageUrl,DateTime? registrationCloseDate)
         {
             this.m_strClasssroomName = classroomName;
             this.m_llClasssroomId = classroomId;
@@ -59,6 +61,13 @@ namespace StudentDashboard.HttpResponse
             this.m_strInstructorName = InstructorName;
             this.m_iInstructorId = InstructorId;
             this.m_strInstructorImage = InstructorImageUrl;
+            if (registrationCloseDate != null)
+            {
+                if ((DateTime)registrationCloseDate < DateTime.Now)
+                {
+                    m_bIsRegistrationClosed = true;
+                }
+            }
         }
     }
 }

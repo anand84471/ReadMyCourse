@@ -2,6 +2,7 @@
 using StudentDashboard.HttpRequest.Document;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.Document;
+using StudentDashboard.Models.Category;
 using StudentDashboard.Models.Course;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
@@ -294,6 +295,50 @@ namespace StudentDashboard.API
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTestDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetAllClassroomCategories")]
+        [HttpPost]
+        public async Task<GetAllClassroomCategoryResponse> GetAllCategories()
+        {
+            GetAllClassroomCategoryResponse objResponse = new GetAllClassroomCategoryResponse();
+            try
+            {
+                objResponse.m_lsGetAllClassroomCategory = await objDocumentService.GetAllCategories();
+                if (objResponse.m_lsGetAllClassroomCategory!=null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllCategories", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetClassroomReviews")]
+        [HttpPost]
+        public async Task<MasterApiResponse<ClassroomReviewsResponse>> FetchAllClassroomReviews(long ClassroomId)
+        {
+            MasterApiResponse<ClassroomReviewsResponse> objResponse = new MasterApiResponse<ClassroomReviewsResponse>();
+            try
+            {
+                objResponse.data = await objDocumentService.GetClassroomReview(ClassroomId);
+                if (objResponse.data != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

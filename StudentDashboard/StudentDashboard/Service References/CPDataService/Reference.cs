@@ -90,6 +90,50 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudent", ReplyAction="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudentResponse")]
         System.Threading.Tasks.Task<bool> UpdatePhoneNoOfGmailRegStudentAsync(string UserId, string Token, string PhoneNo);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetail", ReplyAction="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetailResponse")]
+        bool InsertInstructorContactUsDetail(int InstructorId, string Email, string PhoneNo, string Subject, string Message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetail", ReplyAction="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetailResponse")]
+        System.Threading.Tasks.Task<bool> InsertInstructorContactUsDetailAsync(int InstructorId, string Email, string PhoneNo, string Subject, string Message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomCategories", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomCategoriesResponse")]
+        System.Data.DataSet GetAllClassroomCategories();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomCategories", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomCategoriesResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomCategoriesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudentResponse")]
+        System.Data.DataSet GetStudentsJoinedToClassroomForStudent(long ClassroomId, long StudentId, int MaxRowsToBeFetched, int NoOfRowsFetched);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudentResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetStudentsJoinedToClassroomForStudentAsync(long ClassroomId, long StudentId, int MaxRowsToBeFetched, int NoOfRowsFetched);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredToday", ReplyAction="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredTodayResponse")]
+        System.Data.DataSet CheckClassroomMeetingOccuredToday(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredToday", ReplyAction="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredTodayResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> CheckClassroomMeetingOccuredTodayAsync(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudentRes" +
+            "ponse")]
+        System.Data.DataSet GetAllTrialClassroomMeetingDetailsForStudent(long StudentId, long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudentRes" +
+            "ponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllTrialClassroomMeetingDetailsForStudentAsync(long StudentId, long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomReviews", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomReviewsResponse")]
+        System.Data.DataSet GetAllClassroomReviews(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAllClassroomReviews", ReplyAction="http://tempuri.org/ICpDataService/GetAllClassroomReviewsResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomReviewsAsync(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAvgRatingForClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAvgRatingForClassroomResponse")]
+        System.Data.DataSet GetAvgRatingForClassroom(long ClassroomId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAvgRatingForClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAvgRatingForClassroomResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetAvgRatingForClassroomAsync(long ClassroomId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
         System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
         
@@ -169,10 +213,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<bool> InsertClassroomScheduleAsync(long ClassroomId, string ClassroomSchedule);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudentResponse")]
-        System.Data.DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
+        System.Data.DataSet GetPublicClassroomDetailsForStudent(int NoOfRowsFetched, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetPublicClassroomDetailsForStudentResponse")]
-        System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
+        System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(int NoOfRowsFetched, long StudentId, int NoOfRecordsToBeFetched, string QueryString);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUser", ReplyAction="http://tempuri.org/ICpDataService/SearchForCourseForNotLoggedUserResponse")]
         System.Data.DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
@@ -706,10 +750,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetMeetingDetailsOfClassroomAsync(long ClassRoomId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses);
+        bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses, int Category, int Level);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/ActivateClassroom", ReplyAction="http://tempuri.org/ICpDataService/ActivateClassroomResponse")]
-        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses);
+        System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses, int Category, int Level);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClasroomDetails", ReplyAction="http://tempuri.org/ICpDataService/GetClasroomDetailsResponse")]
         System.Data.DataSet GetClasroomDetails(long ClassRoomId);
@@ -808,10 +852,10 @@ namespace StudentDashboard.CPDataService {
         System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomMessageAfterLastMessageAsync(long ClassroomId, long LastMessageId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
-        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate, int NoOfDemoSessions);
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.Nullable<System.DateTime> classroomStartDate, System.Nullable<System.DateTime> classroomRegistrationCloseDate, int NoOfDemoSessions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/UpdateClassroomDetails", ReplyAction="http://tempuri.org/ICpDataService/UpdateClassroomDetailsResponse")]
-        System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate, int NoOfDemoSessions);
+        System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.Nullable<System.DateTime> classroomStartDate, System.Nullable<System.DateTime> classroomRegistrationCloseDate, int NoOfDemoSessions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/DeleteClassroom", ReplyAction="http://tempuri.org/ICpDataService/DeleteClassroomResponse")]
         bool DeleteClassroom(long ClassroomId);
@@ -2667,6 +2711,62 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.UpdatePhoneNoOfGmailRegStudentAsync(UserId, Token, PhoneNo);
         }
         
+        public bool InsertInstructorContactUsDetail(int InstructorId, string Email, string PhoneNo, string Subject, string Message) {
+            return base.Channel.InsertInstructorContactUsDetail(InstructorId, Email, PhoneNo, Subject, Message);
+        }
+        
+        public System.Threading.Tasks.Task<bool> InsertInstructorContactUsDetailAsync(int InstructorId, string Email, string PhoneNo, string Subject, string Message) {
+            return base.Channel.InsertInstructorContactUsDetailAsync(InstructorId, Email, PhoneNo, Subject, Message);
+        }
+        
+        public System.Data.DataSet GetAllClassroomCategories() {
+            return base.Channel.GetAllClassroomCategories();
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomCategoriesAsync() {
+            return base.Channel.GetAllClassroomCategoriesAsync();
+        }
+        
+        public System.Data.DataSet GetStudentsJoinedToClassroomForStudent(long ClassroomId, long StudentId, int MaxRowsToBeFetched, int NoOfRowsFetched) {
+            return base.Channel.GetStudentsJoinedToClassroomForStudent(ClassroomId, StudentId, MaxRowsToBeFetched, NoOfRowsFetched);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentsJoinedToClassroomForStudentAsync(long ClassroomId, long StudentId, int MaxRowsToBeFetched, int NoOfRowsFetched) {
+            return base.Channel.GetStudentsJoinedToClassroomForStudentAsync(ClassroomId, StudentId, MaxRowsToBeFetched, NoOfRowsFetched);
+        }
+        
+        public System.Data.DataSet CheckClassroomMeetingOccuredToday(long ClassroomId) {
+            return base.Channel.CheckClassroomMeetingOccuredToday(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> CheckClassroomMeetingOccuredTodayAsync(long ClassroomId) {
+            return base.Channel.CheckClassroomMeetingOccuredTodayAsync(ClassroomId);
+        }
+        
+        public System.Data.DataSet GetAllTrialClassroomMeetingDetailsForStudent(long StudentId, long ClassroomId) {
+            return base.Channel.GetAllTrialClassroomMeetingDetailsForStudent(StudentId, ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllTrialClassroomMeetingDetailsForStudentAsync(long StudentId, long ClassroomId) {
+            return base.Channel.GetAllTrialClassroomMeetingDetailsForStudentAsync(StudentId, ClassroomId);
+        }
+        
+        public System.Data.DataSet GetAllClassroomReviews(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched) {
+            return base.Channel.GetAllClassroomReviews(ClassroomId, NoOfRowsToBeFetched, NoOfRowsFetched);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAllClassroomReviewsAsync(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched) {
+            return base.Channel.GetAllClassroomReviewsAsync(ClassroomId, NoOfRowsToBeFetched, NoOfRowsFetched);
+        }
+        
+        public System.Data.DataSet GetAvgRatingForClassroom(long ClassroomId) {
+            return base.Channel.GetAvgRatingForClassroom(ClassroomId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetAvgRatingForClassroomAsync(long ClassroomId) {
+            return base.Channel.GetAvgRatingForClassroomAsync(ClassroomId);
+        }
+        
         public System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId) {
             return base.Channel.GetClassroomHomeDetailsForStudent(ClassroomId, StudentId);
         }
@@ -2771,12 +2871,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.InsertClassroomScheduleAsync(ClassroomId, ClassroomSchedule);
         }
         
-        public System.Data.DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
-            return base.Channel.GetPublicClassroomDetailsForStudent(LastFetchedClassroomId, StudentId, NoOfRecordsToBeFetched, QueryString);
+        public System.Data.DataSet GetPublicClassroomDetailsForStudent(int NoOfRowsFetched, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
+            return base.Channel.GetPublicClassroomDetailsForStudent(NoOfRowsFetched, StudentId, NoOfRecordsToBeFetched, QueryString);
         }
         
-        public System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(long LastFetchedClassroomId, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
-            return base.Channel.GetPublicClassroomDetailsForStudentAsync(LastFetchedClassroomId, StudentId, NoOfRecordsToBeFetched, QueryString);
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetPublicClassroomDetailsForStudentAsync(int NoOfRowsFetched, long StudentId, int NoOfRecordsToBeFetched, string QueryString) {
+            return base.Channel.GetPublicClassroomDetailsForStudentAsync(NoOfRowsFetched, StudentId, NoOfRecordsToBeFetched, QueryString);
         }
         
         public System.Data.DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId) {
@@ -3484,12 +3584,12 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetMeetingDetailsOfClassroomAsync(ClassRoomId);
         }
         
-        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses) {
-            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays, NofDemoClasses);
+        public bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses, int Category, int Level) {
+            return base.Channel.ActivateClassroom(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays, NofDemoClasses, Category, Level);
         }
         
-        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses) {
-            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays, NofDemoClasses);
+        public System.Threading.Tasks.Task<bool> ActivateClassroomAsync(long ClassroomId, string ShareCode, string ShareUrl, int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses, int Category, int Level) {
+            return base.Channel.ActivateClassroomAsync(ClassroomId, ShareCode, ShareUrl, ClassroomPublicType, ClassroomJoiningAmountInPaise, StartTime, ArrayOpeningDays, NofDemoClasses, Category, Level);
         }
         
         public System.Data.DataSet GetClasroomDetails(long ClassRoomId) {
@@ -3620,11 +3720,11 @@ namespace StudentDashboard.CPDataService {
             return base.Channel.GetAllClassroomMessageAfterLastMessageAsync(ClassroomId, LastMessageId);
         }
         
-        public bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate, int NoOfDemoSessions) {
+        public bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, System.Nullable<System.DateTime> classroomStartDate, System.Nullable<System.DateTime> classroomRegistrationCloseDate, int NoOfDemoSessions) {
             return base.Channel.UpdateClassroomDetails(ClassroomId, ClassroomName, ClassroomDescription, classroomStartDate, classroomRegistrationCloseDate, NoOfDemoSessions);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.DateTime classroomStartDate, System.DateTime classroomRegistrationCloseDate, int NoOfDemoSessions) {
+        public System.Threading.Tasks.Task<bool> UpdateClassroomDetailsAsync(long ClassroomId, string ClassroomName, string ClassroomDescription, System.Nullable<System.DateTime> classroomStartDate, System.Nullable<System.DateTime> classroomRegistrationCloseDate, int NoOfDemoSessions) {
             return base.Channel.UpdateClassroomDetailsAsync(ClassroomId, ClassroomName, ClassroomDescription, classroomStartDate, classroomRegistrationCloseDate, NoOfDemoSessions);
         }
         

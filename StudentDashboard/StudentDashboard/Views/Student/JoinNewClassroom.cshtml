@@ -338,13 +338,15 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         {
             queryString = "";
         }
+        var _data = {
+
+        };
         $.ajax({    
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/Course/SearchClassroom?LastClassroomId=".concat(lastClassroomIdFetched).
-                concat("&SearchString=").concat(queryString),
+            url: "/api/v1/Course/SearchClassroom",
             success: function (data) {
                 debugger
                 if (data != null && data.response_code == 1) {
@@ -363,7 +365,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                                 }
                                 row = '<div class="col-md-6 col-lg-4 col-sm-12 my-2 my_card">'
                             + '<div class="card live-class-cards shadow-lg" >'
-                              + '<div class="badge-course-complexity">Beginner</div>'
+                              //+ '<div class="badge-course-complexity">Beginner</div>'
                               + '<img src="' + classrooms[i].classroom_image + '" class="card-img-top" alt="course">'
                               + '<div class="card-body card-bodys">'
                                 + '<div class="live ml-1">Live Class</div>'

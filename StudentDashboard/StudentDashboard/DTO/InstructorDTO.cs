@@ -341,9 +341,12 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_MEETINGS"),
                          dataRow.Field<string>("BACK_GROUND_IMAGE_PATH"),
                          dataRow.Field<string>("CLASSROOM_MEETING_NAME"),
-                         dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
                          dataRow.Field<DateTime?>("CLASS_START_DATE"),
-                         dataRow.Field<int>("NO_OF_DEMO_CLASSES")
+                         dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
+                         dataRow.Field<int>("NO_OF_DEMO_CLASSES"),
+                         dataRow.Field<bool?>("IS_VARIFIED_BY_ADMIN"),
+                         dataRow.Field<int?>("ADMIN_VARIFICATION_CODE"),
+                         dataRow.Field<string>("ADMIN_VARIFICATION_MESSAGE")
                          )).ToList()[0];
                 }
             }
@@ -749,6 +752,27 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> CheckIsClassroomAlreadyTakenoday(long ClassroomId)
+        {
+            bool result = false;
+            try
+            {
+                DataSet ds = await objCPDataService.CheckClassroomMeetingOccuredTodayAsync(ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsClassroomAlreadyTakenoday", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }

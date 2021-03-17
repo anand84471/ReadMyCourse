@@ -31,9 +31,10 @@ namespace StudentDashboard.Models.Student
         public bool m_bIsRegistrationClosed;
         public string m_strPromotonialCharge;
         public int m_iNoOfDemoClassrooms;
+        public bool m_bIsClassStarted;
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined,int NoOfAssignments,int NoOfLiveClassess,
             int NoOfTests,int NoOfStudyMaterials,string ClassroomName,string ClassroomDescription,DateTime ClassroomStartDate,
-            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule, DateTime? LiveClassStartDate ,int NoOfDemoClasses
+            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule, DateTime? LiveClassStartDate ,int NoOfDemoClasses,DateTime? RegistrationCloseDate
             )
         {
             this.m_iNoOfAssignments = NoOfAssignments;
@@ -94,7 +95,7 @@ namespace StudentDashboard.Models.Student
                 setClassroomSchedule(Schedule);
             }
             this.m_strLiveClassStartDate = MasterUtilities.GetDateByDateTime(LiveClassStartDate);
-            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(LiveClassStartDate);
+            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(RegistrationCloseDate);
             this.m_iNoOfDemoClassrooms = NoOfDemoClasses;
         }
         public ClassroomJoinDetailsModal()

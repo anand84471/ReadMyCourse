@@ -20,6 +20,48 @@
   <wsdl:message name="ICpDataService_UpdatePhoneNoOfGmailRegStudent_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdatePhoneNoOfGmailRegStudentResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertInstructorContactUsDetail_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertInstructorContactUsDetail" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertInstructorContactUsDetail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertInstructorContactUsDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomCategories_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomCategories" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomCategories_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomCategoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentsJoinedToClassroomForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentsJoinedToClassroomForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetStudentsJoinedToClassroomForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStudentsJoinedToClassroomForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckClassroomMeetingOccuredToday_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckClassroomMeetingOccuredToday" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_CheckClassroomMeetingOccuredToday_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckClassroomMeetingOccuredTodayResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllTrialClassroomMeetingDetailsForStudent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllTrialClassroomMeetingDetailsForStudent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllTrialClassroomMeetingDetailsForStudent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllTrialClassroomMeetingDetailsForStudentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomReviews_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomReviews" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAllClassroomReviews_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllClassroomReviewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAvgRatingForClassroom_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvgRatingForClassroom" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetAvgRatingForClassroom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvgRatingForClassroomResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudent" />
   </wsdl:message>
@@ -1565,6 +1607,34 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudent" message="tns:ICpDataService_UpdatePhoneNoOfGmailRegStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudentResponse" message="tns:ICpDataService_UpdatePhoneNoOfGmailRegStudent_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="InsertInstructorContactUsDetail">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetail" message="tns:ICpDataService_InsertInstructorContactUsDetail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetailResponse" message="tns:ICpDataService_InsertInstructorContactUsDetail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomCategories">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomCategories" message="tns:ICpDataService_GetAllClassroomCategories_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomCategoriesResponse" message="tns:ICpDataService_GetAllClassroomCategories_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentsJoinedToClassroomForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudent" message="tns:ICpDataService_GetStudentsJoinedToClassroomForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudentResponse" message="tns:ICpDataService_GetStudentsJoinedToClassroomForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckClassroomMeetingOccuredToday">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredToday" message="tns:ICpDataService_CheckClassroomMeetingOccuredToday_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredTodayResponse" message="tns:ICpDataService_CheckClassroomMeetingOccuredToday_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllTrialClassroomMeetingDetailsForStudent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudent" message="tns:ICpDataService_GetAllTrialClassroomMeetingDetailsForStudent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudentResponse" message="tns:ICpDataService_GetAllTrialClassroomMeetingDetailsForStudent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomReviews">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomReviews" message="tns:ICpDataService_GetAllClassroomReviews_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAllClassroomReviewsResponse" message="tns:ICpDataService_GetAllClassroomReviews_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvgRatingForClassroom">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetAvgRatingForClassroom" message="tns:ICpDataService_GetAvgRatingForClassroom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetAvgRatingForClassroomResponse" message="tns:ICpDataService_GetAvgRatingForClassroom_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetClassroomHomeDetailsForStudent">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage" />
@@ -2603,6 +2673,69 @@
     </wsdl:operation>
     <wsdl:operation name="UpdatePhoneNoOfGmailRegStudent">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdatePhoneNoOfGmailRegStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertInstructorContactUsDetail">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertInstructorContactUsDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomCategories">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomCategories" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStudentsJoinedToClassroomForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentsJoinedToClassroomForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckClassroomMeetingOccuredToday">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/CheckClassroomMeetingOccuredToday" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllTrialClassroomMeetingDetailsForStudent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllTrialClassroomMeetingDetailsForStudent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllClassroomReviews">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAllClassroomReviews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvgRatingForClassroom">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetAvgRatingForClassroom" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

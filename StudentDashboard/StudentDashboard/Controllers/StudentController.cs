@@ -238,39 +238,39 @@ namespace StudentDashboard.Controllers
             }
             return View(ViewName);
         }
-        //[ValidateAntiForgeryToken]
-        //[AllowAnonymous]
-        //[HttpPost]
-        //public async Task<ActionResult> ResetPassword(FormCollection collection)
-        //{
-        //    string strCurrentMethodName = "ResetPassword";
-        //    string ViewName = "ForgotPassword";
-        //    try
-        //    {
-        //        StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
-        //        objStudentRegisterModal.m_strUserId = collection["userEmail"];
-        //        //string token = await objStudentService.InsertPasswordRecovery(objStudentRegisterModal.m_strUserId);
-        //        if (token != null&& token != string.Empty)
-        //        {
-        //            string sid = objStudentRegisterModal.m_strUserId;
-        //            return RedirectToAction("PasswordAuthRequest",new { sid, token });
-        //        }
-        //        else
-        //        {
-        //            ViewBag.Message = "User Id does not exist";
-        //        }
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
-        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-        //        MainLogger.Error(m_strLogMessage);
-        //        ViewName = "Error";
-        //    }
-        //    return View(ViewName);
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ResetPassword(FormCollection collection)
+        {
+            string strCurrentMethodName = "ResetPassword";
+            string ViewName = "ForgotPassword";
+            try
+            {
+                StudentRegisterModal objStudentRegisterModal = new StudentRegisterModal();
+                objStudentRegisterModal.m_strUserId = collection["userEmail"];
+                string token = await objStudentService.InsertPasswordRecovery(objStudentRegisterModal.m_strUserId);
+                if (token != null && token != string.Empty)
+                {
+                    string sid = objStudentRegisterModal.m_strUserId;
+                    return RedirectToAction("PasswordAuthRequest", new { sid, token });
+                }
+                else
+                {
+                    ViewBag.Message = "User Id does not exist";
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+                ViewName = "Error";
+            }
+            return View(ViewName);
 
-        //}
+        }
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [HttpPost]

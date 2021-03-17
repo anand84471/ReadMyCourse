@@ -22,6 +22,8 @@ namespace StudentDashboard
         public static readonly int COURSE_THUMBNAIL_WIDTH = 200;
         public static readonly int CLASSROOM_THUMBNAIL_WIDTH = 200;
         public static readonly int CLASSROOM_THUMBNAIL_HEIGHT = 200;
+        public static readonly int CURRENCY_INR_VALUE = 1;
+        public static readonly int CURRENCY_USD_VALUE = 80;
         
         public const int COURSE_STATUS_ACTIVE=2;
         public const int COURSE_STATUs_DELETED = 3;
@@ -45,7 +47,7 @@ namespace StudentDashboard
         public static readonly string ALERT_INSTRUCTOR_NEW_CLASSROOM_JOIN = "new classroom join";
         public static readonly string MESSEGE_SENDER_CLASSROOM = "admin";
         public static readonly string CONTENT_STATUS_ACTIVE = "active";
-        public static readonly string CONTENT_STATUS_INACTIVE = "in active";
+        public static readonly string CONTENT_STATUS_INACTIVE = "inactive";
         public static readonly string MEETING_STATUS_ACTIVE = "active";
         public static readonly string CLASSROOM_DEFAULT_IMAGE = "../../Images/course-3.jpg";
         public static readonly string MEETING_STATUS_CLOSED = "closed";
@@ -53,10 +55,13 @@ namespace StudentDashboard
         public static readonly string ACCESS_CODE_FOR_INTERNAL_ACCESS= "q96zSIeRwke2qflTV0kWRA";
         public static readonly string WEBSITE_LOGO_URL = "https://readmycourse.com/Images/site-logo-v2.png";
         public static readonly string WEBSITE_NAME = "ReadMyCourse";
-
+       
         public static readonly string COUNTY_CODE_INDIA = "INR";
         public static readonly string COUNTRY_CODE_FOREIGN = "USD";
         public static readonly int FOREIGN_COURRENCY_CONVERSION_CONSTANT = 2;
+        public static readonly string CLASSROOM_VIEW_VARIFIED = "ClassroomDashboard";
+        public static readonly string CLASSROOM_VIEW_VARIFICATION_PENDING = "ClassroomDashoardVarificationPending";
+        public static readonly string CLASSROOM_VIEW_INACTIVE = "ClassroomViewStatusCreated";
         #region Tiny url service
         public static string BASE_URL_PATH_FOR_ASSIGNMENT = "https://readmycourse.com/Assignment/Details?id=";
         public static string BASE_URL_PATH_FOR_TEST = "https://readmycourse.com/Test/Details?id=";
@@ -165,6 +170,17 @@ namespace StudentDashboard
         {
             INDIA=1,
             FOREIGN=2
+        }
+        public enum ClassroomVarificationStateId
+        {
+            VARIFICATION_PENDING=1,
+            ACCEPTED=2,
+            REJECTED=3
+        }
+        public enum CurrencyTypeEnum
+        {
+            INR=1,
+            USD=2
         }
     }
 }

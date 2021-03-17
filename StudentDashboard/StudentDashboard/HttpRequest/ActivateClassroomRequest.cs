@@ -28,5 +28,11 @@ namespace StudentDashboard.HttpRequest
         public string m_strTinyUrl;
         [JsonProperty("no_of_demo_classes")]
         public int m_iNoOfDemoClasses;
+        [JsonProperty("currency_type")]
+        public int m_iCurrencyType;
+        [JsonProperty("classroom_category_id")]
+        public int m_iCategoryId;
+        [JsonProperty("clasroom_level")]
+        public int m_iLevel;
     }
 }

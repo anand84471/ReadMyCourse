@@ -5,13 +5,17 @@
 }
 @using StudentDashboard.Models.Student;
 @model StudentClassroomHomeDetails
+<script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+<script src="https://unpkg.com/plyr@3"></script>
 <style type="text/css">
-
     /*Vertical Steps*/
     .inside-body {
         padding: 25px;
     }
-
+    .live-classes-row {
+        cursor: pointer;
+    }
+ 
     .list-group.vertical-steps .list-group-item {
         border: none;
         border-left: 3px solid #0052c2;
@@ -377,16 +381,16 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#navHome" onclick="showHomeDetails()"><span class="fa fa-home"></span> Home <span class="sr-only">(current)</span></a>
                     </li>
-                 
+                    <li class="nav-item">
+                        <a class="nav-link" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-play-circle"></span> Demo Videos</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#navMessagesContainer" onclick="showClassroomMessages()"><span class="fa fa-comments"></span>  Discussions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#navClassroomAttachments" onclick="getAllClassroomAttachments()"><span class="fa fa-book"></span> Study Materials</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-play-circle"></span> Live classes</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-pencil"></span>Tests</a>
                     </li>
@@ -427,7 +431,7 @@
                         <span class="badge badge-pill badge-light" id="successbadge" style="display:none">Joined Successfully</span>
                         <h4 class="text-white" id="classroomJoiningText">Full course fee &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee"></span> </h4>
                         <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoupon(1)">Pay now <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
-                        <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoupon(2)">Pay now ($)<i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
+                        <span><button class="p-2 btn btn-outline-light custom-green text-white font-weight-bold" id="enrollNowButton" onclick="requestCoupon(2)">Pay in dollars <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
                     </div>
 
                 </div>
@@ -506,8 +510,9 @@
                 <div class="add-items-container p-3 text-center ">
                     <div class="control-buttons">
                         <h2 id="isMeetingActive"></h2>
-                        <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
-                        <button class="btn  bg-primary text-white" id="meetingJoinLink"  data-toggle="tooltip" data-placement="top" title="Start live" onclick="requestClassroomPayment(1)"><span><i class="fa fa-play-circle"></i></span> Join live class</button>
+                        <button class="btn mb-1  bg-primary text-white" onclick="viewAllPreviousLiveClasses()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-play-circle p-1"></i></span>Previous class videos</button>
+                        <button class="btn mb-1 bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
+                        <button class="btn  mb-1 bg-primary text-white" id="meetingJoinLink" data-toggle="tooltip" data-placement="top" title="Start live" onclick="requestClassroomPayment(1)"><span><i class="fa fa-play-circle"></i></span> Join live class</button>
                     </div>
                 </div>
             </div>
@@ -525,95 +530,142 @@
                         <button class="btn  bg-primary text-white" onclick="requestCoupon(1)" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></span>Pay Now</button>
                         <button class="btn  bg-primary text-white" onclick="requestCoupon(2)" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></span>Pay in $</button>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="secctionTest"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 mb-2" id="navMessagesContainer" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header">Messages</div>
+            <div class="card-body">
+
+                <div class="ui-input-container-message " id="messagesContainer">
+                    <div class="question" id="questionContainer">
+                    </div>
+                </div>
+                <div class="add-items-container p-3">
+                    <div class="ui-input-container">
+
+                        <label class="ui-form-input-container">
+                            <textarea class="ui-form-input" id="classroomMessage" placeholder="Start asking doubts"></textarea>
+                        </label>
+                        <button type="button" onclick="callSubmitMessage(this)" class="btn btn-primary btn-sm">submit</button>
                     </div>
                 </div>
             </div>
             <div id="secctionTest"></div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6 mb-2" id="navMessagesContainer" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">Messages</div>
-                <div class="card-body">
+    <div class="col-lg-12 mb-2" id="navTeachingSessionsContainer" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header">View all teaching sessions</div>
+            <div class="card-body">
 
-                    <div class="ui-input-container-message " id="messagesContainer">
-                        <div class="question" id="questionContainer">
-                        </div>
-                    </div>
-                    <div class="add-items-container p-3">
-                        <div class="ui-input-container">
+            </div>
+            <div id="secctionTest"></div>
+        </div>
+    </div>
 
-                            <label class="ui-form-input-container">
-                                <textarea class="ui-form-input" id="classroomMessage" placeholder="Start asking doubts"></textarea>
-                            </label>
-                            <button type="button" onclick="callSubmitMessage(this)" class="btn btn-primary btn-sm">submit</button>
+    <div class="row col-lg-12 mb-2 p-0 pr-sm-1 pl-3" id="navPreviousClasses" style="display:none">
+        <div class="col-lg-8 p-0 p-1">
+            <div class="card shadow-lg">
+                <p class="text-center"><img id="no_video_present_img" class="text-center img-fluid" src="~/Images/no_video_present.png" style="max-width:300px"></p>
+                <h5 id="no-video-data-present" class="p-2 text-center align-items-center">Recording might not present.</h5>
+                <video id="topic-video-palyer-container" playsinline controls class="videos" style="display:none;">
+                    <source src="" id="video-url" type="video/webm" style="display:none;">
+                    Your browser does not support HTML video.
+                </video>
+                <h5 class="font-weight-bolder p-2" id="topic-name"></h5>
+                @*<hr />
+                    <div class="video-more-info">
+                        <div class="left d-sm-inline-flex">
+                            <h6>98 Views <i class="fa fa-line-chart"></i><small>26 January,2020</small> </h6>
+                            <div class="right d-sm-inline-flex">
+                                <h4>98 Likes <i class="fa fa-line-chart"></i> </h4>
+                                <h4>98 Comments <i class="fa fa-line-chart"></i> </h4>
+                                <h4>98 Share <i class="fa fa-line-chart"></i> </h4>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div id="secctionTest"></div>
+                    </div>*@
             </div>
         </div>
-        <div class="col-lg-12 mb-2" id="navTeachingSessionsContainer" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">View all teaching sessions</div>
-                <div class="card-body">
-
-                </div>
-                <div id="secctionTest"></div>
-            </div>
-        </div>
-        
-       
-        <div class="col-lg-12 mb-2" id="navClassroomSchedule" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">Classroom Schedule</div>
-                <div class="card-body">
-                    <div id="spinnerClassroomSchedule" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <h6>All the times are in IST(UTC +5:30).</h6>
-                    <table class="table table-responsive">
-                        <thead class="thead-light">
-                            <tr>
-                                <td>Day</td>
-                                <td>Status</td>
-                                <td>Start Time</td>
-                                <td>Close Time</td>
-                            </tr>
-                        </thead>
-                        <tbody id="classroomScheduleContainer">
-                        </tbody>
+        <div class="card p-0 col-lg-4  border-primary">
+            <div class="card-header">Live classes </div>
+            <div class="card-body">
+                <div class="table-responsive table-hover">
+                    <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
+                        <tbody id="tableBody"></tbody>
                     </table>
-                    <div id="footerClassroomSchedule" style="display:none">
-                        <h6 class="card-title"> No test found</h6>
+                </div>
+                <div id="spinner" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="text-center" id="footer" style="display:none">
+                    <div class="card-body">
+                        <h6 class="card-title"> Live class is not started.</h6>
+                        <div id="assignmentContainer" class="assignmentContainer"></div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Thank you!
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 mb-2" id="navClassroomSyllabus" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">Classroom Syllabus</div>
-                <div class="card-body">
-                    <div id="spinnerClassroomSyllabus" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
+    </div>
+    <div class="col-lg-12 mb-2" id="navClassroomSchedule" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header">Classroom Schedule</div>
+            <div class="card-body">
+                <div id="spinnerClassroomSchedule" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
-                    <div class="panel-group">
-                        <div id="classroomSyllabusContainer"> </div>
+                </div>
+                <h6>All the times are in IST(UTC +5:30).</h6>
+                <table class="table table-responsive">
+                    <thead class="thead-light">
+                        <tr>
+                            <td>Day</td>
+                            <td>Status</td>
+                            <td>Start Time</td>
+                            <td>Close Time</td>
+                        </tr>
+                    </thead>
+                    <tbody id="classroomScheduleContainer">
+                    </tbody>
+                </table>
+                <div id="footerClassroomSchedule" style="display:none">
+                    <h6 class="card-title"> No test found</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 mb-2" id="navClassroomSyllabus" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header">Classroom Syllabus</div>
+            <div class="card-body">
+                <div id="spinnerClassroomSyllabus" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
+                </div>
+                <div class="panel-group">
+                    <div id="classroomSyllabusContainer"> </div>
+                </div>
 
-                    <div id="footerClassroomSyllabus" style="display:none">
-                        <h6 class="card-title">No details found</h6>
-                    </div>
+                <div id="footerClassroomSyllabus" style="display:none">
+                    <h6 class="card-title">No details found</h6>
                 </div>
             </div>
         </div>
-        
-        
+    </div>
+
+
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="couponModal">
@@ -820,7 +872,7 @@
     var rzp1 = new Razorpay(options);
         rzp1.open();
     }
-    
+
     function joinClassroom(razorPayResponse) {
         debugger;
         $.ajax({
@@ -891,6 +943,49 @@
         $("#navPreviousClasses").show();
         getAllLiveClassMeetingDetailsForStudent();
 
+    }
+    function getAllLiveClassMeetingDetailsForStudent() {
+
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/Course/FetchAllTrailClassMeetingDetailForStudent?ClassroomId=@ViewBag.Id",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    var meetings = data.meetings;
+                    var isJoined = "absent";
+                    $('#tableBody').empty();
+                    var sNo = 0;
+                    var absentClass = "";
+                    for (var i = 0; i < meetings.length; i++) {
+                        sNo++;
+                        isJoined = "absent";
+                        absentClass = "danger";
+                        if (meetings[i].student_join_id != null) {
+                            isJoined = "present";
+                            absentClass = "info";
+                        }
+                        var rows = '<tr onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')" class="live-classes-row active a d-sm-flex align-items-center justify-content-between"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                        + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].date + '</td>'
+                        + '<td class="pr-2"><div class="text-' + absentClass + '">' + isJoined + '</div></td>'
+                        + ''
+                        + '</tr>';
+                        $('#tableBody').append(rows);
+                        $("#spinner").remove();
+                        $("#coursesTable").show();
+                    }
+                    showClassroomMeetingContent(meetings[meetings.length-1].meeting_id);
+                    $("#startPreviousMeeting").fadeIn();
+                    $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=@ViewBag.Id");
+                }
+                else {
+                    $("#footer").show();
+                    $("#spinner").remove();
+                }
+            }
+        });
     }
 
 
@@ -991,8 +1086,65 @@
             }
         });
     }
+    var player = null;
+ function showClassroomMeetingContent(meetingId) {
+        var _data =
+           {
+               "meeting_id": meetingId,
+               "classroom_id": "@ViewBag.Id"
+           }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/course/FetchLiveClassMeetingDetailForStudent",
+            success: function (data) {
+                debugger
+                if (data != null && data.response_code == 1) {
+                    $("#no-data-present").hide();
+                    if (data.meeting_details.topic_name != null) {
+                        $("#topic-name").text(data.meeting_details.topic_name);
+                    }
+                    if (data.meeting_details.video_url != null) {
+                        $("#topic-video-palyer-container").show();
+                        if (player == null) {
+                            player = new Plyr("#topic-video-palyer-container", { captions: { active: true } });
+                            window.player = player;
+
+                        }
+
+                        player.source = {
+                            type: 'video',
+                            sources: [
+                                {
+                                    src: data.meeting_details.video_url,
+                                    type: 'video/mp4',
+                                }
+                            ],
+                        };
+
+                        $("#video-url").show();
+                        $("#no-video-data-present").hide();
+                        $("#no_video_present_img").hide();
+                    }
+
+                    else {
+                        $("#topic-video-palyer-container").hide();
+                        $("#no_video_present_img").show();
+                        $("#video-url").hide();
+                        $("#no-video-data-present").show();
+                    }
+                }
+                else {
+                    $("#no-data-present").show();
+                    //else part of ajax call
+                }
+
+            }
+        });
+    }
 </script>
-<script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
-<script src="https://unpkg.com/plyr@3"></script>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

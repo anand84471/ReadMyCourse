@@ -51,7 +51,7 @@ namespace StudentDashboard.Models.Instructor
         [JsonProperty("classroom_registration_close_date")]
         public DateTime m_dtRegistrationCloseDate;
         [JsonProperty("classroom_class_start_date")]
-        public DateTime m_dtClassStartDate;
+        public DateTime? m_dtClassStartDate;
         [JsonProperty("stu_classroom_class_start_date")]
         public string m_strClassroomStartDate;
         [JsonProperty("stu_classroom_registration_close_date")]
@@ -60,16 +60,24 @@ namespace StudentDashboard.Models.Instructor
         public bool m_bIsRegistrationClosed;
         [JsonProperty("no_of_demo_sessions")]
         public int m_iNoOfDemoSessions;
+        public TimeScheduleDetails timeScheduleDetails;
+        public int? m_iClassroomVarificationStausCode;
+        public string m_strClassroomVarificationStausMessage;
+        public bool? m_bIsVarifiedByAdmin;
+        public int? m_iAdminVarificationCode;
+        public string m_strAdminVarificationMessage;
+
         public ClassRoomModal()
         {
 
         }
-        public ClassRoomModal(long ClassRoomId,string ClassRoomName,string CreationDate, string ClassroomStatus)
+        public ClassRoomModal(long ClassRoomId,string ClassRoomName,string CreationDate, string ClassroomStatus,int NoOfStudentsJoined)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
             this.m_strCreationDate = CreationDate; ;
             this.m_strClassroomStatus = ClassroomStatus;
+            this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string CreationDate, string ClassroomStatus,bool? IsMeetingActive)
         {
@@ -107,8 +115,41 @@ namespace StudentDashboard.Models.Instructor
             }
             this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomRegistrationCloseDate);
             this.m_strClassroomStartDate = MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomStartDate);
-            this.m_iNoOfDemoSessions = NoOfDemoClasses;
 
+        }
+        public ClassRoomModal(long ClassRoomId, string ClassRoomName, string ClassroomDescription, string CreationDate, string ClassroomStatus,
+          int NoOfPosts, string ShareUrl, string AccessCode, int NoOfAssignments, int NoOfTests, int NoOfStudentsJoined, int NoOfMeetings,
+          string BackgroundUrl, string MeetingName, DateTime? ClassroomStartDate, DateTime? ClassroomRegistrationCloseDate, int NoOfDemoClasses,
+          bool? IsVarifiedByAdmin, int ?AdminVarificationCode,string AdminVarificationMessage)
+        {
+            this.m_llClassRoomId = ClassRoomId;
+            this.m_strClassRoomName = ClassRoomName;
+            this.m_strCreationDate = CreationDate;
+            this.m_strClassRoomDescription = ClassroomDescription;
+            this.m_strClassroomStatus = ClassroomStatus;
+            this.m_iNoOfPosts = NoOfPosts;
+            this.m_strShareCode = AccessCode;
+            this.m_strShareUrl = ShareUrl;
+            this.m_iNoOfAssignments = NoOfAssignments;
+            this.m_iNoOfTests = NoOfTests;
+            this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
+            this.m_iNoOfMeetings = NoOfMeetings;
+            this.m_strBackGroundImageUrl = BackgroundUrl;
+            this.m_strClassroomMeetingName = MeetingName;
+            if (ClassroomStartDate != null)
+            {
+                this.m_strClassroomStartDate = ((DateTime)ClassroomStartDate).ToString("MM/dd/yyyy"); ;
+            }
+            else
+            {
+                this.m_strClassroomStartDate = "";
+            }
+            this.m_strClassroomRegistratioCloseDate = MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomRegistrationCloseDate);
+            this.m_strClassroomStartDate = MasterUtilities.GetDateByDateTimeYYYYMMDD(ClassroomStartDate);
+            this.m_iNoOfDemoSessions = NoOfDemoClasses;
+            this.m_bIsVarifiedByAdmin = IsVarifiedByAdmin;
+            this.m_iAdminVarificationCode = AdminVarificationCode;
+            this.m_strAdminVarificationMessage = AdminVarificationMessage;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
              string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise,
@@ -134,6 +175,7 @@ namespace StudentDashboard.Models.Instructor
             this.m_strClassroomStartDate= MasterUtilities.GetDateByDateTime(ClassStartDate);
             this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(ClassStartDate);
             this.m_iNoOfDemoSessions = NoOfDemoClasses;
+            this.m_dtClassStartDate = ClassStartDate;
         }
         
 

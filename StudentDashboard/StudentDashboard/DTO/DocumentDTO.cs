@@ -1,5 +1,7 @@
 ﻿using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
+using StudentDashboard.Models.Base;
+using StudentDashboard.Models.Category;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Document;
 using StudentDashboard.Models.Instructor;
@@ -454,7 +456,8 @@ namespace StudentDashboard.DTO
                            dataRow.Field<string>("CLASSROOM_SYLLABUS"),
                            dataRow.Field<string>("CLASSROOM_SCHEDULE_OBJ"),
                            dataRow.Field<DateTime?>("CLASS_START_DATE"),
-                           dataRow.Field<int>("NO_OF_DEMO_CLASSES")
+                           dataRow.Field<int>("NO_OF_DEMO_CLASSES"),
+                           dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE")
                          )).ToList()[0];
                 }
                 objClassRoomModal.m_llClassroomId = ClassroomId;
@@ -484,5 +487,84 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<List<GetAllClassroomCategory>> GetAllCategories()
+        {
+            List<GetAllClassroomCategory> lsGetAllClassroomCategory = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomCategoriesAsync();
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsGetAllClassroomCategory = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new GetAllClassroomCategory(
+                         dataRow.Field<int>("CATEGORY_ID"),
+                         dataRow.Field<string>("CATEGORY_NAME")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsGetAllClassroomCategory;
+        }
+        public async Task<List<RatingNormal>> GetAvgClassroomRating(long ClassroomId)
+        {
+            List<RatingNormal> lsRatings = new List<RatingNormal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAvgRatingForClassroomAsync(ClassroomId);
+
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsRatings = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new RatingNormal(
+                         dataRow.Field<int>("CLASSROOM_CONTENT_RATING"),
+                         dataRow.Field<int>("NO_OF_RATINGS")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsRatings;
+        }
+        public async Task<List<ReviewModel>> GetAllClassroomReviews(long ClassroomId, int NoOfRowsFetched, int MaxRowsToBeFetched)
+        {
+            List<ReviewModel> lsReviews = new List<ReviewModel>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomReviewsAsync(ClassroomId, MaxRowsToBeFetched, NoOfRowsFetched);
+
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsReviews = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ReviewModel(
+                         dataRow.Field<int>("NO_OF_RATINGS"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<string>("FEEDBACK_MESSAGE"),
+                         dataRow.Field<DateTime?>("FEEDBACK_DATE")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsReviews;
+        }
+
     }
 }

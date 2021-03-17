@@ -352,7 +352,8 @@ namespace CPDataService
         DataSet GetMeetingDetailsOfClassroom(long ClassRoomId);
         [OperationContract]
         bool ActivateClassroom(long ClassroomId, string ShareCode, string ShareUrl,
-            int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses);
+            int ClassroomPublicType, int ClassroomJoiningAmountInPaise, string StartTime, string ArrayOpeningDays, int NofDemoClasses,
+            int Category, int Level);
         [OperationContract]
         DataSet GetClasroomDetails(long ClassRoomId);
         [OperationContract]
@@ -386,8 +387,8 @@ namespace CPDataService
         [OperationContract]
         DataSet GetAllClassroomMessageAfterLastMessage(long ClassroomId, long LastMessageId);
         [OperationContract]
-        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, DateTime classroomStartDate,
-            DateTime classroomRegistrationCloseDate, int NoOfDemoSessions);
+        bool UpdateClassroomDetails(long ClassroomId, string ClassroomName, string ClassroomDescription, DateTime? classroomStartDate,
+            DateTime? classroomRegistrationCloseDate, int NoOfDemoSessions);
         [OperationContract]
         bool DeleteClassroom(long ClassroomId);
         [OperationContract]
@@ -441,7 +442,7 @@ namespace CPDataService
         [OperationContract]
         bool InsertClassroomSchedule(long ClassroomId, string ClassroomSchedule);
         [OperationContract]
-        DataSet GetPublicClassroomDetailsForStudent(long LastFetchedClassroomId, long StudentId,
+        DataSet GetPublicClassroomDetailsForStudent(int NoOfRowsFetched, long StudentId,
             int NoOfRecordsToBeFetched, string QueryString);
         [OperationContract]
         DataSet SearchForCourseForNotLoggedUser(string SerachString, int MaxRowToReturn, int NoOfRowsFetch, int SortType, long StudentId);
@@ -554,6 +555,22 @@ namespace CPDataService
         bool InsertOtpToVarifyPhoneNoOfStudent(long StudentId, string Otp);
         [OperationContract]
         bool UpdatePhoneNoOfGmailRegStudent(string UserId, string Token, string PhoneNo);
+        [OperationContract]
+        bool InsertInstructorContactUsDetail(int InstructorId, string Email, string PhoneNo, string Subject, string Message);
+        [OperationContract]
+        DataSet GetAllClassroomCategories();
+        [OperationContract]
+        DataSet GetStudentsJoinedToClassroomForStudent(long ClassroomId, long StudentId,
+                                              int MaxRowsToBeFetched, int NoOfRowsFetched);
+        [OperationContract]
+        DataSet CheckClassroomMeetingOccuredToday(long ClassroomId);
+        [OperationContract]
+        DataSet GetAllTrialClassroomMeetingDetailsForStudent(long StudentId, long ClassroomId);
+        [OperationContract]
+        DataSet GetAllClassroomReviews(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched);
+        [OperationContract]
+        DataSet GetAvgRatingForClassroom(long ClassroomId);
+
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

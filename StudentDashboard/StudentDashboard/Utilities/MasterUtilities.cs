@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentDashboard.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -92,6 +93,25 @@ namespace StudentDashboard.Utilities
             return result;
 
         }
-        public static TimeScheduleDetails 
+        public static TimeScheduleDetails GetTimer(TimeSpan time)
+        {
+            TimeScheduleDetails timeScheduleDetails = new TimeScheduleDetails();
+            try
+            {
+                timeScheduleDetails.days = (int)time.Days;
+                timeScheduleDetails.hours = (int)time.Hours;
+                timeScheduleDetails.minutes= (int)time.Minutes;
+                timeScheduleDetails.seconds = (int)time.Seconds;
+            }
+            catch(Exception Ex)
+            {
+                throw;
+            }
+            return timeScheduleDetails;
+        }
+        public static float GetPercentage(float number,float maxNumber)
+        {
+            return ((int)(100*(100*number / maxNumber)))/100;
+        }
     }
 }

@@ -3499,6 +3499,7 @@ input[type="button"].btn-block {
   padding-bottom: 0.5rem; }
 
 .navbar-collapse {
+    padding-left:8px;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
   -webkit-box-flex: 1;
@@ -8037,12 +8038,12 @@ h1, h2, h3, h4, h5,
   padding: 0; }
   @media (max-width: 991.98px) {
     .ftco-navbar-light {
-      background: #c4b3de  !important;
+      background: #fff  !important;
       position: relative;
       top: 0;
       padding: 10px 15px; } }
   .ftco-navbar-light .navbar-brand {
-    color: #c4b3de ; }
+    color: #fff ; }
     .ftco-navbar-light .navbar-brand:hover, .ftco-navbar-light .navbar-brand:focus {
       color: #000000; }
     @media (max-width: 991.98px) {
@@ -8063,12 +8064,13 @@ h1, h2, h3, h4, h5,
     .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover {
       color: #000000; }
     @media (max-width: 991.98px) {
-      .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
-        padding-left: 0;
-        padding-right: 0;
-        padding-top: .9rem;
-        padding-bottom: .9rem;
-        color: rgba(255, 255, 255, 0.7); }
+        .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: .9rem;
+            padding-bottom: .9rem;
+            color: #6c757d
+        }
         .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover {
           color: #fff; } }
   .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
@@ -8116,14 +8118,15 @@ h1, h2, h3, h4, h5,
     @media (max-width: 991.98px) {
       .ftco-navbar-light .navbar-nav > .nav-item.active > a {
         color: #fff; } }
-  .ftco-navbar-light .navbar-toggler {
+.ftco-navbar-light .navbar-toggler {
     border: none;
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: #6c757d;
     cursor: pointer;
     padding-right: 0;
     text-transform: uppercase;
     font-size: 16px;
-    letter-spacing: .1em; }
+    letter-spacing: .1em;
+}
     .ftco-navbar-light .navbar-toggler:focus {
       outline: none !important; }
   .ftco-navbar-light.scrolled {
@@ -8773,7 +8776,7 @@ h1, h2, h3, h4, h5,
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  height: 275px;
+  height: 150px;
   position: relative;
   display: block; }
 
@@ -9687,3 +9690,7 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+.nav-login {
+    margin-left: -10px;
+}

@@ -1,163 +1,202 @@
 ﻿@{
-    ViewBag.Title = "Join course";
+    ViewBag.Title ="ReadMyCourse | Become most appreciated educator";
     Layout = "~/Views/Shared/_AboutLayout.cshtml";
 }
-<style>
-       html,
-       body {
-           height: 100%;
-       }
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<style type="text/css">
+    .header-award {
+        padding-left: 0px;
+        padding-right: 0px;
+        max-width: 100vw;
+        min-height: 50vh;
+        min-width: 90vw;
+    }
 
-       .carousel,
-       .item,
-       .active {
-           height: 100%;
-       }
+    .poster-content {
+        padding-left: 0px;
+        padding-right: 0px;
+        min-width: 50vw;
+        min-width: 50vh;
+        background-color: blueviolet;
+    }
 
-       .carousel-inner {
-           height: 100%;
-           background: #000;
-       }
+    .poster-left {
+    }
 
-       .carousel-caption {
-           padding-bottom: 80px;
-       }
+    .header-img {
+        max-height: 40vh;
+        max-width: 100vw;
+    }
 
-       h2 {
-           font-size: 60px;
-       }
+    .hideable-on-small {
+    }
 
-       p {
-           padding: 10px
-       }
+    .poster-right {
+    }
 
-       /* Background images are set within the HTML using inline CSS, not here */
+    .poster-body {
+        padding: 3rem;
+    }
 
-       .fill {
-           width: 100%;
-           height: 100%;
-           background-position: center;
-           -webkit-background-size: cover;
-           -moz-background-size: cover;
-           background-size: cover;
-           -o-background-size: cover;
-           opacity: 0.6;
-       }
+    .animate {
+        transition: all 0.1s;
+        -webkit-transition: all 0.1s;
+    }
 
+    .action-button {
+        padding: 10px 40px;
+        border-radius: 10px;
+        font-family: 'Pacifico', cursive;
+        font-size: 25px;
+        color: #FFF;
+        text-decoration: none;
+    }
 
+    .blue {
+        background-color: #3498DB;
+        border-bottom: 5px solid #2980B9;
+        text-shadow: 0px -2px #2980B9;
+    }
 
-
-       /**
-    * Button
-    */
-       .btn-transparent {
-           background: transparent;
-           color: #fff;
-           border: 2px solid #fff;
-       }
-
-           .btn-transparent:hover {
-               background-color: #fff;
-           }
-
-       .btn-rounded {
-           border-radius: 70px;
-       }
-
-       .btn-large {
-           padding: 11px 45px;
-           font-size: 18px;
-       }
-
-       /**
-    * Change animation duration
-    */
-       .animated {
-           -webkit-animation-duration: 1.5s;
-           animation-duration: 1.5s;
-       }
-
-       @@-webkit-keyframes fadeInRight {
-           from {
-               opacity: 0;
-               -webkit-transform: translate3d(100px, 0, 0);
-               transform: translate3d(100px, 0, 0);
-           }
-
-           to {
-               opacity: 1;
-               -webkit-transform: none;
-               transform: none;
-           }
-       }
-
-       @@keyframes fadeInRight {
-           from {
-               opacity: 0;
-               -webkit-transform: translate3d(100px, 0, 0);
-               transform: translate3d(100px, 0, 0);
-           }
-
-           to {
-               opacity: 1;
-               -webkit-transform: none;
-               transform: none;
-           }
-       }
-
-       .fadeInRight {
-           -webkit-animation-name: fadeInRight;
-           animation-name: fadeInRight;
-       }
+    .card-group .card {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 </style>
-
-
-<!-- Full Page Image Background Carousel Header -->
-<div id="myCarousel" class="carousel slide">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Wrapper for Slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <!-- Set the first background image using inline CSS below. -->
-            <div class="fill" style="background-image:url('http://www.marchettidesign.net/demo/optimized-bootstrap/code.jpg');"></div>
-            <div class="carousel-caption">
-                <h2 class="animated fadeInLeft">Caption Animation</h2>
-                <p class="animated fadeInUp">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                <p class="animated fadeInUp"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
+<section>
+    <div class="header-award">
+        <div class="col-lg-12 p-0 m-0">
+            <div class="col-lg-12 p-0 m-0">
+                <div class="poster-left poster-content">
+                    <div class="poster-body align-content-between">
+                        <h2 class="text-white">Mentor students to help them unlock their true potential.</h2>
+                        <h6></h6>
+                        <p class="text-white">This is your chance to give back to the community - mentor students to help them unlock their true potential.</p>
+                        <a href="Instructor/Join" class="action-button shadow animate blue">Register Now</a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="item">
-            <!-- Set the second background image using inline CSS below. -->
-            <div class="fill" style="background-image:url('http://www.marchettidesign.net/demo/optimized-bootstrap/conference.jpg');"></div>
-            <div class="carousel-caption">
-                <h2 class="animated fadeInDown">Caption Animation</h2>
-                <p class="animated fadeInUp">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                <p class="animated fadeInUp"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
-            </div>
-        </div>
-        <div class="item">
-            <!-- Set the third background image using inline CSS below. -->
-            <div class="fill" style="background-image:url('http://www.marchettidesign.net/demo/optimized-bootstrap/campus.jpg');"></div>
-            <div class="carousel-caption">
-                <h2 class="animated fadeInRight">Caption Animation</h2>
-                <p class="animated fadeInRight">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                <p class="animated fadeInRight"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
+            <div class="col-lg-6 p-0">
+                <div class="poster-right poster-content"></div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="icon-prev"></span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="icon-next"></span>
-    </a>
-
-</div>
+<section class="">
+    <div class="container-fluid p-0">
+        <h2 class="text-center ">Why Should be a Mentor?</h2>
+        <div class="mb-1 card-group p-0">
+            <div class="col-lg-12 card-group">
+                <div class="card shadow ftco-animate">
+                    <div class="card-body">
+                        <img src="~/Images/icon/web_icons/pride.svg" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>A Matter of Pride</strong></h4>
+                        <h6 class="text-center"><strong>Opportunity to showcase your ability to help grow someone in their career. It makes you special and will be remembered by the community always.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body">
+                        <img src="~/Images/icon/web_icons/machine-learning.svg" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Endless Learning For You Too</strong></h4>
+                        <h6 class="text-center"><strong>Teaching improves your efficacy, confidence and communication skills. In addition to that it better organizes information to our mind.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body">
+                        <img src="~/Images/icon/web_icons/networking.svg" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>An Ever Growing Network</strong></h4>
+                        <h6 class="text-center"><strong>Meet professionals from different industries and build a long-lasting network of like-minded, driven individuals.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body">
+                        <img src="~/Images/icon/web_icons/microphone.svg" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Recognition And Earning</strong></h4>
+                        <h6 class="text-center"><strong>You will get the full credit of your work, earnings, certificate and appreciation from us.</strong></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="">
+    <div class="container-fluid p-0">
+        <h2 class="text-center ">How will you earn?</h2>
+        <div class="mb-1 card-group p-0">
+            <div class="col-lg-12 card-group">
+                <div class="card shadow ftco-animate">
+                    <div class="card-body text-center">
+                        <h4 class="text-center"><strong>Step 1</strong></h4>
+                        <img src="~/Images/icon/web_icons/shuttle.svg" class="text-center" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Launch</strong></h4>
+                        <h6 class="text-center"><strong>Launch any live course on our platform. It takes less than a minute. Choose any topic that you are most familier with.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body text-center">
+                        <h4 class="text-center"><strong>Step 2</strong></h4>
+                        <img src="~/Images/icon/web_icons/approved.svg" class="text-center" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Get Verified</strong></h4>
+                        <h6 class="text-center"><strong>Your course will be verified by our team. Such that it follows our community standards.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body text-center">
+                        <h4 class="text-center"><strong>Step 3</strong></h4>
+                        <img src="~/Images/icon/web_icons/live.svg" class="text-center" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Live</strong></h4>
+                        <h6 class="text-center"><strong>After verification your course will be live and student will start registering.</strong></h6>
+                    </div>
+                </div>
+                <div class="card shadow ftco-animate">
+                    <div class="card-body text-center">
+                        <h4 class="text-center"><strong>Step 4</strong></h4>
+                        <img src="~/Images/icon/web_icons/salary.svg" class="text-center" style="width:80px;height:80px;" />
+                        <h4 class="text-center"><strong>Start Earning</strong></h4>
+                        <h6 class="text-center"><strong>After students registered to your course, You can start the classroom and start earning.</strong></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="ftco-section ftco-no-pt ftc-no-pb">
+    <h1 class="text-center">About Us</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12  wrap-about py-5 wrap-about bg-light">
+                <div class="text px-4 ftco-animate">
+                    <h2 class="mb-4">Welcome to ReadMyCourse</h2>
+                    <p>
+                        <strong>readmycourse.com</strong> is a next generation e-learning platform which provides fully interactive live classes for professional courses and have an aim to create social network of students,
+                        instructors and institutions.
+                    </p>
+                    <h3>Our Mission</h3>
+                    <blockquote>
+                        “To accommodate everyone’s educational needs by providing self paced, relevant,
+                        and personalized content in an e-learning platform which bridges the gap between instructors and
+                        students worldwide through live courses by providing an “online live course marketplace” for instructors
+                        to create and sell their courses globally”
+                    </blockquote>
+                    <h3>Our Vision</h3>
+                    <blockquote>
+                        “To eliminate all educational restrictions & geographical boundaries & providing quality education by connecting Instructors and Students
+                        from all over the world to learn, earn and grow on our next-generation e-learning platform”
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(".live_class").hover(
+   function () {
+       $(this).addClass("shadow-lg");
+   },
+   function () {
+       $(this).removeClass("shadow-lg");
+   }
+ );
+   $("#becomeInstructor").addClass("active");
+</script>

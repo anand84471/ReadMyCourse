@@ -3,6 +3,7 @@ using StudentDashboard.HttpRequest;
 using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.ClassRoom;
 using StudentDashboard.Models;
+using StudentDashboard.Models.Base;
 using StudentDashboard.Models.Classroom;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Instructor;
@@ -963,7 +964,7 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("CLASSROOM_NAME"),
                           dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
                          dataRow.Field<DateTime>("JOINING_DATE").ToString("d MMM yyyy")
-                         
+
                          )).ToList();
                 }
             }
@@ -976,6 +977,7 @@ namespace StudentDashboard.DTO
             }
             return objClassRoomModal;
         }
+      
         public async Task<JitsiMeetingModal> GetClassroomMeetingDetails(long ClassroomId)
         {
             JitsiMeetingModal objJitsiMeetingModal = null;
@@ -1233,7 +1235,11 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_ASSIGNMENTS_SUBMITTED"),
                          dataRow.Field<bool>("IS_PAYMENT_DONE"),
                          dataRow.Field<DateTime?>("CLASSROOM_START_DATE"),
-                         dataRow.Field<int>("CLASSROOM_JOINING_FEE_IN_PAISE")
+                         dataRow.Field<int>("CLASSROOM_JOINING_FEE_IN_PAISE"),
+                         dataRow.Field<DateTime>("CLASS_JOINING_DATE").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("TOTAL_NO_OF_TESTS"),
+                         dataRow.Field<int>("TOTAL_NO_OF_MEETINGS"),
+                         dataRow.Field<int?>("CLASSROOM_RATING")
                          )).ToList()[0];
                 }
             }
@@ -1291,13 +1297,13 @@ namespace StudentDashboard.DTO
             }
             return objStudentRegisterModal;
         }
-        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(long LastClassroomId, int NoOfRecordsToBeFteched,
+        public async Task<List<GetPublicClassroomsResponse>> SearchClassroom(int NoOfRowsFecthed, int NoOfRecordsToBeFteched,
             long StudentId,string QueryString)
         {
             List<GetPublicClassroomsResponse> lsResponse = new List<GetPublicClassroomsResponse>();
             try
             {
-                DataSet ds = await objCPDataService.GetPublicClassroomDetailsForStudentAsync(LastClassroomId,
+                DataSet ds = await objCPDataService.GetPublicClassroomDetailsForStudentAsync(NoOfRowsFecthed,
                     StudentId, NoOfRecordsToBeFteched, QueryString);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
@@ -1313,7 +1319,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("INSTRUCTOR_NAME"),
                          dataRow.Field<string>("INSTRUCTOR_IMAGE_URL"),
                          dataRow.Field<int>("INSTRUCTOR_ID"),
-                         dataRow.Field<string>("CLASSROOM_BG_IMAGE_URL")
+                         dataRow.Field<string>("CLASSROOM_BG_IMAGE_URL"),
+                         dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE")
                          )).ToList();
                 }
             }
@@ -1773,7 +1780,6 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("MEETING_TOPIC"),
                          dataRow.Field<long?>("STUDENT_MEETING_JOIN_ID"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
-                         
                          )).ToList();
                 }
             }
@@ -1781,6 +1787,32 @@ namespace StudentDashboard.DTO
             {
                 m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
                 m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentLiveClassMeetingDetails;
+        }
+        public async Task<List<StudentLiveClassMeetingDetails>> GetAllTrialLiveClassMeetingDetailsForStudnet(long StudentId, long ClassroomId)
+        {
+            List<StudentLiveClassMeetingDetails> lsStudentLiveClassMeetingDetails = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllTrialClassroomMeetingDetailsForStudentAsync(StudentId, ClassroomId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsStudentLiveClassMeetingDetails = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentLiveClassMeetingDetails(
+                         dataRow.Field<long>("MEETING_ID"),
+                         dataRow.Field<string>("MEETING_TOPIC"),
+                         dataRow.Field<long?>("STUDENT_MEETING_JOIN_ID"),
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllTrialLiveClassMeetingDetailsForStudnet", Ex.ToString());
                 m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
                 MainLogger.Error(m_strLogMessage);
             }
@@ -1997,6 +2029,91 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        public async Task<List<StudentsJoinedToClassroomDetailsForStudent>> GetStudentsJoinedToClassroom(StudentsJoinedToClassroomRequestForStudent studentsJoinedToClassroomRequestForStudent)
+        {
+            List<StudentsJoinedToClassroomDetailsForStudent> lsStudentsJoinedToClassroomDetailsForStudent = new List<StudentsJoinedToClassroomDetailsForStudent>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetStudentsJoinedToClassroomForStudentAsync(studentsJoinedToClassroomRequestForStudent.m_llClassroomId,
+                    studentsJoinedToClassroomRequestForStudent.m_llStudentId, studentsJoinedToClassroomRequestForStudent.m_iMaxRowsToBeFetched,
+                    studentsJoinedToClassroomRequestForStudent.m_iNoOfRowsFetched);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsStudentsJoinedToClassroomDetailsForStudent = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentsJoinedToClassroomDetailsForStudent(
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("DATE_OF_JOINING").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_FOLLOWERS"),
+                         dataRow.Field<int>("NO_OF_STUDENTS_HE_FOLLOWING"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<DateTime?>("DATE_OF_FOLLOWING")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsStudentsJoinedToClassroomDetailsForStudent;
+        }
+        public async Task<List<RatingNormal>> GetAvgClassroomRating(long ClassroomId)
+        {
+            List<RatingNormal> lsRatings = new List<RatingNormal>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAvgRatingForClassroomAsync(ClassroomId);
+                    
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsRatings = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new RatingNormal(
+                         dataRow.Field<int>("CLASSROOM_CONTENT_RATING"),
+                         dataRow.Field<int>("NO_OF_RATINGS")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsRatings;
+        }
+        public async Task<List<ReviewModel>> GetAllClassroomReviews(long ClassroomId,int NoOfRowsFetched,int MaxRowsToBeFetched)
+        {
+            List<ReviewModel> lsReviews = new List<ReviewModel>();
+            try
+            {
+                DataSet ds = await objCPDataService.GetAllClassroomReviewsAsync(ClassroomId, MaxRowsToBeFetched,NoOfRowsFetched);
+
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    lsReviews = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new ReviewModel(
+                         dataRow.Field<int>("NO_OF_RATINGS"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<string>("FEEDBACK_MESSAGE"),
+                         dataRow.Field<DateTime?>("FEEDBACK_DATE")
+                         )).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return lsReviews;
         }
     }
 }
