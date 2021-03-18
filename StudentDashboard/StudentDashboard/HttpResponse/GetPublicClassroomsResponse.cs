@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StudentDashboard.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace StudentDashboard.HttpResponse
         public int m_iNoOfRatings;
         [JsonProperty("is_registration_closed")]
         public bool m_bIsRegistrationClosed;
+        public int PriceForForeignStudents;
         public GetPublicClassroomsResponse(string classroomName,
             long classroomId,string creationDate,int noOfEnrollments,long? StudentJoinId,
             DateTime? JoiningDate,int ClassroomJoiningFeeInPaise,string InstructorName,string InstructorImageUrl,
@@ -55,7 +57,7 @@ namespace StudentDashboard.HttpResponse
             }
             else
             {
-                this.m_strClassrooomJoiningFee = "&#8377 "+(ClassroomJoiningFeeInPaise/100).ToString();
+                this.m_strClassrooomJoiningFee = "&#8377 "+(ClassroomJoiningFeeInPaise/100).ToString()+ " / US&#36 " + PriceUtils.GetPriceForForeignStudents(ClassroomJoiningFeeInPaise);
             }
             this.m_strClassroomImage = ClassroomImageUrl;
             this.m_strInstructorName = InstructorName;

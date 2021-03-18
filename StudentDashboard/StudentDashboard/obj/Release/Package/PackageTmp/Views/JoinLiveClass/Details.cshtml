@@ -583,11 +583,11 @@
 
                         @if (Model.m_strClassroomCharge != "free")
                         {
-                            <h4 class="text-white" id="classroomJoiningText">Price &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee">@Model.m_strClassroomCharge</span>  <span class="badge badge-pill badge-light" style="text-decoration: line-through;">@Model.m_strPromotonialCharge</span></h4>
+                    <h4 class="text-white" id="classroomJoiningText">Price <strong>&#8377  <span class="" id="classroomJoiningFee">@Model.m_strClassroomCharge</span>  <span class="" style="text-decoration: line-through;">@Model.m_strPromotonialCharge</span>  / US&#36 @Model.m_iPriceForForeignStudents </strong> </h4>
                         }
                         else
                         {
-                            <h4 class="text-white" id="classroomJoiningText">Price &#8377  <span class="badge badge-pill badge-light" id="classroomJoiningFee">@Model.m_strClassroomCharge</span></h4>
+                            <h4 class="text-white" id="classroomJoiningText">Price free  </h4>
                         }
                         @if (Model.m_bIsRegistrationClosed)
                         {
@@ -1294,7 +1294,7 @@
                             rating+='<div class="d-flex">'
                                 + '<img class="review-image" src="' + review_details.profile_url + '" onerror="loadDefaultImage(this)" />'
                                         +'<div>'
-                                + '<a href="StudentProfile?id=' + review_details.user_id+'" class="font-weight-bold reviewer-name">'+review_details.name+'</a>'
+                                + '<a href="../../Student/StudentProfile?id=' + review_details.user_id+'" class="font-weight-bold reviewer-name">'+review_details.name+'</a>'
                                             +'<p class="review-date">'+review_details.date+'</p> '
                                         +'</div> '
                                     +'</div>'

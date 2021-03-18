@@ -595,6 +595,7 @@
     <Compile Include="Utilities\ImageCompressionUtilities.cs" />
     <Compile Include="Utilities\MainLogger.cs" />
     <Compile Include="Utilities\MasterUtilities.cs" />
+    <Compile Include="Utilities\PriceUtils.cs" />
     <Compile Include="Utilities\RazorPayPaymentIntegration.cs" />
     <Compile Include="Utilities\SHA256Encryption.cs" />
     <Compile Include="Models\Student\TestSubmissionModal.cs" />

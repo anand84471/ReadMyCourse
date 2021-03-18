@@ -32,8 +32,8 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
   .card-img-top{
     max-width: 22.8rem !important;
     max-height: 12.8rem !important;
-    padding: 0.5rem;
-    border-radius:15px;
+
+  
 }
 .card-bodys{
     padding-top: 0.8rem;
@@ -160,8 +160,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     border-radius: 4px;
     font-weight: bold;
     text-align: center;
-    width: 5rem;
 
+
+    float: right;
+}
+.live-registration-open{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border: 2px solid green;
+    color: green;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
     float: right;
 }
 
@@ -316,7 +326,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         function initiliazeJoinNewClassroom()
         {
             $("#live-classes-container").empty();
-            lastClassroomIdFetched = 0;
+            noOfRecordFectched = 0;
             searchForClassrooms();
         }
 </script>
@@ -331,7 +341,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         });
         $("#spinner").remove();
     })();
-    var lastClassroomIdFetched=0;
+    var noOfRecordFectched=0;
     function searchForClassrooms() {
         var queryString = $("#classroomSearchBox").val();
         if (queryString == null)
@@ -339,7 +349,9 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             queryString = "";
         }
         var _data = {
-
+            "serach_request": queryString,
+            "no_of_record_fetched": noOfRecordFectched,
+            "max_rows_to_be_fecthed": 10
         };
         $.ajax({    
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
@@ -347,11 +359,13 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: "/api/v1/Course/SearchClassroom",
+            data: JSON.stringify(_data),
             success: function (data) {
                 debugger
                 if (data != null && data.response_code == 1) {
                     var row = '';
                     var classrooms = data.classrooms;
+                    noOfRecordFectched += classrooms.length;
                     if (classrooms != null && classrooms.length > 0) {
                         for (var i = 0; i < classrooms.length; i++) {
                             lastClassroomIdFetched = classrooms[i].classroom_id;
@@ -363,13 +377,20 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                                 if (classrooms[i].classroom_image == null) {
                                     classrooms[i].classroom_image = "../../Images/join_new_static_course_graphics.jpg";
                                 }
+                                var highlight = "Live Class";
+                                var highlightclass = "live-registration-open";
+                                if (classrooms[i].is_registration_closed == true) {
+                                    highlight = "Registration Closed";
+                                    highlightclass = "live";
+                                }
                                 row = '<div class="col-md-6 col-lg-4 col-sm-12 my-2 my_card">'
                             + '<div class="card live-class-cards shadow-lg" >'
                               //+ '<div class="badge-course-complexity">Beginner</div>'
                               + '<img src="' + classrooms[i].classroom_image + '" class="card-img-top" alt="course">'
                               + '<div class="card-body card-bodys">'
-                                + '<div class="live ml-1">Live Class</div>'
-                                + '<div class="card-title card-titles">' + classrooms[i].classroom_name + '</div>'
+                                
+                                    + '<div class="card-title card-titles">' + classrooms[i].classroom_name + '</div>'
+                                    + '<div class="' + highlightclass+' ml-1">' + highlight + '</div>'
                                 + '<div class="stars-outer">'
                                   + '<div class="stars-inner">'
                                   + '</div>'
