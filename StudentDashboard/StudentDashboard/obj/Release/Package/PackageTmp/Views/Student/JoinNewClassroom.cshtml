@@ -30,7 +30,7 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
 </style>
 <style type="text/css">
   .card-img-top{
-    max-width: 22.8rem !important;
+   /* max-width: 22.8rem !important;*/
     max-height: 12.8rem !important;
 
   
@@ -130,8 +130,8 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     line-height: 1.5;
 }
 .price{
-    margin: .5rem 0 0;
-    font-size: 2rem;
+
+    font-size: 1.0rem;
     font-weight: 600;
     padding: .2rem 0 0;
     color: #7a17eb;
@@ -153,27 +153,29 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
     opacity: 0.8;       
 }
 .live{
-    margin-bottom: 0;
+   margin-bottom: 0;
     padding-bottom: 0;
     border: 2px solid red;
     color: red;
     border-radius: 4px;
     font-weight: bold;
-    text-align: center;
-
-
-    float: right;
-}
-.live-registration-open{
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border: 2px solid green;
-    color: green;
-    border-radius: 4px;
-    font-weight: bold;
+    padding: 0.2rem;
     text-align: center;
     float: right;
+    font-size: 0.8rem;
 }
+    .live-registration-open {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border: 2px solid #09e176;
+        color: #09e176;
+        border-radius: 4px;
+        font-weight: bold;
+        text-align: center;
+        float: right;
+        font-size: 0.9rem;
+        padding: 0.2rem;
+    }
 
 @@media only screen and (max-width: 600px) {
     .parent{
@@ -181,11 +183,11 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
         margin-right: 0 !important;
     }
     .live-class-cards{
-        width: 21rem !important;
-        min-height: 29rem !important;
+   /*     width: 21rem !important;
+        min-height: 29rem !important;*/
     }
     .card-img-top{
-        width: 20.8rem !important;
+/*        width: 20.8rem !important;*/
     }
 }
 </style>
@@ -390,15 +392,18 @@ background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 1
                               + '<div class="card-body card-bodys">'
                                 
                                     + '<div class="card-title card-titles">' + classrooms[i].classroom_name + '</div>'
+                                    
+                                    + '<p class="card-text card-texts">20+ LIVE Lessons | English | Guided Project</p>'
                                     + '<div class="' + highlightclass+' ml-1">' + highlight + '</div>'
                                 + '<div class="stars-outer">'
-                                  + '<div class="stars-inner">'
-                                  + '</div>'
+                                    + '<div class="stars-inner">'
+                                    + '</div>'
                                   + '<spam >5</spam>'
                                   + '<spam > (' + classrooms[i].no_of_enrollments + ') </spam>'
-                                  + '<p class="ml-3 price">' + classrooms[i].classroom_joining_fee + '</p>'
-                                + '</div>'
-                                + '<p class="card-text card-texts">20+ Exclusive Lessons |  English</p>'
+
+                                    + '</div>'
+                                    + '<p class="price">Price: ' + classrooms[i].classroom_joining_fee + '</p>'
+                                
                                 + '<div class="author">'
                                 
                                   + '<img src="' + classrooms[i].instructor_image + '"alt="prof" />'

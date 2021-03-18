@@ -1006,9 +1006,9 @@
                             <div class="form-group">
                                 <label for="exampleFormControlFile1">Upload attachment</label>
                                 <input type="file" id="studyMaterialUpload" name="file" accept="*" />
-                                <button type="button" class="btn btn-primary" onclick="requestFileUpload()">Upload</button>
+                                <button type="button" class="btn btn-primary" onclick="requestFileUploadForStudyMaterial()">Upload</button>
                                 <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBar"></div>
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBarForAttachment"></div>
                                 </div>
                                 <div class="alert alert-success" id="postFileUploadAlert" style="display:none" role="alert">
                                     file uploaded successfully
@@ -1430,7 +1430,31 @@
         <!--/.Content-->
     </div>
 </div>
-<script>
+<div class="modal fade" id="classroomUpdateTopicModal" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Update classroom syllabus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter topic name</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="updateCurrentWeekTopic" placeholder="please enter topic name" value="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateTopic()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script>
 
     //tinymce.init({
     //    selector: '#classroomPost',
@@ -1631,12 +1655,12 @@
     function getStudentMeetingDetails(meetingId) {
         //debugger;
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },-->
             @*data: {
                 "MeetingId": meetingId,
                 "ClassroomId": "@Model.m_llClassRoomId"
             },*@
-            type: "POST",
+            <!--type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: "/api/v1/instructor/GetAllStudentsJoinedToMeeting?ClassroomId=@Model.m_llClassRoomId&MeetingId=".concat(meetingId),
@@ -1926,12 +1950,12 @@
         $("#navAllAssignments").show();
         //debugger;
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },-->
             @*data: {
                 "MeetingId": meetingId,
                 "ClassroomId": "@Model.m_llClassRoomId"
             },*@
-            type: "POST",
+            <!--type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: "/api/v1/instructor/GetAllClassroomAssignment?ClassroomId=@Model.m_llClassRoomId",
@@ -3030,6 +3054,11 @@
             }
         });
     }
+</script>-->
+<script type="text/javascript">
+    localStorage.setItem("classroom_id", "@Model.m_llClassRoomId");
 </script>
 <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
 <script src="https://unpkg.com/plyr@3"></script>
+<script type="text/javascript" src="~/Scripts/Classroom/ClassroomDashboard.js"></script>
+

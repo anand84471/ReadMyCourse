@@ -905,7 +905,51 @@ function requestFileUpload() {
         }
     });
 }
+function requestFileUploadForStudyMaterial() {
+    document.getElementById("fileUploadProgressBarForAttachment").style.width = "0%";
+    debugger
+    var data = new FormData();
+    var file = $('#studyMaterialUpload')[0];
+    data.append('file', file.files[0]);
+    $.ajax({
+        xhr: function () {
+            var xhr = new window.XMLHttpRequest();
 
+            xhr.upload.addEventListener("progress", function (evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    document.getElementById("fileUploadProgressBarForAttachment").style.width = percentComplete + "%";
+
+                }
+            }, false);
+
+            return xhr;
+        },
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        data: data,
+        url: "/api/v1/instructor/UploadFile",
+        success: function (data) {
+            debugger
+            if (data != null && data.response_code == 1) {
+                backGroundImagePath = data.file_location;
+                $("#attachmentUrl").val(backGroundImagePath);
+                $("#attachmentUrl").prop("disabled", true);
+                $("#postFileUploadAlert").show();
+                $("#postFileUploadAlert").append('<a type="button" target="_blank" href="' + data.file_location + '" class="btn btn-link" >download upload&rarr;</a>');
+
+            }
+            else {
+
+            }
+        }
+    });
+}
 function validateUrl(id) {
     var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
     if ($(id).val() != "" && re.test($(id).val())) {
@@ -1568,7 +1612,7 @@ function sendClassroomSMSNotificationToAllStudents() {
         }
     });
 }
-function onStart() {
+function setNavLinkBehavior() {
     $('.nav-link').on('click', event => {
         $('.nav-link').each(function () {
             $(this).removeClass("active");
@@ -1577,4 +1621,4 @@ function onStart() {
         clickedElement.addClass("active");
     });
 }
-onStart();
+setNavLinkBehavior();

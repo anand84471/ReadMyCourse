@@ -822,6 +822,7 @@
     <Content Include="Scripts\AboutScripts\.DS_Store" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Classroom\ClassroomDashboard.js" />
+    <Content Include="Scripts\Classroom\ClassroomDashboardActive.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
