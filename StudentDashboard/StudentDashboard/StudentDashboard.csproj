@@ -321,6 +321,7 @@
     <Compile Include="HttpRequest\AssignmentSubmissionRequest.cs" />
     <Compile Include="HttpRequest\ClassroomAttachmentRequest.cs" />
     <Compile Include="HttpRequest\ClassroomFeedbackRequest.cs" />
+    <Compile Include="HttpRequest\ClassroomNewBatchRequest.cs" />
     <Compile Include="HttpRequest\ClassroomNotificationMasterDetails.cs" />
     <Compile Include="HttpRequest\ContactUsApiRequest.cs" />
     <Compile Include="HttpRequest\ContentSearchRequest.cs" />

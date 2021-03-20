@@ -570,7 +570,8 @@ namespace CPDataService
         DataSet GetAllClassroomReviews(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched);
         [OperationContract]
         DataSet GetAvgRatingForClassroom(long ClassroomId);
-
+        [OperationContract]
+        bool AddNewBatchToClassroom(long ClassroomId, DateTime? RegistrationCloseDate);
     }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]

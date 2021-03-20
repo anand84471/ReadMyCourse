@@ -324,5 +324,21 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
+        public async Task<bool> AddBatchToClassroom(ClassroomNewBatchRequest classroomNewBatchRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objInstructorDTO.AddBatchToClassroom(classroomNewBatchRequest);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AddBatchToClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

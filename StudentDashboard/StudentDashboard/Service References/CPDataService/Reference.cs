@@ -134,6 +134,12 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetAvgRatingForClassroom", ReplyAction="http://tempuri.org/ICpDataService/GetAvgRatingForClassroomResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetAvgRatingForClassroomAsync(long ClassroomId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewBatchToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewBatchToClassroomResponse")]
+        bool AddNewBatchToClassroom(long ClassroomId, System.Nullable<System.DateTime> RegistrationCloseDate);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/AddNewBatchToClassroom", ReplyAction="http://tempuri.org/ICpDataService/AddNewBatchToClassroomResponse")]
+        System.Threading.Tasks.Task<bool> AddNewBatchToClassroomAsync(long ClassroomId, System.Nullable<System.DateTime> RegistrationCloseDate);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
         System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
         
@@ -2765,6 +2771,14 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetAvgRatingForClassroomAsync(long ClassroomId) {
             return base.Channel.GetAvgRatingForClassroomAsync(ClassroomId);
+        }
+        
+        public bool AddNewBatchToClassroom(long ClassroomId, System.Nullable<System.DateTime> RegistrationCloseDate) {
+            return base.Channel.AddNewBatchToClassroom(ClassroomId, RegistrationCloseDate);
+        }
+        
+        public System.Threading.Tasks.Task<bool> AddNewBatchToClassroomAsync(long ClassroomId, System.Nullable<System.DateTime> RegistrationCloseDate) {
+            return base.Channel.AddNewBatchToClassroomAsync(ClassroomId, RegistrationCloseDate);
         }
         
         public System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId) {

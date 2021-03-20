@@ -778,5 +778,22 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
+        public async Task<bool> AddBatchToClassroom(ClassroomNewBatchRequest classroomNewBatchRequest)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.AddNewBatchToClassroomAsync(classroomNewBatchRequest.m_llClassroomId,
+                    classroomNewBatchRequest.m_dtBatchStartDate);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomSyllabus", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

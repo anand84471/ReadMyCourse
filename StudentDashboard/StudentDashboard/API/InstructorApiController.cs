@@ -2875,5 +2875,33 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+        [Route("AddBatch")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> AddBatchToClassroom(ClassroomNewBatchRequest classroomNewBatchRequest)
+        {
+            SearchInstructorByUserIdResponse objResonse = new SearchInstructorByUserIdResponse();
+            try
+            {
+                if (classroomNewBatchRequest != null)
+                {
+                    int InstructorId = GetInstructorIdInRequest();
+                    if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(classroomNewBatchRequest.m_llClassroomId, InstructorId))
+                    {
+                        if (InstructorId != -1 && await objInstructorService.AddBatchToClassroom(classroomNewBatchRequest))
+                        {
+                            objResonse.SetSuccessResponse();
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "AddBatchToClassroom", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
     }
 }

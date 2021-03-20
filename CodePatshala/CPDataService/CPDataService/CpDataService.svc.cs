@@ -10007,5 +10007,42 @@ namespace CPDataService
             }
             return sDS;
         }
+        public bool AddNewBatchToClassroom(long ClassroomId, DateTime? RegistrationCloseDate)
+        {
+            bool result = false;
+            string strCurrentMethodName = "InsertContactFormDetails";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spAddNewBatchToClassroom", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llClassroomId", SqlDbType.Int).Value = ClassroomId;
+                m_command.Parameters.Add("@dtRegisrationCloseDate", SqlDbType.Date).Value = RegistrationCloseDate;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
     }
 }
