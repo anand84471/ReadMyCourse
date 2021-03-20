@@ -6926,7 +6926,7 @@ namespace CPDataService
                 {
                     m_command.Parameters.Add("@dtClassroomRegistrationCloseDate", SqlDbType.DateTime).Value = classroomRegistrationCloseDate;
                 }
-                if(classroomRegistrationCloseDate==null)
+                if(classroomStartDate == null)
                 {
                     m_command.Parameters.Add("@dtClassroomStartDate", SqlDbType.DateTime).Value = DBNull.Value;
                 }

@@ -821,6 +821,8 @@
 </div>
 <!--Modals end-->
 <script type="text/javascript">
-    localStorage.setItem("classroom_id", "@Model.m_llClassRoomId");
+     function getClassroomId() {
+        return "@Model.m_llClassRoomId";
+    }
 </script>
 <script type="text/javascript" src="~/Scripts/Classroom/ClassroomDashboard.js"></script>

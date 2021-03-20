@@ -720,7 +720,7 @@ namespace StudentDashboard.API
         }
         [Route("InsertAssignmentResponse")]
         [HttpPost]
-        public SubmitAssignmentResponse InsertAssignmentResponse([FromBody] AssignmentSubmissionRequest objAssignmentSubmissionRequest)
+        public async Task<SubmitAssignmentResponse> InsertAssignmentResponse([FromBody] AssignmentSubmissionRequest objAssignmentSubmissionRequest)
         {
             if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated || objAssignmentSubmissionRequest == null)
             {
@@ -732,7 +732,7 @@ namespace StudentDashboard.API
             try
             {
                 objAssignmentSubmissionRequest.m_llStudentId = StudentId;
-                if (objStudentService.InserAssignmentResponse(objAssignmentSubmissionRequest))
+                if (await objStudentService.InserAssignmentResponse(objAssignmentSubmissionRequest))
                 {
                     objResponse.m_llSubmissionId = objAssignmentSubmissionRequest.m_llSubmissionId;
                     objResponse.m_iResponseCode = Constants.API_RESPONSE_CODE_SUCCESS;

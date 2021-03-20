@@ -315,7 +315,7 @@ namespace StudentDashboard.ServiceLayer
                 result = await objStudentDTO.JoinStudentToInstructor(StudentId, InstructorId);
                 if(result)
                 {
-                    objInstructorAlertManager.AddStudentJoinAlert(StudentId, InstructorId);
+                     await objInstructorAlertManager.AddStudentJoinAlert(StudentId, InstructorId);
                 }
             }
             catch (Exception Ex)
@@ -424,7 +424,7 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsAssignmentDetailsModel;
         }
-        public bool InserAssignmentResponse(AssignmentSubmissionRequest objAssignmentSubmissionRequest)
+        public async Task<bool> InserAssignmentResponse(AssignmentSubmissionRequest objAssignmentSubmissionRequest)
         {
             bool result = false;
             try
@@ -433,7 +433,7 @@ namespace StudentDashboard.ServiceLayer
                 result = objStudentDTO.InserAssignmentResponse(objAssignmentSubmissionRequest);
                 if(result)
                 {
-                    objInstructorAlertManager.AddAssignmentSubmissionAlert(objAssignmentSubmissionRequest.m_llStudentId, objAssignmentSubmissionRequest.m_llAssignmentId);
+                    await objInstructorAlertManager.AddAssignmentSubmissionAlert(objAssignmentSubmissionRequest.m_llStudentId, objAssignmentSubmissionRequest.m_llAssignmentId);
                 }
             }
             catch (Exception Ex)
