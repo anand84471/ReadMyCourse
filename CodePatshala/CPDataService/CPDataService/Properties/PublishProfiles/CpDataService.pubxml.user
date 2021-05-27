@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\D\Build\test\ReadMyCourseHome\18_3_2021_NEW\dataservice</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\D\Build\test\ReadMyCourseHome\10_5_2021\dataservice</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -16,10 +16,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2020 11:11:53</publishTime>
     </File>
     <File Include="bin/CPDataService.dll">
-      <publishTime>03/18/2021 13:41:46</publishTime>
+      <publishTime>05/10/2021 18:34:52</publishTime>
     </File>
     <File Include="bin/CPDataService.pdb">
-      <publishTime>03/18/2021 13:41:46</publishTime>
+      <publishTime>05/10/2021 18:34:52</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>12/08/2020 11:11:58</publishTime>

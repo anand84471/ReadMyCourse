@@ -570,8 +570,56 @@ namespace CPDataService
         DataSet GetAllClassroomReviews(long ClassroomId, int NoOfRowsToBeFetched, int NoOfRowsFetched);
         [OperationContract]
         DataSet GetAvgRatingForClassroom(long ClassroomId);
+        [OperationContract]
+        bool InsertStudentSession(long StudentId, string Token, DateTime SessionExpiryTime);
+        [OperationContract]
+        DataSet GetStudentSessionDetails(string SessionToken);
+        [OperationContract]
+        DataSet GetStudentDetailsByEmailId(string EmailId);
+        [OperationContract]
+        bool LogoutStudentSession(string Token);
+        [OperationContract]
+        DataSet GetClassroomCoursesForCategories(int CategoryId);
+        [OperationContract]
+        DataSet GetAllClassroomForCategories(int CategoryId, int NoOfRowsFetched, int NoOfRowsToBeFecthed);
+        [OperationContract]
+        DataSet GetTredndingClassrooms(int NoOfRowsFetched, int NoOfRowsToBeFecthed);
+        [OperationContract]
+        DataSet GetPopularClassrooms(int NoOfRowsFetched, int NoOfRowsToBeFecthed);
+        [OperationContract]
+        DataSet GetRecommendedClassrooms(long StudentId, int NoOfRowsFetched, int NoOfRowsToBeFecthed);
+        [OperationContract]
+        bool InsertClassroomView(long ClassroomId, long StudentId);
+        [OperationContract]
+        DataSet GetInstructorPublicDetails(int InstructorId);
+        [OperationContract]
+        DataSet GetAllReviewsOfInstructor(int InstructorId, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        [OperationContract]
+        DataSet GetAllClassroomsForInstructors(int InstructorId, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        [OperationContract]
+        DataSet GetClassroomsPublicDetails(long ClassroomId);
+        [OperationContract]
+        DataSet SearchClassroom(string SearchKey, int NoOfRowsFetched, int NoOfRowsToBeFetched);
+        [OperationContract]
+        DataSet GetAvgInstructorRating(int InstructorId);
+        [OperationContract]
+        bool InsertNewStudentNotification(long StudentId, string NotificationMessage,
+            string NotificationUrl, int NotificationTypeId);
+        [OperationContract]
+        bool MarkStudentNotificationVisited(long NotificationId);
+        [OperationContract]
+        bool UpdateStudentBasicProfileDetails(long StudentId, string FirstName, string LastName,
+            string PersonalWebsite, string LinkedInId, string InstagramId, string TwitterId);
+        [OperationContract]
+        bool UpdateLoggedInStudentPassword(long StudentId, string HashedPassword);
+        [OperationContract]
+        DataSet GetAllStudentNotification(long StudentId,
+            int NoOfRowsFecthed, int MaxRowsToBeFetched);
+        DataSet GetStudentProfileSettingDetails(long StudentId);
+        [OperationContract]
+        DataSet GetStudentProfileDetails(long StudentId);
 
-    }
+        }
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
     [DataContract]
     public class CompositeType

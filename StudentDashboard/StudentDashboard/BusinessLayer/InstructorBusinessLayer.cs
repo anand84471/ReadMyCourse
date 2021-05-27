@@ -128,7 +128,6 @@ namespace StudentDashboard.BusinessLayer
         }
         public string GetEmailVerficationString()
         {
-            
             return Guid.NewGuid().ToString();
         }
         public string GenerateOtp()
@@ -366,13 +365,9 @@ namespace StudentDashboard.BusinessLayer
             byte[] keyBytes = encoding.GetBytes(secret);
             byte[] messageBytes = encoding.GetBytes(message);
             HMACSHA256 cryptographer = new HMACSHA256(keyBytes);
-
             byte[] bytes = cryptographer.ComputeHash(messageBytes);
 
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
-       
     }
-    
-    
 }
