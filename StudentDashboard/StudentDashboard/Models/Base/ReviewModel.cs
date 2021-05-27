@@ -32,5 +32,9 @@ namespace StudentDashboard.Models.Base
                 this.m_strReviewDate = ((DateTime)date).ToString("dd MMM yyy");
             }
         }
+        public ReviewModel()
+        {
+
+        }
     }
 }

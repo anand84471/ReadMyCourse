@@ -24,6 +24,7 @@ namespace StudentDashboard
         public static readonly int CLASSROOM_THUMBNAIL_HEIGHT = 200;
         public static readonly int CURRENCY_INR_VALUE = 1;
         public static readonly int CURRENCY_USD_VALUE = 80;
+        public static readonly int SESSION_EXPIRY_TIME_IN_YEAR = 1;
         
         public const int COURSE_STATUS_ACTIVE=2;
         public const int COURSE_STATUs_DELETED = 3;

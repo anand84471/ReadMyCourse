@@ -10,6 +10,7 @@ namespace StudentDashboard
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.EnableCors();
             config.Filters.Add(new AuthorizeAttribute());
             // Web API routes
             config.MapHttpAttributeRoutes();

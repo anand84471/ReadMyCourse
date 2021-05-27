@@ -34,6 +34,8 @@ namespace StudentDashboard
         public static string _strSendGridEmailApiKey;
         public static string _strSendGridEmailSenderName;
         public static string _strSendGridEmailSenerEmail;
+        public static string _strStudentSessionJwtTokenKey;
+        public static string _strStudentSessionJwtTokenIssuer;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -66,7 +68,17 @@ namespace StudentDashboard
                 _strRazorPaySecret = (ConfigurationManager.AppSettings["RazorPaySecretValue"]);
             }
         }
-
+        private void InitializeSessionData()
+        {
+            if (ConfigurationManager.AppSettings["StudentSessionJwtTokenKey"] != null)
+            {
+                _strStudentSessionJwtTokenKey = (ConfigurationManager.AppSettings["StudentSessionJwtTokenKey"]);
+            }
+            if (ConfigurationManager.AppSettings["StudentSessionJwtIssuer"] != null)
+            {
+                _strStudentSessionJwtTokenIssuer = (ConfigurationManager.AppSettings["StudentSessionJwtIssuer"]);
+            }
+        }
         private void InitializeAwsConigurationData()
         {
 
@@ -101,7 +113,7 @@ namespace StudentDashboard
         }
         private void InitializeConfigurationData()
         {
-            if(ConfigurationManager.AppSettings["MAX_RETRY_COUNT_FOR_SMS"]!=null)
+            if (ConfigurationManager.AppSettings["MAX_RETRY_COUNT_FOR_SMS"] != null)
             {
                 _maxRetryCountForSms = int.Parse(ConfigurationManager.AppSettings["MAX_RETRY_COUNT_FOR_SMS"]);
             }
@@ -127,6 +139,7 @@ namespace StudentDashboard
             }
             InitializeAwsConigurationData();
             InitializeRazorPayConigurationData();
+            InitializeSessionData();
         }
         private void InitializeEmailServiceConfigurationData()
         {

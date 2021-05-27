@@ -563,7 +563,7 @@
             <summary>
             Send a single simple email.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="to">An email object that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="subject">The subject of your email. This may be overridden by SetGlobalSubject().</param>
             <param name="plainTextContent">The text/plain content of the email body.</param>
@@ -574,7 +574,7 @@
             <summary>
             Send a single dynamic template email.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="to">An email object that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="templateId">The ID of the template.</param>
             <param name="dynamicTemplateData">The data with which to populate the dynamic template.</param>
@@ -584,7 +584,7 @@
             <summary>
             Send a single simple email to multiple recipients.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="tos">A list of email objects that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="subject">The subject of your email. This may be overridden by SetGlobalSubject().</param>
             <param name="plainTextContent">The text/plain content of the email body.</param>
@@ -595,7 +595,7 @@
             <summary>
             Send a single simple email to multiple recipients.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="tos">A list of email objects that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="templateId">The ID of the template.</param>
             <param name="dynamicTemplateData">The data with which to populate the dynamic template.</param>
@@ -605,7 +605,7 @@
             <summary>
             Send multiple emails to multiple recipients.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="tos">A list of email objects that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="subjects">The subject of your email. This may be overridden by SetGlobalSubject().</param>
             <param name="plainTextContent">The text/plain content of the email body.</param>
@@ -617,7 +617,7 @@
             <summary>
             Send multiple emails to multiple recipients.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="tos">A list of email objects that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="templateId">The ID of the template.</param>
             <param name="dynamicTemplateData">The data with which to populate the dynamic template.</param>
@@ -634,7 +634,7 @@
             <summary>
             Send a single simple email to multiple recipients with option for displaying all the recipients present in "To" section of email.
             </summary>
-            <param name="from">An email object that may contain the recipient’s name, but must always contain the sender’s email.</param>
+            <param name="from">An email object that may contain the sender’s name, but must always contain the sender’s email.</param>
             <param name="tos">A list of email objects that may contain the recipient’s name, but must always contain the recipient’s email.</param>
             <param name="subject">The subject of your email. This may be overridden by SetGlobalSubject().</param>
             <param name="plainTextContent">The text/plain content of the email body.</param>
@@ -985,6 +985,11 @@
         <member name="P:SendGrid.Helpers.Mail.Personalization.Bccs">
             <summary>
             Gets or sets an array of recipients who will receive a blind carbon copy of your email. Each email object within this array may contain the recipient’s name, but must always contain the recipient’s email.
+            </summary>
+        </member>
+        <member name="P:SendGrid.Helpers.Mail.Personalization.From">
+            <summary>
+            Gets or sets the from email address. The domain must match the domain of the from email property specified at root level of the request body.
             </summary>
         </member>
         <member name="P:SendGrid.Helpers.Mail.Personalization.Subject">
@@ -1600,10 +1605,11 @@
             <param name="utmSource">Name of the referrer source (e.g. Google, SomeDomain.com, or Marketing Email).</param>
             <param name="utmTerm">Used to identify any paid keywords.</param>
         </member>
-        <member name="M:SendGrid.Helpers.Mail.SendGridMessage.Serialize">
+        <member name="M:SendGrid.Helpers.Mail.SendGridMessage.Serialize(System.Boolean)">
             <summary>
             Creates the JSON object required to make a request to Twilio SendGrid.
             </summary>
+            <param name="useDefaultSerialization">Whether or not to use JsonConvert.DefaultSettings for serialization.</param>
             <returns>The JSON object required to make a request to Twilio SendGrid.</returns>
         </member>
         <member name="T:SendGrid.Helpers.Reliability.ReliabilitySettings">
@@ -1737,6 +1743,99 @@
             The mime type for plain text content.
             </summary>
         </member>
+        <member name="T:SendGrid.Permissions.ScopeOptions">
+            <summary>
+            Represents a set of possible scope options
+            </summary>
+            <seealso cref="T:System.String" />
+        </member>
+        <member name="F:SendGrid.Permissions.ScopeOptions.All">
+            <summary>
+            All scopes. When filtering scopes no scopes will be exluded
+            </summary>
+        </member>
+        <member name="F:SendGrid.Permissions.ScopeOptions.ReadOnly">
+            <summary>
+            Read-only scopes. When fitlering scopes this will include only those that end with ".read"
+            </summary>
+        </member>
+        <member name="T:SendGrid.Permissions.SendGridClientExtensions">
+            <summary>
+            Utility extension methods that bridge the gap between the <see cref="T:SendGrid.ISendGridClient"/> and the <see cref="T:SendGrid.Permissions.SendGridPermissionsBuilder"/>.
+            </summary>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridClientExtensions.CreateMaskedPermissionsBuilderForClient(SendGrid.ISendGridClient)">
+            <summary>
+            Create a permissions builder instance that masks the emitted scopes to exclude any scopes not
+            contained in the list of scopes already granted for the given API Key the <paramref name="client"/> was initialized with.
+            </summary>
+            <param name="client">The SendGrid client.</param>
+            <returns>A <see cref="T:SendGrid.Permissions.SendGridPermissionsBuilder"/> instance.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridClientExtensions.CreateApiKey(SendGrid.ISendGridClient,SendGrid.Permissions.SendGridPermissionsBuilder,System.String)">
+            <summary>
+            Create a new API key for the scopes contained in the <paramref name="permissions"/>.
+            </summary>
+            <param name="client">The SendGrid client.</param>
+            <param name="permissions">The permissions builder.</param>
+            <param name="name">The API key name.</param>
+            <returns>The <see cref="T:SendGrid.Response"/> from the SendGrid API call.</returns>
+        </member>
+        <member name="T:SendGrid.Permissions.SendGridPermissionsBuilder">
+            <summary>
+            A builder for constructing a list of API Key permissions scopes
+            </summary>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SendGrid.Permissions.SendGridPermissionsBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.Build">
+            <summary>
+            Builds the list of API Key scopes based on the permissions that have been added to this instance.
+            </summary>
+            <returns>A list of strings representing the scope names.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.AddPermissionsFor(SendGrid.Permissions.SendGridPermission,SendGrid.Permissions.ScopeOptions)">
+            <summary>
+            Adds the permissions for the specified <paramref name="permission"/>
+            </summary>
+            <param name="permission">The permission group to add scopes for.</param>
+            <param name="options">The <see cref="T:SendGrid.Permissions.ScopeOptions"/> indicating read-only or all scopes for a given permission group.</param>
+            <returns>The builder instance with the permissions added.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.Exclude(System.Func{System.String,System.Boolean})">
+            <summary>
+            Adds an exclusion filter the will not emit any scopes that the filter matches.
+            </summary>
+            <param name="filter">The filter.</param>
+            <returns>The builder instance with the exclusion filter applied.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.Include(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds the <paramref name="scopes"/> to the builder.
+            </summary>
+            <param name="scopes">The list of scopes to include.</param>
+            <returns>The builder instance with the scopes included.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.Include(System.String[])">
+            <summary>
+            Adds the <paramref name="scopes"/> to the builder.
+            </summary>
+            <param name="scopes">The list of scopes to include.</param>
+            <returns>The builder instance with the scopes included.</returns>
+        </member>
+        <member name="M:SendGrid.Permissions.SendGridPermissionsBuilder.BuildScopes(SendGrid.Permissions.SendGridPermission,SendGrid.Permissions.ScopeOptions)">
+            <summary>
+            Builds the specified options.
+            </summary>
+            <param name="permission">The permission group to build the scopes list for.</param>
+            <param name="requestedOptions">The options.</param>        
+            <returns>
+            A final list of scopes to use for this permission filtered by the requested options
+            </returns>
+        </member>
         <member name="T:SendGrid.Response">
             <summary>
             The response received from an API call to Twilio SendGrid.
@@ -1768,6 +1867,11 @@
         <member name="P:SendGrid.Response.StatusCode">
             <summary>
             Gets or sets the status code returned from Twilio SendGrid.
+            </summary>
+        </member>
+        <member name="P:SendGrid.Response.IsSuccessStatusCode">
+            <summary>
+            Gets a value indicating whether Status Code of this response indicates success.
             </summary>
         </member>
         <member name="P:SendGrid.Response.Body">

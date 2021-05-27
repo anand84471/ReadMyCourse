@@ -1786,10 +1786,10 @@ namespace StudentDashboard.API
         }
         [Route("GetClassroomReviews")]
         [HttpPost]
-        public async Task<MasterApiResponse<ClassroomReviewsResponse>> FetchAllClassroomReviews(long ClassroomId)
+        public async Task<MasterApiResponse<ReviewsDetails>> FetchAllClassroomReviews(long ClassroomId)
         {
             long StudentId = GetStudentIdInRequest(); ;
-            MasterApiResponse<ClassroomReviewsResponse> objResponse = new MasterApiResponse<ClassroomReviewsResponse>();
+            MasterApiResponse<ReviewsDetails> objResponse = new MasterApiResponse<ReviewsDetails>();
             try
             {
                 if (StudentId != -1 )

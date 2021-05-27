@@ -1,7 +1,7 @@
-﻿function viewClassroomSharingDetails()
+﻿
+function viewClassroomSharingDetails()
 {
     $("#shareModal").modal('show');
-
 }
 function requestUploadVideo()
 {
@@ -31,7 +31,7 @@ function callInsertNewPost(buttonid) {
         var _data =
         {
             "post": post,
-            "classroom_id": localStorage.getItem("classroom_id")
+            "classroom_id": getClassroomId()
         }
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -75,7 +75,7 @@ function activateClassroom() {
     var classroomJoiningFee = $("#classroomFee").val();
     var demoClasses = $("#demoClasses").val();
     var _data = {
-        "classroom_id": localStorage.getItem("classroom_id"),
+        "classroom_id": getClassroomId(),
         "classroom_joining_fee": classroomJoiningFee,
         "classroom_start_date": $("#classroomStartDate").val(),
         "classroom_start_time": $("#classroomDailyStartTime").val(),
@@ -84,7 +84,7 @@ function activateClassroom() {
         "public_type": ClassroomPublicType
     }
     $.ajax({
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token')},
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -111,13 +111,13 @@ function activateClassroom() {
         }
 
         function getMeetingDetails() {
-        //debugger;
+        debugger;
             $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token')},
             type: "POST",
             contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: "/api/v1/instructor/GetAllMeetingsForClassroom?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+                url: "/api/v1/instructor/GetAllMeetingsForClassroom?ClassroomId=".concat(getClassroomId()),
             success: function (data) {
                 debugger;
                 var sNo = 0;
@@ -137,7 +137,7 @@ function activateClassroom() {
                         $("#coursesTable").show();
                     }
                     $("#startPreviousMeeting").fadeIn();
-                    $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=".concat(localStorage.getItem("classroom_id")));
+                    $("#startPreviousMeeting").attr("href", "StartMeeting?ClassroomId=".concat(getClassroomId()));
 
                 }
                 else {
@@ -154,7 +154,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllStudnetJoinedToClassroom?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+            url: "/api/v1/instructor/GetAllStudnetJoinedToClassroom?ClassroomId=".concat(getClassroomId()),
             success: function (data) {
                 debugger;
                 var sNo = 0;
@@ -188,7 +188,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllStudentsJoinedToMeeting?ClassroomId=".concat(localStorage.getItem("classroom_id")).concat("&MeetingId=").concat(meetingId),
+            url: "/api/v1/instructor/GetAllStudentsJoinedToMeeting?ClassroomId=".concat(getClassroomId()).concat("&MeetingId=").concat(meetingId),
             success: function (data) {
                 debugger;
                 var sNo = 0;
@@ -230,7 +230,7 @@ function activateClassroom() {
             var _data =
             {
                 "message": post,
-                "classroom_id": localStorage.getItem("classroom_id")
+                "classroom_id": getClassroomId()
             }
             $.ajax({
                 headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -275,7 +275,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllClassroomMessage?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+            url: "/api/v1/instructor/GetAllClassroomMessage?ClassroomId=".concat(getClassroomId()),
             success: function (data) {
                 debugger;
                 //stopCourseSpinner();
@@ -323,7 +323,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllClassroomMessageAfterLast?ClassroomId=".concat(localStorage.getItem("classroom_id")).concat("&LastMessageId=").concat(lastMessageId),
+            url: "/api/v1/instructor/GetAllClassroomMessageAfterLast?ClassroomId=".concat(getClassroomId()).concat("&LastMessageId=").concat(lastMessageId),
             success: function (data) {
                 //stopCourseSpinner();
                 if (data != null && data.response_code == 1) {
@@ -415,7 +415,7 @@ function activateClassroom() {
         if (validateInputField(classroomName) && validateInputField(classroomDescription)) {
             var _data =
             {
-                "classroom_id":localStorage.getItem("classroom_id"),
+                "classroom_id": getClassroomId(),
                 "classroom_name": classRoomName,
                 "classroom_description": classRoomDescription,
                 "background_url": BackGroundUrl,
@@ -478,12 +478,12 @@ function activateClassroom() {
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             //data: {
             //    "MeetingId": meetingId,
-            //    "ClassroomId": localStorage.getItem("classroom_id")
+            //    "ClassroomId": getClassroomId()
             //},
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllClassroomAssignment?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+            url: "/api/v1/instructor/GetAllClassroomAssignment?ClassroomId=".concat(getClassroomId()),
             success: function (data) {
                 debugger;
                 var sNo = 0;
@@ -495,7 +495,7 @@ function activateClassroom() {
                         var rows = '<tr><td scope="row" colspan="2"><button type="button" class="btn btn-link font-weight-bold" onclick="getAssignmentDetails('.concat(assignmentDetails[i].assignment_id) + ')">' + assignmentDetails[i].assignment_name + '</button></td>'
                         + '<td class="mr-2">   ' + assignmentDetails[i].creation_date + '</td><td class="mr-2">   ' + assignmentDetails[i].no_of_submissions + '</td><td class="mr-2">' + assignmentDetails[i].no_of_submissions + '</td>'
                         + '<td class="mr-2">'
-                            + '<a type="button" href="ViewClassroomAssignment?c_id=' + localStorage.getItem("classroom_id")+ '&&ass_id=' + assignmentDetails[i].assignment_id + '" class="btn btn-link" class="list-group-horizontal">'
+                            + '<a type="button" href="ViewClassroomAssignment?c_id=' + getClassroomId()+ '&&ass_id=' + assignmentDetails[i].assignment_id + '" class="btn btn-link" class="list-group-horizontal">'
                                 + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                             + '</a>'
                             + '<button type="button" class="btn btn-link" class="list-group-horizontal" onclick="requestDeletAssignment(' + assignmentDetails[i].assignment_id + ')">'
@@ -529,7 +529,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/DeleteClassroomAssignment?ClassroomId=".conact(localStorage.getItem("classroom_id")).concat("&AssignmentId=").concat(AssignmentId),
+            url: "/api/v1/instructor/DeleteClassroomAssignment?ClassroomId=".conact(getClassroomId()).concat("&AssignmentId=").concat(AssignmentId),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
                     $("#successResponseMessage").text("assignment deleted successfully");
@@ -643,7 +643,7 @@ function activateClassroom() {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: "/api/v1/instructor/GetAllClassroomTests?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+            url: "/api/v1/instructor/GetAllClassroomTests?ClassroomId=".concat(getClassroomId()),
             success: function (data) {
                 var x = $('#tableAllTests').empty();
                 debugger;
@@ -658,7 +658,7 @@ function activateClassroom() {
                             + '<td>' + tests[i].creation_date + '</td><td>' + tests[i].no_of_questions + '</td>'
                             + '<td><button type="button" class="btn btn-link font-weight-bold" onclick="getTestSubmissions('.concat(tests[i].test_id) + ')">' + tests[i].no_of_submissions + '</button></td>'
                             + '<td>'
-                                + '<a type="button" class="btn btn-link" class="list-group-horizontal" href="ViewClassroomTest?t_id='.concat(tests[i].test_id) + '&c_id=' + localStorage.getItem("classroom_id")+'">'
+                                + '<a type="button" class="btn btn-link" class="list-group-horizontal" href="ViewClassroomTest?t_id='.concat(tests[i].test_id) + '&c_id=' + getClassroomId()+'">'
                                     + '<i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400 m-1"></i>'
                                 + '</a>'
                                 + '<button type="button" class="btn btn-link" class="list-group-horizontal" onclick=requestDeleteTest("' + tests[i].test_id + '") >'
@@ -765,7 +765,7 @@ function deleteTest(TestId) {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: "/api/v1/instructor/DeleteClassroomTest?ClassroomId=".concat(localStorage.getItem("classroom_id")).concat("& TestId=").concat(TestId),
+        url: "/api/v1/instructor/DeleteClassroomTest?ClassroomId=".concat(getClassroomId()).concat("& TestId=").concat(TestId),
         success: function (data) {
             if (data != null && data.response_code == 1) {
                 $("#successResponseMessage").text("test deleted successfully");
@@ -973,7 +973,7 @@ function callAddAttachment(buttonid) {
     if (validateInputField(classroomName) && validateInputField(classroomDescription)) {
         var _data =
         {
-            "classroom_id": localStorage.getItem("classroom_id"),
+            "classroom_id": getClassroomId(),
             "attachment_name": attachmentNameId.val(),
             "attachment_description": attachmentDescriptionId.val(),
             "attachment_url": attachmentUrlId.val()
@@ -1028,7 +1028,7 @@ function getAllClassroomAttachments() {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: "/api/v1/instructor/ClassroomAttachments?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+        url: "/api/v1/instructor/ClassroomAttachments?ClassroomId=".concat(getClassroomId()),
         success: function (data) {
             debugger;
             var sNo = 0;
@@ -1070,7 +1070,7 @@ function deleteClassroomAttachment(AttachmentId) {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: "/api/v1/instructor/DeleteClassroomAttachment?ClassroomId=".concat(localStorage.getItem("classroom_id")).concat("&id=").concat(AttachmentId),
+        url: "/api/v1/instructor/DeleteClassroomAttachment?ClassroomId=".concat(getClassroomId()).concat("&id=").concat(AttachmentId),
         success: function (data) {
             if (data != null && data.response_code == 1) {
 
@@ -1155,7 +1155,7 @@ function createClassroomScheduleUpdateRequest() {
 function callUpdateClassroomSchedule() {
     debugger
     var _data = {
-        "classroom_id": localStorage.getItem("classroom_id"),
+        "classroom_id": getClassroomId(),
         "schedule_details": createClassroomScheduleUpdateRequest(),
     }
     $.ajax({
@@ -1181,14 +1181,14 @@ function callUpdateClassroomSchedule() {
 function callGetClassroomTimeTable() {
     debugger
     var _data = {
-        "classroom_id": localStorage.getItem("classroom_id")
+        "classroom_id": getClassroomId()
     }
     $.ajax({
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: "/api/v1/instructor/GetClassroomTimeTable?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+        url: "/api/v1/instructor/GetClassroomTimeTable?ClassroomId=".concat(getClassroomId()),
         success: function (data) {
             if (data != null && data.response_code == 1 && data.classroom_schedule_details != null) {
                 setClassroomTimeTable(data.classroom_schedule_details.schedule_details);
@@ -1283,7 +1283,7 @@ function updateClassroomBgImage() {
 
     var _data =
     {
-        "classroom_id": localStorage.getItem("classroom_id"),
+        "classroom_id": getClassroomId(),
         "image_data": {
             "small_size_url": smallIconUrl,
             "original_url": backGroundImagePath,
@@ -1316,7 +1316,7 @@ function updateClassroomMeetingDetails() {
     {
         "video_link": $("#liveClassVideoUrl").val(),
         "meeting_id": currentMeetingId,
-        "classroom_id": localStorage.getItem("classroom_id"),
+        "classroom_id": getClassroomId(),
         "topic_name": $("#liveClassTopicName").val(),
         "topic_description": $("#liveClassNotes").val(),
     }
@@ -1390,7 +1390,7 @@ function showClassroomMeetingContent(meetingId) {
     var _data =
     {
         "meeting_id": meetingId,
-        "classroom_id": localStorage.getItem("classroom_id")
+        "classroom_id": getClassroomId()
     }
     $.ajax({
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -1489,7 +1489,7 @@ function getClassroomSyllabus() {
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: "/api/v1/instructor/GetClassroomSyllabus?ClassroomId=".concat(localStorage.getItem("classroom_id")),
+        url: "/api/v1/instructor/GetClassroomSyllabus?ClassroomId=".concat(getClassroomId()),
         success: function (data) {
             $("#spinnerClassroomClassroomSchedule").remove();
             debugger
@@ -1506,7 +1506,7 @@ function updateClassroomSyllabus() {
 
     var _data = {
         "week_wise_schedule": classroomSyllabus,
-        "classroom_id": localStorage.getItem("classroom_id")
+        "classroom_id": getClassroomId()
     };
     $.ajax({
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -1590,7 +1590,7 @@ function sendClassroomSMSNotificationToAllStudents() {
     }
     var _data = {
         "notification": $("#classroomNotification").val(),
-        "classroom_id": localStorage.getItem("classroom_id")
+        "classroom_id": getClassroomId()
     };
     $.ajax({
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },

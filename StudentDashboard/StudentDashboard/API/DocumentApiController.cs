@@ -324,9 +324,9 @@ namespace StudentDashboard.API
         }
         [Route("GetClassroomReviews")]
         [HttpPost]
-        public async Task<MasterApiResponse<ClassroomReviewsResponse>> FetchAllClassroomReviews(long ClassroomId)
+        public async Task<MasterApiResponse<ReviewsDetails>> FetchAllClassroomReviews(long ClassroomId)
         {
-            MasterApiResponse<ClassroomReviewsResponse> objResponse = new MasterApiResponse<ClassroomReviewsResponse>();
+            MasterApiResponse<ReviewsDetails> objResponse = new MasterApiResponse<ReviewsDetails>();
             try
             {
                 objResponse.data = await objDocumentService.GetClassroomReview(ClassroomId);

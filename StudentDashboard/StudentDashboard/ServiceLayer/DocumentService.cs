@@ -214,9 +214,9 @@ namespace StudentDashboard.ServiceLayer
             }
             return lsReviewModel;
         }
-        public async Task<ClassroomReviewsResponse> GetClassroomReview(long ClassroomId)
+        public async Task<ReviewsDetails> GetClassroomReview(long ClassroomId)
         {
-            ClassroomReviewsResponse classroomReviewsResponse = new ClassroomReviewsResponse();
+            ReviewsDetails classroomReviewsResponse = new ReviewsDetails();
             try
             {
                 classroomReviewsResponse.avgReviewModel = await GetAvgClassroomRating(ClassroomId);
