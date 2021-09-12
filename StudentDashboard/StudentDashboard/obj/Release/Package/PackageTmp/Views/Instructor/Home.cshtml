@@ -4,6 +4,97 @@
 }
 @using StudentDashboard.Models;
 @model InstructorRegisterModel
+<style>
+    #instructors {
+        border-radius: 10px;
+        background-color: white;
+        width: 950%;
+        min-height: 80vh;
+        margin: auto;
+        margin-top: 2rem;
+        padding-top: 4vh;
+    }
+
+    .instructorsList {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 10% 70% 20%;
+    }
+
+    .profile {
+        margin-top: 1vh;
+        margin-left: 2rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 40px;
+    }
+
+    .add {
+        width: 37px;
+        height: 32px;
+    }
+
+    .add-cont {
+        text-align: center;
+        margin: auto;
+    }
+
+    .icon {
+        width: 3rem;
+        font-size: 1.6rem;
+        height: 2.8rem;
+        text-align: center;
+        border-radius: 60px;
+        background-color: #f0f2f5;
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+
+    .content {
+        padding-left: 4rem;
+    }
+
+    .info {
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+
+    .name {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
+        .name:hover {
+            text-decoration: underline;
+        }
+
+    @@media only screen and (max-width: 600px) {
+        #instructors {
+            width: 100%;
+        }
+
+        .profile {
+            margin-left: 1.5rem;
+            width: 50px;
+            height: 50px;
+        }
+
+        .add {
+            width: 30px;
+            height: 25px;
+        }
+
+        .info {
+            font-size: 0.8rem;
+        }
+
+        .name {
+            font-size: 1.2rem;
+        }
+    }
+</style>
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -19,7 +110,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">My Earnings  </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iNoOfCourseCreated</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><i class="fa fa-inr" aria-hidden="true"></i> @Model.m_iInstructorEarning.00</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-inr fa-2x text-gray-300"></i>
@@ -58,8 +149,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Live courses</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iNoOfAssignmentCreated</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total courses</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iNoOfCourseCreated</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-play-circle fa-2x text-gray-300"></i>
@@ -69,7 +160,6 @@
             </div>
         </div>
         <!-- Earnings (Monthly) Card Example -->
-        
         <!-- Pending Requests Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
@@ -98,64 +188,276 @@
                     <div class="text-center">
                         <img class="img-fluid mt-1 mb-1" style="width: 10rem;" src="~/Images/icon/web_icons/earnings.svg" alt="">
                     </div>
-                    
+                    <h4 class="text-primary"><strong>Total courses sells:</strong> @Model.m_iTotalLiveCourseSells</h4>
+                    <h4 class="text-primary"><strong>Total earnings: </strong>@Model.m_iInstructorEarning</h4>
+                    <a href="MyEarnings">View more &rarr;</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4 text-center border-bottom-success ">
+            <div class="card text-center shadow mb-4  border-bottom-success ">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Recent followers</h6>
                 </div>
                 <div class="card-body">
-                   
-                  
+                    <div class="text-left" id="recent-followers">
+                        <div id="joined-members"></div>
+                    </div>
+                    <a class="mb-2" href="StudentsJoined">View more &rarr;</a>
                 </div>
+         
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4 text-center border-bottom-success ">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent courses joined</h6>
-                </div>
-                <div class="card-body">
-                   
-                   
-                </div>
-            </div>
-        </div>
+
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4 text-center border-bottom-success ">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Recent live classess joined</h6>
                 </div>
-                <div class="card-body">
-                  
+                <div class="card-body text-center">
+                    <div class="text-left" id="recent-course-joined">
+                        <div id="joined-students"></div>
+                    </div>
+                    <a class="mb-2 " href="StudentsJoined">View more &rarr;</a>
                 </div>
+                
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="editTopicModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="editOptionBody">
+                    <h5 class="modal-title" id="editTopicModalHeader">Edit Topic</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h1>It's looks like'</h1>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editTopicModalSubmitButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+
     //activeCourses
     (function () {
         debugger
         'use strict';
-        window.localStorage.setItem('access_token', "@ViewBag.Token");
+         window.localStorage.setItem('access_token', "@ViewBag.Token");
         window.onpageshow=setCourseProgress();
-       
-        //activeCoursesProgress
-    })();   
+        getCoursesDetails();
+        getCoursesJoin();
+    })();
     function setCourseProgress()
     {
         var activeCourses=@Model.m_iActiveCourses;
         var CoursesCreated = @Model.m_iNoOfCourseCreated;
-        if(activeCourses!=null&&CoursesCreated!=null&&CoursesCreated!=0)
+        if (activeCourses != null && CoursesCreated != null && CoursesCreated != 0)
         {
             var percentageActivaeCourse=activeCourses*100/CoursesCreated;
             document.getElementById("activeCoursesProgress").style.width=percentageActivaeCourse+"%";
         }
     }
+    function getCoursesDetails() {
+        //debugger;
+        _data = {
+            "key": "",
+            "no_of_rows_fetched":0
+        }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/joinee",
+            data: JSON.stringify(_data),
+            success: function (data) {
+                debugger;
+
+                if (data != null && data.response_code == 1 && data.students.length > 0) {
+                    studentsData = data.students;
+                    var subCount = document.getElementById("joined-members");
+                    for (let i = 0; i < studentsData.length; i++) {
+                        if (studentsData[i].profile_url == null || studentsData[i].profile_url == "") {
+                            studentsData[i].profile_url = "../images/profile1.png";
+                        }
+                        let parent = document.createElement("DIV");
+                        let parentAtt = document.createAttribute("class");
+                        parentAtt.value = "instructorsList";
+                        parent.setAttributeNode(parentAtt);
+
+                        let profileImg = document.createElement("IMG");
+                        let profileImgAtt = document.createAttribute("class");
+                        profileImgAtt.value = "profile";
+                        profileImg.setAttributeNode(profileImgAtt);
+                        profileImg.src = studentsData[i].profile_url
+                        profileImg.alt = "img" + i
+                        let parentCont = document.createElement("DIV");
+                        let parentContAtt = document.createAttribute("class");
+                        parentContAtt.value = "content";
+                        parentCont.setAttributeNode(parentContAtt);
+                        let nameCont = document.createElement("a");
+                        nameCont.href = "Student?id=" + studentsData[i].student_id;
+                        let nameContAtt = document.createAttribute("class");
+                        nameContAtt.value = "name";
+                        nameCont.setAttributeNode(nameContAtt);
+                        nameCont.textContent = studentsData[i].student_name
+                        let infoCont = document.createElement("DIV");
+                        let infoContAtt = document.createAttribute("class");
+                        infoContAtt.value = "info";
+                        infoCont.setAttributeNode(infoContAtt);
+                        infoCont.textContent = "Joined since " + studentsData[i].date_of_joining;
+
+                        let infoCont1 = document.createElement("DIV");
+                        let infoContAtt1 = document.createAttribute("class");
+                        infoContAtt1.value = "info";
+                        infoCont1.setAttributeNode(infoContAtt1);
+                        infoCont1.textContent = studentsData[i].no_of_followers + " Followers"
+
+                        parentCont.appendChild(nameCont)
+                        parentCont.appendChild(infoCont)
+                        parentCont.appendChild(infoCont1)
+
+
+                        let addCont = document.createElement("DIV");
+                        let addContAtt = document.createAttribute("class");
+                        addContAtt.value = "add-cont";
+                        addCont.setAttributeNode(addContAtt);
+
+
+                        let icon = document.createElement("a")
+                        icon.href = "Student?id=" + studentsData[i].student_id;
+                        let iconCont = document.createAttribute("class");
+                        iconCont.value = "icon";
+                        icon.setAttributeNode(iconCont);
+
+                        let addImg = document.createElement("I");
+                        let addImgAtt = document.createAttribute("class");
+                        if (studentsData[i].is_following == false) {
+                            addImgAtt.value = "fa fa-user-plus";
+                        }
+                        else {
+                            addImgAtt.value = "fa fa-arrow-right";
+                        }
+                        addImg.setAttributeNode(addImgAtt);
+
+                        icon.appendChild(addImg)
+
+                        addCont.appendChild(icon)
+
+                        let underline = document.createElement("hr");
+
+                        parent.appendChild(profileImg)
+                        parent.appendChild(parentCont)
+                        parent.appendChild(addCont)
+
+                        subCount.appendChild(parent);
+
+                        if (i < studentsData.length - 1) {
+                            subCount.appendChild(underline)
+                        }
+                    }
+                    document.getElementById("recent-followers").appendChild(subCount)
+                }
+                else {
+                    $("#footerClassroomSearch").show();
+                    $("#spinner").remove();
+                }
+            }
+        });
+    }
+    function getCoursesJoin() {
+          //debugger;
+        _data = {
+            "key": "",
+            "no_of_rows_fetched":0
+        }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: "/api/v1/instructor/GetRecentClassroomJoin",
+            data: JSON.stringify(_data),
+            success: function (data) {
+                debugger;
+
+                if (data != null && data.response_code == 1 && data.data.length > 0) {
+                    studentsData = data.data;
+                    var subCount = document.getElementById("joined-students");
+                    for (let i = 0; i < studentsData.length; i++) {
+                        if (studentsData[i].profile_url == null || studentsData[i].profile_url == "") {
+                            studentsData[i].profile_url = "../images/profile1.png";
+                        }
+                        let parent = document.createElement("DIV");
+                        let parentAtt = document.createAttribute("class");
+                        parentAtt.value = "instructorsList";
+                        parent.setAttributeNode(parentAtt);
+
+                        let profileImg = document.createElement("IMG");
+                        let profileImgAtt = document.createAttribute("class");
+                        profileImgAtt.value = "profile";
+                        profileImg.setAttributeNode(profileImgAtt);
+                        profileImg.src = studentsData[i].profile_url
+                        profileImg.alt = "img" + i
+                        let parentCont = document.createElement("DIV");
+                        let parentContAtt = document.createAttribute("class");
+                        parentContAtt.value = "content";
+                        parentCont.setAttributeNode(parentContAtt);
+                        let nameCont = document.createElement("a");
+                        nameCont.href = "Student?id=" + studentsData[i].id;
+                        let nameContAtt = document.createAttribute("class");
+                        nameContAtt.value = "name";
+                        nameCont.setAttributeNode(nameContAtt);
+                        nameCont.textContent = studentsData[i].name
+                        let space = document.createElement("br");
+                        nameCont.appendChild(space)
+                        let infoCont = document.createElement("a");
+
+                        infoCont.href = "ClassroomDashboard?id=" + studentsData[i].classroom_id;
+                        let infoContAtt = document.createAttribute("class");
+                        infoContAtt.value = "info";
+                        infoCont.setAttributeNode(infoContAtt);
+                        
+                        infoCont.textContent = "#" + studentsData[i].classroom_name;
+                        let infoCont1 = document.createElement("DIV");
+                        let infoContAtt1 = document.createAttribute("class");
+                        infoContAtt1.value = "info";
+                        infoCont1.setAttributeNode(infoContAtt1);
+                        infoCont1.textContent = "Joined on " + studentsData[i].joining_date
+                        parentCont.appendChild(nameCont)
+                        parentCont.appendChild(infoCont)
+                        parentCont.appendChild(infoCont1)
+                        let underline = document.createElement("hr");
+                        parent.appendChild(profileImg)
+                        parent.appendChild(parentCont)
+                        subCount.appendChild(parent);
+                        if (i < studentsData.length - 1) {
+                            subCount.appendChild(underline)
+                        }
+                        document.getElementById("recent-course-joined").appendChild(subCount)
+                    }
+
+                }
+                else {
+                    $("#footerClassroomSearch").show();
+                    $("#spinner").remove();
+                }
+            }
+        });
+    }
+
 </script>
 
 <!-- /.container-fluid -->

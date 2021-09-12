@@ -24,7 +24,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total money in wallet</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">&#8377 @Model.m_iTotalEarning.00</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">&#8377 @Model.m_iTotalUnpaidAmount.00</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-inr fa-2x text-gray-300"></i>
@@ -40,7 +40,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total earnings</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">&#8377 @Model.m_iCourseEarning.00</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">&#8377 @Model.m_iTotalEarning.00</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-inr fa-2x text-gray-300"></i>
@@ -58,10 +58,32 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total courses sells</div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">&#8377 @Model.m_iClassroomEarning.00</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">&#8377 @Model.m_iTotalCourseSells</div>
                                 </div>
                                 <div class="col">
-                                    
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-inr fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total active courses</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">&#8377 @Model.m_iActiveClassrooms</div>
+                                </div>
+                                <div class="col">
+
                                 </div>
                             </div>
                         </div>
@@ -73,14 +95,14 @@
             </div>
         </div>
         <!-- Pending Requests Card Example -->
-        
+
     </div>
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4 text-center border-bottom-success ">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Classroom total transactions</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Monthwise earning</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">
@@ -200,7 +222,7 @@
     }
     var max_of_array = Math.max.apply(Math, earnings);
     if (earnings.length == 0) {
-        ctx2.style.display = "none";
+        ctx.style.display = "none";
         $("#noClassroomEarningMsg").show();
     }
     function initiClassroomEarning() {

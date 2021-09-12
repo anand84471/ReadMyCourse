@@ -108,6 +108,13 @@ namespace StudentDashboard.Controllers
         {
             return PartialView();
         }
+
+        [HttpPost]
+        public PartialViewResult StudentProfile(long id)
+        {
+            return PartialView();
+        }
+
         [AsyncTimeout(150)]
         [HttpGet]
         public async Task<PartialViewResult> Account()
@@ -376,7 +383,17 @@ namespace StudentDashboard.Controllers
                 long.TryParse(collection["classroom_id"],out objModal.m_llClassroomId);
                 if (await objInstructorService.CheckIsClassroomAlreadyTakenoday(objModal.m_llClassroomId)|| await objInstructorService.InertNewMeetingToClassroom(objModal))
                 {
-                    return Redirect("StartMeeting?ClassroomId="+ objModal.m_llClassroomId);
+                    JitsiMeetingModal objJitsiMeetingModal = await objInstructorService.GetClassroomMeetingDetails(objModal.m_llClassroomId, -1);
+                    if(objJitsiMeetingModal.shouldUseExternalMeetingLink&&objJitsiMeetingModal.externalMeetingLink!=null&&
+                        objJitsiMeetingModal.externalMeetingLink!=string.Empty)
+                    {
+
+                        return Redirect(objJitsiMeetingModal.externalMeetingLink);
+                    }
+                    else
+                    {
+                        return Redirect("StartMeeting?ClassroomId=" + objModal.m_llClassroomId);
+                    }
                 }
             }
             catch (Exception Ex)
@@ -1210,8 +1227,9 @@ namespace StudentDashboard.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult StudentProfile(long Id)
+        public ActionResult Student(long Id)
         {
+            ViewBag.id = Id;
             return View();
         }
     }

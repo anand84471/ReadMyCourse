@@ -247,6 +247,7 @@
         </div>
     </div>
 </div>
+
 <script>
 
     //activeCourses
@@ -307,7 +308,7 @@
                         parentContAtt.value = "content";
                         parentCont.setAttributeNode(parentContAtt);
                         let nameCont = document.createElement("a");
-                        nameCont.href = "StudentProfile?id=" + studentsData[i].student_id;
+                        nameCont.href = "Student?id=" + studentsData[i].student_id;
                         let nameContAtt = document.createAttribute("class");
                         nameContAtt.value = "name";
                         nameCont.setAttributeNode(nameContAtt);
@@ -336,7 +337,7 @@
 
 
                         let icon = document.createElement("a")
-                        icon.href = "StudentProfile?id=" + studentsData[i].student_id;
+                        icon.href = "Student?id=" + studentsData[i].student_id;
                         let iconCont = document.createAttribute("class");
                         iconCont.value = "icon";
                         icon.setAttributeNode(iconCont);
@@ -415,7 +416,7 @@
                         parentContAtt.value = "content";
                         parentCont.setAttributeNode(parentContAtt);
                         let nameCont = document.createElement("a");
-                        nameCont.href = "StudentProfile?id=" + studentsData[i].student_id;
+                        nameCont.href = "Student?id=" + studentsData[i].id;
                         let nameContAtt = document.createAttribute("class");
                         nameContAtt.value = "name";
                         nameCont.setAttributeNode(nameContAtt);

@@ -26,7 +26,8 @@ namespace CPDataService
             try
             {
 
-                m_ConnectionString = ConfigurationManager.ConnectionStrings["RegistrationConnString"].ToString();
+                //m_ConnectionString = ConfigurationManager.ConnectionStrings["RegistrationConnString"].ToString();
+                m_ConnectionString = "Server=database-2.cpmmi5c7ikpe.ap-southeast-1.rds.amazonaws.com;Database=CP_DB;User Id=admin;Password=cGFzc3dvcmRjdnh2eGN2eGN2eGN2eGN2eGN2eGM=";
                 if (String.IsNullOrEmpty(m_ConnectionString))
                 {
                     m_strLogMessage.Append("Connection String is not present to connect to DB");
@@ -7982,7 +7983,7 @@ namespace CPDataService
                 m_command = new SqlCommand("Cp_spUpdateInstructorBio", m_con);
                 m_command.CommandType = System.Data.CommandType.StoredProcedure;
                 m_command.Parameters.Add("@iInsructorId", SqlDbType.Int).Value = InstructorId;
-                m_command.Parameters.Add("@strBio", SqlDbType.NVarChar, 1000).Value = InstructoBioData;
+                m_command.Parameters.Add("@strBio", SqlDbType.NVarChar, 2000).Value = InstructoBioData;
                 m_con.Open();
                 result = m_command.ExecuteNonQuery() > 0;
             }
@@ -10968,6 +10969,192 @@ namespace CPDataService
             }
             return sDS;
         }
+        public DataSet GetEventsDetails(long EventId)
+        {
+            DataSet sDS = new DataSet();
+            string strCurrentMethodName = "GetEventsDetails";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spGetEventDetails", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llEventId", SqlDbType.BigInt).Value = EventId;
+                m_con.Open();
+                SqlDataAdapter sSQLAdpter = new SqlDataAdapter(m_command);
+                sSQLAdpter.Fill(sDS);
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return sDS;
+        }
+        public bool InsertPublicStudentRegitrainInEvent(long EventId, string StudentName,string EmailId)
+        {
+            bool result = false;
+            string strCurrentMethodName = "UpdateStudentPassword";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spRegisterPublicEvent", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llEventId", SqlDbType.BigInt).Value = EventId;
+                m_command.Parameters.Add("@strStudentName", SqlDbType.NVarChar, 250).Value = StudentName;
+                m_command.Parameters.Add("@strEmailId", SqlDbType.VarChar, 150).Value = EmailId;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occurred in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
 
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+        public bool UpdateClassroomMeetingLink(long ClassroomId, string MeetingLink)
+        {
+            bool result = false;
+            string strCurrentMethodName = "UpdateStudentPassword";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spUpdateMeetingLink", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llClassroomId", SqlDbType.BigInt).Value = ClassroomId;
+                m_command.Parameters.Add("@strMeetingLink", SqlDbType.VarChar, 200).Value = MeetingLink;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occurred in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+        public bool UpdateClassroomProjects(long ClassroomId, string Projects)
+        {
+            bool result = false;
+            string strCurrentMethodName = "UpdateClassroomMeetingLink";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spUpdateClassroomProjects", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llClassroomId", SqlDbType.BigInt).Value = ClassroomId;
+                m_command.Parameters.Add("@strProjects", SqlDbType.VarChar).Value = Projects;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occurred in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
+        public bool UpdateClassroomHighlights(long ClassroomId, string highlights)
+        {
+            bool result = false;
+            string strCurrentMethodName = "UpdateClassroomHighlights";
+            try
+            {
+                InitDB();
+                m_command = new SqlCommand("Cp_spUpdateClasssroomHighlights", m_con);
+                m_command.CommandType = System.Data.CommandType.StoredProcedure;
+                m_command.Parameters.Add("@llClassroomId", SqlDbType.BigInt).Value = ClassroomId;
+                m_command.Parameters.Add("@strHighlights", SqlDbType.VarChar).Value = highlights;
+                m_con.Open();
+                if (m_command.ExecuteNonQuery() > 0)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", strCurrentMethodName, ex.ToString());
+                m_strLogMessage.Append("Exception occurred in method :" + ex.TargetSite);
+                CpLogger.Error(m_strLogMessage);
+            }
+            finally
+            {
+                if (m_con != null)
+                {
+
+                    m_con.Dispose();
+                }
+                if (m_command != null)
+                {
+                    m_command.Dispose();
+                }
+            }
+            return result;
+        }
     }
 }

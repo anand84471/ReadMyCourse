@@ -23,6 +23,10 @@
     {
         <meta name="description" content="Learn Python, Data Science, MATLAB and Various free courses. Learn live from top instructors.">
     }
+    @if (ViewBag.Image != null)
+    {
+        <meta property="og:image" content="@ViewBag.Image">
+    }
 
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
@@ -36,9 +40,11 @@
     <link rel="stylesheet" href="../../Style/icomoon.css">
     <link rel="stylesheet" href="../../Style/style.css">
     <link rel="stylesheet" href="../../Style/owl.carousel.min.css">
+    @{Html.RenderPartial("common");}
 </head>
 
 <body>
+    @{Html.RenderPartial("CommonBody");}
     @{Html.RenderPartial("_MenuAbout");}
     @RenderBody()
     <footer class="ftco-footer ftco-bg-dark ftco-section">
@@ -57,12 +63,12 @@
                     </div>
                 </div>
 
-                
+
                 <div class="col-lg-3 col-md-6 ">
                     <div class="ftco-footer-widget mb-5">
                         <h2 class="ftco-heading-2 mb-0">Download App</h2>
                         <ul class="list-unstyled float-md-left float-lft mt-3">
-                            <li class="ftco-animate"><a href="https://play.google.com/store/apps/details?id=com.readmycourse.android" target="_blank"><img class="img" style="max-width:200px;max-height:70px;" src="~/Images/google-play-logo.png"/></a></li>
+                            <li class="ftco-animate"><a href="https://play.google.com/store/apps/details?id=com.readmycourse.android" target="_blank"><img class="img" style="max-width:200px;max-height:70px;" src="~/Images/google-play-logo.png" /></a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,10 +77,9 @@
                         <h2 class="ftco-heading-2">Links</h2>
                         <ul class="list-unstyled">
                             <li><a href="~/"><span class="ion-ios-arrow-round-forward mr-2"></span>Home</a></li>
-                            <li><a href="~/Classroom"><span class="ion-ios-arrow-round-forward mr-2"></span>Classroom</a></li>
-                            <li><a href="~/Course"><span class="ion-ios-arrow-round-forward mr-2"></span>Courses</a></li>
-                            <li><a href="~/Test"><span class="ion-ios-arrow-round-forward mr-2"></span>Free Tests</a></li>
+                            <li><a href="~/JoinLiveClass"><span class="ion-ios-arrow-round-forward mr-2"></span>Courses</a></li>
                             <li><a href="~/AboutUs"><span class="ion-ios-arrow-round-forward mr-2"></span>About Us</a></li>
+                            <li><a href="~/AboutUs"><span class="ion-ios-arrow-round-forward mr-2"></span>Contact Us</a></li>
                             <li><a href="~/Student"><span class="ion-ios-arrow-round-forward mr-2"></span>Student Login</a></li>
                             <li><a href="~/Instructor"><span class="ion-ios-arrow-round-forward mr-2"></span>Instructor Login</a></li>
                             <li><a href="~/TermsAndConditions"><span class="ion-ios-arrow-round-forward mr-2"></span>Terms and Conditions</a></li>
@@ -87,7 +92,7 @@
                         <h2 class="ftco-heading-2">Subscribe Us!</h2>
                         <form action="#" class="subscribe-form">
                             <div class="form-group">
-                                <input type="text" id="subscriptionEmail"  class="form-control mb-2 text-center" placeholder="Enter email address">
+                                <input type="text" id="subscriptionEmail" class="form-control mb-2 text-center" placeholder="Enter email address">
                                 <input type="submit" onclick="subscribe()" value="Subscribe" class="form-control submit px-3">
                             </div>
                         </form>
@@ -107,7 +112,7 @@
                 <div class="col-md-12 text-center">
                     <p>
                         Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved <a href="https://www.readmycourse.com"> | ReadMyCourse</a> 
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved <a href="https://www.readmycourse.com"> | ReadMyCourse</a>
                     </p>
                     <p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

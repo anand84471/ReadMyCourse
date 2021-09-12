@@ -10,8 +10,8 @@
         width:100%;
         border:10px;
        
-background: rgb(131,58,180);
-background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+background:white;
+
         
         padding:3px;
         margin-top:10px;
@@ -154,14 +154,15 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%,
                         //}
                         rows+= ('<div class="card classrooms shadow   ml-2 mr-2 mb-2">'
                      + '<div class="card-body ">'
-                         + '<h1 class="text-white font-weight-bold"><a>' + classrooms[i].classroom_name + '</a></h1>'
-                         + '<p class="text-grey-200 mb-1">' + classrooms[i].classroom_description + '</p>'
-                          + '<h6 class="card-title font-weight-light">Joined on:' + classrooms[i].date_of_joining + '</h6>'
+                         + '<h1 class="text-primary font-weight-bold"><a>' + classrooms[i].classroom_name + '</a></h1>'
+                        
+                          + '<h6 class="card-title text-secondary font-weight-light">Joined on:' + classrooms[i].date_of_joining + '</h6>'
                          + ' <div class="col mb-2">'
                        
                          + '<ul class="list-unstyled list-inline rating mb-0">'
                             //+ '<li class="list-inline-item mr-2"><button  class="btn btn-outline-primary" onclick="getCourseDetails(' + classrooms[i].classroom_id + ')">Details</button></li>'
-                            + '<li class="list-inline-item mr-0"><a  class="btn btn-outline-light" href="ViewClassroom?classroom_id=' + classrooms[i].classroom_id + '">Start learning</a></li>'
+                            + '<li class="list-inline-item mr-0 "><a  class="btn btn-primary mr-2" href="ViewClassroom?classroom_id=' + classrooms[i].classroom_id + '">visit dashboard</a></li>'
+                            //+ '<li class="list-inline-item mr-0 "><a  class="btn btn-danger" href="JoinClassroomMeeting?ClassroomId=' + classrooms[i].classroom_id + '">Attend class</a></li>'
                         + '</ul>'
                      + '</div></div>'
                  + '</div>');

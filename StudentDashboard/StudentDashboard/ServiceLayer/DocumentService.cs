@@ -7,6 +7,7 @@ using StudentDashboard.Models.Base;
 using StudentDashboard.Models.Category;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Document;
+using StudentDashboard.Models.Event;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Utilities;
@@ -186,7 +187,7 @@ namespace StudentDashboard.ServiceLayer
                     avgReviewModel.m_fPercentage3StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage3StartRating, TotalRatings);
                     avgReviewModel.m_fPercentage4StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage4StartRating, TotalRatings);
                     avgReviewModel.m_fPercentage5StartRating = MasterUtilities.GetPercentage(avgReviewModel.m_fPercentage5StartRating, TotalRatings);
-                    avgReviewModel.m_fAvgRating = AvgRatingSum / TotalRatings;
+                    avgReviewModel.m_fAvgRating = (float)AvgRatingSum / TotalRatings;
                 }
             }
             catch (Exception Ex)
@@ -230,6 +231,38 @@ namespace StudentDashboard.ServiceLayer
                 MainLogger.Error(m_strLogMessage);
             }
             return classroomReviewsResponse;
+        }
+        public async Task<bool> RegisterStudentToEvent(StudentEventDetails studentEventDetails)
+        {
+            bool result = false;
+            try
+            {
+                result = await objDocumentDTO.RegisterStudentToEvent(studentEventDetails);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateInstructorPhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<EventModel> GetEventDetails(long EventId)
+        {
+            EventModel result = null;
+            try
+            {
+                result = await objDocumentDTO.GetEventDetails(EventId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateInstructorPhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

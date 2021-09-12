@@ -212,6 +212,36 @@
   <wsdl:message name="ICpDataService_GetInstructorClassroomwisePurchases_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetInstructorClassroomwisePurchasesResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetEventsDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEventsDetails" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetEventsDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEventsDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertPublicStudentRegitrainInEvent_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertPublicStudentRegitrainInEvent" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_InsertPublicStudentRegitrainInEvent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertPublicStudentRegitrainInEventResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomMeetingLink_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomMeetingLink" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomMeetingLink_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomMeetingLinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomProjects_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomProjects" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomProjects_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomHighlights_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomHighlights" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_UpdateClassroomHighlights_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateClassroomHighlightsResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudent" />
   </wsdl:message>
@@ -1885,6 +1915,26 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases" message="tns:ICpDataService_GetInstructorClassroomwisePurchases_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchasesResponse" message="tns:ICpDataService_GetInstructorClassroomwisePurchases_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetEventsDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetEventsDetails" message="tns:ICpDataService_GetEventsDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetEventsDetailsResponse" message="tns:ICpDataService_GetEventsDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertPublicStudentRegitrainInEvent">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/InsertPublicStudentRegitrainInEvent" message="tns:ICpDataService_InsertPublicStudentRegitrainInEvent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/InsertPublicStudentRegitrainInEventResponse" message="tns:ICpDataService_InsertPublicStudentRegitrainInEvent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomMeetingLink">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomMeetingLink" message="tns:ICpDataService_UpdateClassroomMeetingLink_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomMeetingLinkResponse" message="tns:ICpDataService_UpdateClassroomMeetingLink_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomProjects">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomProjects" message="tns:ICpDataService_UpdateClassroomProjects_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomProjectsResponse" message="tns:ICpDataService_UpdateClassroomProjects_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomHighlights">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomHighlights" message="tns:ICpDataService_UpdateClassroomHighlights_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/UpdateClassroomHighlightsResponse" message="tns:ICpDataService_UpdateClassroomHighlights_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetClassroomHomeDetailsForStudent">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage" />
@@ -3211,6 +3261,51 @@
     </wsdl:operation>
     <wsdl:operation name="GetInstructorClassroomwisePurchases">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsDetails">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetEventsDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertPublicStudentRegitrainInEvent">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/InsertPublicStudentRegitrainInEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomMeetingLink">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomMeetingLink" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomProjects">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateClassroomHighlights">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/UpdateClassroomHighlights" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

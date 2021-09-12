@@ -35,5 +35,32 @@ namespace StudentDashboard.Controllers
             ViewBag.Id = classroomJoinDetailsModal.m_llClassroomId;
             return View(classroomJoinDetailsModal);
         }
+        public async Task<ActionResult> CheckOut(string id)
+        {
+            ClassroomJoinDetailsModal classroomJoinDetailsModal;
+            long ClassroomId = objDocumentService.GetClassroomIdFromSku(id);
+            if (Session["user_id"] != null)
+            {
+                Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId);
+            }
+            classroomJoinDetailsModal = await objDocumentService.GetLiveClassDetailsForStudent(id);
+            ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId;
+            ViewBag.Id = classroomJoinDetailsModal.m_llClassroomId;
+            return View(classroomJoinDetailsModal);
+        }
+        [Route("Checkout/pay")]
+        public async Task<ActionResult> PayNow(string id)
+        {
+            ClassroomJoinDetailsModal classroomJoinDetailsModal;
+            long ClassroomId = objDocumentService.GetClassroomIdFromSku(id);
+            if (Session["user_id"] != null)
+            {
+                Response.Redirect(MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId);
+            }
+            classroomJoinDetailsModal = await objDocumentService.GetLiveClassDetailsForStudent(id);
+            ViewBag.ReturnUrl = MvcApplication._strApplicationBaseUrl + "/student?return_url=" + MvcApplication._strApplicationBaseUrl + "/Student/PreviewClassroom?ClassroomId=" + ClassroomId;
+            ViewBag.Id = classroomJoinDetailsModal.m_llClassroomId;
+            return View(classroomJoinDetailsModal);
+        }
     }
 }

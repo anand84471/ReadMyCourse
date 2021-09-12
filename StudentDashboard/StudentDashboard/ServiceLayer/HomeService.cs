@@ -1039,6 +1039,7 @@ namespace StudentDashboard.ServiceLayer
         }
         public async Task<List<CoursesJoinedResponseModal>> GetAllStudentsJoinedToInstructor(int InstructorId,MasterSearchRequest masterSearchRequest)
         {
+            masterSearchRequest.m_iMaxRowsToFetch = Constants.MAX_ITEMS_TO_BE_RETURNED;
             return await objHomeDTO.GetAllStudentsJoinedToInstructor(InstructorId, masterSearchRequest);
         }
         public  bool InsertNewCourseV2(InsertCourseV2Request objInsertCourseV2Request)

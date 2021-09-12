@@ -21,6 +21,7 @@ namespace StudentDashboard.Models.Student
         public int m_iTotalNoOfAssignments;
         public int m_iTotalNoOfProjects;
         public int? m_iClassroomRating;
+       
         public StudentClassroomHomeDetails(long ClassroomId,int NoOfMeetingsJoined,int NoOfTestSubmissions,int NoOfAssignmentSubmissions,
             bool IsPaymentDone,DateTime? ClassroomStartDate,int JoiningFeeInPaise,string ClassroomJoiningDate,int TotalNoOfTest,int TotalNoOfLiveClasses,int? ClassroomRating )
         {
@@ -37,6 +38,7 @@ namespace StudentDashboard.Models.Student
             this.m_iTotalNoOfLiveClasses = TotalNoOfLiveClasses;
             this.m_iTotalNoOfTests = TotalNoOfTest;
             this.m_iClassroomRating = ClassroomRating;
+            this.m_iClassroomJoiningFee = JoiningFeeInPaise;
         }
     }
 }

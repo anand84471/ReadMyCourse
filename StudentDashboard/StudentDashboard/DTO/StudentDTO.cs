@@ -883,7 +883,10 @@ namespace StudentDashboard.DTO
                           dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
                           dataRow.Field<DateTime?>("CLASS_START_DATE"),
                           dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
-                          dataRow.Field<int>("NO_OF_DEMO_CLASSES")
+                          dataRow.Field<int>("NO_OF_DEMO_CLASSES"),
+                           dataRow.Field<bool>("SHOULD_USE_EXTERNAL_MEETING_LINK"),
+                            dataRow.Field<string>("EXTERNAL_MEETING_LINK")
+
                          )).ToList()[0];
                 }
             }
@@ -1501,7 +1504,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("CLASSROOM_ID"),
                          dataRow.Field<string>("CLASSROOM_NAME"),
                          dataRow.Field<string>("CLASSROOM_DESCRIPTION"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<string>("CLASSROOM_IMAGE"),
+                         dataRow.Field<DateTime?>("START_DATE_TIME")
                          )).ToList();
                 }
 

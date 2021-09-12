@@ -16,15 +16,22 @@ namespace StudentDashboard.Models.Instructor
         public int m_iCourseEarning;
         [JsonProperty("total_earning")]
         public int m_iTotalEarning;
+        [JsonProperty("total_courses_sells")]
+        public int m_iTotalCourseSells;
+        [JsonProperty("total_unpaid_amount")]
+        public int m_iTotalUnpaidAmount;
+        [JsonProperty("active_clasrooms")]
+        public int m_iActiveClassrooms;
         [JsonProperty("classroom_earning_details")]
         public List<InstructorClassroomEarningModal> m_lsInstructorClassroomEarningModal;
         [JsonProperty("course_earning_details")]
         public List<InstructorCourseEarningDetailsModal> m_lsInstructorCourseEarningDetailsModal;
-        public InstrucorEarningDetailsModal(int ClassroomEarning,int CourseEarning)
+        public InstrucorEarningDetailsModal(int TotalEarnings,int TotalCoursesSells,int TotalUnpaidAmount,int ActiveClassrooms)
         {
-            this.m_iClassroomEarning = ClassroomEarning/100;
-            this.m_iCourseEarning = CourseEarning/100;
-            this.m_iTotalEarning = m_iClassroomEarning + m_iCourseEarning;
+            this.m_iTotalEarning = TotalEarnings/100;
+            this.m_iTotalUnpaidAmount = TotalUnpaidAmount / 100;
+            this.m_iTotalCourseSells = TotalCoursesSells;
+            this.m_iActiveClassrooms = ActiveClassrooms;
         }
         public InstrucorEarningDetailsModal()
         {

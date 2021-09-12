@@ -346,7 +346,10 @@ namespace StudentDashboard.DTO
                          dataRow.Field<int>("NO_OF_DEMO_CLASSES"),
                          dataRow.Field<bool?>("IS_VARIFIED_BY_ADMIN"),
                          dataRow.Field<int?>("ADMIN_VARIFICATION_CODE"),
-                         dataRow.Field<string>("ADMIN_VARIFICATION_MESSAGE")
+                         dataRow.Field<string>("ADMIN_VARIFICATION_MESSAGE"),
+                         dataRow.Field<bool>("SHOULD_USE_EXTERNAL_MEETING_LINK"),
+                         dataRow.Field<string>("EXTERNAL_MEETING_LINK"),
+                            dataRow.Field<string>("HIGHLIGHTS")
                          )).ToList()[0];
                 }
             }
@@ -372,7 +375,9 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("MEETING_ID"),
                          dataRow.Field<string>("MEETING_NAME"),
                           dataRow.Field<string>("MEETING_PASSWORD"),
-                         dataRow.Field<string>("CLASSROOM_NAME")
+                         dataRow.Field<string>("CLASSROOM_NAME"),
+                         dataRow.Field<bool>("SHOULD_USE_EXTERNAL_MEETING_LINK"),
+                         dataRow.Field<string>("EXTERNAL_MEETING_LINK")
                          )).ToList()[0];
                 }
                 if(objJitsiMeetingModal!=null)
@@ -535,8 +540,10 @@ namespace StudentDashboard.DTO
                 {
                     objResponse = ds.Tables[0].AsEnumerable().Select(
                      dataRow => new InstrucorEarningDetailsModal(
-                         dataRow.Field<int>("TOTAL_CLASSROOM_EARNING_IN_PAISE"),
-                         dataRow.Field<int>("TOTAL_COURSE_EARNING_IN_PAISE")
+                         dataRow.Field<int>("TOTAL_EARNINGS"),
+                         dataRow.Field<int>("TOAL_COURSES_SELLS"),
+                          dataRow.Field<int>("TOTAL_UNPAID_AMOUNT"),
+                         dataRow.Field<int>("ACTIVE_CLASSROOMS")
                          )).ToList()[0];
                 }
               
@@ -903,6 +910,86 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return responseData;
+        }
+        public async Task<StudentPublicProfileResponse> GetStudentPublicProfileResponse(long StudentId)
+        {
+            StudentPublicProfileResponse studentPublicProfileResponse = null;
+            try
+            {
+                DataSet ds = await objCPDataService.GetStudentPublicProfileDetailsAsync(StudentId);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    studentPublicProfileResponse = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new StudentPublicProfileResponse(
+                         dataRow.Field<long>("STUDENT_ID"),
+                         dataRow.Field<string>("STUDENT_NAME"),
+                         dataRow.Field<DateTime>("JOINING_DATE").ToString("d MMM yyyy"),
+                         dataRow.Field<int>("NO_OF_STUDENT_FOLLOWERS"),
+                         dataRow.Field<int>("NO_OF_COURSES_JOINED"),
+                         dataRow.Field<int>("LIVE_COURSE_JOINED"),
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<int>("NO_OF_LIVE_CLASSESS_ATTENDED"),
+                         dataRow.Field<int>("NO_OF_INSTRUCTOR_FOLLOWING")
+                         )).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "RegisterNewStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return studentPublicProfileResponse;
+        }
+        public async Task<bool> UpdateClassroomMeetingLink(long ClassroomId,string MeetingLink)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomMeetingLinkAsync(ClassroomId,MeetingLink);
+             
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "CheckIsClassroomAlreadyTakenoday", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomProjects(long ClassroomId, string classroomProjects)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomProjectsAsync(ClassroomId, classroomProjects);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomRequest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomHihlights(long ClassroomId, string highlight)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.UpdateClassroomHighlightsAsync(ClassroomId, highlight);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateClassroomRequest", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
         }
     }
 }

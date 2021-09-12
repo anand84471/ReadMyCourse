@@ -2,6 +2,97 @@
     ViewBag.Title = "Students Joined";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_InstructorLayout.cshtml";
 }
+<style>
+    #instructors {
+        border-radius: 10px;
+        background-color: white;
+        width: 95%;
+        min-height: 80vh;
+        margin: auto;
+        margin-top: 2rem;
+        padding-top: 4vh;
+    }
+
+    .instructorsList {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 10% 70% 20%;
+    }
+
+    .profile {
+        margin-top: 1vh;
+        margin-left: 2rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 40px;
+    }
+
+    .add {
+        width: 37px;
+        height: 32px;
+    }
+
+    .add-cont {
+        text-align: center;
+        margin: auto;
+    }
+
+    .icon {
+        width: 3rem;
+        font-size: 1.6rem;
+        height: 2.8rem;
+        text-align: center;
+        border-radius: 60px;
+        background-color: #f0f2f5;
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+
+    .content {
+        padding-left: 3rem;
+    }
+
+    .info {
+        font-size: 1rem;
+        opacity: 0.7;
+    }
+
+    .name {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
+        .name:hover {
+            text-decoration: underline;
+        }
+
+    @@media only screen and (max-width: 600px) {
+        #instructors {
+            width: 100%;
+        }
+
+        .profile {
+            margin-left: 1.5rem;
+            width: 50px;
+            height: 50px;
+        }
+
+        .add {
+            width: 30px;
+            height: 25px;
+        }
+
+        .info {
+            font-size: 0.8rem;
+        }
+
+        .name {
+            font-size: 1.2rem;
+        }
+    }
+</style>
 <div class="container-fluid" id="addNewCourseContainer">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Students Joined</h1>
@@ -42,77 +133,23 @@
         onpageshow = searchForStudent();
     })();
     var no_of_rows_fetched = 0;
-    function searchToCustomTable() {
-        var input, filter, table, tr, td, i, txtValue, a;
-        input = document.getElementById("customTableCodePathshalaSearch");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("customTableCodePathshala");
-        tr = table.getElementsByTagName("tr");
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-            a = tr[i].getElementsByTagName("th")[0];
-            a = a.getElementsByTagName("button")[0];
-            if (a) {
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
+    var is_last_id_feteced = false;
+    function userStudentSearch() {
+        is_last_id_feteced = false;
+        $("#joined-members").empty();
+        no_of_rows_fetched = 0;
+        searchForStudent();
     }
-    function getSubmissionDetails(id) {
-        $.ajax({
-            url: '/Student/TestResponse?id='.concat(id),
-            type: 'GET',
-            success: function (data) {
-                $("#body").html(data);
 
-            }
-        });
-    }
-    function getAllStudentsJoined() {
-        var x = $('#assignmentsRows').empty();
-        debugger;
-        $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: "/api/v1/instructor/Joinee",
-            success: function (data) {
-                debugger;
-                if (data != null && data.response_code == 1) {
-                    var assignments = data.students;
-                    for (var i = 0; i < assignments.length; i++) {
-                        var rows = '<tr>'
-                        + '<td>' + assignments[i].student_name + '</td><td>' + assignments[i].date_of_joining + '</td>'
-                        + '</tr>';
-                        $('#assignmentsRows').append(rows);
-                        $("#spinner").remove();
-                        $("#customTableCodePathshala").show();
-                    }
-                    $('#customTableCodePathshala').DataTable();
-                }
-                else {
-                    $("#footer").show();
-                    $("#spinner").remove();
-                }
-                $("#spinner").remove();
-            }
-        });
-    }
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 5) {
+            searchForStudent();
+        }
+    });
     function searchForStudent() {
+        if (is_last_id_feteced) {
+            return;
+        }
         debugger
         $("#infinit-spinner").show();
         $("#infinit-spinner-body").show();
@@ -122,7 +159,7 @@
             "no_of_rows_fetched": no_of_rows_fetched
         }
         $.ajax({
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
             type: "POST",
             data: JSON.stringify(_data),
             contentType: "application/json; charset=utf-8",
@@ -160,11 +197,11 @@
                         parentCont.setAttributeNode(parentContAtt);
 
                         let nameCont = document.createElement("a");
-                        nameCont.href = "StudentProfile?id=" + studentsData[i].student_id;
+                        nameCont.href = "Student?id=" + studentsData[i].student_id;
                         let nameContAtt = document.createAttribute("class");
                         nameContAtt.value = "name";
                         nameCont.setAttributeNode(nameContAtt);
-                        nameCont.textContent = studentsData[i].name
+                        nameCont.textContent = studentsData[i].student_name
 
                         let infoCont = document.createElement("DIV");
                         let infoContAtt = document.createAttribute("class");
@@ -176,7 +213,7 @@
                         let infoContAtt1 = document.createAttribute("class");
                         infoContAtt1.value = "info";
                         infoCont1.setAttributeNode(infoContAtt1);
-                        infoCont1.textContent = studentsData[i].followers + " Followers"
+                        infoCont1.textContent = studentsData[i].no_of_followers + " Followers"
 
                         parentCont.appendChild(nameCont)
                         parentCont.appendChild(infoCont)
@@ -197,7 +234,7 @@
 
                         let addImg = document.createElement("I");
                         let addImgAtt = document.createAttribute("class");
-                        addImgAtt.value = "fa fa-user-plus"
+                        addImgAtt.value = "fa fa-comment"
                         addImg.setAttributeNode(addImgAtt);
 
                         icon.appendChild(addImg)

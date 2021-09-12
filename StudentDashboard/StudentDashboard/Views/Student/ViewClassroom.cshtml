@@ -11,10 +11,11 @@
     .inside-body {
         padding: 25px;
     }
+
     .live-classes-row {
         cursor: pointer;
     }
- 
+
     .list-group.vertical-steps .list-group-item {
         border: none;
         border-left: 3px solid #0052c2;
@@ -582,8 +583,7 @@
                             <span class="fa fa-chevron-circle-down"></span> More
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#navClassroomSyllabus" onclick="showClassroomSyllabus()"><span class="fa fa-bookmark"></span>  Classroom syllabus</a>
-                            <a class="dropdown-item" href="#navClassroomSchedule" onclick="showClassroomSchedule()"><span class="fa fa-calendar"></span>  Classroom Schedule</a>
+
                             <a class="dropdown-item" href="#" onclick="showFeedbackModal()"><span class="fa fa-star"></span>  Update rating</a>
                             @*<a class="dropdown-item" href="#navClassroomSchedule" onclick="showClassroomSchedule()"><span class="fa fa-star"></span>  Write classroom feedback</a>*@
                             <div class="dropdown-divider"></div>
@@ -601,12 +601,17 @@
                 <div class="card-body classroom-background-container" style="background-image:url(../../Images/course-3.jpg)" id="backgroundUrl">
                     <div class="classroom-background-mask">
                         <h1 class="card-text font-weight-bold text-gray-100 " id="classroomName"></h1>
-
-                        <h6 class="mb-0 font-weight-bold" id="classroomDescription"></h6>
-
-
                         <span class="badge badge-pill badge-light" id="classroomCreationDate">Joined since: @Model.m_strClassroomJoiningDate</span>
+                        @if (Model.m_iClassroomJoiningFee != 0 && !Model.m_bIsPaymentDone)
+                        {
+                            Model.m_iClassroomJoiningFee = Model.m_iClassroomJoiningFee / 100;
+                            <div id="paymentSection">
 
+                                <h4 class="text-warning">You have the acess of demo session only. please pay the classroom fee to get full access.</h4>
+                                <span><button class="p-4 btn btn-light custom-green  font-weight-bold mb-1" id="enrollNowButton" onclick="requestCoupon(1)">&#x20B9;@Model.m_iClassroomJoiningFee Pay now <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i></button></span>
+                            </div>
+                        }
+                        <a id="attendLiveClassButton" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" class="p-3 btn btn-danger  font-weight-bold" data-toggle="tooltip" data-placement="top" title="Attend today's class" onclick="showClassroomSchedule()"><span><i class="fa fa-play-circle"></i></span> Attend class</a>
                     </div>
 
                 </div>
@@ -692,13 +697,60 @@
 
                         <h6 class="text-danger" id="demo"></h6>
                         <h2 id="isMeetingActive"></h2>
-                        <button class="btn  bg-primary text-white" onclick="showClassroomSchedule()" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</button>
+                        <a class="btn  bg-primary text-white" href="#navClassroomSchedule" data-toggle="tooltip" data-placement="top" title="time table"><span><i class="fa fa-calendar p-1"></i></span> View time table</a>
                         <a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live" onclick="callClassroomMeeting()"><span><i class="fa fa-play-circle"></i></span> Join live class</a>
                         @*<a class="btn  bg-primary text-white" id="meetingJoinLink" href="./JoinClassroomMeeting?ClassroomId=@ViewBag.Id" data-toggle="tooltip" data-placement="top" title="Start live"><span><i class="fa fa-play-circle"></i></span> Join live class using app</a>*@
                     </div>
                 </div>
             </div>
             <div id="secctionTest"></div>
+        </div>
+    </div>
+    <div class="col-lg-12 mb-2" id="navClassroomSyllabus" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header h4 font-weight-bolder">Classroom Syllabus</div>
+            <div class="card-body">
+                <div id="spinnerClassroomSyllabus" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="panel-group">
+                    <div id="classroomSyllabusContainer"> </div>
+                </div>
+
+                <div id="footerClassroomSyllabus" style="display:none">
+                    <h6 class="card-title">No details found</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 mb-2" id="navClassroomSchedule" style="display:none">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header h4 font-weight-bolder">Classroom Schedule</div>
+            <div class="card-body">
+                <div id="spinnerClassroomSchedule" class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <h5 class="text-danger font-weight-bold">Please Note that All the times are in IST(UTC +5:30).</h5>
+                <table class="table table-responsive">
+                    <thead class="thead-light">
+                        <tr>
+                            <td>Day</td>
+                            <td>Status</td>
+                            <td>Start Time</td>
+                            <td>Close Time</td>
+                        </tr>
+                    </thead>
+                    <tbody id="classroomScheduleContainer">
+                    </tbody>
+                </table>
+                <div id="footerClassroomSchedule" style="display:none">
+                    <h6 class="card-title"> No test found</h6>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -784,53 +836,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 mb-2" id="navClassroomSchedule" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">Classroom Schedule</div>
-                <div class="card-body">
-                    <div id="spinnerClassroomSchedule" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <h6>All the times are in IST(UTC +5:30).</h6>
-                    <table class="table table-responsive">
-                        <thead class="thead-light">
-                            <tr>
-                                <td>Day</td>
-                                <td>Status</td>
-                                <td>Start Time</td>
-                                <td>Close Time</td>
-                            </tr>
-                        </thead>
-                        <tbody id="classroomScheduleContainer">
-                        </tbody>
-                    </table>
-                    <div id="footerClassroomSchedule" style="display:none">
-                        <h6 class="card-title"> No test found</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12 mb-2" id="navClassroomSyllabus" style="display:none">
-            <div class="card shadow-lg border-primary">
-                <div class="card-header">Classroom Syllabus</div>
-                <div class="card-body">
-                    <div id="spinnerClassroomSyllabus" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <div class="panel-group">
-                        <div id="classroomSyllabusContainer"> </div>
-                    </div>
 
-                    <div id="footerClassroomSyllabus" style="display:none">
-                        <h6 class="card-title">No details found</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="col-lg-12 mb-2" id="navClassroomAttachments" style="display:none">
             <div class="card shadow-lg border-primary">
                 <div class="card-header">View all study materials</div>
@@ -995,6 +1002,35 @@
         </div>
     </div>
 </div>
+<div class="modal" tabindex="-1" role="dialog" id="couponModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pay the course fee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <h4 class="font-weight-bolder">Total amount to pay : &#x20B9;@Model.m_iClassroomJoiningFee</h4>
+                    <label for="exampleInputEmail1" class="font-weight-bolder">Enter Coupon Code</label>
+                    <input type="email" class="form-control" id="coupon-code" aria-describedby="emailHelp" placeholder="please enter your coupon code here">
+                    <small id="emailHelp" class="form-text text-muted">Apply coupon code to avail the discount.</small>
+                    <br />
+                    <h3 class="text-danger font-weight-bolder">Coupons available for today only</h3>
+                    <h4 class="text-info">STUDENT10</h4>
+                    <small class="text-muted">Avail 10% instant discount on all course purchases.</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel payment</button>
+                <button type="button" class="btn btn-primary" onclick="requestClassroomPayment()">Pay now</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade border-success" id="courseFeedbackModel" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="card border-success modal-content">
@@ -1010,13 +1046,12 @@
                     <form>
                         <fieldset>
                             <span class="star-cb-group ml-5">
-                                <input type="radio" id="rating-5" name="rating" value="5" checked="checked"  />
+                                <input type="radio" id="rating-5" name="rating" value="5" checked="checked" />
                                 <label for="rating-5">5</label>
                                 <input type="radio"
                                        id="rating-4"
                                        name="rating"
-                                       value="4"
-                                       />
+                                       value="4" />
                                 <label for="rating-4">4</label>
                                 <input type="radio" id="rating-3" name="rating" value="3" />
                                 <label for="rating-3">3</label>
@@ -1107,13 +1142,23 @@
                         $("#meetingJoinLink").show();
                     }
                     else {
-                        //stu_classroom_class_start_date
-                        if (classroomDetails.stu_classroom_class_start_date != null && classroomDetails.stu_classroom_class_start_date != "") {
-                            $("#classroomStartDate").text("This classroom is scheduled to start from " + classroomDetails.stu_classroom_class_start_date+".")
+                        $("#meetingJoinLink").hide();
+                    }
+                    if (!classroomDetails.is_class_started) {
+                        if (classroomDetails.classroom_class_start_date != null && classroomDetails.classroom_class_start_date != "") {
+                            $("#classroomStartDate").text("This classroom is scheduled to start from " + classroomDetails.stu_classroom_class_start_date + ".")
                         }
-                        $("#isMeetingActive").text("Live class is not started");
-
+                        $("#isMeetingActive").text("A button will appear here to attend the class when class starts.");
                         $("#meetingJoinLink").remove();
+                        $("#attendLiveClassButton").remove();
+                    }
+                    else {
+                        $("#meetingJoinLink").show();
+                        if (classroomDetails.shouldUseExternalMeetingLink) {
+                            $("#meetingJoinLink").prop("href", classroomDetails.ExternalMettingLink); //
+                            $("#attendLiveClassButton").prop("href", classroomDetails.ExternalMettingLink);
+                        }
+                     
                     }
                     if (classroomDetails.background_url != null && classroomDetails.background_url != "")
                     {
@@ -1123,10 +1168,20 @@
                     classroomMeetingName = classroomDetails.classroom_meeting_name;
                     setClassroomTimer(classroomDetails.timeScheduleDetails, classroomDetails.classroom_class_start_date);
                     hideSpinner();
+                    showClassroomSchedule();
+                    showClassroomSyllabus();
                 }
                 hideSpinner();
             }
         });
+    }
+    function preloadSyllabus() {
+
+    }
+    function preloadSchedule() {
+        hideAllClssroomDetails();
+        showClassroomSchedule();
+
     }
     function joinClassroom() {
         debugger;
@@ -1328,6 +1383,9 @@
         $("#classroomHomeDetails").show();
         $("#classroomContaintProgressDetails").show();
         $("#classroomMeetingStartSection").show();
+        $("#navClassroomSchedule").show();
+        $("#navClassroomSchedule").show();
+        $("#navClassroomSyllabus").show();
     }
     function viewAllClassroomAssignmentSubmissions()
     {
@@ -1652,7 +1710,7 @@
         });
     }
      function showClassroomSchedule() {
-        hideAllClssroomDetails();
+        
         $("#navClassroomSchedule").show();
          $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
@@ -1667,10 +1725,10 @@
                     var scheduleDetails = data.classroom_schedule_details.schedule_details;
                     for (var i = 0; i < scheduleDetails.length; i++) {
                         if (scheduleDetails[i].is_open) {
-                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-success font-weight-bold right">Open</td><td class="text-su    ccess font-weight-bold right">' + scheduleDetails[i].start_time + '</td><td class="text-success font-weight-bold right">' + scheduleDetails[i].close_time +'</td></tr>';
+                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-success font-weight-bold right">Open</td><td class="    ccess font-weight-bold right">' + scheduleDetails[i].start_time + '</td><td class=" font-weight-bold right">' + scheduleDetails[i].close_time +'</td></tr>';
                         }
                         else {
-                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-danger font-weight-bold right">Closed</td><td class="text-success font-weight-bold right">NA</td><td class="font-weight-bold right">NA</td></tr>';
+                            row += '<tr class="font-weight-bold"><td>' + scheduleDetails[i].day_name + '</td><td class="text-danger font-weight-bold right">Closed</td><td class=" font-weight-bold right">NA</td><td class="font-weight-bold right">NA</td></tr>';
                         }
 
                     }
@@ -1712,7 +1770,7 @@
     }
     function showClassroomSyllabus() {
         debugger
-        hideAllClssroomDetails();
+   
          $("#navClassroomSyllabus").show();
          $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
@@ -1941,7 +1999,8 @@
     function showFeedbackModal() {
         $("#courseFeedbackModel").modal("show");
     }
-    requestFeedback();
+
+    //requestFeedback();
     function submitFeedback() {
         _data = {
             "feedback_message": $("#feedbackMessage").val(),
@@ -1957,6 +2016,109 @@
              data: JSON.stringify(_data),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
+                }
+            }
+        });
+    }
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+    function requestCoupon(country_type_code) {
+        country_type = country_type_code;
+        $("#couponModal").modal("show");
+    }
+     function requestClassroomPayment()
+     {
+         $("#couponModal").modal("hide");
+         _data = {
+             "classroom_id": "@Model.m_llClassroomId",
+             "country_code": country_type,
+             "coupon_code": $("#coupon-code").val()
+         }
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/Course/JoinClassroomPayNow?ClassroomId",
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    if (data.is_free_course && data.is_joined)
+                    {
+                        triggerClassroomSuccess();
+                    }
+                    else {
+                        createRazroPayPayemntRequest(data.payment_data);
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+    }
+    function triggerClassroomSuccess() {
+        $("#successModal").modal('show');
+        $("#enrollNowButton").remove();
+        $("#successbadge").show();
+        $("#goToCourse").show();
+        $("#classroomJoiningText").remove();
+        $("#paymentSection").remove();
+    }
+    function createRazroPayPayemntRequest(data)
+    {
+    var options = {
+        "key": data.key, // Enter the Key ID generated from the Dashboard
+        "amount":data.payment_data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": data.payment_data.currency,
+        "name": data.name,
+        "description": data.description,
+        "image": data.image,
+        "order_id": data.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response) {
+            var razorPayOrder = {
+                "razorpay_payment_id": response.razorpay_payment_id,
+                "razorpay_order_id": response.razorpay_order_id,
+                "razorpay_signature": response.razorpay_signature,
+            }
+            var pass = {
+                "order_id": data.order_id,
+                "classroom_id":"@Model.m_llClassroomId",
+                "payment_response": razorPayOrder
+            }
+            joinClassroomPayNow(pass);
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#CE51F0"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function joinClassroomPayNow(razorPayResponse) {
+        debugger;
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(razorPayResponse),
+            url: "/api/v1/Course/MarkClassroomPaySuccess",
+            success: function (data) {
+                debugger;
+                if (data != null && data.response_code == 1) {
+                    triggerClassroomSuccess();
+                }
+                else {
+                    $("#failModal").modal('show');
+                    $("#infoMessageFail").test('Classroom could not be joined');
                 }
             }
         });

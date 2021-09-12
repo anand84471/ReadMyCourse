@@ -33,10 +33,14 @@ namespace StudentDashboard.Models.Student
         public int m_iNoOfDemoClassrooms;
         public bool m_bIsClassStarted;
         public int m_iPriceForForeignStudents;
+        public int m_iInstructorId;
+        public List<ClassroomProjectModel> lsProjects;
+        public string[] lsHighlights;
+        public string broucherUrl;
         public ClassroomJoinDetailsModal(int NoOfStudentsJoined,int NoOfAssignments,int NoOfLiveClassess,
             int NoOfTests,int NoOfStudyMaterials,string ClassroomName,string ClassroomDescription,DateTime ClassroomStartDate,
-            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule, DateTime? LiveClassStartDate ,int NoOfDemoClasses,DateTime? RegistrationCloseDate
-            )
+            int ClassroomChargeInPaise,string ClassroomImage,string ClassroomSyllabus,string Schedule, DateTime? LiveClassStartDate ,int NoOfDemoClasses,DateTime? RegistrationCloseDate,
+            int InstructorId,string Projects,string Highlights,string BroucherPath)
         {
             this.m_iNoOfAssignments = NoOfAssignments;
             this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
@@ -99,6 +103,16 @@ namespace StudentDashboard.Models.Student
             this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(RegistrationCloseDate);
             this.m_iNoOfDemoClassrooms = NoOfDemoClasses;
             this.m_iPriceForForeignStudents = PriceUtils.GetPriceForForeignStudents(ClassroomChargeInPaise);
+            this.m_iInstructorId = InstructorId;
+            if (Highlights != null)
+            {
+                lsHighlights = Highlights.Replace("\n","").Split('.');
+            }
+            if (Projects != null)
+            {
+                lsProjects = JsonConvert.DeserializeObject<List<ClassroomProjectModel>>(Projects);
+            }
+            broucherUrl = BroucherPath;
         }
         public ClassroomJoinDetailsModal()
         {

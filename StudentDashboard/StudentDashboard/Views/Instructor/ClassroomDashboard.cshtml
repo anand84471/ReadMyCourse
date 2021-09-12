@@ -198,7 +198,7 @@
                             <a class="nav-link active" href="#navHome" onclick="viewClassroomHome()"><span class="fa fa-home"></span> Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#navPreviousMeetings" onclick="showPreviousMeetings()"><span class="fa fa-play-circle"></span> Live class <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="#navPreviousMeetings" onclick="showPreviousMeetings()"><span class="fa fa-play-circle"></span>Previous Classes<span class="sr-only">(current)</span></a>
                         </li>
                         @*<li class="nav-item">
                                 <a class="nav-link" href="#navClassroomPost" onclick="viewClassroomPosts()">Posts<span class="sr-only">(current)</span></a>
@@ -371,10 +371,10 @@
                     <div class="control-buttons">
                         @*<button class="btn btn-circle bg-primary text-white" onclick="requestUploadVideo()" data-toggle="tooltip" data-placement="top" title="Upload video"><span><i class="fa fa-file"></i></span></button>*@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="callAddNewAssignment()" data-toggle="tooltip" data-placement="top" title="Add assignment"><i class="fa fa-pen"></i></button>
-                            <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
+        <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
                         @if (Model.m_strClassroomStatus == "active")
                         {
-                            <a class="btn  bg-primary text-white" href="#" onclick="requestStartMeeting()" data-toggle="tooltip" data-placement="top" title="Start live class now"><span><i class="fa fa-play-circle"></i></span> Start Live Class</a>
+                        <a class="btn  bg-primary text-white" href="#" onclick="requestStartMeeting()" data-toggle="tooltip" data-placement="top" title="Start live class now"><span><i class="fa fa-play-circle"></i></span> Start Live Class</a>
 
                         }
                         else
@@ -428,6 +428,24 @@
                 </div>
                 <br />
                 <hr />
+                <div class="card-body form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Classroom meeting link</label>
+                    <div class="col-sm-8">
+                        <input onchange="validateInputField(this)" type="text" class="form-control" id="meetingLink" placeholder="enter meeting link" value="@Model.meetingLink">
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="updateMeetingLink()">Update</button>
+                </div>
+
+                <hr />
+                <div class="card-body form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Update classroom highlights</label>
+                    <div class="col-sm-8">
+                        <textarea rows="10" onchange="validateInputField(this)" type="text" class="form-control" id="highligths" placeholder="ENETER HIGHLIGHTS" >@Model.highlights</textarea>
+                    </div>
+
+                </div>
+                <button class="btn btn-sm btn-primary" onclick="updateClassroomHighlights()">Update</button>
+                <hr />
                 <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
                     <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
                     <div class="form-group">
@@ -443,6 +461,7 @@
                     </div>
                 </form>
                 <button class="btn btn-sm btn-primary" onclick="updateClassroomBgImage()">Update Image</button>
+
             </div>
         </div>
         <div class="col-lg-12 mb-2" id="navInstructors" style="display:none">
@@ -745,6 +764,35 @@
                     <button class="btn btn-primary btn-sm mt-1" onclick="updateClassroomSyllabus()">update schedule</button>
                 </div>
             </div>
+            <div class="card mt-2 shadow-lg border-primary">
+                <div class="card-header">Update classroom projects</div>
+
+                <div class="card-body">
+                    @*<div id="spinnerClassroomClassroomProjects" class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>*@
+                    <div class="">
+                        <div class="row col-lg-12 container-fluid">
+                            <div id="classroom-projects-container">
+                               
+                                @*<div class="card col-sm-3" style="padding-left:0px;padding-right:0px;">
+                                    <div class="card-header">Face Recognition </div>
+                                    <div class="card-body">
+                                        Building the model which identity the faces of human
+                                        Learn how researchers use analytics for classifying the faces
+                                    </div>
+                                </div>*@
+                               
+                            </div>
+
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="requestAddNewProject()">Add new project</button>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="saveProjects()">save projects</button>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-6 mb-2" style="display:none" id="navMessagesContainer">
@@ -941,7 +989,7 @@
                 </div>
             </div>
             <div class="col-lg-4 card shadow-lg border-primary">
-                <div class="card-header">Live classes <span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous class</a></span></div>
+                <div class="card-header">Live classes</div>
                 <div class="card-body">
                     <div class="table-responsive table-hover">
                         <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
@@ -1085,7 +1133,7 @@
                         </div>*@
                     <input type="hidden" name="classroom_id" class="form-control" value="@Model.m_llClassRoomId">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-block btn-outline-primary" onclick="callClassroomMeeting()">Yes</button>
+                        <button type="submit" class="btn btn-block btn-outline-primary" onclick="callClassroomMeeting(@Model.m_strClassRoomName,@Model.m_strClassroomMeetingName)">Yes</button>
                     </div>
                 </form>
             </div>
@@ -1231,6 +1279,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="classroomProjectModel" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoTitle">Add or Update Classroom projects</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter project name</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="projectName" placeholder="please enter project name" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-sm-6 col-form-label">Enter project description</label>
+                    <div class="col-sm-12">
+                        <textarea type="text" class="form-control" id="projectDescription" placeholder="please enter project description" value=""></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addNewProject()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="classroomUpdateSuccess" tabindex="-1" role="dialog" aria-labelledby="infomodal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -1261,11 +1339,11 @@
             <div class="modal-body" style="max-height:500px;overflow-y:scroll;">
                 <h3>Please select classroom type</h3>
                 <h4 class="text-info">Public: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPublic">Selected</span><button class="btn btn-outline-primary ml-2" onclick="activateClassroomChoose(2)">Select this</button></h4>
-                <p>Public classroom will be public and any studnt can join. We incourage you to create public classroom to support student.</p>
+                <p>Public classroom will be public and any student can join.</p>
 
                 <h4 class="text-info">Private: <span class="fa fa-check text-success" style="display:none" id="activateClassroomPrivate">Selected</span><button class="btn btn-outline-primary ml-2" onclick="activateClassroomChoose(1)">Select this</button></h4>
                 <p>
-                    Private classroom will not appear to public and any studnt can join the classroom by Id and access code.
+                    Private classroom will not appear to public and any student can join the classroom by Id and access code.
                     If you are a private institution select this option.
                 </p>
                
@@ -1304,9 +1382,9 @@
                 <button onclick="setDate(this,'tuesday')"  class="btn btn-sm btn-outline-primary col-2">Tue</button>
                 <button onclick="setDate(this,'wednesday')"  class="btn btn-sm btn-outline-primary col-3">Wed</button>
                 <button onclick="setDate(this,'thursday')"  class="btn btn-sm btn-outline-primary col-3">Thu</button>
-                    <button onclick="setDate(this,'friday')"  class="btn btn-sm btn-outline-primary col-2">Fri</button>
-                    <button onclick="setDate(this,'saturday')"  class="btn btn-sm btn-outline-primary col-2">Sat</button>
-                    <button onclick="setDate(this,'sunday')"  class="btn btn-sm btn-outline-primary col-2">Sun</button>
+                <button onclick="setDate(this,'friday')"  class="btn btn-sm btn-outline-primary col-2">Fri</button>
+                <button onclick="setDate(this,'saturday')"  class="btn btn-sm btn-outline-primary col-2">Sat</button>
+                <button onclick="setDate(this,'sunday')"  class="btn btn-sm btn-outline-primary col-2">Sun</button>
                 </div>
                 
 
@@ -1459,4 +1537,109 @@
 <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
 <script src="https://unpkg.com/plyr@3"></script>
 <script type="text/javascript" src="~/Scripts/Classroom/ClassroomDashboard.js"></script>
+<script>
+    function updateMeetingLink() {
+        var _data =
+        {
+            "meeting_link": $("#meetingLink").val(),
+            "classroom_id": getClassroomId()
+        }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateMeetingLink",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    location.reload();
+                }
+                else {
+                }
+            }
+        });
+    }
+    var projects = [];
+    function requestAddNewProject() {
+        $("#classroomProjectModel").modal("show");
+    }
+    function saveProjects() {
+        var _data =
+        {
+            "projects": projects,
+            "classroom_id": getClassroomId()
+        }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateClassroomProjects",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    location.reload();
+                }
+                else {
+                }
+            }
+        });
+    }
+    function addNewProject() {
+        if ($("#projectName").val() == "" || $("#projectDescription").val()=="") {
+            return;
+        }
+       
+        project = {
+            "project_name": $("#projectName").val(),
+            "project_description": $("#projectDescription").val()
+        }
+        projects.push(project);
+        var project_length = projects.length;
+        var project_string = '<div id="project-' + project_length+'" class="card col-lg-12" style="padding-left:0px;padding-right:0px;"><button onclick="deleteProjectCard(this,' + project_length+ ')"><i class="fa fa-times"></i></button><div class="card-header" >' + $("#projectName").val() + ' </div >' +
+            '<div class="card-body">' + $("#projectDescription").val() + '</div>  </div >';
+        $("#classroom-projects-container").append(project_string);
+        console.log(project_string);
+        $("#classroomProjectModel").modal("hide");
+        $("#projectName").val("");
+        $("#projectDescription").val("");
+                              
+    }
+    function editProjectCard() {
+
+    }
+    function deleteProjectCard(id,project_no) {
+        projects.splice(project_no, 1);
+        $("#project-" + project_no).remove();
+    }
+    function updateProject() {
+
+    }
+    function loadProjects() {
+
+    }
+    function updateClassroomHighlights() {
+        var _data =
+        {
+            "highlights": $("#highligths").val(),
+            "classroom_id": getClassroomId()
+        }
+        $.ajax({
+            headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(_data),
+            url: "/api/v1/instructor/UpdateClassroomHighlights",
+            success: function (data) {
+                if (data != null && data.response_code == 1) {
+                    location.reload();
+                }
+                else {
+                }
+            }
+        });
+    }
+</script>
 

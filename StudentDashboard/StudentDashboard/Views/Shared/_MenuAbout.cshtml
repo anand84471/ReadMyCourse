@@ -53,38 +53,39 @@
                 @*<li class="nav-item" id="createMeetingMenu"><a href="~/Classroom" class="nav-link">Classroom</a></li>*@
                 @*<li class="nav-item outline" id="courseMenu"><a href="~/Course" class="nav-link pl-0">Courses</a></li>*@
                 @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">Categories</a>
-                    <div class="row col-sm-12">
-                        <div class="dropdown-menu mega-area">
-                            <div class="col-sm-3 col-lg-3">
-                                <h6>Data Science</h6>
-                                <div class="">
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-3 col-lg-3">
-                                <h6>Data Science</h6>
-                                <div class="">
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-3 col-lg-3">
-                                <h6>Data Science</h6>
-                                <div class="">
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
-                                    <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
-                                </div>
-                            </div>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">Categories</a>
+            <div class="row col-sm-12">
+                <div class="dropdown-menu mega-area">
+                    <div class="col-sm-3 col-lg-3">
+                        <h6>Data Science</h6>
+                        <div class="">
+                            <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
+                            <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
                         </div>
-
                     </div>
-                </li>*@
-                <li class="nav-item" id="liveClassMenu"><a href="~/JoinLiveClass" class="nav-link pl-0">Join live class</a></li>
+                    <div class="col-sm-3 col-lg-3">
+                        <h6>Data Science</h6>
+                        <div class="">
+                            <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
+                            <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-3">
+                        <h6>Data Science</h6>
+                        <div class="">
+                            <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
+                            <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </li>*@
+                <li class="nav-item" id="liveClassMenu"><a href="~/JoinLiveClass" class="nav-link pl-0">Courses</a></li>
+                @*<li class="nav-item" id="events"><a href="~/Events" class="nav-link pl-0">Events</a></li>*@
                 @*<li class="nav-item" id="testMenu"><a href="~/Test" class="nav-link pl-0">Practice tests</a></li>*@
                 <li class="nav-item" id="becomeInstructor"><a href="~/BecomeInstructor" class="nav-link pl-0">Become Instructor</a></li>
-                <li class="nav-item" id="maegAward"><a href="~/MAEGAward" class="nav-link pl-0">MAEG Award</a></li>
+                @*<li class="nav-item" id="maegAward"><a href="~/MAEGAward" class="nav-link pl-0">MAEG Award</a></li>*@
                 <li class="nav-item dropdown"></li>
                 @*<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">About</a>
         <div class="dropdown-menu">
@@ -92,12 +93,37 @@
                 <a class="dropdown-item" href="https://www.readmycourse.com/instructor">Instructor</a>
                 <a class="dropdown-item" href="https://www.readmycourse.com/student">Student</a>
             </div>
-        </div>*@
 
+        </div>*@
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Links</a>
+                    <div class="dropdown-menu text-black-50">
+                        <a class="dropdown-item" style="color:black;" href="~/Instructor">Instructor Login</a>
+                        <a class="dropdown-item" style="color:black;" href="~/AboutUs">About Us</a>
+                       
+                        <a id="maegAward" class="dropdown-item" style="color:black;" href="#">MAEG Award</a>
+
+                    </div>
+
+                </li>
+                @if (Session["student_email"] != null)
+                {
+
+                    <li class="nav-item"><a href="~/Student" class="nav-link pl-0"><img class="img-profile rounded-circle" style="max-height:35px;" src="@Session["student_profile_picture_url"]" /></a></li>
+                }
             </ul>
             <div class="nav-login">
-                <a href="~/login" class="ml-1 btn p-1 right shadow-lg">Log In</a>
-                <a href="~/Student/Join" class="p-1 btn btn-primary m-1 font-weight-bold">Join for Free</a>
+
+                @if (Session["student_email"] != null)
+                {
+                
+                    }
+                    else
+                    {
+                        <a href="~/Student" class="ml-1 btn p-1 right shadow-lg">Log In</a>
+                        <a href="~/Student/Join" class="p-1 btn btn-primary m-1 font-weight-bold">Join for Free</a>
+                    }
+
             </div>
         </div>
     </div>

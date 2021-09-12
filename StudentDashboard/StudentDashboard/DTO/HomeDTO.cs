@@ -2119,7 +2119,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("CLASSROOM_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DETATIME").ToString("d MMM yyyy"),
                          dataRow.Field<string>("COURSE_STATUS_NAME"),
-                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED")
+                         dataRow.Field<int>("NO_OF_STUDENTS_JOINED"),
+                         dataRow.Field<string>("VARIFICATION_STATUS")
                          )).ToList();
                 }
             }

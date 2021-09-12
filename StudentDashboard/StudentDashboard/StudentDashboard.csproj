@@ -241,6 +241,7 @@
     <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\CreateMeetingController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
@@ -319,7 +320,9 @@
     <Compile Include="HttpRequest\Student\StudentRegisterRequest.cs" />
     <Compile Include="HttpRequest\Student\StudentScialProfileDetails.cs" />
     <Compile Include="HttpRequest\TestSubmissionRequest.cs" />
+    <Compile Include="HttpRequest\UpateClassroomProjectRequest.cs" />
     <Compile Include="HttpRequest\UpdateClassroomBackgroundImageRequest.cs" />
+    <Compile Include="HttpRequest\UpdateClassroomHighlightsRequest.cs" />
     <Compile Include="HttpRequest\UpdateClassroomVideoUrlRequest.cs" />
     <Compile Include="HttpRequest\UpdateCourseBackgroundImageRequest.cs" />
     <Compile Include="HttpRequest\UserLoginRequest.cs" />
@@ -454,6 +457,7 @@
     <Compile Include="Models\Classroom\ClassroomAssignmentModal.cs" />
     <Compile Include="Models\Classroom\ClassroomBase.cs" />
     <Compile Include="Models\Classroom\ClassroomDayWiseScheduleModal.cs" />
+    <Compile Include="Models\Classroom\ClassroomProjectModel.cs" />
     <Compile Include="Models\Classroom\ClassroomPublicDetails.cs" />
     <Compile Include="Models\Classroom\ClassroomScheduleDetails.cs" />
     <Compile Include="Models\Classroom\ClassroomShowcaseDetails.cs" />
@@ -477,10 +481,13 @@
     <Compile Include="Models\Course\TestModel.cs" />
     <Compile Include="Models\Course\TopicModel.cs" />
     <Compile Include="Models\Document\ClassroomBasicDetailsModalForHome.cs" />
+    <Compile Include="Models\Event\EventModel.cs" />
+    <Compile Include="Models\Event\StudentEventDetails.cs" />
     <Compile Include="Models\Files\FileModal.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageUploadDetailsModal.cs" />
     <Compile Include="Models\InstructorRegisterModel.cs" />
+    <Compile Include="Models\Instructor\ClassroomMeetingLinkUpdateRequest.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
     <Compile Include="Models\Instructor\ClassroomTransactions.cs" />
@@ -652,6 +659,7 @@
     <Content Include="fonts\vendors\intl-tel-input-master\intlTelInput.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\.DS_Store" />
     <Content Include="Images\29_9430b2b4-6610-4955-a931-d415af1bbaa2.png_200x200_.png" />
     <Content Include="Images\4035_13707cf6-0c98-4384-9244-30295549dcb1.jpg_200x200_.jpg" />
     <Content Include="Images\add-course-logo.svg" />
@@ -670,11 +678,14 @@
     <Content Include="Images\classroom-bg.png" />
     <Content Include="Images\classroom_bg.jpg" />
     <Content Include="Images\community.jpg" />
-    <Content Include="Images\companies_logo\accenture-logo.png" />
     <Content Include="Images\companies_logo\biocon-logo.png" />
-    <Content Include="Images\companies_logo\facebook-logo.png" />
-    <Content Include="Images\companies_logo\google-logo.png" />
+    <Content Include="Images\companies_logo\Biocon_Logo.svg" />
+    <Content Include="Images\companies_logo\deloitte.jpg" />
     <Content Include="Images\companies_logo\paytm-logo.png" />
+    <Content Include="Images\companies_logo\reddy.png" />
+    <Content Include="Images\companies_logo\rma.png" />
+    <Content Include="Images\companies_logo\sun.png" />
+    <Content Include="Images\companies_logo\utl.png" />
     <Content Include="Images\contact-us.svg" />
     <Content Include="Images\content-search.svg" />
     <Content Include="Images\course-1.jpg" />
@@ -689,6 +700,7 @@
     <Content Include="Images\course_icons\bioinformatics_web_development_with_python.jpeg" />
     <Content Include="Images\course_icons\computer_aided_drug_design_with_python.jpeg" />
     <Content Include="Images\course_icons\computer_aided_vaccine_designing.jpeg" />
+    <Content Include="Images\course_icons\drug_designing.jpg" />
     <Content Include="Images\course_icons\machine_learning_bootcamp_for_all_reserachers.jpeg" />
     <Content Include="Images\course_icons\machine_learning_bootcamp_for_biological_research.jpeg" />
     <Content Include="Images\course_icons\matlab_for_scientific_computation.jpeg" />
@@ -715,6 +727,7 @@
     <Content Include="Images\icon\favicon_io\favicon-16x16.png" />
     <Content Include="Images\icon\favicon_io\favicon-32x32.png" />
     <Content Include="Images\icon\favicon_io\favicon.ico" />
+    <Content Include="Images\icon\favicon_io\site.webmanifest" />
     <Content Include="Images\icon\web_icons\accelerate.png" />
     <Content Include="Images\icon\web_icons\approved.svg" />
     <Content Include="Images\icon\web_icons\book.png" />
@@ -747,6 +760,7 @@
     <Content Include="Images\institutions_logo\IIT_Kharagpur_Logo.svg" />
     <Content Include="Images\institutions_logo\mit-logo.png" />
     <Content Include="Images\institutions_logo\stanford.png" />
+    <Content Include="Images\instructor_icons\eshank.jpeg" />
     <Content Include="Images\instructor_login.jpg" />
     <Content Include="Images\jez-timms-8muUTAmcWU4-unsplash.jpg" />
     <Content Include="Images\jitsi-logo.png" />
@@ -798,6 +812,7 @@
     <Content Include="Images\slide-2-support.jpg" />
     <Content Include="Images\slide-3-bioinfo.jpg" />
     <Content Include="Images\slide-4-instructors.jpg" />
+    <Content Include="Images\SLIDES WEBSITE-02 %281%29.jpg" />
     <Content Include="Images\software-testing-course.jpg" />
     <Content Include="Images\software-testing.jpg" />
     <Content Include="Images\spoken-english-live-class-logo.jpg" />
@@ -818,10 +833,14 @@
     <Content Include="Images\testimonial2.jpg" />
     <Content Include="Images\valentin-antonini-0eTLk6dA_Ds-unsplash.jpg" />
     <Content Include="Images\web graphic renewed-04.svg" />
+    <Content Include="Images\webinar_images\drug.png" />
+    <Content Include="Images\webinar_images\Futuristic Technology Background.jpg" />
+    <Content Include="Images\webinar_images\machine.png" />
+    <Content Include="Images\webinar_images\Narrow Super Intelligences are Near _ NextBigFuture_com.jpg" />
+    <Content Include="Images\webinar_images\ngs.png" />
+    <Content Include="Images\webinar_images\python.png" />
     <Content Include="Images\WhatsApp Image 2021-02-11 at 04.12.06.jpeg" />
     <Content Include="Images\will-van-wingerden-dsvJgiBJTOs-unsplash.jpg" />
-    <Content Include="Images\.DS_Store" />
-    <Content Include="Images\icon\favicon_io\site.webmanifest" />
     <Content Include="Scripts\AboutScripts\aos.js" />
     <Content Include="Scripts\AboutScripts\bootstrap.min.js" />
     <Content Include="Scripts\AboutScripts\google-map.js" />
@@ -2745,10 +2764,17 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\Instructor\Student.cshtml" />
+    <Content Include="Views\JoinLiveClass\Checkout.cshtml" />
+    <Content Include="Views\JoinLiveClass\PayNow.cshtml" />
+    <Content Include="Views\Events\Index.cshtml" />
+    <Content Include="Views\Events\Register.cshtml" />
+    <Content Include="Views\Shared\common.cshtml" />
+    <Content Include="Views\Shared\CommonBody.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\icon\icons\" />
+    <Folder Include="Scripts\js\external\" />
     <Folder Include="Views\Help\" />
     <Folder Include="Views\StudentAccountApi\" />
   </ItemGroup>

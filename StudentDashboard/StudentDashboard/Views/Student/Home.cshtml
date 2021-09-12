@@ -13,12 +13,12 @@
     </div>
     <!-- Content Row -->
     <div class="row">
-        <div class="col-xl-3 col-md-6 mb-4">
+        <a class="col-xl-3 col-md-6 mb-4" href="MyClassrooms">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Live classes joined</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Courses joined</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.m_iLiveClassesJoined</div>
                         </div>
                         <div class="col-auto">
@@ -28,10 +28,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
+        <a class="col-xl-3 col-md-6 mb-4" href="MyClassrooms">
             <div class="card border-left-primary shadow h-100 py-2 ">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
@@ -102,31 +102,29 @@
                     @if (Model.m_lsClassrooms != null)
                     {
                         <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Classroom Name</th>
-                                    <th scope="col">Joining Date</th>
-                                </tr>
-                            </thead>
+
                             <tbody>
                                 @foreach (var classrooms in Model.m_lsClassrooms)
                                 {
                                     <tr class="">
-                                        <td class="justify-content-between font-weight-bolder p-2"><span class="fa fa-2x text-primary fa-play-circle p-2"></span><a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId">@classrooms.m_strClassroomName</a></td>
-                                        <td>@classrooms.m_strClassroomJoiningDate</td>
+                                        <td><a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId"><img src="@classrooms.m_strClassroomImage"></a></td>
+                                        <td class="justify-content-between font-weight-bolder p-2">
+                                            <a href="./ViewClassroom?classroom_id=@classrooms.m_llClassroomId">@classrooms.m_strClassroomName</a>
+                                            <h6>@classrooms.m_strClassroomJoiningDate</h6>
+                                            <h6>@classrooms.m_strClassroomStartDateMsg</h6>
+                                        </td>
                                     </tr>
                                 }
-                                
                             </tbody>
                         </table>
-                        <a class="btn  btn-outline-primary font-weight-bolder text-center" href="./MyClassrooms">explore more</a>
+                        <a class="container-fluid btn btn-lg btn-primary font-weight-bolder text-center" href="./JoinNewClassroom">Explore more <i class="fa fa-arrow-right"></i></a>
                     }
                     else
                     {
-                        <div class="text-center" >
+                        <div class="text-center">
                             <h4 class="text-gray-500 text-info">You have not joined any live classes.</h4>
-                            <a class="btn btn-outline-primary text-center p-2 m-2" href="./JoinNewClassroom">Join free live class</a>
-                            
+                            <a class="btn btn-primary text-center p-2 m-2" href="./JoinNewClassroom">Join free course <i class="fa fa-arrow-right"></i> </a>
+
                             <img class="img" src="~/Images/join_new_live_class_graphics.svg" style="max-height:300px" />
                         </div>
 
@@ -140,40 +138,63 @@
                     <h6 class="m-0 font-weight-bold text-primary">My courses</h6>
                 </div>
                 <div class="card-body">
-                   @if (Model.m_lsCourses != null)
-                   {
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Course Name</th>
-                                <th scope="col">Joining Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var courses in Model.m_lsCourses)
-                            {
+                    @if (Model.m_lsCourses != null)
+                    {
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td class="font-weight-bolder p-2"><span class="fa fa-2x fa-book p-2 text-primary"></span><a href="./LearnCourse?id=@courses.m_llCourseId">@courses.m_strCourseName</a></td>
-                                    <td>@courses.m_strJoiningDate</td>
+                                    <th scope="col">Course Name</th>
+                                    <th scope="col">Joining Date</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <a class="btn  btn-outline-primary font-weight-bolder text-center" href="./MyCourses">explore more</a>
-                   }
-                   else
-                   {
-                    <div class="text-center" style="max-height:400px">
-                        <h4 class="text-gray-500 text-info">You have not joined any course.</h4>
-                        <a class="btn btn-outline-primary text-center p-2 m-2" href="./JoinNewCourse">Join free course</a>
-                        <img class="img" src="~/Images/join_new_static_course_graphics.svg" style="max-height:300px" />
-                    </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var courses in Model.m_lsCourses)
+                                {
+                                    <tr>
+                                        <td class="font-weight-bolder p-2"><span class="fa fa-2x fa-book p-2 text-primary"></span><a href="./LearnCourse?id=@courses.m_llCourseId">@courses.m_strCourseName</a></td>
+                                        <td>@courses.m_strJoiningDate</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a class="btn  btn-outline-primary font-weight-bolder text-center" href="./MyCourses">explore more</a>
+                    }
+                    else
+                    {
+                        <div class="text-center" style="max-height:400px">
+                            <h4 class="text-gray-500 text-info">You have not joined any course.</h4>
+                            <a class="btn btn-outline-primary text-center p-2 m-2" href="./JoinNewCourse">Join free course</a>
+                            <img class="img" src="~/Images/join_new_static_course_graphics.svg" style="max-height:300px" />
+                        </div>
 
-                   }
+                    }
                 </div>
             </div>
         </div>
     </div>
+    <section>
+        <style>
+            .testimonial p {
+                color: #808080;
+                line-height: 19px;
+                font-size: 13px;
+                margin-top: 16px
+            }
+
+            .testimonial h5 {
+                color: #9c27b0;
+                text-transform: uppercase;
+                font-size: 15px;
+                margin-top: 8px
+            }
+
+
+            .col-md-4 {
+                margin-top: 25px
+            }
+        </style>
+
+    </section>
     <script type="text/javascript">
     (function () {
         'use strict';
@@ -183,3 +204,554 @@
         }
     })();
     </script>
+
+
+    @{
+        ViewBag.Title = "Join new classroom";
+        Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_StudentLayout.cshtml";
+    }
+    <style type="text/css">
+        .classroom-assignemnts {
+            width: 100%;
+            border: 10px;
+            background: rgb(58,180,60);
+            background: linear-gradient(90deg, rgba(58,180,60,1) 26%, rgba(253,29,29,1) 100%, rgba(252,176,69,1) 100%);
+            padding: 3px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #f8f9fccc !important;
+            border-radius: 8px;
+        }
+
+        .classroom-assignemnts-submitted {
+            width: 100%;
+            border: 10px;
+            background: rgb(58,180,60);
+            background: linear-gradient(130deg, rgba(58,180,60,1) 26%, rgba(226,210,210,1) 100%, rgba(252,176,69,1) 100%);
+            padding: 3px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #f8f9fccc !important;
+            border-radius: 8px;
+        }
+    </style>
+    <style type="text/css">
+        .card-img-top {
+            /* max-width: 22.8rem !important;*/
+            max-height: 12.8rem !important;
+        }
+
+        .card-bodys {
+            padding-top: 0.8rem;
+        }
+
+        .card-titles {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: black;
+            padding-bottom: 0;
+            margin-bottom: 5px;
+        }
+
+        .stars-outer {
+            display: inline-block;
+            color: #f8ce0b;
+            position: relative;
+            font-family: FontAwesome;
+            font-size: 20px;
+            letter-spacing: 5px;
+        }
+
+            .stars-outer::before {
+                content: "\f006 \f006 \f006 \f006 \f006";
+            }
+
+        .stars-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+
+            .stars-inner::before {
+                content: "\f005 \f005 \f005 \f005 \f005";
+                color: #f8ce0b;
+            }
+
+        .stars-outer spam {
+            letter-spacing: normal;
+            color: black;
+        }
+
+            .stars-outer spam:nth-child(3) {
+                letter-spacing: normal;
+                color: black;
+                opacity: 0.6;
+                font-size: 17px;
+            }
+
+        .badge-course-complexity {
+            position: absolute;
+            background-image: linear-gradient(to left,#FF8008,#FFC837);
+            color: white;
+            width: 6rem;
+            font-size: 1rem;
+            margin-top: 20px;
+            margin-left: 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .card-texts {
+            color: black;
+            opacity: 0.8;
+            padding-top: 10px;
+        }
+
+        .enroll {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #join-now-button {
+            color: #fff;
+            background-color: #09e176;
+            border-color: #09e176;
+            min-width: 9.2rem;
+            font-weight: 400;
+            font-size: 1.5rem;
+            line-height: 1.2;
+            border-radius: 5px;
+            text-align: center;
+            justify-content: center;
+            justify-content: space-between;
+        }
+
+            #join-now-button:hover {
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+
+        .course-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .course-details button {
+                font-weight: 400;
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+        .price {
+            font-size: 1.0rem;
+            font-weight: 600;
+            padding: .2rem 0 0;
+            color: #7a17eb;
+        }
+
+        .author {
+            display: flex;
+            margin-top: 0;
+        }
+
+            .author img {
+                width: 30px;
+                height: 30px;
+                border-radius: 20px;
+            }
+
+            .author div {
+                margin: 0.1rem 0 0 0.5rem;
+                font-size: 1rem;
+                font-weight: 550;
+                color: black;
+                opacity: 0.8;
+            }
+
+        .live {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border: 2px solid red;
+            color: red;
+            border-radius: 4px;
+            font-weight: bold;
+            padding: 0.2rem;
+            text-align: center;
+            float: right;
+            font-size: 0.8rem;
+        }
+
+        .live-registration-open {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border: 2px solid #09e176;
+            color: #09e176;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            float: right;
+            font-size: 0.9rem;
+            padding: 0.2rem;
+        }
+
+        @@media only screen and (max-width: 600px) {
+            .parent {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .live-class-cards {
+                /*     width: 21rem !important;
+        min-height: 29rem !important;*/
+            }
+
+            .card-img-top {
+                /*        width: 20.8rem !important;*/
+            }
+        }
+    </style>
+    <div class="container-fluid" id="addNewCourseContainer">
+       
+        <div class="input-group p-1">
+            <input type="text" class="form-control" id="classroomSearchBox" placeholder="Search for classrooms..." aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="initiliazeJoinNewClassroom()" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+        <hr class="ml-5 mr-5" />
+        <div id="spinner" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="row col-md-12 mt-4 parent" id="live-classes-container">
+
+        </div>
+        <div class="alert alert-danger" id="footerAllClassroom" style="display:none">
+            No more classrooms founds
+        </div>
+        <button class="btn btn-block mh-100 btn-outline-primary" onclick="searchForClassrooms()">view more</button>
+
+
+
+
+    </div>
+    <div class="modal fade" id="requestAssignemntAccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAndUpdateIndexTopicHeader">Please enter access code to continue</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetAddTopicModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" class="needs-validation" action="RequestClassroomAccess" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Assignment Id</label>
+                            <input type="text" name="assignment_id" class="form-control" id="assignmentModalId" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label" id="bc-topicNameLabel">Access code</label>
+                            <input type="text" name="assignment_access_code" class="form-control" id="assignmentModalAccessCode" placeholder="Enter access code">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-outline-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetAddTopicModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="modalIndexCreatedTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="card border-danger modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalIndexCreatedTitle">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-danger">
+                    <h3 id="infoMessageFail">Course could not be joined</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn-outline-primary mr-lg-5 ml-lg-5" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade top" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-full-height modal-top" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header ">
+                    <h4 class="modal-title w-100 " id="myModalLabel"> <b>Course Details:</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Name:</dt>
+                        <dd class="col-sm-9" id="classroomName"></dd>
+                        <dt class="col-sm-3">Description:</dt>
+                        <dd class="col-sm-9" id="classroomDescription"></dd>
+                        <dt class="col-sm-3">Created on:</dt>
+                        <dd class="col-sm-9" id="createdOn">
+                        </dd>
+                        <dt class="col-sm-3">Instructor:</dt>
+                        <dd class="col-sm-9" id="instructorName"></dd>
+
+                        <dt class="col-sm-3">No od enrollments:</dt>
+                        <dd class="col-sm-9" id="noOfStudentsJoined"></dd>
+                    </dl>
+                    <ul class="list-group z-depth-0" id="indexContainer"></ul>
+
+                </div>
+                <!--Footer-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary " data-dismiss="modal" onclick="requestStartAssignment()">Close</button>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                initiliazeJoinNewClassroom();
+            }, false);
+        })();
+        function initiliazeJoinNewClassroom() {
+            $("#live-classes-container").empty();
+            noOfRecordFectched = 0;
+            searchForClassrooms();
+        }
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            var input = document.getElementById("classroomSearchBox");
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    initiliazeJoinNewClassroom();
+                }
+            });
+            $("#spinner").remove();
+        })();
+        var noOfRecordFectched = 0;
+        function searchForClassrooms() {
+            var queryString = $("#classroomSearchBox").val();
+            if (queryString == null) {
+                queryString = "";
+            }
+            var _data = {
+                "serach_request": queryString,
+                "no_of_record_fetched": noOfRecordFectched,
+                "max_rows_to_be_fecthed": 10
+            };
+            $.ajax({
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem('jwttoken') },
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/api/v1/Course/SearchClassroom",
+                data: JSON.stringify(_data),
+                success: function (data) {
+                    debugger
+                    if (data != null && data.response_code == 1) {
+                        var row = '';
+                        var classrooms = data.classrooms;
+                        noOfRecordFectched += classrooms.length;
+                        if (classrooms != null && classrooms.length > 0) {
+                            for (var i = 0; i < classrooms.length; i++) {
+                                lastClassroomIdFetched = classrooms[i].classroom_id;
+                                if (classrooms[i].is_joined == false) {
+                                    if (classrooms[i].instructor_image == null) {
+                                        classrooms[i].instructor_image = "../../Images/profile1.png";
+                                    }
+                                    if (classrooms[i].classroom_image == null) {
+                                        classrooms[i].classroom_image = "../../Images/join_new_static_course_graphics.jpg";
+                                    }
+                                    var highlight = "Live Class";
+                                    var highlightclass = "live-registration-open";
+                                    if (classrooms[i].is_registration_closed == true) {
+                                        highlight = "Registration Closed";
+                                        highlightclass = "live";
+                                    }
+                                    row = '<div class="col-md-6 col-lg-4 col-sm-12 my-2 my_card">'
+                                        + '<div class="card live-class-cards shadow-lg" >'
+                                        //+ '<div class="badge-course-complexity">Beginner</div>'
+                                        + '<img src="' + classrooms[i].classroom_image + '" class="card-img-top" alt="course">'
+                                        + '<div class="card-body card-bodys">'
+
+                                        + '<div class="card-title card-titles">' + classrooms[i].classroom_name + '</div>'
+
+                                        + '<p class="card-text card-texts">20+ LIVE Lessons | English | Guided Project</p>'
+                                        + '<div class="' + highlightclass + ' ml-1">' + highlight + '</div>'
+                                        + '<div class="stars-outer">'
+                                        + '<div class="stars-inner">'
+                                        + '</div>'
+                                        + '<spam >5</spam>'
+                                        + '<spam > (' + classrooms[i].no_of_enrollments + ') </spam>'
+
+                                        + '</div>'
+                                        + '<p class="price">Price: ' + classrooms[i].classroom_joining_fee + '</p>'
+
+                                        + '<div class="author">'
+
+                                        + '<img src="' + classrooms[i].instructor_image + '"alt="prof" />'
+                                        + '<div>' + classrooms[i].instructor_name + '</div>'
+                                        + '</div>'
+                                        + '<div class="enroll">'
+                                        + '<div class="course-details">'
+                                        + '<a class="btn text-gray-500" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Details</a>'
+                                        + '</div>'
+                                        + '<a id="join-now-button" href="PreviewClassroom?ClassroomId=' + classrooms[i].classroom_id + '">Join now</a>'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '</div>';
+                                    $("#live-classes-container").append(row);
+
+                                }
+
+                            }
+
+                        } else {
+                            $("#footerAllClassroom").show();
+                        }
+
+                    }
+
+                    $("#spinnerAllClassroom").remove();
+                }
+            });
+        }
+
+
+    </script>
+
+    <div class="container mt-5 mb-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-1"><span>What students say about us</span></h2>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial p-3 bg-gray-200 text-center rounded">
+                    <img src="https://i.imgur.com/lU2pDQv.png" width="40">
+                    <p>
+                        ReadMyCourse is a one stop destination for understanding courses related to research and new technology With great qualified instructors and 24X7 doubts support, difficult topics are presented in a simplified manner.
+                    </p><img class="rounded-circle" src="https://readmycourseprodclouds3.s3-ap-southeast-1.amazonaws.com/InstrcuctorsUploads/Images/Compressed/167_91ff7c86-1d1b-4788-8658-0bd005f1682c.jpg_100x100_.jpg" width="50">
+                    <h5>Dr. Rimanpreet Kaur | Bioanalyst</h5>
+                    <h6>Machine learning course</h6>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3 bg-gray-200 text-center rounded">
+                    <img src="https://i.imgur.com/lU2pDQv.png" width="40">
+                    <p>I had a great learning experience with ReadMyCourse. The concepts were clearly explained by the teachers, especially the way the course was simplified and presented, makes it more fun and easy. I got a job offer as Bioanalyst.</p><img class="rounded-circle" src="https://readmycourseprodclouds3.s3-ap-southeast-1.amazonaws.com/InstrcuctorsUploads/Images/Compressed/167_d271d479-3b3b-4258-b664-faef2b014816.jpg_100x100_.jpg" width="50">
+                    <h5>Anup Singh | IISC</h5>
+                    <h6>NGS course</h6>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3 bg-gray-200 text-center rounded">
+                    <img src="https://i.imgur.com/lU2pDQv.png" width="40">
+                    <p>It is quite understandable for me. I have some background in programming language it is a plus point, apart from it also its quite easy to understand with live classes. Course was more practical and with live coding examples.</p><img class="rounded-circle" src="https://i.imgur.com/xbWPOrc.jpg" width="50">
+                    <h5>Sakina Vakhariya | AstraZeneca</h5>
+                    <h6>Python for Bioinformatics course</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 mb-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center heading-section ftco-animate">
+                <h2 class="mb-1"><span>Our values lie in our instructors</span></h2>
+                <p></p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="testimonial p-3  text-center rounded">
+                    <img class="rounded-circle" src="https://readmycourseprodclouds3.s3-ap-southeast-1.amazonaws.com/InstrcuctorsUploads/Images/Compressed/1_5ebb38fc-d694-42ef-b9e1-9f30081b5c78.jpg_200x200_.jpg" width="100">
+                    <h5>Anand Kumar</h5>
+                    <h6>Python for Bioinformatics, Vaccine designing</h6>
+                    <p>
+                        Anand is the Co-Founder and CTO of ReadMyCourse. He has 5 years of experience in working with computation biology,  Machine Learning, and Vaccine designing. He has co-authored various research papers in reputed journals and has advanced the career of thousands of students.
+                    </p>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3  text-center rounded">
+                    <img class="rounded-circle" src="https://readmycourseprodclouds3.s3-ap-southeast-1.amazonaws.com/InstrcuctorsUploads/Images/Compressed/162_3b31fce0-c25c-49d5-8876-10d0f16ff961.jpeg_100x100_.jpeg" width="100">
+                    <h5>Dr. Dibyabhaba Pradhan</h5>
+                    <h6>NGS data analysis, Vaccine designing, Bioanalyst</h6>
+                    <p>
+                        Dr. Dibyabhaba Pradhan is a Post-doctoral Research Scientist. He is a PhD in Bioinformatics and has more than 12 years of Research and teaching experience in High throughput NGS data analysis, Computer-aided vaccine design, Rational Drug Design and Medical   Informatics.   He   co-authored   more   than   53   research   papers   in   International   and
+                        National Journals of repute.
+                    </p>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3 text-center rounded">
+                    <img class="rounded-circle" src="~/Images/instructor_icons/nirupma.jpg" width="100">
+                    <h5>Nirupma Singh</h5>
+                    <h6>Python, R, Data Analysis, Machine Learning</h6>
+                    <p>
+                        Nirupma has 5 years of experience with  R  and  Python programming languages for handling and analysing biological data and implement machine learning. She has a post-graduate in Microbiology therefore, She can understand and interpret the biological data quite well and could provide valuable insights. She enjoys interactive teaching with the learners and give her best to it.
+                    </p>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3  text-center rounded">
+                    <img class="rounded-circle" src="https://readmycourseprodclouds3.s3-ap-southeast-1.amazonaws.com/InstrcuctorsUploads/Images/Compressed/168_4db3d8a6-f3b6-49ad-9351-42d087f1d2be.jpg_200x200_.jpg" width="100">
+                    <h5>Sharon  Priya   Alexander</h5>
+                    <h6>Drug designing, Bioinformatics tools</h6>
+                    <p>
+                        Sharon   Priya   Alexander has   Masters   Degree in   Bioinformatics bagged late   Dr.   P. Subramanyam IAS Gold Medal for being a University topper. He has co-authored various research papers in reputed journals. Currently Pursuing PhD in drug designing.
+                    </p>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial p-3  text-center rounded">
+                    <img class="rounded-circle" src="~/Images/instructor_icons/eshank.jpeg" width="100">
+                    <h5>Eshank Aggarwal</h5>
+                    <h6>Artificial Intelligence, Big Data, Machine Learning and Python</h6>
+                    <p>
+                        Eshank is the Founder and CEO of Jishu Excellence Pvt. Ltd., an AI & Quality control solution provider company.
+                        He has more than 5 years of experience in Data Science along with has conducted many workshops on data science,
+                        six sigma at IIT Kanpur, IIT BHU, and other engineering colleges. He has completed his data science program from IIT, Madras,
+                        Lean Six Sigma from IIT, Kharagpur & Green Belt from ISI, Bengaluru.Member of ASSOCHAM and Confederation of Indian Industry (CII)
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>

@@ -138,7 +138,7 @@ namespace StudentDashboard.Controllers
                                 Session["student_profile_picture_url"] = objRegiserModel.m_strProfileUrl;
                                 if (await objStudentService.RegisterStudentFreeToClassroom(ClassroomId, (long)Session["user_id"]))
                                 {
-                                    Response.Redirect("~/Student/Home?return_url="+return_url);
+                                    Response.Redirect("~/Student/Home?redirect_url=" + return_url);
                                 }
                             }
                         }
@@ -979,6 +979,7 @@ namespace StudentDashboard.Controllers
             {
                 if (await objStudentService.CheckStudentAccessToClassroom((long)Session["user_id"], ClassroomId))
                 {
+
                     objJitsiMeetingModal = await objStudentService.GetClassroomMeetingDetails(ClassroomId);
                     return View(objJitsiMeetingModal);
                 }

@@ -12,6 +12,8 @@ namespace StudentDashboard.Models.Instructor
         public string m_strMeetingPassword;
         public string m_strMeetingTopic;
         public long m_llClassroomId;
+        public bool shouldUseExternalMeetingLink;
+        public string externalMeetingLink;
         public JitsiMeetingModal()
         {
 
@@ -22,6 +24,15 @@ namespace StudentDashboard.Models.Instructor
             this.m_strMeetingName = MeetingName;
             this.m_strMeetingPassword = MeetingPassword;
             this.m_strMeetingTopic = MeetingTopic;
+        }
+        public JitsiMeetingModal(long MeetingId, string MeetingName, string MeetingPassword, string MeetingTopic,bool IsLinkExternal,string ExternalLink)
+        {
+            this.m_llMeetingId = MeetingId;
+            this.m_strMeetingName = MeetingName;
+            this.m_strMeetingPassword = MeetingPassword;
+            this.m_strMeetingTopic = MeetingTopic;
+            this.shouldUseExternalMeetingLink = IsLinkExternal;
+            this.externalMeetingLink = ExternalLink;
         }
     }
 

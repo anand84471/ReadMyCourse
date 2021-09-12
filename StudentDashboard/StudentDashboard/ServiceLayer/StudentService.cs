@@ -638,7 +638,7 @@ namespace StudentDashboard.ServiceLayer
             ClassRoomModal classRoomModal= await objStudentDTO.GetClassroomDetailsForStudent(ClassroomId);
             if (classRoomModal.m_dtClassStartDate != null)
             {
-                classRoomModal.timeScheduleDetails = MasterUtilities.GetTimer((DateTime)classRoomModal.m_dtClassStartDate-DateTime.Now) ;
+                classRoomModal.timeScheduleDetails = MasterUtilities.GetTimer(((DateTime)classRoomModal.m_dtClassStartDate).Date-DateTime.Now) ;
             }
             return classRoomModal;
         }

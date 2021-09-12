@@ -4,6 +4,7 @@ using StudentDashboard.HttpResponse;
 using StudentDashboard.HttpResponse.Document;
 using StudentDashboard.Models.Category;
 using StudentDashboard.Models.Course;
+using StudentDashboard.Models.Event;
 using StudentDashboard.ServiceLayer;
 using StudentDashboard.Utilities;
 using System;
@@ -344,6 +345,72 @@ namespace StudentDashboard.API
             }
             return objResponse;
         }
+        [Route("RegisterEvent")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> RegisterEvent(StudentEventDetails request)
+        {
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+                if( await objDocumentService.RegisterStudentToEvent(request))
+                {
+                    objResponse.SetSuccessResponse();
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("GetEventDetails")]
+        [HttpPost]
+        public async Task<MasterApiResponse<EventModel>> GetEventDetails(long EventId)
+        {
+            MasterApiResponse<EventModel> objResponse = new MasterApiResponse<EventModel>();
+            try
+            {
+                objResponse.data = await objDocumentService.GetEventDetails(EventId);
+                if (objResponse.data != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        //[Route("GetClassroomReviews")]
+        //[HttpPost]
+        //public async Task<MasterApiResponse<ReviewsDetails>> FetchClassroomSyllabus(long ClassroomId)
+        //{
+        //    MasterApiResponse<ReviewsDetails> objResponse = new MasterApiResponse<ReviewsDetails>();
+        //    try
+        //    {
+        //        objResponse.data = await objDocumentService.GetClassroomReview(ClassroomId);
+        //        if (objResponse.data != null)
+        //        {
+        //            objResponse.SetSuccessResponse();
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchAllLiveClassMeetingDetailForStudent", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return objResponse;
+        //}
 
     }
 }

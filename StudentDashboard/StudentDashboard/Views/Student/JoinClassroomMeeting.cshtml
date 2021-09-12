@@ -118,6 +118,9 @@
             url: "/api/v1/Course/JoinClassroomMeeting?MeetingId=".concat("@Model.m_llMeetingId"),
             success: function (data) {
                 if (data != null && data.response_code == 1) {
+                    if (typeof window.orientation !== 'undefined') {
+                        $("#requestStartMeeting").modal("show");
+                    }
                 }
             }
         });
@@ -160,7 +163,7 @@
         }
     }
        
-    $("#requestStartMeeting").modal("show");
+ 
 
     function openFullscreen(elem) {
         if (elem.requestFullscreen) {

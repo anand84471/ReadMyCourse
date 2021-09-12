@@ -11,13 +11,13 @@ namespace StudentDashboard.Utilities
 {
     public class SmsManger
     {
-        private string _authToken = "257536ee321360cfc5b235391bf43b19";
-        private string _accountSid = "AC726e9be383e2154d657764b87a27e465";
+        private string _authToken = "";
+        private string _accountSid = "";
         private string _phoneNoOfSender;
         public SmsManger()
         {
-            TwilioClient.Init(_accountSid, _authToken);
             ParseAuthSetting();
+            TwilioClient.Init(_accountSid, _authToken);
         }
         private void ParseAuthSetting()
         {

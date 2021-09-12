@@ -376,5 +376,87 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
+        public async Task<StudentPublicProfileResponse> GetStudentPublicProfileResponse(long StudentId)
+        {
+            StudentPublicProfileResponse result = null;
+            try
+            {
+                result = await objInstructorDTO.GetStudentPublicProfileResponse(StudentId);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentPublicProfileResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomMeetingLink(ClassroomMeetingLinkUpdateRequest request )
+        {
+            bool result = false;
+            try
+            {
+                if (request.classroomMeetingLink != null && request.classroomMeetingLink != string.Empty)
+                {
+                    if (!(request.classroomMeetingLink.StartsWith("https")|| request.classroomMeetingLink.StartsWith("http")))
+                    {
+                        request.classroomMeetingLink = "https" + request.classroomMeetingLink;
+                    }
+                    result = await objInstructorDTO.UpdateClassroomMeetingLink(request.m_llClassroomId, request.classroomMeetingLink);
+                }
+               
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentPublicProfileResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomProjects(UpateClassroomProjectRequest upateClassroomProjectRequest)
+        {
+            bool result = false;
+            try
+            {
+                if (upateClassroomProjectRequest.projects!=null&&upateClassroomProjectRequest.projects.Count>0)
+                {
+                    result = await objInstructorDTO.UpdateClassroomProjects(upateClassroomProjectRequest.classroomId,
+                        JsonConvert.SerializeObject(upateClassroomProjectRequest.projects));
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentPublicProfileResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateClassroomHighlights(UpdateClassroomHighlightsRequest request)
+        {
+            bool result = false;
+            try
+            {
+                if (request.highlights != null && request.highlights.Length > 0)
+                {
+                    result = await objInstructorDTO.UpdateClassroomHihlights(request.classroomId,
+                        request.highlights);
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetStudentPublicProfileResponse", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

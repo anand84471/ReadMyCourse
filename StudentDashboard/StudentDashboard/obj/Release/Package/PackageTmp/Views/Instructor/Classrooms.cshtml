@@ -9,9 +9,8 @@
     .classrooms {
         width: 100%;
         border: 10px;
-        background: rgb(131,58,180);
-        background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
         padding: 3px;
+        background: #F8F8F8;
         margin-top: 10px;
         margin-bottom: 10px;
         color: #f8f9fccc !important;
@@ -83,10 +82,7 @@
                 if (data != null && data.response_code == 1&&data.classrooms.length>0) {
                     classrooms = data.classrooms;
                     for (var i = 0; i < classrooms.length; i++) {
-                        if (classrooms[i].classroom_name.length > 30)
-                        {
-                            classrooms[i].classroom_name = classrooms[i].classroom_name.substring(0, 30) + "...";
-                        }
+                       
                         $('#coursesContainer').append( getSingleClassroom(i));
                     }
                     $("#coursesContainer").show();
@@ -102,16 +98,16 @@
         function getSingleClassroom(i)
         {
             return ('<div class="card col-sm-12 classrooms shadow mb-2">'
-               + '<div class="card-body ">'
-                   + '<h1 class="text-white font-weight-bold"><a>' + classrooms[i].classroom_name + '</a></h1>'
+                + '<div class="card-header"><h4 class="text-primary font-weight-bold">' + classrooms[i].classroom_name + '</h1><h6 class="text-secondary">Created on:' + classrooms[i].creation_date + '</h6><span class="badge badge-pill p-1 badge-danger" id = "successbadge"> Status: ' + classrooms[i].classroom_status + '</span><span class="badge badge-pill p-1 badge-info" id = "successbadge"> Status: ' + classrooms[i].m_strAdminVarificationMessage + '</span></h6></div>'
 
-                + '<span class="badge badge-pill p-1 badge-light" id="successbadge">Status: ' + classrooms[i].classroom_status + '</span>'
-                + '<span class="text-white font-weight-bolder ml-4 h2"> <i class="fa fa-users"></i> ' + classrooms[i].no_of_student_joined + '</span>'
-                    + '<h6 class="card-title font-weight-light">Created on:' + classrooms[i].creation_date + '</h6>'
+                + '<div class="card-body ">'
+                
+                + '<h4 class="text-primary ml-4"> <i class="fa fa-users"></i> ' + classrooms[i].no_of_student_joined + ' students joined</h4>'
+  
                    + ' <div class="col mb-2">'
                   
                    + '<ul class="list-unstyled list-inline rating mb-0">'
-                      + '<li class="list-inline-item mr-0"><a  class="btn btn-outline-light" href="ClassroomDashboard?id=' + classrooms[i].classroom_id + '">Start Teaching</a></li>'
+                      + '<li class="list-inline-item mr-0"><a  class="btn btn-primary" href="ClassroomDashboard?id=' + classrooms[i].classroom_id + '">Start Teaching</a></li>'
                   + '</ul>'
                + '</div></div>'
            + '</div>');

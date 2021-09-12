@@ -4,6 +4,7 @@ using StudentDashboard.Models.Base;
 using StudentDashboard.Models.Category;
 using StudentDashboard.Models.Course;
 using StudentDashboard.Models.Document;
+using StudentDashboard.Models.Event;
 using StudentDashboard.Models.Instructor;
 using StudentDashboard.Models.Student;
 using StudentDashboard.Models.Utils;
@@ -457,7 +458,11 @@ namespace StudentDashboard.DTO
                            dataRow.Field<string>("CLASSROOM_SCHEDULE_OBJ"),
                            dataRow.Field<DateTime?>("CLASS_START_DATE"),
                            dataRow.Field<int>("NO_OF_DEMO_CLASSES"),
-                           dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE")
+                           dataRow.Field<DateTime?>("REGISTRATION_CLOSE_DATE"),
+                           dataRow.Field<int>("INSTRUCTOR_ID"),
+                           dataRow.Field<string>("PROJECTS"),
+                           dataRow.Field<string>("HIGHLIGHTS"),
+                           dataRow.Field<string>("PROSPECTUS_PATH")
                          )).ToList()[0];
                 }
                 objClassRoomModal.m_llClassroomId = ClassroomId;
@@ -564,6 +569,52 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return lsReviews;
+        }
+        public async Task<bool> RegisterStudentToEvent(StudentEventDetails studentEventDetails)
+        {
+            bool result = false;
+            try
+            {
+                result = await objCPDataService.InsertPublicStudentRegitrainInEventAsync(studentEventDetails.EventId,
+                    studentEventDetails.StudentName, studentEventDetails.StudentEmail);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "VialidateInstructorPhoneNoVarificationLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<EventModel> GetEventDetails(long EventId)
+        {
+            EventModel eventDetails = new EventModel();
+            try
+            {
+                DataSet ds = await objCPDataService.GetEventsDetailsAsync(EventId);
+
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    eventDetails = ds.Tables[0].AsEnumerable().Select(
+                     dataRow => new EventModel() {
+                         EventId= dataRow.Field<int>("NO_OF_RATINGS"),
+                         EventName= dataRow.Field<string>("EVENT_NAME"),
+                         EventDescription= dataRow.Field<string>("EVENT_DESCRIPTION"),
+                         EventsHighlights= dataRow.Field<string>("EVENTS_HIGHLIGHTS"),
+                         dtEventStartTime= dataRow.Field<DateTime>("EVENT_START_TIME"),
+                         MeetingLink = dataRow.Field<string>("MEETING_LINK")
+                     }).ToList()[0];
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return eventDetails;
         }
     }
 }

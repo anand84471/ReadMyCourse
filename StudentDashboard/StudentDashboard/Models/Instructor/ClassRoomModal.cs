@@ -66,18 +66,24 @@ namespace StudentDashboard.Models.Instructor
         public bool? m_bIsVarifiedByAdmin;
         public int? m_iAdminVarificationCode;
         public string m_strAdminVarificationMessage;
-
+        public string meetingLink;
+        public string ExternalMettingLink;
+        public bool shouldUseExternalMeetingLink;
+        [JsonProperty("is_class_started")]
+        public bool isClassStarted;
+        public string highlights;
         public ClassRoomModal()
         {
 
         }
-        public ClassRoomModal(long ClassRoomId,string ClassRoomName,string CreationDate, string ClassroomStatus,int NoOfStudentsJoined)
+        public ClassRoomModal(long ClassRoomId,string ClassRoomName,string CreationDate, string ClassroomStatus,int NoOfStudentsJoined,string AdminVarificationMessage)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
             this.m_strCreationDate = CreationDate; ;
             this.m_strClassroomStatus = ClassroomStatus;
             this.m_iNoOfStudentsJoined = NoOfStudentsJoined;
+            this.m_strAdminVarificationMessage = AdminVarificationMessage;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string CreationDate, string ClassroomStatus,bool? IsMeetingActive)
         {
@@ -120,7 +126,7 @@ namespace StudentDashboard.Models.Instructor
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string ClassroomDescription, string CreationDate, string ClassroomStatus,
           int NoOfPosts, string ShareUrl, string AccessCode, int NoOfAssignments, int NoOfTests, int NoOfStudentsJoined, int NoOfMeetings,
           string BackgroundUrl, string MeetingName, DateTime? ClassroomStartDate, DateTime? ClassroomRegistrationCloseDate, int NoOfDemoClasses,
-          bool? IsVarifiedByAdmin, int ?AdminVarificationCode,string AdminVarificationMessage)
+          bool? IsVarifiedByAdmin, int ?AdminVarificationCode,string AdminVarificationMessage,bool ShouldUseExteranlLink,string externalMeetingLink,string Highlights)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -150,10 +156,17 @@ namespace StudentDashboard.Models.Instructor
             this.m_bIsVarifiedByAdmin = IsVarifiedByAdmin;
             this.m_iAdminVarificationCode = AdminVarificationCode;
             this.m_strAdminVarificationMessage = AdminVarificationMessage;
+            if (ShouldUseExteranlLink && externalMeetingLink != null && externalMeetingLink != string.Empty)
+            {
+                this.shouldUseExternalMeetingLink = ShouldUseExteranlLink;
+                this.meetingLink = externalMeetingLink;
+                this.ExternalMettingLink = externalMeetingLink;
+            }
+            highlights = Highlights;
         }
         public ClassRoomModal(long ClassRoomId, string ClassRoomName, string classroomDescription,
              string ClassroomCreationDate,string NoOfStudentsJoined,bool? IsMeetingActive,string BackGroundImageUrl,string ClassroomMeetingName,int ClassroomJoiningFeeInPaise,
-             DateTime? ClassroomRegistrationCloseDate,DateTime? ClassStartDate,int NoOfDemoClasses)
+             DateTime? ClassStartDate,DateTime? ClassroomRegistrationCloseDate,int NoOfDemoClasses,bool IsExternalLink,string ExternalLink)
         {
             this.m_llClassRoomId = ClassRoomId;
             this.m_strClassRoomName = ClassRoomName;
@@ -173,9 +186,15 @@ namespace StudentDashboard.Models.Instructor
             }
             this.m_strClassroomRegistratioCloseDate=MasterUtilities.GetDateByDateTime(ClassroomRegistrationCloseDate);
             this.m_strClassroomStartDate= MasterUtilities.GetDateByDateTime(ClassStartDate);
-            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(ClassStartDate);
+            this.m_bIsRegistrationClosed = MasterUtilities.CompareToToday(ClassroomRegistrationCloseDate);
+            this.isClassStarted = MasterUtilities.CompareToToday(ClassStartDate);
             this.m_iNoOfDemoSessions = NoOfDemoClasses;
             this.m_dtClassStartDate = ClassStartDate;
+            if (IsExternalLink&&ExternalLink!=null&&ExternalLink!=string.Empty)
+            {
+                shouldUseExternalMeetingLink = true;
+                ExternalMettingLink = ExternalLink;
+            }
         }
         
 

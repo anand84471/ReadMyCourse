@@ -2962,6 +2962,109 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+        [Route("FetchStudentPublicDetails")]
+        [HttpPost]
+        public async Task<StudentPublicProfileResponse> FetchStudentPublicDetails(long StudentId)
+        {
+            long InstructorId = GetInstructorIdInRequest(); ;
+            StudentPublicProfileResponse objResponse = null;
+            try
+            {
+                if (InstructorId != -1)
+                {
+                    objResponse = await objInstructorService.GetStudentPublicProfileResponse(StudentId);
+                }
+                if (objResponse != null)
+                {
+                    objResponse.SetSuccessResponse();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "FetchStudentPublicDetails", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("UpdateMeetingLink")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateMeetingLink(ClassroomMeetingLinkUpdateRequest request)
+        {
+            int InstructorId = GetInstructorIdInRequest(); ;
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
 
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(request.m_llClassroomId,InstructorId))
+                {
+                    if(await objInstructorService.UpdateClassroomMeetingLink(request))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateMeetingLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("UpdateClassroomHighlights")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateClassroomHighlights(UpdateClassroomHighlightsRequest request)
+        {
+            int InstructorId = GetInstructorIdInRequest(); ;
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(request.classroomId, InstructorId))
+                {
+                    if (await objInstructorService.UpdateClassroomHighlights(request))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateMeetingLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
+        [Route("UpdateClassroomProjects")]
+        [HttpPost]
+        public async Task<APIDefaultResponse> UpdateClassroomProjects(UpateClassroomProjectRequest request)
+        {
+            int InstructorId = GetInstructorIdInRequest(); ;
+            APIDefaultResponse objResponse = new APIDefaultResponse();
+            try
+            {
+
+                if (InstructorId != -1 && await objInstructorService.CheckClassroomAccess(request.classroomId, InstructorId))
+                {
+                    if (await objInstructorService.UpdateClassroomProjects(request))
+                    {
+                        objResponse.SetSuccessResponse();
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdateMeetingLink", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResponse;
+        }
     }
 }

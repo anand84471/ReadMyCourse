@@ -10,6 +10,7 @@ function requestUploadVideo()
 function requestStartMeeting() {
     $("#requestStartMeeting").modal("show");
 }
+
 function copyText() {
     var copyText = document.getElementById("test-url");
     copyText.select();
@@ -1230,6 +1231,15 @@ function callClassroomMeeting() {
 
     }
 }
+function callClassroomMeeting(classroomName,meetingName) {
+    debugger
+    try {
+        AndroidInterface.startClassroomMeeting(classroomName, meetingName);
+    }
+    catch (ex) {
+
+    }
+}
 function validateAmount(id) {
     if ($(id).val() == "-") {
         $(id).val("");
@@ -1338,6 +1348,7 @@ function updateClassroomMeetingDetails() {
         }
     });
 }
+
 function uploadClassroomMeetingVideo() {
     document.getElementById("meetingVideoUploadProgressbar").style.width = "0%";
     debugger

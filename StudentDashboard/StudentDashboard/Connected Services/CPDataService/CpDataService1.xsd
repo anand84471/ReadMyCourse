@@ -809,6 +809,93 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetEventsDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EventId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetEventsDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetEventsDetailsResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertPublicStudentRegitrainInEvent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EventId" type="xs:long" />
+        <xs:element minOccurs="0" name="StudentName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="EmailId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertPublicStudentRegitrainInEventResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InsertPublicStudentRegitrainInEventResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomMeetingLink">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="MeetingLink" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomMeetingLinkResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateClassroomMeetingLinkResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomProjects">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="Projects" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomProjectsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateClassroomProjectsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomHighlights">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClassroomId" type="xs:long" />
+        <xs:element minOccurs="0" name="highlights" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateClassroomHighlightsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateClassroomHighlightsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetClassroomHomeDetailsForStudent">
     <xs:complexType>
       <xs:sequence>

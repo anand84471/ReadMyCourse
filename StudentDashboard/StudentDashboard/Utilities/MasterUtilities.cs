@@ -83,7 +83,7 @@ namespace StudentDashboard.Utilities
             {
                 if (datetime != null)
                 {
-                    result=(DateTime)datetime<DateTime.Now;
+                    result=((DateTime)datetime).Date<DateTime.Now;
                 }
             }
             catch(Exception Ex)
