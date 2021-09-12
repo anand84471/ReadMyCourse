@@ -266,6 +266,24 @@ namespace StudentDashboard.CPDataService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetStudentProfileDetails", ReplyAction="http://tempuri.org/ICpDataService/GetStudentProfileDetailsResponse")]
         System.Threading.Tasks.Task<System.Data.DataSet> GetStudentProfileDetailsAsync(long StudentId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoined", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoinedResponse")]
+        System.Data.DataSet GetInstructorRecentLiveClassesJoined(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoined", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoinedResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorRecentLiveClassesJoinedAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchases", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchasesResponse")]
+        System.Data.DataSet GetInstructorClassroomPurchases(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchases", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchasesResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomPurchasesAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchasesResponse")]
+        System.Data.DataSet GetInstructorClassroomwisePurchases(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases", ReplyAction="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchasesResponse")]
+        System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomwisePurchasesAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent", ReplyAction="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse")]
         System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId);
         
@@ -3073,6 +3091,30 @@ namespace StudentDashboard.CPDataService {
         
         public System.Threading.Tasks.Task<System.Data.DataSet> GetStudentProfileDetailsAsync(long StudentId) {
             return base.Channel.GetStudentProfileDetailsAsync(StudentId);
+        }
+        
+        public System.Data.DataSet GetInstructorRecentLiveClassesJoined(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorRecentLiveClassesJoined(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorRecentLiveClassesJoinedAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorRecentLiveClassesJoinedAsync(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
+        }
+        
+        public System.Data.DataSet GetInstructorClassroomPurchases(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorClassroomPurchases(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomPurchasesAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorClassroomPurchasesAsync(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
+        }
+        
+        public System.Data.DataSet GetInstructorClassroomwisePurchases(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorClassroomwisePurchases(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
+        }
+        
+        public System.Threading.Tasks.Task<System.Data.DataSet> GetInstructorClassroomwisePurchasesAsync(int InstructorId, int NoOfRowsFetched, int MaxRowsToFetch) {
+            return base.Channel.GetInstructorClassroomwisePurchasesAsync(InstructorId, NoOfRowsFetched, MaxRowsToFetch);
         }
         
         public System.Data.DataSet GetClassroomHomeDetailsForStudent(long ClassroomId, long StudentId) {

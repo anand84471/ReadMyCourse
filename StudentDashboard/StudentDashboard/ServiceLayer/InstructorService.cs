@@ -324,5 +324,57 @@ namespace StudentDashboard.ServiceLayer
             }
             return result;
         }
+        public async Task<List<RecentStudentLiveCourseJoin>> GetInstructorRecentClassroomJoin(int InstructorId, MasterSearchRequest request)
+        {
+            List < RecentStudentLiveCourseJoin> result = null;
+            try
+            {
+                request.m_iMaxRowsToFetch = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                result = await objInstructorDTO.GetInstructorRecentClassroomJoin(InstructorId, request);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+        public async Task<List<InstructorClassroomsEarningDetails>> InstructorClassroomsEarning(int InstructorId, MasterSearchRequest request)
+        {
+            List<InstructorClassroomsEarningDetails> result = null;
+            try
+            {
+                request.m_iMaxRowsToFetch = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                result = await objInstructorDTO.InstructorClassroomsEarning(InstructorId, request);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
+
+        public async Task<List<ClassroomTransactions>> GetClassroomsTransactions(int InstructorId, MasterSearchRequest request)
+        {
+            List<ClassroomTransactions> result = null;
+            try
+            {
+                request.m_iMaxRowsToFetch = Constants.MAX_ITEMS_TO_BE_RETURNED;
+                result = await objInstructorDTO.GetClassroomsTransactions(InstructorId, request);
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return result;
+        }
     }
 }

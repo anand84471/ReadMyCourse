@@ -2152,36 +2152,36 @@ namespace StudentDashboard.DTO
             }
             return result;
         }
-        public async Task<List<NotificationBase>> GetAllNotifications(
-            SearchRequest<long> request)
-        {
-            List<ReviewModel> lsReviews = new List<ReviewModel>();
-            try
-            {
-                DataSet ds = await objCPDataService.GetAllStudentNotificationAsync(request.Id,
-                    request.m_iNoOfRowsFetched,request.m_iNoOfRowsToFetch);
+        //public async Task<List<NotificationBase>> GetAllNotifications(
+        //    SearchRequest<long> request)
+        //{
+        //    List<ReviewModel> lsReviews = new List<ReviewModel>();
+        //    try
+        //    {
+        //        DataSet ds = await objCPDataService.GetAllStudentNotificationAsync(request.Id,
+        //            request.m_iNoOfRowsFetched,request.m_iNoOfRowsToFetch);
 
-                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
-                {
-                    lsReviews = ds.Tables[0].AsEnumerable().Select(
-                     dataRow => new NotificationBase()
-                     {
-                         Id = dataRow.Field<long>("NO_OF_RATINGS"),
-                         Message= dataRow.Field<string>("NOTIFICATION_MESSAGE"),
-                         Type= dataRow.Field<string>("PROFILE_URL"),
-                         NotificationDate = dataRow.Field<DateTime?>("FEEDBACK_DATE")
-                     }
-                         ).ToList();
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return lsReviews;
-        }
+        //        if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            lsReviews = ds.Tables[0].AsEnumerable().Select(
+        //             dataRow => new NotificationBase()
+        //             {
+        //                 Id = dataRow.Field<long>("NO_OF_RATINGS"),
+        //                 Message= dataRow.Field<string>("NOTIFICATION_MESSAGE"),
+        //                 Type= dataRow.Field<string>("PROFILE_URL"),
+        //                 NotificationDate = dataRow.Field<DateTime?>("FEEDBACK_DATE")
+        //             }
+        //                 ).ToList();
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetAllClassroomForIsntrcutor", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return lsReviews;
+        //}
     }
 }

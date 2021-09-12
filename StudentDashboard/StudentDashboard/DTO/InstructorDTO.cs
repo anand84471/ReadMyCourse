@@ -82,11 +82,11 @@ namespace StudentDashboard.DTO
                 {
                     List<InstructorRegisterModel> lsRegisterModel = ds.Tables[0].AsEnumerable().Select(
                       dataRow => new InstructorRegisterModel(
-                          dataRow.Field<int>("COURSE_COUNT"),
-                          dataRow.Field<int>("ASSIGNMENT_COUNT"),
-                          dataRow.Field<int>("TEST_COUNT"),
-                          dataRow.Field<int>("ACTIVE_COURSES"),
-                          0
+                          dataRow.Field<int>("TOTAL_CLASSROOMS"),
+                          dataRow.Field<int>("TOAL_COURSES_SELLS"),
+                          dataRow.Field<int?>("TOTAL_EARNINGS"),
+                          dataRow.Field<int>("ACTIVE_CLASSROOMS"),
+                          dataRow.Field<int>("NO_OF_FOLLOWERS")
                           )).ToList();
                     if (lsRegisterModel.Count == 1)
                     {
@@ -777,6 +777,132 @@ namespace StudentDashboard.DTO
                 MainLogger.Error(m_strLogMessage);
             }
             return result;
+        }
+        //public async Task<List<ClassroomTransactionDetails>> GetInstructorRecentTransactions(int Id)
+        //{
+        //    List<ClassroomTransactionDetails> transactions = null;
+        //    try
+        //    {
+        //        DataSet ds = new DataSet();
+        //        ds = await objCPDataService.GetInstructorDetailsAsync(Id);
+        //        if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            transactions = ds.Tables[0].AsEnumerable().Select(
+        //              dataRow => new ClassroomTransactionDetails(
+        //                  dataRow.Field<string>("INSTRUCTOR_FIRST_NAME"),
+        //                  dataRow.Field<string>("INSTRUCTOR_LAST_NAME"),
+        //                  Id,
+        //                  dataRow.Field<string>("PROFILE_URL")
+
+        //                  )
+        //              {
+        //                  classroomBase=new ClassroomBase()
+        //                  {
+
+        //                  },
+        //                  transactionDetails=new Transcat
+        //              }).ToList();
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentTransactions", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return transactions;
+        //}
+        public async Task<List<RecentStudentLiveCourseJoin>> GetInstructorRecentClassroomJoin(int InstructorId,MasterSearchRequest request)
+        {
+            List<RecentStudentLiveCourseJoin> responseData = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetInstructorRecentLiveClassesJoinedAsync(InstructorId,
+                    request.m_iNoOfRowsFetched, request.m_iMaxRowsToFetch);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                 responseData = ds.Tables[0].AsEnumerable().Select(
+                      dataRow => new RecentStudentLiveCourseJoin()
+                      {
+                          Name= dataRow.Field<string>("FIRST_NAME"),
+                          Id= dataRow.Field<long>("STUDENT_ID"),
+                          ProfileUrl= dataRow.Field<string>("PROFILE_URL"),
+                          classroomName= dataRow.Field<string>("CLASSROOM_NAME"),
+                          dateOfJoining = dataRow.Field<DateTime>("DATE_OF_JOINING").ToString("d MMM yyyy"),
+                          classroomId = dataRow.Field<long>("CLASSROOM_ID")
+                      }).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return responseData;
+        }
+        //
+        public async Task<List<InstructorClassroomsEarningDetails>> InstructorClassroomsEarning(int InstructorId, MasterSearchRequest request)
+        {
+            List<InstructorClassroomsEarningDetails> responseData = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetInstructorClassroomwisePurchasesAsync(InstructorId,
+                    request.m_iNoOfRowsFetched, request.m_iMaxRowsToFetch);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    responseData = ds.Tables[0].AsEnumerable().Select(
+                         dataRow => new InstructorClassroomsEarningDetails()
+                         {
+                             m_strClassroomName = dataRow.Field<string>("CLASSROOM_NAME"),
+                             m_llClassroomId = dataRow.Field<long>("CLASSROOM_ID"),
+                             ClassroomJoiningInPaise = dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
+                             TotalEarning = dataRow.Field<int>("TOTAL_AMOUNT"),
+                             TotalSells = dataRow.Field<int>("NO_OF_COURSES_SELLS")
+                         }).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return responseData;
+        }
+        public async Task<List<ClassroomTransactions>> GetClassroomsTransactions(int InstructorId, MasterSearchRequest request)
+        {
+            List<ClassroomTransactions> responseData = null;
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = await objCPDataService.GetInstructorClassroomPurchasesAsync(InstructorId,
+                    request.m_iNoOfRowsFetched, request.m_iMaxRowsToFetch);
+                if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    responseData = ds.Tables[0].AsEnumerable().Select(
+                         dataRow => new ClassroomTransactions()
+                         {
+                             m_strClassroomName = dataRow.Field<string>("CLASSROOM_NAME"),
+                             m_llClassroomId = dataRow.Field<long>("CLASSROOM_ID"),
+                             ClassroomJoiningInPaise = dataRow.Field<int>("CLASSROOM_CHARGE_IN_PAISE"),
+                             TransactionDate = dataRow.Field<DateTime>("DATE_OF_PAYMENT").ToString("d MMM yyyy")
+                         }).ToList();
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetInstructorRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return responseData;
         }
     }
 }

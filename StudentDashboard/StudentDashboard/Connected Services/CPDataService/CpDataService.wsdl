@@ -194,6 +194,24 @@
   <wsdl:message name="ICpDataService_GetStudentProfileDetails_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetStudentProfileDetailsResponse" />
   </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorRecentLiveClassesJoined_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorRecentLiveClassesJoined" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorRecentLiveClassesJoined_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorRecentLiveClassesJoinedResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorClassroomPurchases_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorClassroomPurchases" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorClassroomPurchases_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorClassroomPurchasesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorClassroomwisePurchases_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorClassroomwisePurchases" />
+  </wsdl:message>
+  <wsdl:message name="ICpDataService_GetInstructorClassroomwisePurchases_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstructorClassroomwisePurchasesResponse" />
+  </wsdl:message>
   <wsdl:message name="ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClassroomHomeDetailsForStudent" />
   </wsdl:message>
@@ -1855,6 +1873,18 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetStudentProfileDetails" message="tns:ICpDataService_GetStudentProfileDetails_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetStudentProfileDetailsResponse" message="tns:ICpDataService_GetStudentProfileDetails_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetInstructorRecentLiveClassesJoined">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoined" message="tns:ICpDataService_GetInstructorRecentLiveClassesJoined_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoinedResponse" message="tns:ICpDataService_GetInstructorRecentLiveClassesJoined_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorClassroomPurchases">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchases" message="tns:ICpDataService_GetInstructorClassroomPurchases_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchasesResponse" message="tns:ICpDataService_GetInstructorClassroomPurchases_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorClassroomwisePurchases">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases" message="tns:ICpDataService_GetInstructorClassroomwisePurchases_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchasesResponse" message="tns:ICpDataService_GetInstructorClassroomwisePurchases_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetClassroomHomeDetailsForStudent">
       <wsdl:input wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudent" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICpDataService/GetClassroomHomeDetailsForStudentResponse" message="tns:ICpDataService_GetClassroomHomeDetailsForStudent_OutputMessage" />
@@ -3154,6 +3184,33 @@
     </wsdl:operation>
     <wsdl:operation name="GetStudentProfileDetails">
       <soap:operation soapAction="http://tempuri.org/ICpDataService/GetStudentProfileDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorRecentLiveClassesJoined">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorRecentLiveClassesJoined" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorClassroomPurchases">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorClassroomPurchases" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstructorClassroomwisePurchases">
+      <soap:operation soapAction="http://tempuri.org/ICpDataService/GetInstructorClassroomwisePurchases" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

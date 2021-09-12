@@ -16,12 +16,16 @@ namespace StudentDashboard.HttpResponse
         public long m_llStudentId;
         [JsonProperty("profile_url")]
         public string m_strProfileUrl;
-        public CoursesJoinedResponseModal(string StudentName,string DateOfJoining,long StudentId,string ProfileUrl)
+        [JsonProperty("no_of_followers")]
+        public int m_iNoOfFollowers;
+        public CoursesJoinedResponseModal(string StudentName,string DateOfJoining,long StudentId,string ProfileUrl,int NoOfFollowers)
         {
             this.m_strStudentName = StudentName;
             this.m_strDateOfJoining = DateOfJoining;
             this.m_llStudentId = StudentId;
             this.m_strProfileUrl = ProfileUrl;
+            this.m_iNoOfFollowers = NoOfFollowers;
+
         }
     }
 }

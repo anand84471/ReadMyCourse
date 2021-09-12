@@ -51,6 +51,7 @@ namespace StudentDashboard.Models
         public int m_iDeletedCourses { get; set; }
         public string m_strFullAddress { get; set; }
         public string m_strPinCode { get; set; }
+        public int m_iTotalLiveCourseSells { get; set; }
         public char m_cGender { get; set; }
         [JsonIgnore]
         public string m_strEmailVarificationGuid;
@@ -61,6 +62,8 @@ namespace StudentDashboard.Models
         public string m_strGoogleScholarId;
         public string m_strInstructorBio;
         public InstructorSchoolDetailsModal instructorSchoolDetailsModal;
+        public int? m_iTotalEarnings;
+        public double m_iInstructorEarning;
         public InstructorRegisterModel(string FirstName, string LastName,int InstructorId,string ProfileUrl)
         {
             this.m_strFirstName = FirstName;
@@ -72,11 +75,16 @@ namespace StudentDashboard.Models
                 this.m_strProfilePictureUrl = "../Images/avatar-user.png";
             }
         }
-        public InstructorRegisterModel(int CourseCreated, int AssignmentCreated, int TestCreated, int ActiveCourses,int NoOfStudentJoined)
+        public InstructorRegisterModel(int CourseCreated, int TotalCoursesSells, int? TotalEarnings, int ActiveCourses,int NoOfStudentJoined)
         {
-            this.m_iNoOfAssignmentCreated = AssignmentCreated;
-            this.m_iNoOfTestCreated = TestCreated;
-            this.m_iNoOfCourseCreated = CourseCreated;  
+            this.m_iTotalLiveCourseSells = TotalCoursesSells;
+            this.m_iTotalEarnings = TotalEarnings;
+            if (this.m_iTotalEarnings == null)
+            {
+                this.m_iTotalEarnings = 0;
+            }
+            this.m_iInstructorEarning = (double)this.m_iTotalEarnings / 100;
+            this.m_iNoOfCourseCreated = CourseCreated;
             this.m_iNoOfStudentsJoined = NoOfStudentJoined;
             this.m_iActiveCourses = ActiveCourses;
         }

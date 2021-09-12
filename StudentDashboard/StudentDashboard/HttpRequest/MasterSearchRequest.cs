@@ -12,6 +12,7 @@ namespace StudentDashboard.HttpRequest
         public string m_strSearchString;
         [JsonProperty("no_of_rows_fetched")]
         public int m_iNoOfRowsFetched;
+        public int m_iMaxRowsToFetch;
 
     }
 }

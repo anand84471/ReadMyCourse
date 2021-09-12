@@ -459,6 +459,7 @@
     <Compile Include="Models\Classroom\ClassroomShowcaseDetails.cs" />
     <Compile Include="Models\Classroom\ClassroomSyllabusDetailsModal.cs" />
     <Compile Include="Models\Classroom\ClassroomTestModal.cs" />
+    <Compile Include="Models\Classroom\ClassroomTransactionDetails.cs" />
     <Compile Include="Models\Classroom\GetLiveClassDetailsForInstructor.cs" />
     <Compile Include="Models\Classroom\StudentLiveClassMeetingDetails.cs" />
     <Compile Include="Models\CouponDetailsModal.cs" />
@@ -482,6 +483,7 @@
     <Compile Include="Models\InstructorRegisterModel.cs" />
     <Compile Include="Models\Instructor\ClassRoomModal.cs" />
     <Compile Include="Models\Instructor\ClassroomPostModal.cs" />
+    <Compile Include="Models\Instructor\ClassroomTransactions.cs" />
     <Compile Include="Models\Instructor\InstrucorEarningDetailsModal.cs" />
     <Compile Include="Models\Instructor\InstructorAcadmeicsPublicationModal.cs" />
     <Compile Include="Models\Instructor\InstructorBase.cs" />
@@ -496,11 +498,13 @@
     <Compile Include="Models\Instructor\InstructorUserIdSearchResponse.cs" />
     <Compile Include="Models\Instructor\JitsiMeetingModal.cs" />
     <Compile Include="Models\Instructor\MasterInstructorDetails.cs" />
+    <Compile Include="Models\Instructor\RecentStudentLiveCourseJoin.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MasterFeedback.cs" />
     <Compile Include="Models\MasterSearchRequestModel.cs" />
     <Compile Include="Models\Notification\NotificationBase.cs" />
     <Compile Include="Models\OAuth\GoogleSignInRequest.cs" />
+    <Compile Include="Models\Payment\TransactionBase.cs" />
     <Compile Include="Models\RazorPay\RazorPayCustomerData.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentDataModal.cs" />
     <Compile Include="Models\RazorPay\RazorPayPaymentRequestModal.cs" />
@@ -940,6 +944,7 @@
     <Content Include="fonts\open-iconic\open-iconic.otf" />
     <Content Include="fonts\open-iconic\open-iconic.ttf" />
     <Content Include="fonts\open-iconic\open-iconic.woff" />
+    <Compile Include="Models\Instructor\InstructorClassroomsEarningDetails.cs" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

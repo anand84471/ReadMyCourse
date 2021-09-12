@@ -1776,7 +1776,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<string>("STUDENT_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
                          dataRow.Field<long>("STUDENT_ID"),
-                         dataRow.Field<string>("PROFILE_URL")
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<int>("NO_OF_FOLLOWERS")
                          )).ToList();
                 }
             }
@@ -1797,13 +1798,13 @@ namespace StudentDashboard.DTO
                 DataSet ds = await objCPDataService.GetAllStudentsJoinedToInstructorAsync(InstructorId, masterSearchRequest.m_iNoOfRowsFetched, masterSearchRequest.m_strSearchString);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0 && ds.Tables[0].Rows != null && ds.Tables[0].Rows.Count > 0)
                 {
-                    //  public AssignmentSubmissionResponseModal(string StudentName,long SubmissionId,long StudentId,string SubmissionDate,int PercentageScore)
                     lsCoursesJoinedResponseModal = ds.Tables[0].AsEnumerable().Select(
                      dataRow => new CoursesJoinedResponseModal(
                          dataRow.Field<string>("STUDENT_NAME"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
                          dataRow.Field<long>("STUDENT_ID"),
-                         dataRow.Field<string>("PROFILE_URL")
+                         dataRow.Field<string>("PROFILE_URL"),
+                         dataRow.Field<int>("NO_OF_FOLLOWERS")
                          )).ToList();
                 }
             }

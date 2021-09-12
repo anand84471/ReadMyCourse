@@ -1915,51 +1915,51 @@ namespace StudentDashboard.API
             }
             return response;
         }
-        [Route("GetNotifications")]
-        [HttpPost]
-        public async Task<APIDefaultResponse> GetNotifications(SearchRequest<long> request)
-        {
-            long StudentId = GetStudentIdInRequest();
-            APIDefaultResponse response = new APIDefaultResponse();
-            try
-            {
-                request.m_llStudentId = StudentId;
-                if (StudentId != -1 && await _service.UpdateProfilePicture(request))
-                {
-                    response.SetSuccessResponse();
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdatePassword", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return response;
-        }
-        [Route("GetNotifications")]
-        [HttpPost]
-        public async Task<APIDefaultResponse> MarkStudentNotificationVisited(long NotificationId)
-        {
-            long StudentId = GetStudentIdInRequest();
-            APIDefaultResponse response = new APIDefaultResponse();
-            try
-            {
-                request.m_llStudentId = StudentId;
-                if (StudentId != -1 && await _service.UpdateProfilePicture(request))
-                {
-                    response.SetSuccessResponse();
-                }
-            }
-            catch (Exception Ex)
-            {
-                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
-                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdatePassword", Ex.ToString());
-                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
-                MainLogger.Error(m_strLogMessage);
-            }
-            return response;
-        }
+        //[Route("GetNotifications")]
+        //[HttpPost]
+        //public async Task<APIDefaultResponse> GetNotifications(SearchRequest<long> request)
+        //{
+        //    long StudentId = GetStudentIdInRequest();
+        //    APIDefaultResponse response = new APIDefaultResponse();
+        //    try
+        //    {
+        //        request.Id = StudentId;
+        //        if (StudentId != -1 && await _service.UpdateProfilePicture(request))
+        //        {
+        //            response.SetSuccessResponse();
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdatePassword", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return response;
+        //}
+        //[Route("GetNotifications")]
+        //[HttpPost]
+        //public async Task<APIDefaultResponse> MarkStudentNotificationVisited(long NotificationId)
+        //{
+        //    long StudentId = GetStudentIdInRequest();
+        //    APIDefaultResponse response = new APIDefaultResponse();
+        //    try
+        //    {
+        //        request.m_llStudentId = StudentId;
+        //        if (StudentId != -1 && await _service.UpdateProfilePicture(request))
+        //        {
+        //            response.SetSuccessResponse();
+        //        }
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+        //        m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "UpdatePassword", Ex.ToString());
+        //        m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+        //        MainLogger.Error(m_strLogMessage);
+        //    }
+        //    return response;
+        //}
     }
 }

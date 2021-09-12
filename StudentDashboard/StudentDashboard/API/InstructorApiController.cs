@@ -2875,5 +2875,93 @@ namespace StudentDashboard.API
             }
             return objResonse;
         }
+        [Route("GetRecentClassroomJoin")]
+        [HttpPost]
+        public async Task<MasterApiResponse<List<RecentStudentLiveCourseJoin>>> GetRecentTransactions(MasterSearchRequest request)
+        {
+            MasterApiResponse<List<RecentStudentLiveCourseJoin>> objResonse =new MasterApiResponse<List<RecentStudentLiveCourseJoin>>();
+            try
+            {
+                if (request != null)
+                {
+                    int InstructorId = GetInstructorIdInRequest();
+                    if (InstructorId != -1 &&request!=null)
+                    {
+                        objResonse.data = await objInstructorService.GetInstructorRecentClassroomJoin(InstructorId, request);
+                        if (objResonse.data!=null)
+                        {
+                            objResonse.SetSuccessResponse();
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetRecentClassroomJoin", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("GetClassroomEarnings")]
+        [HttpPost]
+        public async Task<MasterApiResponse<List<InstructorClassroomsEarningDetails>>> GetClassroomEarnings(MasterSearchRequest request)
+        {
+            MasterApiResponse<List<InstructorClassroomsEarningDetails>> objResonse = new MasterApiResponse<List<InstructorClassroomsEarningDetails>>();
+            try
+            {
+                if (request != null)
+                {
+                    int InstructorId = GetInstructorIdInRequest();
+                    if (InstructorId != -1 && request != null)
+                    {
+                        objResonse.data = await objInstructorService.InstructorClassroomsEarning(InstructorId, request);
+                        if (objResonse.data != null)
+                        {
+                            objResonse.SetSuccessResponse();
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetClassroomEarnings", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+        [Route("GetTransactions")]
+        [HttpPost]
+        public async Task<MasterApiResponse<List<ClassroomTransactions>>> GetTransactions(MasterSearchRequest request)
+        {
+            MasterApiResponse<List<ClassroomTransactions>> objResonse = new MasterApiResponse<List<ClassroomTransactions>>();
+            try
+            {
+                if (request != null)
+                {
+                    int InstructorId = GetInstructorIdInRequest();
+                    if (InstructorId != -1 && request != null)
+                    {
+                        objResonse.data = await objInstructorService.GetClassroomsTransactions(InstructorId, request);
+                        if (objResonse.data != null)
+                        {
+                            objResonse.SetSuccessResponse();
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                m_strLogMessage.Append("\n ----------------------------Exception Stack Trace--------------------------------------");
+                m_strLogMessage = m_strLogMessage.AppendFormat("[Method] : {0}  {1} ", "GetTransactions", Ex.ToString());
+                m_strLogMessage.Append("Exception occured in method :" + Ex.TargetSite);
+                MainLogger.Error(m_strLogMessage);
+            }
+            return objResonse;
+        }
+
     }
 }

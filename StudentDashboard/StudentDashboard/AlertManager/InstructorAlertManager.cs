@@ -50,6 +50,40 @@ namespace StudentDashboard.AlertManager
             return AlertMessage;
            
         }
+        private string GetAlertrRedirectUrl(long StudentId)
+        {
+            string RedirectUrl = "";
+            switch (m_iAlertType)
+            {
+                case (int)Constants.InstructorAlertType.STUDNET_JOINED:
+                    {
+                        RedirectUrl = "StudentProfile?id="+ StudentId;
+                        break;
+                    }
+                case (int)Constants.InstructorAlertType.COURSE_JOINED:
+                    {
+                        RedirectUrl = Constants.ALERT_INSTRUCTOR_NEW_COURSE_JOIN;
+                        break;
+                    }
+                case (int)Constants.InstructorAlertType.ASSIGNMENT_SUBMISSION:
+                    {
+                        RedirectUrl = Constants.ALERT_INSTRUCTOR_NEW_ASSIGNMENT_SUBMISSION;
+                        break;
+                    }
+                case (int)Constants.InstructorAlertType.TEST_SUBMISSION:
+                    {
+                        RedirectUrl = Constants.ALERT_INSTRUCTOR_NEW_TEST_SUBMISSION;
+                        break;
+                    }
+                case (int)Constants.InstructorAlertType.CLASSROOM_JOIN:
+                    {
+                        RedirectUrl = "ViewClassroom?";
+                        break;
+                    }
+            }
+            return RedirectUrl;
+        }
+
         public async Task AddStudentJoinAlert(long StudentId,int InstructorId)
         {
             await objHomeService.InsertNewAlertForInstructor(InstructorId, GetAlertMessage((int)Constants.InstructorAlertType.STUDNET_JOINED), (int)Constants.InstructorAlertType.STUDNET_JOINED,
