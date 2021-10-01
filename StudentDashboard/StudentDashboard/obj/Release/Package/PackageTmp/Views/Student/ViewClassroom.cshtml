@@ -557,7 +557,7 @@
                         <a class="nav-link" href="#navStudentsJoined" onclick="searchForStudentInClassroom()"><span class="fa fa-users"></span> Students Joined</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-play-circle"></span> Live classes</a>
+                        <a class="nav-link" href="#navPreviousClasses" onclick="viewAllPreviousLiveClasses()"><span class="fa fa-play-circle"></span> Previous Days Recordings</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1496,11 +1496,28 @@
                             isJoined = "present";
                             absentClass = "info";
                         }
-                        var rows = '<tr onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')" class="a d-sm-flex align-items-center justify-content-between"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
-                        + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].date + '</td>'
-                        + '<td class="pr-2"><div class="text-' + absentClass + '">' + isJoined + '</div></td>'
-                        + ''
-                        + '</tr>';
+                        var buttonIcon = "fa fa-2x fa-play-circle text-primary";
+                        if (meetings[i].video_url == null) {
+                            buttonIcon = "fa fa-2x fa-warning text-danger";
+                        }
+                       
+                        if (meetings[i].topic_name == null || meetings[i].topic_name == "") {
+                            var rows = '<tr onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')" class="a"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="' + buttonIcon+'"></i></button></td></td>'
+
+                                + '<td class="pr-2"></td><td class="pr-2">Either the title is missing or class was cancelled<br><small>' + meetings[i].date + '</small><hr></td>'
+                                + '<td class="pr-2"><div class="text-' + absentClass + '">' + isJoined + '</div></td>'
+                                + ''
+                                + '</tr>';
+                        }
+                        else {
+                            var rows = '<tr onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')" class="a"><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="' + buttonIcon+'"></i></button></td></td>'
+
+                                + '<td class="pr-2"></td><td class="pr-2">' + meetings[i].topic_name + '<br><small>' + meetings[i].date + '</small><hr></td>'
+                                + '<td class="pr-2"><div class="text-' + absentClass + '">' + isJoined + '</div></td>'
+                                + ''
+                                + '</tr>';
+                        }
+                       
                         $('#tableBody').append(rows);
                         $("#spinner").remove();
                         $("#coursesTable").show();

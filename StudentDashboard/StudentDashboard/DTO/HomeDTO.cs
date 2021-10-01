@@ -2238,6 +2238,7 @@ namespace StudentDashboard.DTO
                      dataRow => new StudentClassrromJoinModal(
                          dataRow.Field<long>("STUDENT_ID"),
                          dataRow.Field<string>("STUDENT_NAME").ToString(),
+                         dataRow.Field<bool>("IS_PAYMENT_DONE"),
                          dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"))).ToList();
                 }
             }

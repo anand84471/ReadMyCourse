@@ -238,6 +238,7 @@
     <Compile Include="Controllers\AssignmentController.cs" />
     <Compile Include="Controllers\AuthServiceController.cs" />
     <Compile Include="Controllers\BecomeInstructorController.cs" />
+    <Compile Include="Controllers\BrowseController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\CreateMeetingController.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Controllers\MobileController.cs" />
     <Compile Include="Controllers\PrivacyController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\StudentDetailsController.cs" />
     <Compile Include="Controllers\TermsAndConditionsController.cs" />
@@ -2771,11 +2773,16 @@
     <Content Include="Views\Events\Register.cshtml" />
     <Content Include="Views\Shared\common.cshtml" />
     <Content Include="Views\Shared\CommonBody.cshtml" />
+    <Content Include="Views\Services\Index.cshtml" />
+    <Content Include="Views\Home\CommonCourses.cshtml" />
+    <Content Include="Views\Browse\DataScience.cshtml" />
+    <Content Include="Views\Browse\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\js\external\" />
     <Folder Include="Views\Help\" />
+    <Folder Include="Views\Index\" />
     <Folder Include="Views\StudentAccountApi\" />
   </ItemGroup>
   <ItemGroup>

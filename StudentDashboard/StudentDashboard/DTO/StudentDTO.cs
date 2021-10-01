@@ -1784,7 +1784,8 @@ namespace StudentDashboard.DTO
                          dataRow.Field<long>("MEETING_ID"),
                          dataRow.Field<string>("MEETING_TOPIC"),
                          dataRow.Field<long?>("STUDENT_MEETING_JOIN_ID"),
-                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy")
+                         dataRow.Field<DateTime>("ROW_INSERTION_DATETIME").ToString("d MMM yyyy"),
+                         dataRow.Field<string>("VIDEO_URL")
                          )).ToList();
                 }
             }

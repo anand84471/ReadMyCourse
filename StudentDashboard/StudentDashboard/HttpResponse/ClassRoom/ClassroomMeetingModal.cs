@@ -34,6 +34,7 @@ namespace StudentDashboard.HttpResponse.ClassRoom
             this.m_strMeetingStatus = MeetingStatus ? Constants.MEETING_STATUS_ACTIVE : Constants.MEETING_STATUS_CLOSED;
             this.m_iNoOfPartcipants = NoOfParticipants;
             this.m_strTopicName = TopicName;
+           
             this.m_strNotes = TopicDescription;
             this.m_strVideoUrl = VideoUrl;
         }

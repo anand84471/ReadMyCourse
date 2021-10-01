@@ -29,6 +29,15 @@ namespace StudentDashboard.Models.Classroom
             this.m_strDate = Date;
         }
         public StudentLiveClassMeetingDetails(long ClassroomMeetingId,
+           string TopicName, long? StudentJoinId, string Date,String VideoUrl)
+        {
+            this.m_llLiveClassMeetingId = ClassroomMeetingId;
+            this.m_strTopicName = TopicName;
+            this.m_llStudentJoinId = StudentJoinId;
+            this.m_strDate = Date;
+            this.m_strVideoUrl = VideoUrl;
+        }
+        public StudentLiveClassMeetingDetails(long ClassroomMeetingId,
             string TopicName,long? StudentJoinId,string TopicDescription,string VideoUrl,string Date)
         {
             this.m_llLiveClassMeetingId = ClassroomMeetingId;

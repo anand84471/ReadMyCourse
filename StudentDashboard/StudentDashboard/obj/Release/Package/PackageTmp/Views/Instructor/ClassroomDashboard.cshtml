@@ -214,7 +214,8 @@
                                 <span class="fa fa-pencil-square"></span> Assignments
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="CreateClassroomAssignment?id=@Model.m_llClassRoomId"><span class="fa fa-plus-circle"></span>  Add new assignment</a>
+                                <a class="dropdown-item" href="#navUploadNewAssignment" onclick="viewUploadNewAssignment()"><span class="fa fa-upload"></span>  Upload new assignment</a>
+                                <a class="dropdown-item" href="CreateClassroomAssignment?id=@Model.m_llClassRoomId"><span class="fa fa-plus-circle"></span>  Create new assignment</a>
                                 <a class="dropdown-item" href="#navAllAssignments" onclick="viewAllClassroomAssignments()"><span class="fa fa-list"></span> View all assignment</a>
 
                             </div>
@@ -371,10 +372,10 @@
                     <div class="control-buttons">
                         @*<button class="btn btn-circle bg-primary text-white" onclick="requestUploadVideo()" data-toggle="tooltip" data-placement="top" title="Upload video"><span><i class="fa fa-file"></i></span></button>*@
                         @*<button class="btn btn-circle bg-primary text-white" onclick="callAddNewAssignment()" data-toggle="tooltip" data-placement="top" title="Add assignment"><i class="fa fa-pen"></i></button>
-        <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
+                            <button class="btn btn-circle bg-primary text-white" data-toggle="tooltip" data-placement="top" title="Add test"><span><i class="fa fa-clipboard-list" ></i></span></button>*@
                         @if (Model.m_strClassroomStatus == "active")
                         {
-                        <a class="btn  bg-primary text-white" href="#" onclick="requestStartMeeting()" data-toggle="tooltip" data-placement="top" title="Start live class now"><span><i class="fa fa-play-circle"></i></span> Start Live Class</a>
+                            <a class="btn  bg-primary text-white" href="#" onclick="requestStartMeeting()" data-toggle="tooltip" data-placement="top" title="Start live class now"><span><i class="fa fa-play-circle"></i></span> Start Live Class</a>
 
                         }
                         else
@@ -440,7 +441,7 @@
                 <div class="card-body form-group row">
                     <label for="inputPassword" class="col-sm-3 col-form-label">Update classroom highlights</label>
                     <div class="col-sm-8">
-                        <textarea rows="10" onchange="validateInputField(this)" type="text" class="form-control" id="highligths" placeholder="ENETER HIGHLIGHTS" >@Model.highlights</textarea>
+                        <textarea rows="10" onchange="validateInputField(this)" type="text" class="form-control" id="highligths" placeholder="ENETER HIGHLIGHTS">@Model.highlights</textarea>
                     </div>
 
                 </div>
@@ -769,22 +770,22 @@
 
                 <div class="card-body">
                     @*<div id="spinnerClassroomClassroomProjects" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>*@
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>*@
                     <div class="">
                         <div class="row col-lg-12 container-fluid">
                             <div id="classroom-projects-container">
-                               
+
                                 @*<div class="card col-sm-3" style="padding-left:0px;padding-right:0px;">
-                                    <div class="card-header">Face Recognition </div>
-                                    <div class="card-body">
-                                        Building the model which identity the faces of human
-                                        Learn how researchers use analytics for classifying the faces
-                                    </div>
-                                </div>*@
-                               
+                                        <div class="card-header">Face Recognition </div>
+                                        <div class="card-body">
+                                            Building the model which identity the faces of human
+                                            Learn how researchers use analytics for classifying the faces
+                                        </div>
+                                    </div>*@
+
                             </div>
 
                         </div>
@@ -840,7 +841,7 @@
 
         <div class="col-lg-12 mb-2" id="navStudentsJoined" style="display:none">
             <div class="card shadow-lg border-primary">
-                <div class="card-header">Students Joined</div>
+                <div class="card-header">Students Joined <button class="btn btn-sm btn-primary" onclick="getStudentDetails(true)"><i class="fa fa-filter" aria-hidden="true"></i> Paid Students</button></div>
                 <div class="card-body">
                     <div class="table-responsive ">
                         <table id="studentDetailsTable" class="table-responsive table-hover" style="display:none">
@@ -849,6 +850,7 @@
                                     <th>S.No.</th>
                                     <th>Student Name</th>
                                     <th>Joining Date</th>
+                                    <th class="p-2">Payment Status</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBodyStudentDetails"></tbody>
@@ -926,22 +928,12 @@
                     <h4 class="text-left font-weight-bolder p-1" id="topic-name"></h4>
                     <h6 class="text-left font-weight-bolder p-1" id="topic-notes"></h6>
                     <div class="card-footer">
-                        <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fa fa-comments"></i>Discussions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fa fa-download"></i>Attachments</a>
-                            </li>
-                        </ul>
+
                         <hr />
 
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">...</div>
-                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="tab-content xyz" id="pills-tabContent">
+
+                            <div class="" id="tab-meeting-details" aria-labelledby="pills-profile-tab">
                                 <div class="form-group row">
                                     <label for="inputPassword" class="col-sm-3 col-form-label">Topic Name</label>
                                     <div class="col-sm-8">
@@ -983,13 +975,12 @@
                                 </div>
                                 <button type="button" class="btn btn-primary  btn-block" onclick="updateClassroomMeetingDetails()">Update</button>
                             </div>
-                            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 card shadow-lg border-primary">
-                <div class="card-header">Live classes</div>
+                <div class="card-header">Live classes <button class="btn small btn-primary" onclick="getMeetingDetails(true)"><i class="fa fa-filter" aria-hidden="true"></i> waiting for upload</button></div>
                 <div class="card-body">
                     <div class="table-responsive table-hover">
                         <table id="coursesTable" class="table-responsive table-hover" style="display:none;max-height:60vh;">
@@ -1023,7 +1014,7 @@
         <div id="secctionTest"></div>
         <div class="col-lg-12 mb-2" id="navAddNewAttachment" style="display:none">
             <div class="card shadow-lg border-primary">
-                <div class="card-header">Add attachment<span><a style="display:none" href="#" id="startPreviousMeeting" class="btn btn-sm btn-danger">start previous meeting</a></span></div>
+                <div class="card-header">Add attachment<span></span></div>
                 <div class="card-body">
 
                     <div class="card-body">
@@ -1075,7 +1066,59 @@
 
         </div>
 
+        <div class="col-lg-12 mb-2" id="navUploadNewAssignment" style="display:none">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header">Upload new assignment<span></span></div>
+                <div class="card-body">
 
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Name of Assignment</label>
+                            <div class="col-sm-8">
+                                <input onchange="validateInputField(this)" type="text" class="form-control" id="attachmentName" placeholder="Name of Assignment">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Description of assignment</label>
+                            <div class="col-sm-8">
+                                <textarea type="text" onchange="validateInputField(this)" placeholder="Enter attachment description" id="attachmentDescription" name="courseContents" rows="2" class="form-control md-textarea"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label">Add attachment url or upload file</label>
+                            <div class="col-sm-8">
+                                <input onchange="validateUrl(this)" type="url" name="attachmentName" class="form-control" id="assignmentUploadAttachmentUrl" placeholder="Enter attachment url">
+                            </div>
+                        </div>
+                        <form class="card-img-top classroom-background" method="post" enctype="multipart/form-data">
+                            <i class="fa fa-upload upload-icon" aria-hidden="true"></i>
+                            <div class="form-group">
+                                <label for="exampleFormControlFile1">Upload attachment</label>
+                                <input type="file" id="assignmentUpload" name="file" accept="*" />
+                                <button type="button" class="btn btn-primary" onclick="requestFileUploadForAssignment()">Upload</button>
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" id="fileUploadProgressBarForAssignment"></div>
+                                </div>
+                                <div class="alert alert-success" id="postFileUploadForAssignmentAlert" style="display:none" role="alert">
+                                    file uploaded successfully
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-success" id="postStudyMaterialUploadSucess" style="display:none" role="alert">
+                            Attachment Added successfully
+                        </div>
+                        <div class="alert alert-danger" id="postStudyMaterialUploadFail" style="display:none" role="alert">
+                            Attachment could not added
+                        </div>
+                        <button id="addAssignmentButton" type="button" class="btn btn-primary  btn-block" onclick="callAddAttachment(this)">Add attachment</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
         <div class="col-lg-12 mb-2" id="navAllAssignments" style="display:none">
             <div class="card shadow-lg border-primary">
                 <div class="card-header">Assignments</div>
@@ -1203,6 +1246,7 @@
                                     <th>S.No.</th>
                                     <th class="p-2">Student Name</th>
                                     <th class="p-2">Joining Time</th>
+                                    
                                 </tr>
                             </thead>
 

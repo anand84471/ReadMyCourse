@@ -111,7 +111,7 @@ function activateClassroom() {
             clearInterval(messageInerval);
         }
 
-        function getMeetingDetails() {
+        function getMeetingDetails(isFilerPendingForUpload=false) {
         debugger;
             $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token')},
@@ -126,12 +126,27 @@ function activateClassroom() {
                     var meetings = data.meeting_details;
                     $('#tableBody').empty();
                     for (var i = 0; i < meetings.length; i++) {
+                   
+                        if (isFilerPendingForUpload && !(meetings[i].topic_name == null || meetings[i].topic_name == "")) {
+                            continue;
+                        }
                         sNo++;
-                        var rows = '<tr><td class="pr-2"><button class=btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
-                        + '<td class="pr-2">Topic Name</td><td class="pr-2">' + meetings[i].meeting_finish_time + '</td>'
-                        + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
-                        +''
-                            + '</tr>';
+                        if (meetings[i].topic_name == null) {
+                            var rows = '<tr><td class="pr-2"><button class="btn btn-outline-danger" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i></i></button></td></td>'
+                                + '<td class="pr-2">Waiting for upload.</td>'
+                                + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
+                                + '<td class="pr-2">' + meetings[i].meeting_start_time + '</td>'
+                                + '<hr/></tr>';
+                        }
+                        else {
+                            var rows = '<tr><td class="pr-2"><button class="btn btn-outline-primary" onclick="showClassroomMeetingContent(' + meetings[i].meeting_id + ')"><i class="fa fa-2x fa-play-circle text-primary"></i></button></td></td>'
+                                + '<td class="pr-2">' + meetings[i].topic_name + '</td>'
+                                + '<td class="pr-2"><button class="btn btn-sm btn-primary" onclick="getStudentMeetingDetails('.concat(meetings[i].meeting_id) + ')">' + meetings[i].participants_count + '</button></td>'
+                                + '<td class="pr-2"><p>' + meetings[i].meeting_start_time + '</p></td>'
+                                + '<hr></tr>';
+                        }
+
+                        
 
                         $('#tableBody').append(rows);
                         $("#spinner").remove();
@@ -147,8 +162,9 @@ function activateClassroom() {
                 }
             }
     });
-        }
-    function getStudentDetails() {
+}
+
+function getStudentDetails(ischeckforpaid = false) {
         //debugger;
         $.ajax({
             headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
@@ -163,10 +179,25 @@ function activateClassroom() {
                     var students = data.student_details;
                     $('#tableBodyStudentDetails').empty();
                     for (var i = 0; i < students.length; i++) {
+                        if (ischeckforpaid && students[i].is_payment_done == 0) {
+                            continue;
+                        }
                         sNo++;
-                        var rows = '<tr><td scope="row" ><button type="button" class="btn btn-link font-weight-bold" onclick="getCourseIndexDetails('.concat(students[i].student_id) + ')">' + sNo + '</button></td>'
-                        + '<td>' + students[i].student_name + '</td><td>' + students[i].date_of_joining + '</td>'
-                        + '</tr>';
+                        if (students[i].is_payment_done == 1) {
+                            var rows = '<tr><td scope="row" ><button type="button" class="btn btn-link font-weight-bold" onclick="getCourseIndexDetails('.concat(students[i].student_id) + ')">' + sNo + '</button></td>'
+                                + '<td>' + students[i].student_name + '</td><td>' + students[i].date_of_joining + '</td>'
+                                + '<td><button class="btn btn-success">paid </button></td>'
+
+                                + '</tr>';
+                        }
+                        else {
+                            var rows = '<tr><td scope="row" ><button type="button" class="btn btn-link font-weight-bold" onclick="getCourseIndexDetails('.concat(students[i].student_id) + ')">' + sNo + '</button></td>'
+                                + '<td>' + students[i].student_name + '</td><td>' + students[i].date_of_joining + '</td>'
+                                + '<td><button class="btn btn-info">Not paid </button></td>'
+
+                                + '</tr>';
+                        }
+                       
                         $('#tableBodyStudentDetails').append(rows);
                         $("#spinnerStudentDetails").remove();
                         $("#studentDetailsTable").show();
@@ -180,7 +211,7 @@ function activateClassroom() {
                 }
             }
         });
-    }
+}
     function getStudentMeetingDetails(meetingId) {
         //debugger;
         $.ajax({
@@ -371,6 +402,8 @@ function activateClassroom() {
     function hideAll()
     {
         clearInterval(messageInerval);
+        //navUploadNewAssignment
+        $("#navUploadNewAssignment").hide();
         $("#navMessagesContainer").hide();
         $("#navPreviousMeetings").hide();
         $("#navStudentsJoined").hide();
@@ -861,6 +894,10 @@ function viewAddNewAttachment() {
     hideAll();
     $("#navAddNewAttachment").show();
 }
+function viewUploadNewAssignment() {
+    hideAll();
+    $("#navUploadNewAssignment").show();
+}
 function requestFileUpload() {
     document.getElementById("fileUploadProgressBar").style.width = "0%";
     debugger
@@ -943,6 +980,51 @@ function requestFileUploadForStudyMaterial() {
                 $("#attachmentUrl").prop("disabled", true);
                 $("#postFileUploadAlert").show();
                 $("#postFileUploadAlert").append('<a type="button" target="_blank" href="' + data.file_location + '" class="btn btn-link" >download upload&rarr;</a>');
+
+            }
+            else {
+
+            }
+        }
+    });
+}
+function requestFileUploadForAssignment() {
+    document.getElementById("fileUploadProgressBarForAttachment").style.width = "0%";
+    debugger
+    var data = new FormData();
+    var file = $('#assignmentUpload')[0];
+    data.append('file', file.files[0]);
+    $.ajax({
+        xhr: function () {
+            var xhr = new window.XMLHttpRequest();
+
+            xhr.upload.addEventListener("progress", function (evt) {
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    document.getElementById("fileUploadProgressBarForAssignment").style.width = percentComplete + "%";
+
+                }
+            }, false);
+
+            return xhr;
+        },
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem('access_token') },
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        data: data,
+        url: "/api/v1/instructor/UploadFile",
+        success: function (data) {
+            debugger
+            if (data != null && data.response_code == 1) {
+                backGroundImagePath = data.file_location;
+                $("#assignmentUploadAttachmentUrl").val(backGroundImagePath);
+                $("#assignmentUploadAttachmentUrl").prop("disabled", true);
+                $("#postFileUploadForAssignmentAlert").show();
+                $("#postFileUploadForAssignmentAlert").append('<a type="button" target="_blank" href="' + data.file_location + '" class="btn btn-link" >download upload&rarr;</a>');
 
             }
             else {
@@ -1397,6 +1479,7 @@ function uploadClassroomMeetingVideo() {
 }
 
 function showClassroomMeetingContent(meetingId) {
+    $("#pills-tabContent").addClass("active");
     currentMeetingId = meetingId;
     var _data =
     {
@@ -1419,7 +1502,11 @@ function showClassroomMeetingContent(meetingId) {
                     $("#liveClassTopicName").val(data.live_class_details.class_topic);
 
                 }
-                if (data.live_class_details.video_url != null) {
+                else {
+                    $("#topic-name").text("");
+                    $("#liveClassTopicName").val("");
+                }
+                if (data.live_class_details.video_url != null && data.live_class_details.video_url!="") {
                     $("#topic-video-palyer-container").show();
                     const player = new Plyr("#topic-video-palyer-container", { captions: { active: true } });
                     window.player = player;
@@ -1431,6 +1518,7 @@ function showClassroomMeetingContent(meetingId) {
                 }
 
                 else {
+                    $("#liveClassVideoUrl").val("");
                     $("#topic-video-palyer-container").hide();
                     $("#video-url").hide();
                     $("#no-video-data-present").show();
